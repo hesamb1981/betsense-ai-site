@@ -2,393 +2,1049 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BetSense AI Suite – Sports Intelligence Platform</title>
+  <title>BetSense AI Suite – Unified Sports Intelligence Stack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       --bg: #020617;
-      --card: #0b1120;
+      --bg-soft: #020919;
+      --card: #020c1f;
+      --border-soft: #1e293b;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
       --accent: #6366f1;
-      --accent2: #22c55e;
-      --accent3: #f97316;
-      --accent4: #ec4899;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --border: #1f2937;
-      --radius: 18px;
+      --accent-soft: #4f46e5;
+      --accent-2: #22c55e;
+      --accent-3: #f97316;
+      --accent-danger: #ef4444;
+      --pill-bg: #0f172a;
+      --pill-border: #1d283a;
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.9);
+      --shadow-pill: 0 12px 32px rgba(56, 189, 248, 0.45);
+      --btn-gradient: linear-gradient(135deg, #4f46e5, #8b5cf6, #22c55e);
+      --btn-gradient-soft: linear-gradient(135deg, #1e293b, #0f172a);
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background: radial-gradient(circle at top,#111827 0,#020617 55%,#000 100%);
-      color:var(--text);
-      line-height:1.6;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    a{text-decoration:none;color:inherit}
-    .page{max-width:1080px;margin:0 auto;padding:24px 16px 56px;}
-    header{
-      display:flex;justify-content:space-between;align-items:center;gap:12px;
-      padding:10px 16px;border-radius:999px;background:rgba(15,23,42,.95);
-      border:1px solid rgba(148,163,184,.3);backdrop-filter:blur(20px);
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #000 50%, #020617 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
-    .logo-wrap{display:flex;align-items:center;gap:10px;}
-    .logo-mark{width:30px;height:30px;border-radius:999px;
-      background:conic-gradient(from 180deg,#6366f1,#22c55e,#f97316,#ec4899,#6366f1);
-      padding:2px;display:flex;align-items:center;justify-content:center;
-      box-shadow:0 0 18px rgba(129,140,248,.8);}
-    .logo-inner{width:100%;height:100%;border-radius:999px;background:#020617;
-      display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;}
-    .logo-text-main{font-weight:600;font-size:17px;}
-    .logo-text-sub{font-size:11px;color:var(--muted);}
-    nav{display:flex;align-items:center;gap:8px;font-size:12px;flex-wrap:wrap;justify-content:flex-end;}
-    nav a{padding:5px 9px;border-radius:999px;color:var(--muted);border:1px solid transparent;}
-    nav a:hover{border-color:rgba(148,163,184,.4);background:rgba(15,23,42,.95);color:var(--text);}
-    .btn-primary{
-      background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:999px;
-      color:white;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;
-      display:inline-flex;align-items:center;gap:4px;
-      box-shadow:0 12px 30px rgba(99,102,241,.55);
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    .btn-primary:hover{opacity:.95;transform:translateY(-1px);}
-    main{margin-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr)minmax(0,1fr);gap:22px;}
-    .eyebrow{
-      display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;
-      border:1px solid rgba(34,197,94,.7);background:rgba(22,163,74,.18);
-      color:#bbf7d0;font-size:11px;margin-bottom:9px;
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
     }
-    .eyebrow-dot{width:7px;height:7px;border-radius:999px;background:#22c55e;box-shadow:0 0 10px #22c55e;}
-    h1{font-size:clamp(28px,3.5vw,36px);line-height:1.1;margin-bottom:8px;}
-    h1 span{background:linear-gradient(135deg,#a855f7,#6366f1,#22c55e);
-      -webkit-background-clip:text;color:transparent;}
-    .hero-sub{font-size:13px;color:var(--muted);max-width:440px;margin-bottom:14px;}
-    .hero-sub strong{color:var(--text);}
-    .hero-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
-    .hero-tagline{font-size:11px;color:var(--muted);margin-bottom:10px;}
-    .hero-metrics{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--muted);}
-    .hero-metrics strong{display:block;font-size:15px;color:var(--text);}
-    .hero-right{
-      border-radius:22px;padding:15px;background:
-      radial-gradient(circle at top left,rgba(129,140,248,.3),transparent 55%),
-      radial-gradient(circle at bottom right,rgba(34,197,94,.22),transparent 55%),
-      #020617;
-      border:1px solid rgba(148,163,184,.4);box-shadow:0 18px 40px rgba(15,23,42,.9);
+
+    /* Header / Nav */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
     }
-    .pill-row{display:flex;flex-wrap:wrap;gap:7px;font-size:11px;margin-bottom:8px;}
-    .pill{border-radius:999px;padding:4px 8px;border:1px solid rgba(148,163,184,.4);
-      background:rgba(15,23,42,.9);}
-    .mini{font-size:11px;color:var(--muted);margin-bottom:8px;}
-    .grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;font-size:11px;}
-    .mod{
-      border-radius:14px;padding:9px;background:rgba(15,23,42,.95);
-      border:1px solid rgba(31,41,55,.95);
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .mod-title{font-weight:600;font-size:12px;margin-bottom:3px;}
-    .mod-engine{color:#a5b4fc;}
-    .mod-hb{color:#22c55e;}
-    .mod-emo{color:#f97316;}
-    .mod-live{color:#ec4899;}
-    .badge{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
-    .mod p{color:var(--muted);margin:4px 0;}
-    .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;}
-    .chip{border-radius:999px;border:1px solid rgba(55,65,81,.9);padding:2px 5px;}
-    .bottom-note{
-      margin-top:9px;border-radius:999px;padding:5px 8px;font-size:11px;
-      border:1px dashed rgba(148,163,184,.6);display:flex;justify-content:space-between;gap:6px;
-      align-items:center;background:rgba(15,23,42,.95);color:var(--muted);
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 220deg,
+        #22c55e,
+        #0ea5e9,
+        #6366f1,
+        #ec4899,
+        #22c55e
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.7),
+        0 18px 45px rgba(129, 140, 248, 0.8);
+      font-weight: 700;
+      font-size: 16px;
+      color: #f9fafb;
     }
-    .bottom-note span.label{color:var(--text);font-weight:500;}
-    .pulse{width:8px;height:8px;border-radius:999px;background:#22c55e;
-      box-shadow:0 0 10px #22c55e;}
-    section{margin-top:40px;}
-    .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px;}
-    .sec-title{font-size:18px;font-weight:600;}
-    .sec-sub{font-size:12px;color:var(--muted);max-width:480px;}
-    .tag-small{font-size:11px;border-radius:999px;border:1px solid rgba(148,163,184,.5);
-      padding:3px 8px;color:var(--muted);}
-    .features{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;font-size:11px;}
-    .feat{
-      border-radius:16px;padding:10px;background:rgba(15,23,42,.98);
-      border:1px solid rgba(31,41,55,.95);
+
+    .brand-text-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
     }
-    .feat-tag{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
-    .feat-name{font-size:12px;font-weight:600;margin-bottom:4px;}
-    .feat-desc{color:var(--muted);margin-bottom:6px;}
-    .feat-meta{font-size:10px;color:var(--muted);}
-    .pricing-wrap{display:grid;grid-template-columns:minmax(0,1.1fr)minmax(0,.9fr);gap:16px;font-size:12px;}
-    .pricing-card{
-      border-radius:18px;padding:14px;background:rgba(15,23,42,.98);
-      border:1px solid rgba(148,163,184,.4);
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-soft);
     }
-    .p-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
-    .p-name{font-size:16px;font-weight:600;margin-bottom:6px;}
-    .p-sub{font-size:12px;color:var(--muted);margin-bottom:10px;}
-    .p-row{display:flex;align-items:baseline;gap:5px;margin-bottom:10px;}
-    .p-row span.amount{font-size:22px;font-weight:600;}
-    .p-row span.cur,.p-row span.per{font-size:11px;color:var(--muted);}
-    .p-list{list-style:none;color:var(--muted);margin-bottom:10px;}
-    .p-list li{display:flex;gap:6px;margin-bottom:5px;}
-    .p-list span.b{color:#22c55e;}
-    .p-note{font-size:11px;color:var(--muted);}
-    .p-alt{
-      border-radius:18px;padding:14px;border:1px dashed rgba(148,163,184,.6);
-      background:rgba(15,23,42,.95);
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
-    .p-badge{font-size:11px;border-radius:999px;padding:4px 8px;
-      background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.8);margin-bottom:6px;display:inline-block;}
-    footer{
-      margin-top:26px;padding-top:14px;border-top:1px solid rgba(31,41,55,1);
-      display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);flex-wrap:wrap;
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      font-size: 13px;
+      color: var(--text-soft);
     }
-    @media(max-width:900px){
-      main{grid-template-columns:minmax(0,1fr);}
-      header{flex-wrap:wrap;justify-content:center;}
-      nav{justify-content:center;}
-      .features{grid-template-columns:repeat(2,minmax(0,1fr));}
-      .pricing-wrap{grid-template-columns:minmax(0,1fr);}
+
+    .nav-link {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
     }
-    @media(max-width:640px){
-      .features{grid-template-columns:minmax(0,1fr);}
+
+    .nav-link:hover {
+      color: #e5e7eb;
+    }
+
+    .nav-link.active {
+      border-color: rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.9);
+      color: #f9fafb;
+    }
+
+    /* Language selector */
+
+    .lang-select-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-label {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .lang-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding: 6px 26px 6px 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background:
+        url("data:image/svg+xml,%3Csvg width='12' height='12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%239ca3af' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+          no-repeat right 9px center,
+        radial-gradient(circle at top left, #0f172a, #020617);
+      background-size: 12px;
+      color: var(--text-main);
+      font-size: 11px;
+      cursor: pointer;
+      position: relative;
+      min-width: 140px;
+    }
+
+    .lang-select:focus {
+      outline: 2px solid rgba(129, 140, 248, 0.85);
+      outline-offset: 2px;
+    }
+
+    .lang-select-globe {
+      position: relative;
+    }
+
+    .lang-select-globe::before {
+      content: "🌐";
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    /* Info pill */
+
+    .lang-info-pill {
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      transform: translateY(-4px);
+      pointer-events: none;
+      transition: all 0.22s ease-out;
+    }
+
+    .lang-info-pill.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .lang-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35),
+        0 0 10px rgba(34, 197, 94, 0.8);
+    }
+
+    /* Hero */
+
+    .hero {
+      margin-top: 8px;
+      margin-bottom: 28px;
+      padding: 18px 18px 22px;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, #0f172a, #020617 50%, #000 100%);
+      border: 1px solid rgba(148, 163, 184, 0.26);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+    }
+
+    .hero-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5),
+        0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .hero-title span.highlight {
+      background: linear-gradient(120deg, #4f46e5, #22c55e, #06b6d4);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+      max-width: 420px;
+    }
+
+    .hero-tagline {
+      font-size: 12px;
+      color: #a5b4fc;
+      margin-bottom: 12px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background-image: var(--btn-gradient);
+      color: #f9fafb;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-pill);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 10% 0,
+        rgba(255, 255, 255, 0.18),
+        transparent 45%
+      );
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .btn-outline {
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: var(--btn-gradient-soft);
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .hero-hint {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .hero-hint strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    /* Hero right card */
+
+    .hero-card {
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #111827, #020617 60%);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-badge {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(8, 47, 73, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.95);
+      font-size: 10px;
+      color: #e0f2fe;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-card-header {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .hero-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .mini-card {
+      border-radius: 14px;
+      padding: 10px;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-card:nth-child(2) {
+      border-color: rgba(22, 163, 74, 0.9);
+    }
+
+    .mini-card:nth-child(3) {
+      border-color: rgba(249, 115, 22, 0.9);
+    }
+
+    .mini-card:nth-child(4) {
+      border-color: rgba(14, 165, 233, 0.9);
+    }
+
+    .mini-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .mini-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .mini-pill {
+      font-size: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+    }
+
+    .mini-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .mini-footer {
+      font-size: 10px;
+      color: #6b7280;
+      margin-top: 3px;
+    }
+
+    /* Modules section */
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .module-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 10px 10px 9px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+    }
+
+    .module-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .module-tag {
+      font-size: 10px;
+      color: #a5b4fc;
+    }
+
+    .module-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 3px;
+    }
+
+    /* Capability & Pricing */
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 16px;
+    }
+
+    .cap-list {
+      list-style: none;
+      display: grid;
+      gap: 7px;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .cap-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .cap-item span.icon {
+      margin-top: 2px;
+      font-size: 11px;
+    }
+
+    .pricing-card {
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 12px;
+    }
+
+    .pricing-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .pricing-main {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .pricing-main strong {
+      font-size: 18px;
+    }
+
+    .pricing-caption {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .pricing-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    /* Combined Live Edge / Timeline teaser */
+
+    .combined-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 16px;
+      font-size: 11px;
+    }
+
+    .combined-card {
+      border-radius: var(--radius-lg);
+      padding: 11px;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .combined-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .combined-sub {
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .combined-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .chip {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .chip.good {
+      border-color: rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+    }
+
+    .chip.bad {
+      border-color: rgba(239, 68, 68, 0.7);
+      color: #fecaca;
+    }
+
+    /* Footer */
+
+    footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(30, 41, 59, 0.9);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-card {
+        order: -1;
+      }
+      .modules-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .two-col,
+      .combined-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 18px 12px 56px;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-links {
+        order: 2;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 4px;
+      }
+      .modules-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div class="logo-wrap">
-        <div class="logo-mark"><div class="logo-inner">BS</div></div>
+  <main>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-logo">BS</div>
         <div>
-          <div class="logo-text-main">BetSense AI Suite</div>
-          <div class="logo-text-sub">Unified Sports Intelligence Stack</div>
+          <div class="brand-text-title">BetSense AI Suite</div>
+          <div class="brand-text-sub">Unified sports intelligence stack</div>
         </div>
       </div>
-      <nav>
-        <a href="#modules">Modules</a>
-        <a href="#features">Capabilities</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact">Contact</a>
-        <a href="#pricing"><button class="btn-primary">Request access ↗</button></a>
-      </nav>
+
+      <div>
+        <nav class="nav">
+          <div class="nav-links">
+            <button class="nav-link active" type="button">Modules</button>
+            <button class="nav-link" type="button">Capabilities</button>
+            <button class="nav-link" type="button">Pricing</button>
+            <button class="nav-link" type="button">Contact</button>
+          </div>
+
+          <div class="lang-select-wrapper">
+            <span class="lang-label">Interface language</span>
+            <div class="lang-select-globe">
+              <select id="languageSelect" class="lang-select">
+                <!-- options are filled by JS as well, but you can keep them static -->
+                <option value="en" selected>English (default)</option>
+                <option value="ar">Arabic</option>
+                <option value="zh-Hans">Chinese (Simplified)</option>
+                <option value="zh-Hant">Chinese (Traditional)</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="es">Spanish</option>
+                <option value="it">Italian</option>
+                <option value="pt-BR">Portuguese (Brazil)</option>
+                <option value="ru">Russian</option>
+                <option value="tr">Turkish</option>
+                <option value="fa">Persian (Farsi)</option>
+                <option value="hi">Hindi</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="nl">Dutch</option>
+                <option value="sv">Swedish</option>
+                <option value="no">Norwegian</option>
+                <option value="da">Danish</option>
+                <option value="fi">Finnish</option>
+                <option value="el">Greek</option>
+                <option value="pl">Polish</option>
+                <option value="cs">Czech</option>
+                <option value="ro">Romanian</option>
+                <option value="th">Thai</option>
+                <option value="id">Indonesian</option>
+                <option value="vi">Vietnamese</option>
+                <option value="he">Hebrew</option>
+              </select>
+            </div>
+          </div>
+        </nav>
+        <div id="langInfo" class="lang-info-pill">
+          <span class="lang-dot"></span>
+          <span>Localized UI coming soon – for now the product is shown in English.</span>
+        </div>
+      </div>
     </header>
 
-    <main>
-      <section class="hero">
-        <main>
-          <div>
-            <div class="eyebrow">
-              <span class="eyebrow-dot"></span>
-              Realtime AI for bookmakers & trading desks
-            </div>
-            <h1>
-              One suite. <span>Four unique engines</span> for smarter sports decisions.
-            </h1>
-            <p class="hero-sub">
-              BetSense AI Suite connects <strong>BetSense Engine</strong>, <strong>HBboard</strong>,
-              <strong>Emotion Index</strong> and <strong>LiveApe</strong> into a single,
-              operator-ready platform.
-            </p>
-            <div class="hero-row">
-              <a href="#modules"><button class="btn-primary">Explore all modules ↓</button></a>
-            </div>
-            <p class="hero-tagline">
-              Built to show investors & buyers کل توانایی‌های یونیک محصول شما در یک صفحه.
-            </p>
-            <div class="hero-metrics">
-              <div><strong>4</strong> integrated modules</div>
-              <div><strong>API-ready</strong> architecture</div>
-              <div><strong>Live-match</strong> demo flow</div>
-            </div>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-pill">
+        <span class="hero-pill-dot"></span>
+        <span>Realtime AI for bookmakers &amp; trading desks</span>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <h1 class="hero-title">
+            One suite. <span class="highlight">Four unique engines</span> for smarter sports decisions.
+          </h1>
+          <p class="hero-sub">
+            BetSense AI Suite connects BetSense Engine, HBBoard, Emotion Index and LiveApe
+            into a single, operator-ready platform for live odds, pre-match insights and
+            fan-driven edge discovery.
+          </p>
+
+          <p class="hero-tagline">
+            Built to show investors &amp; buyers the full value of your sports intelligence
+            stack in one page.
+          </p>
+
+          <div class="hero-cta-row">
+            <button class="btn-primary" type="button">
+              Request access
+              <span>↗</span>
+            </button>
+            <button class="btn-outline" type="button">
+              Explore all modules
+              <span>↓</span>
+            </button>
           </div>
 
-          <aside class="hero-right" id="modules">
-            <div class="pill-row">
-              <div class="pill">⚙️ BetSense Engine</div>
-              <div class="pill">📊 HBboard</div>
-              <div class="pill">💓 Emotion Index</div>
-              <div class="pill">📺 LiveApe</div>
-            </div>
-            <div class="mini">
-              Visual operator view از این که چطور همه‌ی ماژول‌ها کنار هم کار می‌کنند.
-            </div>
-            <div class="grid4">
-              <div class="mod">
-                <div class="badge">Core pricing</div>
-                <div class="mod-title mod-engine">BetSense Engine</div>
-                <p>AI odds & risk engine با پاسخ سریع برای هر لیگ.</p>
-                <div class="chips">
-                  <span class="chip">Smart pricing</span>
-                  <span class="chip">Latency aware</span>
-                </div>
-              </div>
-              <div class="mod">
-                <div class="badge">Trading console</div>
-                <div class="mod-title mod-hb">HBboard</div>
-                <p>داشبورد اپراتوری برای exposure، alerts و manual override.</p>
-                <div class="chips">
-                  <span class="chip">Desk view</span>
-                  <span class="chip">Dark mode</span>
-                </div>
-              </div>
-              <div class="mod">
-                <div class="badge">Fan signals</div>
-                <div class="mod-title mod-emo">Emotion Index</div>
-                <p>امتیاز احساسات طرفدارها و بازار، از ۰ تا ۱۰۰.</p>
-                <div class="chips">
-                  <span class="chip">Sentiment</span>
-                  <span class="chip">Momentum</span>
-                </div>
-              </div>
-              <div class="mod">
-                <div class="badge">Event layer</div>
-                <div class="mod-title mod-live">LiveApe</div>
-                <p>سیگنال‌های in-play، شوت، کارت و xG-spike برای تریدینگ.</p>
-                <div class="chips">
-                  <span class="chip">In-play feed</span>
-                  <span class="chip">Micro-events</span>
-                </div>
-              </div>
-            </div>
-            <div class="bottom-note">
-              <div>
-                <span class="label">Single “glass-of-truth” demo.</span><br />
-                <span>برای جلسه‌ی اول با هر خریدار، همین صفحه کافی است.</span>
-              </div>
-              <span class="pulse"></span>
-            </div>
-          </aside>
-        </main>
-      </section>
+          <p class="hero-hint">
+            <strong>API-ready</strong> architecture • Live-match demo flow •
+            4 integrated modules in one suite.
+          </p>
+        </div>
 
-      <section>
-        <div class="sec-head">
-          <div>
-            <div class="sec-title">Unique capabilities برای خریدار</div>
-            <p class="sec-sub">
-              خریدار در چند ثانیه می‌فهمد که شما فقط یک ابزار نیستید، بلکه یک استک کامل
-              از engine + dashboard + emotion + live intelligence دارید.
-            </p>
+        <aside class="hero-card">
+          <div class="hero-card-badge">
+            <span>●</span>
+            <span>Live-match decision cockpit</span>
           </div>
-          <span class="tag-small">Perfect برای لینک در ایمیل، واتساپ یا پرزنتیشن</span>
-        </div>
-        <div class="features" id="features">
-          <div class="feat">
-            <div class="feat-tag">BetSense Engine</div>
-            <div class="feat-name">AI odds & risk layer</div>
-            <p class="feat-desc">
-              هسته‌ای که می‌تواند در هر sportsbook یا odds feed به عنوان مغز تصمیم‌گیر بنشیند.
-            </p>
-            <div class="feat-meta">REST / WebSocket · model-agnostic</div>
-          </div>
-          <div class="feat">
-            <div class="feat-tag">HBboard</div>
-            <div class="feat-name">Operator control room</div>
-            <p class="feat-desc">
-              UI مدرن که نشان می‌دهد desk واقعی در روز بازی چطور از محصول شما استفاده می‌کند.
-            </p>
-            <div class="feat-meta">Multi-user · export-ready</div>
-          </div>
-          <div class="feat">
-            <div class="feat-tag">Emotion Index</div>
-            <div class="feat-name">Fan & market mood</div>
-            <p class="feat-desc">
-              از سر و صدای هواداران تا شبکه‌های اجتماعی، همه در یک امتیاز عددی.
-            </p>
-            <div class="feat-meta">Team & player level signals</div>
-          </div>
-          <div class="feat">
-            <div class="feat-tag">LiveApe</div>
-            <div class="feat-name">In-play story layer</div>
-            <p class="feat-desc">
-              توضیح می‌دهد چرا یک بازی “در حال جوشیدن” است؛ چیزی که فقط از روی odds دیده نمی‌شود.
-            </p>
-            <div class="feat-meta">In-play alerts · tempo shifts</div>
-          </div>
-        </div>
-      </section>
+          <div class="hero-card-header">AI modules inside BetSense Suite</div>
 
-      <section id="pricing">
-        <div class="sec-head">
-          <div>
-            <div class="sec-title">Pricing برای گفت‌وگو، نه عدد نهایی</div>
-            <p class="sec-sub">
-              این بخش فقط ساختار رو نشان می‌دهد؛ اعداد رو بعداً با هر خریدار تنظیم می‌کنی.
-            </p>
-          </div>
-        </div>
-        <div class="pricing-wrap">
-          <div class="pricing-card">
-            <div class="p-label">Suite plan</div>
-            <div class="p-name">Full BetSense AI Suite</div>
-            <p class="p-sub">
-              هر چهار ماژول، با یک اینتگریشن و یک SLA.
-            </p>
-            <div class="p-row">
-              <span class="cur">from</span>
-              <span class="amount">€xx,xxx</span>
-              <span class="per">/month</span>
+          <div class="hero-card-grid">
+            <div class="mini-card">
+              <div class="mini-title">BetSense Engine</div>
+              <div class="mini-sub">Quantum-style price &amp; edge analytics.</div>
+              <div class="mini-pill">
+                <span class="mini-pill-dot"></span>
+                <span>Live odds + edge % API</span>
+              </div>
+              <div class="mini-footer">Deployed on: /api/live-odds, /api/prediction</div>
             </div>
-            <ul class="p-list">
-              <li><span class="b">✔</span><span>قیمت‌گذاری بر اساس لیگ، مارکت و تعداد یوزر.</span></li>
-              <li><span class="b">✔</span><span>Roadmap مشترک با تیم trading / product خریدار.</span></li>
-              <li><span class="b">✔</span><span>Priority support در روزهای مهم (فینال‌ها، دربی‌ها و ...).</span></li>
-            </ul>
-            <button class="btn-primary">Talk to sales ↗</button>
-            <p class="p-note">
-              اعداد فعلاً placeholder هستند؛ برای پرزنت، همین ساختار کافی است.
-            </p>
-          </div>
-          <div class="p-alt">
-            <span class="p-badge">Modular options</span>
-            <p>اگر خریدار کوچک‌تر است، می‌توانی این‌ها را پیشنهاد بدهی:</p>
-            <ul class="p-list">
-              <li><span class="b">●</span><span><strong>BetSense Engine only</strong> به عنوان لایه‌ی odds & risk.</span></li>
-              <li><span class="b">●</span><span><strong>HBboard only</strong> روی دیتاهای فعلی خودشان.</span></li>
-              <li><span class="b">●</span><span><strong>Emotion Index / LiveApe</strong> به عنوان add-on signal.</span></li>
-            </ul>
-          </div>
-        </div>
-      </section>
 
-      <section id="contact">
-        <div class="sec-head">
-          <div>
-            <div class="sec-title">Next step برای خریدار</div>
-            <p class="sec-sub">
-              این صفحه را برای تصمیم‌گیر می‌فرستی؛ اگر علاقه‌مند شد، جلسه‌ی دمو با داشبورد و
-              نمودارهای زنده می‌گذارید.
-            </p>
-          </div>
-        </div>
-        <div class="pricing-wrap">
-          <div class="pricing-card">
-            <div class="p-label">Demo call</div>
-            <div class="p-name">Walk through a live match</div>
-            <p class="p-sub">
-              از یک مسابقه‌ی فرضی عبور می‌کنید: Engine قیمت می‌دهد، HBboard مانیتور می‌کند،
-              Emotion Index و LiveApe توضیح می‌دهند چرا بازی عوض شده.
-            </p>
-          </div>
-          <div class="p-alt">
-            <span class="p-badge">Contact info (نمونه)</span>
-            <ul class="p-list">
-              <li><span class="b">✉</span><span>Email: yourname@betsense.ai</span></li>
-              <li><span class="b">☎</span><span>WhatsApp / direct call for match-day support.</span></li>
-              <li><span class="b">📅</span><span>Calendar link برای ۳۰ دقیقه پرزنت.</span></li>
-            </ul>
-            <p class="p-note">
-              این متن‌ها رو بعداً با اطلاعات واقعی خودت عوض می‌کنی.
-            </p>
-          </div>
-        </div>
-      </section>
-    </main>
+            <div class="mini-card">
+              <div class="mini-title">HBBoard</div>
+              <div class="mini-sub">High-bandwidth trading dashboards.</div>
+              <div class="mini-pill">
+                <span class="mini-pill-dot"></span>
+                <span>Operator view + risk</span>
+              </div>
+              <div class="mini-footer">Built for trading rooms &amp; risk desks</div>
+            </div>
 
+            <div class="mini-card">
+              <div class="mini-title">Emotion Index</div>
+              <div class="mini-sub">Social, sentiment &amp; crowd emotion scores.</div>
+              <div class="mini-pill">
+                <span class="mini-pill-dot"></span>
+                <span>Fan mood → price signal</span>
+              </div>
+              <div class="mini-footer">Aggregates feeds, chats &amp; social noise</div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-title">LiveApe</div>
+              <div class="mini-sub">Live-match storytelling for fans &amp; traders.</div>
+              <div class="mini-pill">
+                <span class="mini-pill-dot"></span>
+                <span>Explainable AI layer</span>
+              </div>
+              <div class="mini-footer">Turns raw data into narratives in realtime</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- MODULES -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Integrated modules</h2>
+        <p class="section-kicker">Four engines, one operator-ready interface.</p>
+      </div>
+
+      <div class="modules-grid">
+        <article class="module-card">
+          <div class="module-label">Module A</div>
+          <div class="module-name">BetSense Engine</div>
+          <div class="module-tag">Pricing &amp; edge analytics</div>
+          <div class="module-meta">
+            <span>Live &amp; pre-match models</span>
+            <span>REST + WebSocket</span>
+          </div>
+        </article>
+
+        <article class="module-card">
+          <div class="module-label">Module B</div>
+          <div class="module-name">HBBoard</div>
+          <div class="module-tag">High-bandwidth trading UI</div>
+          <div class="module-meta">
+            <span>Sportsbook control room</span>
+            <span>Risk &amp; exposure views</span>
+          </div>
+        </article>
+
+        <article class="module-card">
+          <div class="module-label">Module C</div>
+          <div class="module-name">Emotion Index</div>
+          <div class="module-tag">Crowd sentiment &amp; volatility</div>
+          <div class="module-meta">
+            <span>Feeds, chats, social</span>
+            <span>Signal scores</span>
+          </div>
+        </article>
+
+        <article class="module-card">
+          <div class="module-label">Module D</div>
+          <div class="module-name">LiveApe</div>
+          <div class="module-tag">Narrative &amp; explainability layer</div>
+          <div class="module-meta">
+            <span>Human-style summaries</span>
+            <span>Fan &amp; trader views</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CAPABILITIES + PRICING -->
+    <section class="section">
+      <div class="two-col">
+        <div>
+          <div class="section-header">
+            <h2 class="section-title">Capabilities</h2>
+          </div>
+          <ul class="cap-list">
+            <li class="cap-item">
+              <span class="icon">⚡</span>
+              <span>Live odds, model probabilities and edge % served via a single engine endpoint.</span>
+            </li>
+            <li class="cap-item">
+              <span class="icon">🧠</span>
+              <span>Quant-inspired features such as probability timelines and live-edge tracking.</span>
+            </li>
+            <li class="cap-item">
+              <span class="icon">📊</span>
+              <span>Operator dashboards (HBBoard) for traders, risk, and management in one suite.</span>
+            </li>
+            <li class="cap-item">
+              <span class="icon">💬</span>
+              <span>Emotion Index converts fan behaviour into structured signals your models can consume.</span>
+            </li>
+            <li class="cap-item">
+              <span class="icon">🌍</span>
+              <span>Multi-language interface ready: 20+ UI languages planned, English content by default.</span>
+            </li>
+          </ul>
+        </div>
+
+        <aside class="pricing-card">
+          <div class="pricing-pill">
+            <span>Early-stage deck view</span>
+          </div>
+          <div class="pricing-main">
+            <strong>Designed for investors &amp; buyers</strong>
+          </div>
+          <p class="pricing-caption">
+            The suite is presented as an API-ready platform. Commercial terms are tailored
+            per operator and per market.
+          </p>
+
+          <div class="pricing-row">
+            <span>Phase 1</span>
+            <span>Proof-of-concept with mock &amp; limited live data</span>
+          </div>
+          <div class="pricing-row">
+            <span>Phase 2</span>
+            <span>Operator integration, custom feeds and production SLAs</span>
+          </div>
+          <div class="pricing-row">
+            <span>Phase 3</span>
+            <span>Co-branded tools, white-label dashboards &amp; revenue share</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- COMBINED EDGE + TIMELINE -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Live edge &amp; probability timeline</h2>
+        <p class="section-kicker">
+          Show how the model disagrees with the market – minute by minute.
+        </p>
+      </div>
+
+      <div class="combined-grid">
+        <div class="combined-card">
+          <div class="combined-title">Combined Live Edge Demo</div>
+          <p class="combined-sub">
+            Visual comparison between BetSense model probabilities and live market prices.
+            Ideal for traders who want to spot mis-priced events in seconds.
+          </p>
+          <div class="combined-chip-row">
+            <span class="chip good">Edge &gt; 2% highlighted in green</span>
+            <span class="chip bad">Negative overlays in red</span>
+            <span class="chip">Feed-agnostic: can plug into any odds provider</span>
+          </div>
+          <p>
+            API endpoint: <code>/api/combined</code><br />
+            Front-end: small React or vanilla widget that sits inside any trading UI.
+          </p>
+        </div>
+
+        <div class="combined-card">
+          <div class="combined-title">Probability Timeline Demo</div>
+          <p class="combined-sub">
+            Timeline chart shows how home, draw and away probabilities evolve from minute 0 to 90.
+            Perfect for explaining model behaviour to non-technical decision makers.
+          </p>
+          <div class="combined-chip-row">
+            <span class="chip">Minute-by-minute model snapshots</span>
+            <span class="chip">Key match events annotated (goals, red cards, xG swings)</span>
+            <span class="chip">Exports easily into decks &amp; reports</span>
+          </div>
+          <p>
+            API endpoint: <code>/api/probability-timeline</code><br />
+            Output: JSON timeline + ready-to-embed SVG/PNG chart.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer>
-      <span>© <span id="year"></span> BetSense AI Suite – internal demo site.</span>
-      <span>Built to show همه توانایی‌های یونیک تو در یک URL.</span>
+      <span>BetSense AI Suite · Concept deck for sportsbooks, data providers &amp; trading desks.</span>
+      <span>Contact: info@betsense-suite.com · Demo access on request.</span>
     </footer>
-  </div>
+  </main>
+
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    // Language selector behaviour – content stays English for now
+    (function () {
+      const select = document.getElementById("languageSelect");
+      const info = document.getElementById("langInfo");
+      let timeoutId = null;
+
+      function showInfo() {
+        if (!info) return;
+        info.classList.add("visible");
+        if (timeoutId) window.clearTimeout(timeoutId);
+        timeoutId = window.setTimeout(() => {
+          info.classList.remove("visible");
+        }, 4200);
+      }
+
+      if (select) {
+        select.addEventListener("change", function () {
+          showInfo();
+          // In the future, you can plug real translations here
+          // based on select.value (locale code).
+        });
+      }
+    })();
   </script>
 </body>
 </html>
