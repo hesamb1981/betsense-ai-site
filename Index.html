@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetSense AI Suite – Sports Intelligence Platform</title>
+  <style>
+    :root {
+      --bg: #020617;
+      --card: #0b1120;
+      --accent: #6366f1;
+      --accent2: #22c55e;
+      --accent3: #f97316;
+      --accent4: #ec4899;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --radius: 18px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: radial-gradient(circle at top,#111827 0,#020617 55%,#000 100%);
+      color:var(--text);
+      line-height:1.6;
+    }
+    a{text-decoration:none;color:inherit}
+    .page{max-width:1080px;margin:0 auto;padding:24px 16px 56px;}
+    header{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      padding:10px 16px;border-radius:999px;background:rgba(15,23,42,.95);
+      border:1px solid rgba(148,163,184,.3);backdrop-filter:blur(20px);
+    }
+    .logo-wrap{display:flex;align-items:center;gap:10px;}
+    .logo-mark{width:30px;height:30px;border-radius:999px;
+      background:conic-gradient(from 180deg,#6366f1,#22c55e,#f97316,#ec4899,#6366f1);
+      padding:2px;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 18px rgba(129,140,248,.8);}
+    .logo-inner{width:100%;height:100%;border-radius:999px;background:#020617;
+      display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;}
+    .logo-text-main{font-weight:600;font-size:17px;}
+    .logo-text-sub{font-size:11px;color:var(--muted);}
+    nav{display:flex;align-items:center;gap:8px;font-size:12px;flex-wrap:wrap;justify-content:flex-end;}
+    nav a{padding:5px 9px;border-radius:999px;color:var(--muted);border:1px solid transparent;}
+    nav a:hover{border-color:rgba(148,163,184,.4);background:rgba(15,23,42,.95);color:var(--text);}
+    .btn-primary{
+      background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:999px;
+      color:white;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;
+      display:inline-flex;align-items:center;gap:4px;
+      box-shadow:0 12px 30px rgba(99,102,241,.55);
+    }
+    .btn-primary:hover{opacity:.95;transform:translateY(-1px);}
+    main{margin-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr)minmax(0,1fr);gap:22px;}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;
+      border:1px solid rgba(34,197,94,.7);background:rgba(22,163,74,.18);
+      color:#bbf7d0;font-size:11px;margin-bottom:9px;
+    }
+    .eyebrow-dot{width:7px;height:7px;border-radius:999px;background:#22c55e;box-shadow:0 0 10px #22c55e;}
+    h1{font-size:clamp(28px,3.5vw,36px);line-height:1.1;margin-bottom:8px;}
+    h1 span{background:linear-gradient(135deg,#a855f7,#6366f1,#22c55e);
+      -webkit-background-clip:text;color:transparent;}
+    .hero-sub{font-size:13px;color:var(--muted);max-width:440px;margin-bottom:14px;}
+    .hero-sub strong{color:var(--text);}
+    .hero-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+    .hero-tagline{font-size:11px;color:var(--muted);margin-bottom:10px;}
+    .hero-metrics{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--muted);}
+    .hero-metrics strong{display:block;font-size:15px;color:var(--text);}
+    .hero-right{
+      border-radius:22px;padding:15px;background:
+      radial-gradient(circle at top left,rgba(129,140,248,.3),transparent 55%),
+      radial-gradient(circle at bottom right,rgba(34,197,94,.22),transparent 55%),
+      #020617;
+      border:1px solid rgba(148,163,184,.4);box-shadow:0 18px 40px rgba(15,23,42,.9);
+    }
+    .pill-row{display:flex;flex-wrap:wrap;gap:7px;font-size:11px;margin-bottom:8px;}
+    .pill{border-radius:999px;padding:4px 8px;border:1px solid rgba(148,163,184,.4);
+      background:rgba(15,23,42,.9);}
+    .mini{font-size:11px;color:var(--muted);margin-bottom:8px;}
+    .grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;font-size:11px;}
+    .mod{
+      border-radius:14px;padding:9px;background:rgba(15,23,42,.95);
+      border:1px solid rgba(31,41,55,.95);
+    }
+    .mod-title{font-weight:600;font-size:12px;margin-bottom:3px;}
+    .mod-engine{color:#a5b4fc;}
+    .mod-hb{color:#22c55e;}
+    .mod-emo{color:#f97316;}
+    .mod-live{color:#ec4899;}
+    .badge{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+    .mod p{color:var(--muted);margin:4px 0;}
+    .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;}
+    .chip{border-radius:999px;border:1px solid rgba(55,65,81,.9);padding:2px 5px;}
+    .bottom-note{
+      margin-top:9px;border-radius:999px;padding:5px 8px;font-size:11px;
+      border:1px dashed rgba(148,163,184,.6);display:flex;justify-content:space-between;gap:6px;
+      align-items:center;background:rgba(15,23,42,.95);color:var(--muted);
+    }
+    .bottom-note span.label{color:var(--text);font-weight:500;}
+    .pulse{width:8px;height:8px;border-radius:999px;background:#22c55e;
+      box-shadow:0 0 10px #22c55e;}
+    section{margin-top:40px;}
+    .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px;}
+    .sec-title{font-size:18px;font-weight:600;}
+    .sec-sub{font-size:12px;color:var(--muted);max-width:480px;}
+    .tag-small{font-size:11px;border-radius:999px;border:1px solid rgba(148,163,184,.5);
+      padding:3px 8px;color:var(--muted);}
+    .features{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;font-size:11px;}
+    .feat{
+      border-radius:16px;padding:10px;background:rgba(15,23,42,.98);
+      border:1px solid rgba(31,41,55,.95);
+    }
+    .feat-tag{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+    .feat-name{font-size:12px;font-weight:600;margin-bottom:4px;}
+    .feat-desc{color:var(--muted);margin-bottom:6px;}
+    .feat-meta{font-size:10px;color:var(--muted);}
+    .pricing-wrap{display:grid;grid-template-columns:minmax(0,1.1fr)minmax(0,.9fr);gap:16px;font-size:12px;}
+    .pricing-card{
+      border-radius:18px;padding:14px;background:rgba(15,23,42,.98);
+      border:1px solid rgba(148,163,184,.4);
+    }
+    .p-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+    .p-name{font-size:16px;font-weight:600;margin-bottom:6px;}
+    .p-sub{font-size:12px;color:var(--muted);margin-bottom:10px;}
+    .p-row{display:flex;align-items:baseline;gap:5px;margin-bottom:10px;}
+    .p-row span.amount{font-size:22px;font-weight:600;}
+    .p-row span.cur,.p-row span.per{font-size:11px;color:var(--muted);}
+    .p-list{list-style:none;color:var(--muted);margin-bottom:10px;}
+    .p-list li{display:flex;gap:6px;margin-bottom:5px;}
+    .p-list span.b{color:#22c55e;}
+    .p-note{font-size:11px;color:var(--muted);}
+    .p-alt{
+      border-radius:18px;padding:14px;border:1px dashed rgba(148,163,184,.6);
+      background:rgba(15,23,42,.95);
+    }
+    .p-badge{font-size:11px;border-radius:999px;padding:4px 8px;
+      background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.8);margin-bottom:6px;display:inline-block;}
+    footer{
+      margin-top:26px;padding-top:14px;border-top:1px solid rgba(31,41,55,1);
+      display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);flex-wrap:wrap;
+    }
+    @media(max-width:900px){
+      main{grid-template-columns:minmax(0,1fr);}
+      header{flex-wrap:wrap;justify-content:center;}
+      nav{justify-content:center;}
+      .features{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .pricing-wrap{grid-template-columns:minmax(0,1fr);}
+    }
+    @media(max-width:640px){
+      .features{grid-template-columns:minmax(0,1fr);}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo-wrap">
+        <div class="logo-mark"><div class="logo-inner">BS</div></div>
+        <div>
+          <div class="logo-text-main">BetSense AI Suite</div>
+          <div class="logo-text-sub">Unified Sports Intelligence Stack</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#modules">Modules</a>
+        <a href="#features">Capabilities</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+        <a href="#pricing"><button class="btn-primary">Request access ↗</button></a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <main>
+          <div>
+            <div class="eyebrow">
+              <span class="eyebrow-dot"></span>
+              Realtime AI for bookmakers & trading desks
+            </div>
+            <h1>
+              One suite. <span>Four unique engines</span> for smarter sports decisions.
+            </h1>
+            <p class="hero-sub">
+              BetSense AI Suite connects <strong>BetSense Engine</strong>, <strong>HBboard</strong>,
+              <strong>Emotion Index</strong> and <strong>LiveApe</strong> into a single,
+              operator-ready platform.
+            </p>
+            <div class="hero-row">
+              <a href="#modules"><button class="btn-primary">Explore all modules ↓</button></a>
+            </div>
+            <p class="hero-tagline">
+              Built to show investors & buyers کل توانایی‌های یونیک محصول شما در یک صفحه.
+            </p>
+            <div class="hero-metrics">
+              <div><strong>4</strong> integrated modules</div>
+              <div><strong>API-ready</strong> architecture</div>
+              <div><strong>Live-match</strong> demo flow</div>
+            </div>
+          </div>
+
+          <aside class="hero-right" id="modules">
+            <div class="pill-row">
+              <div class="pill">⚙️ BetSense Engine</div>
+              <div class="pill">📊 HBboard</div>
+              <div class="pill">💓 Emotion Index</div>
+              <div class="pill">📺 LiveApe</div>
+            </div>
+            <div class="mini">
+              Visual operator view از این که چطور همه‌ی ماژول‌ها کنار هم کار می‌کنند.
+            </div>
+            <div class="grid4">
+              <div class="mod">
+                <div class="badge">Core pricing</div>
+                <div class="mod-title mod-engine">BetSense Engine</div>
+                <p>AI odds & risk engine با پاسخ سریع برای هر لیگ.</p>
+                <div class="chips">
+                  <span class="chip">Smart pricing</span>
+                  <span class="chip">Latency aware</span>
+                </div>
+              </div>
+              <div class="mod">
+                <div class="badge">Trading console</div>
+                <div class="mod-title mod-hb">HBboard</div>
+                <p>داشبورد اپراتوری برای exposure، alerts و manual override.</p>
+                <div class="chips">
+                  <span class="chip">Desk view</span>
+                  <span class="chip">Dark mode</span>
+                </div>
+              </div>
+              <div class="mod">
+                <div class="badge">Fan signals</div>
+                <div class="mod-title mod-emo">Emotion Index</div>
+                <p>امتیاز احساسات طرفدارها و بازار، از ۰ تا ۱۰۰.</p>
+                <div class="chips">
+                  <span class="chip">Sentiment</span>
+                  <span class="chip">Momentum</span>
+                </div>
+              </div>
+              <div class="mod">
+                <div class="badge">Event layer</div>
+                <div class="mod-title mod-live">LiveApe</div>
+                <p>سیگنال‌های in-play، شوت، کارت و xG-spike برای تریدینگ.</p>
+                <div class="chips">
+                  <span class="chip">In-play feed</span>
+                  <span class="chip">Micro-events</span>
+                </div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <div>
+                <span class="label">Single “glass-of-truth” demo.</span><br />
+                <span>برای جلسه‌ی اول با هر خریدار، همین صفحه کافی است.</span>
+              </div>
+              <span class="pulse"></span>
+            </div>
+          </aside>
+        </main>
+      </section>
+
+      <section>
+        <div class="sec-head">
+          <div>
+            <div class="sec-title">Unique capabilities برای خریدار</div>
+            <p class="sec-sub">
+              خریدار در چند ثانیه می‌فهمد که شما فقط یک ابزار نیستید، بلکه یک استک کامل
+              از engine + dashboard + emotion + live intelligence دارید.
+            </p>
+          </div>
+          <span class="tag-small">Perfect برای لینک در ایمیل، واتساپ یا پرزنتیشن</span>
+        </div>
+        <div class="features" id="features">
+          <div class="feat">
+            <div class="feat-tag">BetSense Engine</div>
+            <div class="feat-name">AI odds & risk layer</div>
+            <p class="feat-desc">
+              هسته‌ای که می‌تواند در هر sportsbook یا odds feed به عنوان مغز تصمیم‌گیر بنشیند.
+            </p>
+            <div class="feat-meta">REST / WebSocket · model-agnostic</div>
+          </div>
+          <div class="feat">
+            <div class="feat-tag">HBboard</div>
+            <div class="feat-name">Operator control room</div>
+            <p class="feat-desc">
+              UI مدرن که نشان می‌دهد desk واقعی در روز بازی چطور از محصول شما استفاده می‌کند.
+            </p>
+            <div class="feat-meta">Multi-user · export-ready</div>
+          </div>
+          <div class="feat">
+            <div class="feat-tag">Emotion Index</div>
+            <div class="feat-name">Fan & market mood</div>
+            <p class="feat-desc">
+              از سر و صدای هواداران تا شبکه‌های اجتماعی، همه در یک امتیاز عددی.
+            </p>
+            <div class="feat-meta">Team & player level signals</div>
+          </div>
+          <div class="feat">
+            <div class="feat-tag">LiveApe</div>
+            <div class="feat-name">In-play story layer</div>
+            <p class="feat-desc">
+              توضیح می‌دهد چرا یک بازی “در حال جوشیدن” است؛ چیزی که فقط از روی odds دیده نمی‌شود.
+            </p>
+            <div class="feat-meta">In-play alerts · tempo shifts</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing">
+        <div class="sec-head">
+          <div>
+            <div class="sec-title">Pricing برای گفت‌وگو، نه عدد نهایی</div>
+            <p class="sec-sub">
+              این بخش فقط ساختار رو نشان می‌دهد؛ اعداد رو بعداً با هر خریدار تنظیم می‌کنی.
+            </p>
+          </div>
+        </div>
+        <div class="pricing-wrap">
+          <div class="pricing-card">
+            <div class="p-label">Suite plan</div>
+            <div class="p-name">Full BetSense AI Suite</div>
+            <p class="p-sub">
+              هر چهار ماژول، با یک اینتگریشن و یک SLA.
+            </p>
+            <div class="p-row">
+              <span class="cur">from</span>
+              <span class="amount">€xx,xxx</span>
+              <span class="per">/month</span>
+            </div>
+            <ul class="p-list">
+              <li><span class="b">✔</span><span>قیمت‌گذاری بر اساس لیگ، مارکت و تعداد یوزر.</span></li>
+              <li><span class="b">✔</span><span>Roadmap مشترک با تیم trading / product خریدار.</span></li>
+              <li><span class="b">✔</span><span>Priority support در روزهای مهم (فینال‌ها، دربی‌ها و ...).</span></li>
+            </ul>
+            <button class="btn-primary">Talk to sales ↗</button>
+            <p class="p-note">
+              اعداد فعلاً placeholder هستند؛ برای پرزنت، همین ساختار کافی است.
+            </p>
+          </div>
+          <div class="p-alt">
+            <span class="p-badge">Modular options</span>
+            <p>اگر خریدار کوچک‌تر است، می‌توانی این‌ها را پیشنهاد بدهی:</p>
+            <ul class="p-list">
+              <li><span class="b">●</span><span><strong>BetSense Engine only</strong> به عنوان لایه‌ی odds & risk.</span></li>
+              <li><span class="b">●</span><span><strong>HBboard only</strong> روی دیتاهای فعلی خودشان.</span></li>
+              <li><span class="b">●</span><span><strong>Emotion Index / LiveApe</strong> به عنوان add-on signal.</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="sec-head">
+          <div>
+            <div class="sec-title">Next step برای خریدار</div>
+            <p class="sec-sub">
+              این صفحه را برای تصمیم‌گیر می‌فرستی؛ اگر علاقه‌مند شد، جلسه‌ی دمو با داشبورد و
+              نمودارهای زنده می‌گذارید.
+            </p>
+          </div>
+        </div>
+        <div class="pricing-wrap">
+          <div class="pricing-card">
+            <div class="p-label">Demo call</div>
+            <div class="p-name">Walk through a live match</div>
+            <p class="p-sub">
+              از یک مسابقه‌ی فرضی عبور می‌کنید: Engine قیمت می‌دهد، HBboard مانیتور می‌کند،
+              Emotion Index و LiveApe توضیح می‌دهند چرا بازی عوض شده.
+            </p>
+          </div>
+          <div class="p-alt">
+            <span class="p-badge">Contact info (نمونه)</span>
+            <ul class="p-list">
+              <li><span class="b">✉</span><span>Email: yourname@betsense.ai</span></li>
+              <li><span class="b">☎</span><span>WhatsApp / direct call for match-day support.</span></li>
+              <li><span class="b">📅</span><span>Calendar link برای ۳۰ دقیقه پرزنت.</span></li>
+            </ul>
+            <p class="p-note">
+              این متن‌ها رو بعداً با اطلاعات واقعی خودت عوض می‌کنی.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© <span id="year"></span> BetSense AI Suite – internal demo site.</span>
+      <span>Built to show همه توانایی‌های یونیک تو در یک URL.</span>
+    </footer>
+  </div>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
