@@ -1,1050 +1,896 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>BetSense AI Suite – Unified Sports Intelligence Stack</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #020617;
-      --bg-soft: #020919;
-      --card: #020c1f;
-      --border-soft: #1e293b;
-      --text-main: #e5e7eb;
-      --text-soft: #9ca3af;
-      --accent: #6366f1;
-      --accent-soft: #4f46e5;
-      --accent-2: #22c55e;
-      --accent-3: #f97316;
-      --accent-danger: #ef4444;
-      --pill-bg: #0f172a;
-      --pill-border: #1d283a;
-      --radius-xl: 18px;
-      --radius-lg: 14px;
-      --radius-pill: 999px;
-      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.9);
-      --shadow-pill: 0 12px 32px rgba(56, 189, 248, 0.45);
-      --btn-gradient: linear-gradient(135deg, #4f46e5, #8b5cf6, #22c55e);
-      --btn-gradient-soft: linear-gradient(135deg, #1e293b, #0f172a);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #020617 0, #000 50%, #020617 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    main {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 24px 16px 80px;
-    }
-
-    /* Header / Nav */
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      background: conic-gradient(
-        from 220deg,
-        #22c55e,
-        #0ea5e9,
-        #6366f1,
-        #ec4899,
-        #22c55e
-      );
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.7),
-        0 18px 45px rgba(129, 140, 248, 0.8);
-      font-weight: 700;
-      font-size: 16px;
-      color: #f9fafb;
-    }
-
-    .brand-text-title {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .brand-text-sub {
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 14px;
-      font-size: 13px;
-      color: var(--text-soft);
-    }
-
-    .nav-link {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: all 0.18s ease-out;
-    }
-
-    .nav-link:hover {
-      color: #e5e7eb;
-    }
-
-    .nav-link.active {
-      border-color: rgba(148, 163, 184, 0.35);
-      background: rgba(15, 23, 42, 0.9);
-      color: #f9fafb;
-    }
-
-    /* Language selector */
-
-    .lang-select-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .lang-label {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .lang-select {
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      padding: 6px 26px 6px 30px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background:
-        url("data:image/svg+xml,%3Csvg width='12' height='12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%239ca3af' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-          no-repeat right 9px center,
-        radial-gradient(circle at top left, #0f172a, #020617);
-      background-size: 12px;
-      color: var(--text-main);
-      font-size: 11px;
-      cursor: pointer;
-      position: relative;
-      min-width: 140px;
-    }
-
-    .lang-select:focus {
-      outline: 2px solid rgba(129, 140, 248, 0.85);
-      outline-offset: 2px;
-    }
-
-    .lang-select-globe {
-      position: relative;
-    }
-
-    .lang-select-globe::before {
-      content: "🌐";
-      position: absolute;
-      left: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13px;
-      pointer-events: none;
-    }
-
-    /* Info pill */
-
-    .lang-info-pill {
-      margin-top: 6px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      background: radial-gradient(circle at top left, #0f172a, #020617);
-      font-size: 11px;
-      color: var(--text-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      opacity: 0;
-      transform: translateY(-4px);
-      pointer-events: none;
-      transition: all 0.22s ease-out;
-    }
-
-    .lang-info-pill.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .lang-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35),
-        0 0 10px rgba(34, 197, 94, 0.8);
-    }
-
-    /* Hero */
-
-    .hero {
-      margin-top: 8px;
-      margin-bottom: 28px;
-      padding: 18px 18px 22px;
-      border-radius: var(--radius-xl);
-      background: radial-gradient(circle at top left, #0f172a, #020617 50%, #000 100%);
-      border: 1px solid rgba(148, 163, 184, 0.26);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-bottom: 10px;
-    }
-
-    .hero-pill-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5),
-        0 0 12px rgba(34, 197, 94, 0.9);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
-      gap: 22px;
-      align-items: stretch;
-    }
-
-    .hero-title {
-      font-size: 28px;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-
-    .hero-title span.highlight {
-      background: linear-gradient(120deg, #4f46e5, #22c55e, #06b6d4);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-sub {
-      font-size: 13px;
-      color: var(--text-soft);
-      margin-bottom: 18px;
-      max-width: 420px;
-    }
-
-    .hero-tagline {
-      font-size: 12px;
-      color: #a5b4fc;
-      margin-bottom: 12px;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .btn-primary {
-      border-radius: 999px;
-      padding: 9px 20px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      background-image: var(--btn-gradient);
-      color: #f9fafb;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: var(--shadow-pill);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-primary::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        circle at 10% 0,
-        rgba(255, 255, 255, 0.18),
-        transparent 45%
-      );
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .btn-outline {
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: var(--btn-gradient-soft);
-      color: var(--text-main);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .hero-hint {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .hero-hint strong {
-      color: #e5e7eb;
-      font-weight: 500;
-    }
-
-    /* Hero right card */
-
-    .hero-card {
-      border-radius: 18px;
-      background: radial-gradient(circle at top left, #111827, #020617 60%);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      padding: 14px 14px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card-badge {
-      position: absolute;
-      right: 14px;
-      top: 12px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(8, 47, 73, 0.95);
-      border: 1px solid rgba(56, 189, 248, 0.95);
-      font-size: 10px;
-      color: #e0f2fe;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hero-card-header {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 4px;
-    }
-
-    .hero-card-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .mini-card {
-      border-radius: 14px;
-      padding: 10px;
-      background: radial-gradient(circle at top left, #020617, #020617);
-      border: 1px solid rgba(30, 64, 175, 0.9);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .mini-card:nth-child(2) {
-      border-color: rgba(22, 163, 74, 0.9);
-    }
-
-    .mini-card:nth-child(3) {
-      border-color: rgba(249, 115, 22, 0.9);
-    }
-
-    .mini-card:nth-child(4) {
-      border-color: rgba(14, 165, 233, 0.9);
-    }
-
-    .mini-title {
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .mini-sub {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    .mini-pill {
-      font-size: 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: var(--text-soft);
-    }
-
-    .mini-pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-    }
-
-    .mini-footer {
-      font-size: 10px;
-      color: #6b7280;
-      margin-top: 3px;
-    }
-
-    /* Modules section */
-
-    .section {
-      margin-bottom: 24px;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .section-kicker {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .modules-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .module-card {
-      border-radius: var(--radius-lg);
-      background: radial-gradient(circle at top left, #020617, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      padding: 10px 10px 9px;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .module-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-soft);
-    }
-
-    .module-name {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .module-tag {
-      font-size: 10px;
-      color: #a5b4fc;
-    }
-
-    .module-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 10px;
-      color: var(--text-soft);
-      margin-top: 3px;
-    }
-
-    /* Capability & Pricing */
-
-    .two-col {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
-      gap: 16px;
-    }
-
-    .cap-list {
-      list-style: none;
-      display: grid;
-      gap: 7px;
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    .cap-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-
-    .cap-item span.icon {
-      margin-top: 2px;
-      font-size: 11px;
-    }
-
-    .pricing-card {
-      border-radius: var(--radius-lg);
-      padding: 12px;
-      background: radial-gradient(circle at top left, #020617, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      font-size: 12px;
-    }
-
-    .pricing-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      font-size: 10px;
-      color: var(--text-soft);
-      margin-bottom: 6px;
-    }
-
-    .pricing-main {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .pricing-main strong {
-      font-size: 18px;
-    }
-
-    .pricing-caption {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-bottom: 6px;
-    }
-
-    .pricing-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    /* Combined Live Edge / Timeline teaser */
-
-    .combined-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-      gap: 16px;
-      font-size: 11px;
-    }
-
-    .combined-card {
-      border-radius: var(--radius-lg);
-      padding: 11px;
-      background: radial-gradient(circle at top left, #020617, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-    }
-
-    .combined-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .combined-sub {
-      color: var(--text-soft);
-      margin-bottom: 8px;
-    }
-
-    .combined-chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 6px;
-    }
-
-    .chip {
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      font-size: 10px;
-      color: var(--text-soft);
-    }
-
-    .chip.good {
-      border-color: rgba(34, 197, 94, 0.7);
-      color: #bbf7d0;
-    }
-
-    .chip.bad {
-      border-color: rgba(239, 68, 68, 0.7);
-      color: #fecaca;
-    }
-
-    /* Footer */
-
-    footer {
-      margin-top: 40px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(30, 41, 59, 0.9);
-      font-size: 11px;
-      color: var(--text-soft);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    /* Responsive */
-
-    @media (max-width: 900px) {
-      .hero-grid {
-        grid-template-columns: minmax(0, 1fr);
+  <head>
+    <meta charset="UTF-8" />
+    <title>BetSense AI Suite – Unified Sports Intelligence Stack</title>
+    <meta
+      name="description"
+      content="BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into a single, operator-ready sports intelligence platform for bookmakers and trading desks."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bsPurple: "#7C3AED",
+              bsBlue: "#22D3EE",
+              bsGreen: "#22C55E",
+              bsPink: "#EC4899",
+              bsBg: "#020617",
+              bsCard: "#020617",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Inter", sans-serif;
       }
-      .hero-card {
-        order: -1;
+      .glow {
+        filter: blur(40px);
+        opacity: 0.6;
       }
-      .modules-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .two-col,
-      .combined-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
+    </style>
+  </head>
 
-    @media (max-width: 640px) {
-      main {
-        padding: 18px 12px 56px;
-      }
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .nav {
-        width: 100%;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-      .nav-links {
-        order: 2;
-        width: 100%;
-        justify-content: space-between;
-        margin-top: 4px;
-      }
-      .modules-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-  </style>
-</head>
-<body>
-  <main>
-    <!-- HEADER -->
-    <header class="header">
-      <div class="brand">
-        <div class="brand-logo">BS</div>
-        <div>
-          <div class="brand-text-title">BetSense AI Suite</div>
-          <div class="brand-text-sub">Unified sports intelligence stack</div>
-        </div>
-      </div>
-
-      <div>
-        <nav class="nav">
-          <div class="nav-links">
-            <button class="nav-link active" type="button">Modules</button>
-            <button class="nav-link" type="button">Capabilities</button>
-            <button class="nav-link" type="button">Pricing</button>
-            <button class="nav-link" type="button">Contact</button>
+  <body class="bg-bsBg text-slate-50 min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <!-- HEADER -->
+      <header class="flex items-center justify-between gap-4">
+        <!-- Logo + Brand -->
+        <div class="flex items-center gap-3">
+          <div
+            class="h-11 w-11 rounded-full bg-gradient-to-tr from-bsPurple via-bsPink to-bsBlue flex items-center justify-center shadow-lg shadow-bsPurple/40"
+          >
+            <span class="font-semibold text-sm tracking-wide">BS</span>
           </div>
-
-          <div class="lang-select-wrapper">
-            <span class="lang-label">Interface language</span>
-            <div class="lang-select-globe">
-              <select id="languageSelect" class="lang-select">
-                <!-- options are filled by JS as well, but you can keep them static -->
-                <option value="en" selected>English (default)</option>
-                <option value="ar">Arabic</option>
-                <option value="zh-Hans">Chinese (Simplified)</option>
-                <option value="zh-Hant">Chinese (Traditional)</option>
-                <option value="fr">French</option>
-                <option value="de">German</option>
-                <option value="es">Spanish</option>
-                <option value="it">Italian</option>
-                <option value="pt-BR">Portuguese (Brazil)</option>
-                <option value="ru">Russian</option>
-                <option value="tr">Turkish</option>
-                <option value="fa">Persian (Farsi)</option>
-                <option value="hi">Hindi</option>
-                <option value="ja">Japanese</option>
-                <option value="ko">Korean</option>
-                <option value="nl">Dutch</option>
-                <option value="sv">Swedish</option>
-                <option value="no">Norwegian</option>
-                <option value="da">Danish</option>
-                <option value="fi">Finnish</option>
-                <option value="el">Greek</option>
-                <option value="pl">Polish</option>
-                <option value="cs">Czech</option>
-                <option value="ro">Romanian</option>
-                <option value="th">Thai</option>
-                <option value="id">Indonesian</option>
-                <option value="vi">Vietnamese</option>
-                <option value="he">Hebrew</option>
-              </select>
+          <div>
+            <div
+              class="text-lg sm:text-xl font-semibold tracking-tight"
+              data-i18n="brand.title"
+            >
+              BetSense AI Suite
             </div>
+            <p
+              class="text-xs sm:text-sm text-slate-400"
+              data-i18n="brand.subtitle"
+            >
+              Unified Sports Intelligence Stack
+            </p>
           </div>
-        </nav>
-        <div id="langInfo" class="lang-info-pill">
-          <span class="lang-dot"></span>
-          <span>Localized UI coming soon – for now the product is shown in English.</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-pill">
-        <span class="hero-pill-dot"></span>
-        <span>Realtime AI for bookmakers &amp; trading desks</span>
-      </div>
-
-      <div class="hero-grid">
-        <div>
-          <h1 class="hero-title">
-            One suite. <span class="highlight">Four unique engines</span> for smarter sports decisions.
-          </h1>
-          <p class="hero-sub">
-            BetSense AI Suite connects BetSense Engine, HBBoard, Emotion Index and LiveApe
-            into a single, operator-ready platform for live odds, pre-match insights and
-            fan-driven edge discovery.
-          </p>
-
-          <p class="hero-tagline">
-            Built to show investors &amp; buyers the full value of your sports intelligence
-            stack in one page.
-          </p>
-
-          <div class="hero-cta-row">
-            <button class="btn-primary" type="button">
-              Request access
-              <span>↗</span>
-            </button>
-            <button class="btn-outline" type="button">
-              Explore all modules
-              <span>↓</span>
-            </button>
-          </div>
-
-          <p class="hero-hint">
-            <strong>API-ready</strong> architecture • Live-match demo flow •
-            4 integrated modules in one suite.
-          </p>
         </div>
 
-        <aside class="hero-card">
-          <div class="hero-card-badge">
-            <span>●</span>
-            <span>Live-match decision cockpit</span>
-          </div>
-          <div class="hero-card-header">AI modules inside BetSense Suite</div>
+        <!-- Nav + Language -->
+        <div class="flex items-center gap-4 sm:gap-6">
+          <nav
+            class="hidden md:flex items-center gap-5 text-sm text-slate-300"
+            aria-label="Main navigation"
+          >
+            <a
+              href="#modules"
+              class="hover:text-white transition"
+              data-i18n="nav.modules"
+              >Modules</a
+            >
+            <a
+              href="#capabilities"
+              class="hover:text-white transition"
+              data-i18n="nav.capabilities"
+              >Capabilities</a
+            >
+            <a
+              href="#pricing"
+              class="hover:text-white transition"
+              data-i18n="nav.pricing"
+              >Pricing</a
+            >
+            <a
+              href="#contact"
+              class="hover:text-white transition"
+              data-i18n="nav.contact"
+              >Contact</a
+            >
+          </nav>
 
-          <div class="hero-card-grid">
-            <div class="mini-card">
-              <div class="mini-title">BetSense Engine</div>
-              <div class="mini-sub">Quantum-style price &amp; edge analytics.</div>
-              <div class="mini-pill">
-                <span class="mini-pill-dot"></span>
-                <span>Live odds + edge % API</span>
+          <!-- Language selector (26+ languages) -->
+          <div class="flex items-center gap-2">
+            <label
+              for="languageSelect"
+              class="hidden sm:inline text-xs text-slate-400"
+              data-i18n="nav.languageLabel"
+              >Language</label
+            >
+            <select
+              id="languageSelect"
+              class="text-xs sm:text-sm bg-slate-900/70 border border-slate-700/70 rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent"
+            >
+              <option value="en">English</option>
+              <option value="fa">فارسی</option>
+              <option value="ar">العربية</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="it">Italiano</option>
+              <option value="pt">Português</option>
+              <option value="ru">Русский</option>
+              <option value="zh">中文</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+              <option value="tr">Türkçe</option>
+              <option value="hi">हिन्दी</option>
+              <option value="ur">اردو</option>
+              <option value="id">Bahasa Indonesia</option>
+              <option value="ms">Bahasa Melayu</option>
+              <option value="th">ไทย</option>
+              <option value="vi">Tiếng Việt</option>
+              <option value="nl">Nederlands</option>
+              <option value="sv">Svenska</option>
+              <option value="no">Norsk</option>
+              <option value="da">Dansk</option>
+              <option value="fi">Suomi</option>
+              <option value="pl">Polski</option>
+              <option value="el">Ελληνικά</option>
+              <option value="he">עברית</option>
+            </select>
+          </div>
+
+          <!-- CTA -->
+          <a
+            href="#contact"
+            class="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium bg-gradient-to-r from-bsPurple via-bsPink to-bsBlue px-4 py-2 rounded-full shadow-lg shadow-bsPurple/40 hover:shadow-bsBlue/40 transition"
+            data-i18n="nav.requestAccess"
+          >
+            Request access
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- MAIN -->
+      <main class="mt-10 sm:mt-14 lg:mt-16">
+        <!-- HERO -->
+        <section class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+          <!-- Text -->
+          <div class="space-y-6">
+            <div
+              class="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs sm:text-sm text-emerald-300"
+            >
+              <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse">
+              </span>
+              <span data-i18n="hero.badge"
+                >Realtime AI for bookmakers &amp; trading desks</span
+              >
+            </div>
+
+            <div class="space-y-3">
+              <h1
+                class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight"
+                data-i18n="hero.title"
+              >
+                One suite. Four unique engines for smarter sports decisions.
+              </h1>
+              <p
+                class="text-sm sm:text-base text-slate-300 max-w-xl"
+                data-i18n="hero.subtitle"
+              >
+                BetSense AI Suite connects BetSense Engine, HBboard, Emotion
+                Index and LiveApe into a single, operator-ready platform for
+                pricing, risk and fan-sentiment intelligence.
+              </p>
+            </div>
+
+            <div
+              class="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:items-center sm:gap-4"
+            >
+              <a
+                href="#modules"
+                class="inline-flex justify-center items-center rounded-full bg-white text-slate-900 px-4 py-2.5 text-sm font-medium shadow-md hover:bg-slate-100 transition"
+                data-i18n="hero.ctaPrimary"
+              >
+                Explore all modules
+              </a>
+              <a
+                href="#live-match"
+                class="inline-flex justify-center items-center rounded-full border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-100 hover:border-slate-500 hover:bg-slate-900/40 transition"
+                data-i18n="hero.ctaSecondary"
+              >
+                View live-match flow
+              </a>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
+              <div class="space-y-1">
+                <div class="text-slate-400" data-i18n="hero.kpi1Label">
+                  Integrated modules
+                </div>
+                <div class="text-lg font-semibold" data-i18n="hero.kpi1Value">
+                  4
+                </div>
               </div>
-              <div class="mini-footer">Deployed on: /api/live-odds, /api/prediction</div>
-            </div>
-
-            <div class="mini-card">
-              <div class="mini-title">HBBoard</div>
-              <div class="mini-sub">High-bandwidth trading dashboards.</div>
-              <div class="mini-pill">
-                <span class="mini-pill-dot"></span>
-                <span>Operator view + risk</span>
+              <div class="space-y-1">
+                <div class="text-slate-400" data-i18n="hero.kpi2Label">
+                  API-ready architecture
+                </div>
+                <div class="text-lg font-semibold" data-i18n="hero.kpi2Value">
+                  Plug &amp; play
+                </div>
               </div>
-              <div class="mini-footer">Built for trading rooms &amp; risk desks</div>
-            </div>
-
-            <div class="mini-card">
-              <div class="mini-title">Emotion Index</div>
-              <div class="mini-sub">Social, sentiment &amp; crowd emotion scores.</div>
-              <div class="mini-pill">
-                <span class="mini-pill-dot"></span>
-                <span>Fan mood → price signal</span>
+              <div class="space-y-1">
+                <div class="text-slate-400" data-i18n="hero.kpi3Label">
+                  Live-match coverage
+                </div>
+                <div class="text-lg font-semibold" data-i18n="hero.kpi3Value">
+                  90+ mins
+                </div>
               </div>
-              <div class="mini-footer">Aggregates feeds, chats &amp; social noise</div>
             </div>
 
-            <div class="mini-card">
-              <div class="mini-title">LiveApe</div>
-              <div class="mini-sub">Live-match storytelling for fans &amp; traders.</div>
-              <div class="mini-pill">
-                <span class="mini-pill-dot"></span>
-                <span>Explainable AI layer</span>
+            <p
+              class="text-xs sm:text-sm text-slate-400 max-w-lg"
+              data-i18n="hero.investorNote"
+            >
+              Built to show investors &amp; buyers your full stack of unique AI
+              capabilities in one operator-ready page.
+            </p>
+          </div>
+
+          <!-- Hero card -->
+          <div class="relative">
+            <div
+              class="absolute inset-0 bg-gradient-to-tr from-bsPurple/40 via-bsBlue/40 to-bsPink/40 rounded-3xl glow"
+            ></div>
+
+            <div
+              class="relative rounded-3xl border border-slate-700/70 bg-slate-900/80 backdrop-blur-sm p-5 sm:p-6 lg:p-7 shadow-2xl"
+            >
+              <div
+                class="flex items-center justify-between gap-3 mb-4 sm:mb-5"
+              >
+                <div>
+                  <p
+                    class="text-xs text-slate-400"
+                    data-i18n="hero.cardLabelTop"
+                  >
+                    Live-match AI snapshot
+                  </p>
+                  <p
+                    class="text-sm sm:text-base font-semibold"
+                    data-i18n="hero.cardTitle"
+                  >
+                    Premier League – in-play edge
+                  </p>
+                </div>
+                <span
+                  class="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300"
+                  data-i18n="hero.cardChip"
+                >
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                  Quantum engine online
+                </span>
               </div>
-              <div class="mini-footer">Turns raw data into narratives in realtime</div>
+
+              <div class="space-y-4 text-xs sm:text-sm">
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <p class="text-slate-400" data-i18n="hero.cardHomeTeam">
+                      Home
+                    </p>
+                    <p class="font-semibold">Team A</p>
+                    <p class="text-[11px] text-slate-400">
+                      xG: <span>2.1</span> • Shots on target: <span>7</span>
+                    </p>
+                  </div>
+                  <div class="space-y-1 text-right">
+                    <p class="text-slate-400" data-i18n="hero.cardAwayTeam">
+                      Away
+                    </p>
+                    <p class="font-semibold">Team B</p>
+                    <p class="text-[11px] text-slate-400">
+                      xG: <span>0.9</span> • Shots on target: <span>3</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="space-y-1">
+                  <p class="text-slate-400" data-i18n="hero.cardProbTitle">
+                    Model win probabilities
+                  </p>
+                  <div class="grid grid-cols-3 gap-2 text-[11px] sm:text-xs">
+                    <div
+                      class="rounded-xl bg-slate-900 border border-slate-700/80 px-3 py-2"
+                    >
+                      <p class="text-slate-400" data-i18n="hero.cardProbHome">
+                        Home win
+                      </p>
+                      <p class="font-semibold">62%</p>
+                    </div>
+                    <div
+                      class="rounded-xl bg-slate-900 border border-slate-700/80 px-3 py-2"
+                    >
+                      <p class="text-slate-400" data-i18n="hero.cardProbDraw">
+                        Draw
+                      </p>
+                      <p class="font-semibold">10%</p>
+                    </div>
+                    <div
+                      class="rounded-xl bg-slate-900 border border-slate-700/80 px-3 py-2"
+                    >
+                      <p class="text-slate-400" data-i18n="hero.cardProbAway">
+                        Away win
+                      </p>
+                      <p class="font-semibold">28%</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-1">
+                  <p class="text-slate-400" data-i18n="hero.cardEdgeTitle">
+                    Market vs model edge
+                  </p>
+                  <div
+                    class="flex items-center justify-between rounded-xl bg-gradient-to-r from-bsPurple/30 via-bsBlue/30 to-bsPink/30 px-3 py-2.5"
+                  >
+                    <div class="text-[11px] sm:text-xs">
+                      <p class="text-slate-100" data-i18n="hero.cardEdgeLabel">
+                        Recommended position
+                      </p>
+                      <p class="font-semibold" data-i18n="hero.cardEdgeValue">
+                        Back Home @ 1.85 (edge +10%)
+                      </p>
+                    </div>
+                    <div
+                      class="text-right text-[11px] sm:text-xs text-emerald-200"
+                    >
+                      <p data-i18n="hero.cardEdgeReason">
+                        Live data + sentiment
+                      </p>
+                      <p data-i18n="hero.cardEdgeReason2">
+                        xG &amp; momentum aligned
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <p
+                  class="text-[11px] sm:text-xs text-slate-400"
+                  data-i18n="hero.cardFooter"
+                >
+                  API demo only. Plug into your real-time feed for production
+                  deployment.
+                </p>
+              </div>
             </div>
           </div>
-        </aside>
-      </div>
-    </section>
+        </section>
 
-    <!-- MODULES -->
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">Integrated modules</h2>
-        <p class="section-kicker">Four engines, one operator-ready interface.</p>
-      </div>
-
-      <div class="modules-grid">
-        <article class="module-card">
-          <div class="module-label">Module A</div>
-          <div class="module-name">BetSense Engine</div>
-          <div class="module-tag">Pricing &amp; edge analytics</div>
-          <div class="module-meta">
-            <span>Live &amp; pre-match models</span>
-            <span>REST + WebSocket</span>
+        <!-- MODULES -->
+        <section id="modules" class="mt-14 sm:mt-16 space-y-6">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2
+                class="text-xl sm:text-2xl font-semibold"
+                data-i18n="modules.title"
+              >
+                Integrated modules
+              </h2>
+              <p
+                class="text-sm text-slate-400 max-w-xl"
+                data-i18n="modules.subtitle"
+              >
+                Four specialised engines designed to work together or stand
+                alone – depending on how your sportsbook operates.
+              </p>
+            </div>
           </div>
-        </article>
 
-        <article class="module-card">
-          <div class="module-label">Module B</div>
-          <div class="module-name">HBBoard</div>
-          <div class="module-tag">High-bandwidth trading UI</div>
-          <div class="module-meta">
-            <span>Sportsbook control room</span>
-            <span>Risk &amp; exposure views</span>
+          <div
+            class="grid sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 text-sm"
+            id="capabilities"
+          >
+            <!-- BetSense Engine -->
+            <article
+              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
+            >
+              <h3
+                class="flex items-center gap-2 text-base font-semibold mb-2"
+                data-i18n="modules.engine.title"
+              >
+                BetSense Engine
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsPurple/20 text-bsPurple"
+                  >Core</span
+                >
+              </h3>
+              <p class="text-slate-300 mb-3" data-i18n="modules.engine.body">
+                Quantum-style pricing engine combining xG, live stats and social
+                sentiment to surface value edges in real time.
+              </p>
+              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
+                <li data-i18n="modules.engine.li1">
+                  In-play edge detection vs market odds.
+                </li>
+                <li data-i18n="modules.engine.li2">
+                  Configurable risk profiles per league.
+                </li>
+                <li data-i18n="modules.engine.li3">
+                  API endpoints for traders &amp; models.
+                </li>
+              </ul>
+            </article>
+
+            <!-- HBboard -->
+            <article
+              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
+            >
+              <h3
+                class="flex items-center gap-2 text-base font-semibold mb-2"
+                data-i18n="modules.hbboard.title"
+              >
+                HBboard
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsBlue/20 text-bsBlue"
+                  >Trading</span
+                >
+              </h3>
+              <p class="text-slate-300 mb-3" data-i18n="modules.hbboard.body">
+                Operator-style dashboard giving your traders a single screen for
+                match edges, exposure and risk alerts.
+              </p>
+              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
+                <li data-i18n="modules.hbboard.li1">
+                  Live edge feed from BetSense Engine.
+                </li>
+                <li data-i18n="modules.hbboard.li2">
+                  Position &amp; exposure overview per event.
+                </li>
+                <li data-i18n="modules.hbboard.li3">
+                  Designed for trading rooms &amp; buy-side desks.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Emotion Index -->
+            <article
+              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
+            >
+              <h3
+                class="flex items-center gap-2 text-base font-semibold mb-2"
+                data-i18n="modules.emotion.title"
+              >
+                Emotion Index
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsPink/20 text-bsPink"
+                  >Sentiment</span
+                >
+              </h3>
+              <p class="text-slate-300 mb-3" data-i18n="modules.emotion.body">
+                Real-time fan-sentiment signal built from social feeds and
+                market micro-movements.
+              </p>
+              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
+                <li data-i18n="modules.emotion.li1">
+                  Pre-match &amp; in-play sentiment curves.
+                </li>
+                <li data-i18n="modules.emotion.li2">
+                  Shock detection around goals, cards &amp; news.
+                </li>
+                <li data-i18n="modules.emotion.li3">
+                  Exportable as an alpha feature for quant models.
+                </li>
+              </ul>
+            </article>
+
+            <!-- LiveApe -->
+            <article
+              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
+              id="live-match"
+            >
+              <h3
+                class="flex items-center gap-2 text-base font-semibold mb-2"
+                data-i18n="modules.liveape.title"
+              >
+                LiveApe
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsGreen/20 text-bsGreen"
+                  >Engagement</span
+                >
+              </h3>
+              <p class="text-slate-300 mb-3" data-i18n="modules.liveape.body">
+                Match-day experience layer showing live edges, momentum and fan
+                mood in a language that marketing teams can use.
+              </p>
+              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
+                <li data-i18n="modules.liveape.li1">
+                  Visual edge story for each fixture.
+                </li>
+                <li data-i18n="modules.liveape.li2">
+                  Embeddable widgets for web &amp; apps.
+                </li>
+                <li data-i18n="modules.liveape.li3">
+                  Built on the same engine traders trust.
+                </li>
+              </ul>
+            </article>
           </div>
-        </article>
+        </section>
 
-        <article class="module-card">
-          <div class="module-label">Module C</div>
-          <div class="module-name">Emotion Index</div>
-          <div class="module-tag">Crowd sentiment &amp; volatility</div>
-          <div class="module-meta">
-            <span>Feeds, chats, social</span>
-            <span>Signal scores</span>
+        <!-- PRICING / CONTACT -->
+        <section
+          id="pricing"
+          class="mt-14 sm:mt-16 grid lg:grid-cols-2 gap-8 items-start"
+        >
+          <div class="space-y-3">
+            <h2
+              class="text-xl sm:text-2xl font-semibold"
+              data-i18n="pricing.title"
+            >
+              Built for pilots, then scale.
+            </h2>
+            <p
+              class="text-sm text-slate-300 max-w-lg"
+              data-i18n="pricing.body"
+            >
+              Start with a small proof-of-concept on a limited set of leagues or
+              markets. Once the numbers make sense, scale to your full trading
+              universe.
+            </p>
+            <ul class="text-sm text-slate-300 space-y-1.5 list-disc pl-4">
+              <li data-i18n="pricing.li1">
+                Flexible commercial models for operators and data providers.
+              </li>
+              <li data-i18n="pricing.li2">
+                White-label or fully integrated deployment options.
+              </li>
+              <li data-i18n="pricing.li3">
+                Technical support from concept to production.
+              </li>
+            </ul>
           </div>
-        </article>
 
-        <article class="module-card">
-          <div class="module-label">Module D</div>
-          <div class="module-name">LiveApe</div>
-          <div class="module-tag">Narrative &amp; explainability layer</div>
-          <div class="module-meta">
-            <span>Human-style summaries</span>
-            <span>Fan &amp; trader views</span>
+          <div
+            id="contact"
+            class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-6 space-y-4"
+          >
+            <h3 class="text-lg font-semibold" data-i18n="contact.title">
+              Request access or investor demo
+            </h3>
+            <p class="text-sm text-slate-300" data-i18n="contact.body">
+              Share a work email and a short note about your role (operator,
+              data provider, investor, trading desk). We&rsquo;ll respond with a
+              live demo slot and technical deck.
+            </p>
+
+            <form class="space-y-3 text-sm">
+              <div>
+                <label
+                  for="email"
+                  class="block text-xs text-slate-400 mb-1"
+                  data-i18n="contact.emailLabel"
+                  >Work email</label
+                >
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="name@company.com"
+                  class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-sm"
+                />
+              </div>
+              <div>
+                <label
+                  for="role"
+                  class="block text-xs text-slate-400 mb-1"
+                  data-i18n="contact.roleLabel"
+                  >Role</label
+                >
+                <select
+                  id="role"
+                  class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-sm"
+                >
+                  <option data-i18n="contact.roleOperator">
+                    Operator / Sportsbook
+                  </option>
+                  <option data-i18n="contact.roleData">
+                    Data provider / feed
+                  </option>
+                  <option data-i18n="contact.roleInvestor">Investor</option>
+                  <option data-i18n="contact.roleOther">Other</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  for="message"
+                  class="block text-xs text-slate-400 mb-1"
+                  data-i18n="contact.msgLabel"
+                  >Short message</label
+                >
+                <textarea
+                  id="message"
+                  rows="3"
+                  placeholder="Tell us which leagues, markets or use-cases you care about."
+                  class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-sm"
+                ></textarea>
+              </div>
+              <button
+                type="button"
+                class="w-full inline-flex justify-center items-center rounded-full bg-gradient-to-r from-bsPurple via-bsPink to-bsBlue px-4 py-2.5 text-sm font-medium shadow-md shadow-bsPurple/40 hover:shadow-bsBlue/40 transition"
+                data-i18n="contact.submit"
+              >
+                Send request
+              </button>
+              <p
+                class="text-[11px] text-slate-500"
+                data-i18n="contact.disclaimer"
+              >
+                Form is a visual placeholder. Connect it to your CRM, email or
+                ticketing system when you go live.
+              </p>
+            </form>
           </div>
-        </article>
-      </div>
-    </section>
+        </section>
 
-    <!-- CAPABILITIES + PRICING -->
-    <section class="section">
-      <div class="two-col">
-        <div>
-          <div class="section-header">
-            <h2 class="section-title">Capabilities</h2>
+        <!-- FOOTER -->
+        <footer class="mt-10 sm:mt-12 border-t border-slate-800 pt-4">
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-500"
+          >
+            <p data-i18n="footer.copy">
+              © BetSense AI Suite. Concept demo for unified sports intelligence.
+            </p>
+            <p data-i18n="footer.note">
+              Language selector shows English, Persian and 20+ global options.
+              Additional locales can be added as partners require.
+            </p>
           </div>
-          <ul class="cap-list">
-            <li class="cap-item">
-              <span class="icon">⚡</span>
-              <span>Live odds, model probabilities and edge % served via a single engine endpoint.</span>
-            </li>
-            <li class="cap-item">
-              <span class="icon">🧠</span>
-              <span>Quant-inspired features such as probability timelines and live-edge tracking.</span>
-            </li>
-            <li class="cap-item">
-              <span class="icon">📊</span>
-              <span>Operator dashboards (HBBoard) for traders, risk, and management in one suite.</span>
-            </li>
-            <li class="cap-item">
-              <span class="icon">💬</span>
-              <span>Emotion Index converts fan behaviour into structured signals your models can consume.</span>
-            </li>
-            <li class="cap-item">
-              <span class="icon">🌍</span>
-              <span>Multi-language interface ready: 20+ UI languages planned, English content by default.</span>
-            </li>
-          </ul>
-        </div>
+        </footer>
+      </main>
+    </div>
 
-        <aside class="pricing-card">
-          <div class="pricing-pill">
-            <span>Early-stage deck view</span>
-          </div>
-          <div class="pricing-main">
-            <strong>Designed for investors &amp; buyers</strong>
-          </div>
-          <p class="pricing-caption">
-            The suite is presented as an API-ready platform. Commercial terms are tailored
-            per operator and per market.
-          </p>
+    <!-- i18n script: full EN + FA, others fall back to EN -->
+    <script>
+      const translations = {
+        en: {
+          "brand.title": "BetSense AI Suite",
+          "brand.subtitle": "Unified Sports Intelligence Stack",
+          "nav.modules": "Modules",
+          "nav.capabilities": "Capabilities",
+          "nav.pricing": "Pricing",
+          "nav.contact": "Contact",
+          "nav.languageLabel": "Language",
+          "nav.requestAccess": "Request access",
+          "hero.badge": "Realtime AI for bookmakers & trading desks",
+          "hero.title":
+            "One suite. Four unique engines for smarter sports decisions.",
+          "hero.subtitle":
+            "BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into a single, operator-ready platform for pricing, risk and fan-sentiment intelligence.",
+          "hero.ctaPrimary": "Explore all modules",
+          "hero.ctaSecondary": "View live-match flow",
+          "hero.kpi1Label": "Integrated modules",
+          "hero.kpi1Value": "4",
+          "hero.kpi2Label": "API-ready architecture",
+          "hero.kpi2Value": "Plug & play",
+          "hero.kpi3Label": "Live-match coverage",
+          "hero.kpi3Value": "90+ mins",
+          "hero.investorNote":
+            "Built to show investors & buyers your full stack of unique AI capabilities in one operator-ready page.",
+          "hero.cardLabelTop": "Live-match AI snapshot",
+          "hero.cardTitle": "Premier League – in-play edge",
+          "hero.cardChip": "Quantum engine online",
+          "hero.cardHomeTeam": "Home",
+          "hero.cardAwayTeam": "Away",
+          "hero.cardProbTitle": "Model win probabilities",
+          "hero.cardProbHome": "Home win",
+          "hero.cardProbDraw": "Draw",
+          "hero.cardProbAway": "Away win",
+          "hero.cardEdgeTitle": "Market vs model edge",
+          "hero.cardEdgeLabel": "Recommended position",
+          "hero.cardEdgeValue": "Back Home @ 1.85 (edge +10%)",
+          "hero.cardEdgeReason": "Live data + sentiment",
+          "hero.cardEdgeReason2": "xG & momentum aligned",
+          "hero.cardFooter":
+            "API demo only. Plug into your real-time feed for production deployment.",
+          "modules.title": "Integrated modules",
+          "modules.subtitle":
+            "Four specialised engines designed to work together or stand alone – depending on how your sportsbook operates.",
+          "modules.engine.title": "BetSense Engine",
+          "modules.engine.body":
+            "Quantum-style pricing engine combining xG, live stats and social sentiment to surface value edges in real time.",
+          "modules.engine.li1": "In-play edge detection vs market odds.",
+          "modules.engine.li2": "Configurable risk profiles per league.",
+          "modules.engine.li3": "API endpoints for traders & models.",
+          "modules.hbboard.title": "HBboard",
+          "modules.hbboard.body":
+            "Operator-style dashboard giving your traders a single screen for match edges, exposure and risk alerts.",
+          "modules.hbboard.li1": "Live edge feed from BetSense Engine.",
+          "modules.hbboard.li2":
+            "Position & exposure overview per event.",
+          "modules.hbboard.li3":
+            "Designed for trading rooms & buy-side desks.",
+          "modules.emotion.title": "Emotion Index",
+          "modules.emotion.body":
+            "Real-time fan-sentiment signal built from social feeds and market micro-movements.",
+          "modules.emotion.li1": "Pre-match & in-play sentiment curves.",
+          "modules.emotion.li2":
+            "Shock detection around goals, cards & news.",
+          "modules.emotion.li3":
+            "Exportable as an alpha feature for quant models.",
+          "modules.liveape.title": "LiveApe",
+          "modules.liveape.body":
+            "Match-day experience layer showing live edges, momentum and fan mood in a language that marketing teams can use.",
+          "modules.liveape.li1": "Visual edge story for each fixture.",
+          "modules.liveape.li2":
+            "Embeddable widgets for web & apps.",
+          "modules.liveape.li3":
+            "Built on the same engine traders trust.",
+          "pricing.title": "Built for pilots, then scale.",
+          "pricing.body":
+            "Start with a small proof-of-concept on a limited set of leagues or markets. Once the numbers make sense, scale to your full trading universe.",
+          "pricing.li1":
+            "Flexible commercial models for operators and data providers.",
+          "pricing.li2":
+            "White-label or fully integrated deployment options.",
+          "pricing.li3":
+            "Technical support from concept to production.",
+          "contact.title": "Request access or investor demo",
+          "contact.body":
+            "Share a work email and a short note about your role (operator, data provider, investor, trading desk). We’ll respond with a live demo slot and technical deck.",
+          "contact.emailLabel": "Work email",
+          "contact.roleLabel": "Role",
+          "contact.roleOperator": "Operator / Sportsbook",
+          "contact.roleData": "Data provider / feed",
+          "contact.roleInvestor": "Investor",
+          "contact.roleOther": "Other",
+          "contact.msgLabel": "Short message",
+          "contact.submit": "Send request",
+          "contact.disclaimer":
+            "Form is a visual placeholder. Connect it to your CRM, email or ticketing system when you go live.",
+          "footer.copy":
+            "© BetSense AI Suite. Concept demo for unified sports intelligence.",
+          "footer.note":
+            "Language selector shows English, Persian and 20+ global options. Additional locales can be added as partners require.",
+        },
+        fa: {
+          "brand.title": "BetSense AI Suite",
+          "brand.subtitle": "استک یکپارچه هوش ورزشی",
+          "nav.modules": "ماژول‌ها",
+          "nav.capabilities": "قابلیت‌ها",
+          "nav.pricing": "قیمت‌گذاری",
+          "nav.contact": "تماس",
+          "nav.languageLabel": "زبان",
+          "nav.requestAccess": "درخواست دسترسی",
+          "hero.badge":
+            "هوش مصنوعی همزمان برای بوک‌میکرها و تریدینگ دسک‌ها",
+          "hero.title":
+            "یک سوئیت. چهار انجین منحصربه‌فرد برای تصمیم‌های دقیق‌تر در ورزش.",
+          "hero.subtitle":
+            "BetSense AI Suite، BetSense Engine، HBboard، Emotion Index و LiveApe را در یک پلتفرم آماده‌ی اپراتور برای قیمت‌گذاری، ریسک و احساسات هواداری به هم متصل می‌کند.",
+          "hero.ctaPrimary": "مشاهده همه ماژول‌ها",
+          "hero.ctaSecondary": "مشاهده جریان لایو مسابقه",
+          "hero.kpi1Label": "ماژول‌های یکپارچه",
+          "hero.kpi1Value": "۴",
+          "hero.kpi2Label": "معماری API-ready",
+          "hero.kpi2Value": "Plug & play",
+          "hero.kpi3Label": "پوشش مسابقه زنده",
+          "hero.kpi3Value": "۹۰+ دقیقه",
+          "hero.investorNote":
+            "ساخته شده تا تمام توانایی‌های یونیک شما را در یک صفحه آماده‌ی اپراتور به اینوستورها و خریداران نشان دهد.",
+          "hero.cardLabelTop": "اسنپ‌شات هوش لایو مسابقه",
+          "hero.cardTitle": "لیگ برتر – برتری در حین بازی",
+          "hero.cardChip": "Quantum engine فعال است",
+          "hero.cardHomeTeam": "میزبان",
+          "hero.cardAwayTeam": "میهمان",
+          "hero.cardProbTitle": "احتمالات برد از دید مدل",
+          "hero.cardProbHome": "برد میزبان",
+          "hero.cardProbDraw": "مساوی",
+          "hero.cardProbAway": "برد میهمان",
+          "hero.cardEdgeTitle": "برتری مدل نسبت به مارکت",
+          "hero.cardEdgeLabel": "پوزیشن پیشنهادی",
+          "hero.cardEdgeValue": "پشت میزبان @ 1.85 (اِج +۱۰٪)",
+          "hero.cardEdgeReason": "داده لایو + احساسات",
+          "hero.cardEdgeReason2": "xG و مومنتوم هم‌راستا",
+          "hero.cardFooter":
+            "فقط دمو و تست API. برای پروداکشن به فید لایو واقعی خود وصل کنید.",
+          "modules.title": "ماژول‌های یکپارچه",
+          "modules.subtitle":
+            "چهار انجین تخصصی که می‌توانند مستقل کار کنند یا به صورت یک استک کامل، بسته به نحوه‌ی کاربوک شما.",
+          "modules.engine.title": "BetSense Engine",
+          "modules.engine.body":
+            "انجین قیمت‌گذاری با رویکرد کوانتومی که xG، استت‌های لایو و احساسات هواداری را ترکیب می‌کند تا اج‌های ارزشی را در لحظه پیدا کند.",
+          "modules.engine.li1":
+            "تشخیص اج در حین بازی نسبت به ضرایب مارکت.",
+          "modules.engine.li2":
+            "پروفایل ریسک قابل تنظیم برای هر لیگ.",
+          "modules.engine.li3":
+            "API برای تریدرها و مدل‌های کوانت.",
+          "modules.hbboard.title": "HBboard",
+          "modules.hbboard.body":
+            "داشبورد سبک اپراتور که یک صفحه‌ی واحد برای اج‌ها، اکسپوژر و آلارم‌های ریسک به تیم ترید می‌دهد.",
+          "modules.hbboard.li1":
+            "فید اج لایو از BetSense Engine.",
+          "modules.hbboard.li2":
+            "نمایش اکسپوژر و پوزیشن برای هر ایونت.",
+          "modules.hbboard.li3":
+            "طراحی‌شده برای تریدینگ روم‌ها و دسک‌های buy-side.",
+          "modules.emotion.title": "Emotion Index",
+          "modules.emotion.body":
+            "سیگنال لحظه‌ای احساسات هواداران بر اساس شبکه‌های اجتماعی و میکروموومنت‌های مارکت.",
+          "modules.emotion.li1":
+            "منحنی احساسات قبل بازی و داخل بازی.",
+          "modules.emotion.li2":
+            "تشخیص شوک در لحظه‌ی گل، کارت و خبر.",
+          "modules.emotion.li3":
+            "قابل استفاده به عنوان یک فاکتور آلفا برای مدل‌های کوانت.",
+          "modules.liveape.title": "LiveApe",
+          "modules.liveape.body":
+            "لایه تجربه‌ی روز مسابقه که اج‌ها، مومنتوم و مود هواداران را در زبانی نشان می‌دهد که تیم مارکتینگ بتواند استفاده کند.",
+          "modules.liveape.li1":
+            "داستان دیداری اج برای هر بازی.",
+          "modules.liveape.li2":
+            "ویجت‌های قابل امبد در وب و اپ.",
+          "modules.liveape.li3":
+            "ساخته شده روی همان انجینی که تیم ترید به آن اعتماد دارد.",
+          "pricing.title": "اول پایلوت، بعد اسکیل.",
+          "pricing.body":
+            "از یک پایلوت کوچک روی چند لیگ یا مارکت محدود شروع کنید. وقتی عددها جواب داد، روی کل یونیورس ترید خود اسکیل دهید.",
+          "pricing.li1":
+            "مدل‌های تجاری منعطف برای اوپراتورها و دیتا پرووایدرها.",
+          "pricing.li2":
+            "قابلیت white-label یا اینتگریشن کامل.",
+          "pricing.li3":
+            "همراهی فنی از فاز ایده تا پروداکشن.",
+          "contact.title": "درخواست دسترسی یا دمو برای اینوستور",
+          "contact.body":
+            "یک ایمیل کاری و توضیح کوتاه درباره نقش خودتان (اوپراتور، دیتا پرووایدر، اینوستور، تریدینگ دسک) بفرستید. با یک اسلات دمو لایو و دک فنی برمی‌گردیم.",
+          "contact.emailLabel": "ایمیل کاری",
+          "contact.roleLabel": "نقش",
+          "contact.roleOperator": "اوپراتور / اسپورتسبوک",
+          "contact.roleData": "دیتاپرووایدر / فید",
+          "contact.roleInvestor": "اینوستور",
+          "contact.roleOther": "سایر",
+          "contact.msgLabel": "پیام کوتاه",
+          "contact.submit": "ارسال درخواست",
+          "contact.disclaimer":
+            "این فرم فقط ماکت است. هنگام لانچ واقعی، آن را به CRM یا ایمیل خود وصل کنید.",
+          "footer.copy":
+            "© BetSense AI Suite. دمو کانسپت برای استک یکپارچه هوش ورزشی.",
+          "footer.note":
+            "سلکتور زبان در حال حاضر انگلیسی، فارسی و ۲۰+ گزینه جهانی را نشان می‌دهد. هر زمان لازم شد زبان‌های دیگر هم اضافه می‌شوند.",
+        },
+      };
 
-          <div class="pricing-row">
-            <span>Phase 1</span>
-            <span>Proof-of-concept with mock &amp; limited live data</span>
-          </div>
-          <div class="pricing-row">
-            <span>Phase 2</span>
-            <span>Operator integration, custom feeds and production SLAs</span>
-          </div>
-          <div class="pricing-row">
-            <span>Phase 3</span>
-            <span>Co-branded tools, white-label dashboards &amp; revenue share</span>
-          </div>
-        </aside>
-      </div>
-    </section>
+      const rtlLangs = ["fa", "ar", "he", "ur"];
 
-    <!-- COMBINED EDGE + TIMELINE -->
-    <section class="section">
-      <div class="section-header">
-        <h2 class="section-title">Live edge &amp; probability timeline</h2>
-        <p class="section-kicker">
-          Show how the model disagrees with the market – minute by minute.
-        </p>
-      </div>
+      function applyLanguage(lang) {
+        const dict =
+          translations[lang] ||
+          translations.en; // if no translation, fall back to EN
 
-      <div class="combined-grid">
-        <div class="combined-card">
-          <div class="combined-title">Combined Live Edge Demo</div>
-          <p class="combined-sub">
-            Visual comparison between BetSense model probabilities and live market prices.
-            Ideal for traders who want to spot mis-priced events in seconds.
-          </p>
-          <div class="combined-chip-row">
-            <span class="chip good">Edge &gt; 2% highlighted in green</span>
-            <span class="chip bad">Negative overlays in red</span>
-            <span class="chip">Feed-agnostic: can plug into any odds provider</span>
-          </div>
-          <p>
-            API endpoint: <code>/api/combined</code><br />
-            Front-end: small React or vanilla widget that sits inside any trading UI.
-          </p>
-        </div>
+        document.documentElement.lang = lang;
+        document.body.dir = rtlLangs.includes(lang) ? "rtl" : "ltr";
 
-        <div class="combined-card">
-          <div class="combined-title">Probability Timeline Demo</div>
-          <p class="combined-sub">
-            Timeline chart shows how home, draw and away probabilities evolve from minute 0 to 90.
-            Perfect for explaining model behaviour to non-technical decision makers.
-          </p>
-          <div class="combined-chip-row">
-            <span class="chip">Minute-by-minute model snapshots</span>
-            <span class="chip">Key match events annotated (goals, red cards, xG swings)</span>
-            <span class="chip">Exports easily into decks &amp; reports</span>
-          </div>
-          <p>
-            API endpoint: <code>/api/probability-timeline</code><br />
-            Output: JSON timeline + ready-to-embed SVG/PNG chart.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      <span>BetSense AI Suite · Concept deck for sportsbooks, data providers &amp; trading desks.</span>
-      <span>Contact: info@betsense-suite.com · Demo access on request.</span>
-    </footer>
-  </main>
-
-  <script>
-    // Language selector behaviour – content stays English for now
-    (function () {
-      const select = document.getElementById("languageSelect");
-      const info = document.getElementById("langInfo");
-      let timeoutId = null;
-
-      function showInfo() {
-        if (!info) return;
-        info.classList.add("visible");
-        if (timeoutId) window.clearTimeout(timeoutId);
-        timeoutId = window.setTimeout(() => {
-          info.classList.remove("visible");
-        }, 4200);
-      }
-
-      if (select) {
-        select.addEventListener("change", function () {
-          showInfo();
-          // In the future, you can plug real translations here
-          // based on select.value (locale code).
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (dict[key]) {
+            el.textContent = dict[key];
+          } else if (translations.en[key]) {
+            el.textContent = translations.en[key];
+          }
         });
       }
-    })();
-  </script>
-</body>
+
+      const select = document.getElementById("languageSelect");
+      select.addEventListener("change", (e) => {
+        applyLanguage(e.target.value);
+      });
+
+      // default language
+      applyLanguage("en");
+    </script>
+  </body>
 </html>
