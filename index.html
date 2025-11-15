@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -31,7 +31,7 @@
     <style>
       body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Inter", sans-serif;
+          "Inter", sans-serif;
       }
       .glow {
         filter: blur(40px);
@@ -626,6 +626,127 @@
           </div>
         </section>
 
+        <!-- TREND ENGINE / EMOTION TIMELINE -->
+        <section id="trend-engine" class="mt-14 sm:mt-16 space-y-5">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">
+                Emotion Timeline – Trend Engine
+              </h2>
+              <p class="text-sm text-slate-300 max-w-2xl">
+                See how emotion and market tension build over time. Choose a
+                scenario to visualise the fan mood and trading pressure across
+                key moments.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-5 lg:gap-6">
+            <!-- LEFT: Scenario buttons -->
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm"
+            >
+              <div class="space-y-2">
+                <p class="text-slate-300 font-medium">
+                  1. Pick a match scenario
+                </p>
+                <p class="text-slate-400 text-xs sm:text-[13px]">
+                  Each preset simulates a different type of emotional curve
+                  across the full 90 minutes – from calm, controlled markets to
+                  full chaos.
+                </p>
+              </div>
+
+              <div class="grid sm:grid-cols-3 gap-2 text-xs sm:text-sm">
+                <button
+                  type="button"
+                  class="trend-btn inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 hover:border-emerald-400 hover:bg-slate-900 transition"
+                  data-trend="calm"
+                >
+                  <span class="font-medium">Calm market</span>
+                  <span class="text-[11px] text-slate-400"
+                    >Low volatility, balanced flow</span
+                  >
+                </button>
+                <button
+                  type="button"
+                  class="trend-btn inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 hover:border-bsPurple hover:bg-slate-900 transition"
+                  data-trend="derby"
+                >
+                  <span class="font-medium">Derby spike</span>
+                  <span class="text-[11px] text-slate-400"
+                    >Tense, noisy, big swings</span
+                  >
+                </button>
+                <button
+                  type="button"
+                  class="trend-btn inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 hover:border-red-400 hover:bg-slate-900 transition"
+                  data-trend="shock"
+                >
+                  <span class="font-medium">Late shock</span>
+                  <span class="text-[11px] text-slate-400"
+                    >Red card / late goal chaos</span
+                  >
+                </button>
+              </div>
+
+              <p class="text-[11px] text-slate-500">
+                In production, these curves are driven by real-time feeds: odds
+                moves, bet volume, social sentiment and match events.
+              </p>
+            </div>
+
+            <!-- RIGHT: Timeline visualisation -->
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-slate-400 text-xs">Timeline output</p>
+                  <p
+                    id="trend-output-title"
+                    class="text-sm sm:text-base font-semibold text-slate-100"
+                  >
+                    Waiting for a scenario…
+                  </p>
+                </div>
+                <span
+                  id="trend-output-tag"
+                  class="text-[11px] px-2 py-0.5 rounded-full border border-slate-700 text-slate-300"
+                >
+                  Idle
+                </span>
+              </div>
+
+              <div
+                id="trend-output-description"
+                class="rounded-xl bg-slate-950/60 border border-slate-800 px-3 py-3 text-xs sm:text-sm text-slate-200 min-h-[80px]"
+              >
+                Choose a scenario on the left to see how Emotion Timeline might
+                illustrate the pressure curve for traders, risk and marketing.
+              </div>
+
+              <div class="space-y-2">
+                <p class="text-[11px] text-slate-400">
+                  Relative tension across the match (left = kick-off, right =
+                  final whistle).
+                </p>
+                <div
+                  id="trend-bars"
+                  class="flex items-end gap-0.5 h-24 rounded-xl bg-slate-950/70 border border-slate-800 px-2 py-2 overflow-hidden"
+                >
+                  <!-- bars injected by JS -->
+                </div>
+              </div>
+
+              <p class="text-[11px] text-slate-500">
+                This visual is intentionally simple for investor demos. The
+                production version can use your existing charts or BI stack.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <!-- PRICING / CONTACT -->
         <section
           id="pricing"
@@ -757,7 +878,7 @@
       </main>
     </div>
 
-    <!-- i18n + Emotion Engine script -->
+    <!-- i18n + Emotion Engine + Trend Engine script -->
     <script>
       const translations = {
         en: {
@@ -813,8 +934,7 @@
           "modules.hbboard.body":
             "Operator-style dashboard giving your traders a single screen for match edges, exposure and risk alerts.",
           "modules.hbboard.li1": "Live edge feed from BetSense Engine.",
-          "modules.hbboard.li2":
-            "Position & exposure overview per event.",
+          "modules.hbboard.li2": "Position & exposure overview per event.",
           "modules.hbboard.li3":
             "Designed for trading rooms & buy-side desks.",
           "modules.emotion.title": "Emotion Index",
@@ -972,9 +1092,7 @@
       const rtlLangs = ["fa", "ar", "he", "ur"];
 
       function applyLanguage(lang) {
-        const dict =
-          translations[lang] ||
-          translations.en; // fallback به انگلیسی
+        const dict = translations[lang] || translations.en;
 
         document.documentElement.lang = lang;
         document.body.dir = rtlLangs.includes(lang) ? "rtl" : "ltr";
@@ -1031,14 +1149,7 @@
       const fastBtn = document.getElementById("emotion-fast-btn");
       const deepBtn = document.getElementById("emotion-deep-btn");
 
-      if (
-        inputEl &&
-        outEl &&
-        modeEl &&
-        tagEl &&
-        fastBtn &&
-        deepBtn
-      ) {
+      if (inputEl && outEl && modeEl && tagEl && fastBtn && deepBtn) {
         function setMode(mode) {
           const text = inputEl.value || "";
           const result = makeEmotionOutput(mode, text);
@@ -1062,8 +1173,75 @@
         deepBtn.addEventListener("click", () => setMode("deep"));
       }
 
+      // Trend Engine / Emotion Timeline logic
+      const trendButtons = document.querySelectorAll(".trend-btn");
+      const trendTitle = document.getElementById("trend-output-title");
+      const trendTag = document.getElementById("trend-output-tag");
+      const trendDesc = document.getElementById("trend-output-description");
+      const trendBars = document.getElementById("trend-bars");
+
+      const trendScenarios = {
+        calm: {
+          title: "Calm market – controlled, rational pricing",
+          tag: "Low tension",
+          tagClass:
+            "text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/40",
+          description:
+            "The market trades in a narrow, stable band. Liquidity is healthy, spreads are consistent and there are no major emotional shocks. This kind of curve is ideal for disciplined trading and automated models.",
+          bars: [10, 12, 14, 16, 18, 20, 22, 22, 21, 20, 19, 18, 17, 16, 15],
+        },
+        derby: {
+          title: "Derby spike – high emotional pressure",
+          tag: "Tense & noisy",
+          tagClass:
+            "text-[11px] px-2 py-0.5 rounded-full bg-bsPurple/20 text-bsPurple border border-bsPurple/40",
+          description:
+            "From kick-off, sentiment is elevated. Small events produce outsized reactions. By mid-match, tension and noise are both high – great for engagement, but dangerous if risk controls are not aligned.",
+          bars: [20, 25, 30, 35, 50, 60, 70, 75, 78, 80, 82, 78, 70, 60, 45],
+        },
+        shock: {
+          title: "Late shock – red card / 90th-minute goal",
+          tag: "Volatile",
+          tagClass:
+            "text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-300 border border-red-500/40",
+          description:
+            "For most of the game, emotion is contained. Then a single late event – red card, penalty, or goal – sends both the market and fan sentiment into a sudden spike. This is where Emotion Index helps separate panic from genuine information.",
+          bars: [15, 18, 20, 22, 25, 30, 32, 35, 38, 40, 45, 50, 80, 82, 78],
+        },
+      };
+
+      function renderTrendBars(bars) {
+        if (!trendBars) return;
+        trendBars.innerHTML = "";
+        const max = Math.max(...bars);
+        bars.forEach((value) => {
+          const heightPercent = (value / max) * 100;
+          const bar = document.createElement("div");
+          bar.className =
+            "flex-1 rounded-full bg-gradient-to-t from-bsPurple/30 via-bsBlue/40 to-bsPink/60";
+          bar.style.height = `${Math.max(10, heightPercent)}%`;
+          trendBars.appendChild(bar);
+        });
+      }
+
+      if (trendButtons && trendButtons.length && trendTitle && trendTag && trendDesc && trendBars) {
+        trendButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const key = btn.getAttribute("data-trend");
+            const scenario = trendScenarios[key];
+            if (!scenario) return;
+
+            trendTitle.textContent = scenario.title;
+            trendTag.textContent = scenario.tag;
+            trendTag.className = scenario.tagClass;
+            trendDesc.textContent = scenario.description;
+            renderTrendBars(scenario.bars);
+          });
+        });
+      }
+
       // default language
       applyLanguage("en");
     </script>
   </body>
-</html>
+</html>        
