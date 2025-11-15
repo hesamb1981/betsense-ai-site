@@ -101,6 +101,7 @@
       gap: 10px;
       flex-wrap: wrap;
       justify-content: flex-end;
+      position: relative; /* برای لنگویج منو */
     }
 
     .pill {
@@ -641,14 +642,33 @@
       color: var(--text-soft);
     }
 
-    .contact-list {
-      list-style: none;
-      padding: 0;
-      margin: 6px 0 0;
+    .contact-card {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 8px 10px;
+      margin-bottom: 8px;
     }
 
-    .contact-list li {
-      margin-bottom: 4px;
+    .contact-label {
+      font-size: 11px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+    }
+
+    .contact-email {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-1);
+      margin-bottom: 2px;
+      word-break: break-all;
+    }
+
+    .contact-note {
+      font-size: 12px;
+      color: var(--text-soft);
     }
 
     footer {
@@ -663,10 +683,6 @@
     }
 
     /* LANGUAGE DROPDOWN */
-
-    .language-toggle {
-      position: relative;
-    }
 
     .language-menu {
       position: absolute;
@@ -788,39 +804,42 @@
           <div class="brand-text-sub">Unified sports intelligence stack</div>
         </div>
       </div>
+
       <div class="top-bar-right">
         <div class="pill">
           <span class="pill-dot"></span>
           Realtime AI for bookmakers &amp; trading desks
         </div>
-        <button class="btn-ghost language-toggle" id="languageToggle">
+
+        <button class="btn-ghost" id="languageToggle">
           🌐 <span id="languageLabel">English (default)</span>
         </button>
-      </div>
-      <div class="language-menu" id="languageMenu">
-        <!-- languages just for label demo -->
-        <div class="language-item" data-lang="English (default)">English <span class="code">EN</span></div>
-        <div class="language-item" data-lang="Deutsch">Deutsch <span class="code">DE</span></div>
-        <div class="language-item" data-lang="Español">Español <span class="code">ES</span></div>
-        <div class="language-item" data-lang="Français">Français <span class="code">FR</span></div>
-        <div class="language-item" data-lang="Italiano">Italiano <span class="code">IT</span></div>
-        <div class="language-item" data-lang="Português">Português <span class="code">PT</span></div>
-        <div class="language-item" data-lang="Nederlands">Nederlands <span class="code">NL</span></div>
-        <div class="language-item" data-lang="Svenska">Svenska <span class="code">SV</span></div>
-        <div class="language-item" data-lang="Norsk">Norsk <span class="code">NO</span></div>
-        <div class="language-item" data-lang="Dansk">Dansk <span class="code">DA</span></div>
-        <div class="language-item" data-lang="Polski">Polski <span class="code">PL</span></div>
-        <div class="language-item" data-lang="Türkçe">Türkçe <span class="code">TR</span></div>
-        <div class="language-item" data-lang="Čeština">Čeština <span class="code">CS</span></div>
-        <div class="language-item" data-lang="Русский">Русский <span class="code">RU</span></div>
-        <div class="language-item" data-lang="Українська">Українська <span class="code">UK</span></div>
-        <div class="language-item" data-lang="العربية">العربية <span class="code">AR</span></div>
-        <div class="language-item" data-lang="فارسی (Farsi)">فارسی (Farsi) <span class="code">FA</span></div>
-        <div class="language-item" data-lang="हिन्दी">हिन्दी <span class="code">HI</span></div>
-        <div class="language-item" data-lang="বাংলা">বাংলা <span class="code">BN</span></div>
-        <div class="language-item" data-lang="中文">中文 <span class="code">ZH</span></div>
-        <div class="language-item" data-lang="日本語">日本語 <span class="code">JA</span></div>
-        <div class="language-item" data-lang="한국어">한국어 <span class="code">KO</span></div>
+
+        <!-- منوی زبان حالا دقیقا زیر همین دکمه باز می‌شود -->
+        <div class="language-menu" id="languageMenu">
+          <div class="language-item" data-lang="English (default)">English <span class="code">EN</span></div>
+          <div class="language-item" data-lang="Deutsch">Deutsch <span class="code">DE</span></div>
+          <div class="language-item" data-lang="Español">Español <span class="code">ES</span></div>
+          <div class="language-item" data-lang="Français">Français <span class="code">FR</span></div>
+          <div class="language-item" data-lang="Italiano">Italiano <span class="code">IT</span></div>
+          <div class="language-item" data-lang="Português">Português <span class="code">PT</span></div>
+          <div class="language-item" data-lang="Nederlands">Nederlands <span class="code">NL</span></div>
+          <div class="language-item" data-lang="Svenska">Svenska <span class="code">SV</span></div>
+          <div class="language-item" data-lang="Norsk">Norsk <span class="code">NO</span></div>
+          <div class="language-item" data-lang="Dansk">Dansk <span class="code">DA</span></div>
+          <div class="language-item" data-lang="Polski">Polski <span class="code">PL</span></div>
+          <div class="language-item" data-lang="Türkçe">Türkçe <span class="code">TR</span></div>
+          <div class="language-item" data-lang="Čeština">Čeština <span class="code">CS</span></div>
+          <div class="language-item" data-lang="Русский">Русский <span class="code">RU</span></div>
+          <div class="language-item" data-lang="Українська">Українська <span class="code">UK</span></div>
+          <div class="language-item" data-lang="العربية">العربية <span class="code">AR</span></div>
+          <div class="language-item" data-lang="فارسی (Farsi)">فارسی (Farsi) <span class="code">FA</span></div>
+          <div class="language-item" data-lang="हिन्दी">हिन्दी <span class="code">HI</span></div>
+          <div class="language-item" data-lang="বাংলা">বাংলা <span class="code">BN</span></div>
+          <div class="language-item" data-lang="中文">中文 <span class="code">ZH</span></div>
+          <div class="language-item" data-lang="日本語">日本語 <span class="code">JA</span></div>
+          <div class="language-item" data-lang="한국어">한국어 <span class="code">KO</span></div>
+        </div>
       </div>
     </header>
 
@@ -1112,34 +1131,42 @@ X-API-Key: YOUR_KEY_HERE
         <div>
           <h2 class="section-title">Contact &amp; pilots</h2>
           <p class="section-sub">
-            Use BetSense AI Suite as a pilot with a small group of traders or partners, then scale across desks.
+            One inbox, three entry points. Keep pilots, API access and investor talks in a single thread.
           </p>
         </div>
       </div>
       <div class="contact-grid">
         <div>
-          <p style="margin-top:0;">
-            Three entry points, one inbox. All addresses below forward into the same operator-owned
-            mailbox so you can track pilots, sales and support in one place:
-          </p>
-          <ul class="contact-list">
-            <li><strong>support@betsense.casino</strong> &mdash; live issues, technical support</li>
-            <li><strong>info@betsense.casino</strong> &mdash; general questions, partnerships</li>
-            <li><strong>admin@betsense.casino</strong> &mdash; contracts, billing, legal</li>
-          </ul>
+          <div class="contact-card">
+            <div class="contact-label">Support</div>
+            <div class="contact-email">support@betsense.casino</div>
+            <div class="contact-note">Live issues, technical questions, API troubleshooting.</div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-label">General &amp; partnerships</div>
+            <div class="contact-email">info@betsense.casino</div>
+            <div class="contact-note">Product questions, partnership and commercial discussions.</div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-label">Admin</div>
+            <div class="contact-email">admin@betsense.casino</div>
+            <div class="contact-note">Contracts, billing, NDAs and legal.</div>
+          </div>
         </div>
         <div>
           <p style="margin-top:0;">
             For early-stage pilots, we typically recommend:
           </p>
           <ul style="margin-top:4px;padding-left:18px;">
-            <li>1&ndash;2 key leagues, 1&ndash;3 trading teams</li>
-            <li>Daily snapshot reports for management or investors</li>
-            <li>Weekly review call on edge, risk and commercial impact</li>
+            <li>1–2 key leagues with 1–3 trading teams.</li>
+            <li>Daily snapshot reports for management or investors.</li>
+            <li>Weekly review call on edge, risk and commercial impact.</li>
           </ul>
           <p style="margin-top:6px;">
-            Subject lines that help us route quickly: <em>&ldquo;Pilot request&rdquo;</em>,
-            <em>&ldquo;API access&rdquo;</em> or <em>&ldquo;Investor deck&rdquo;</em>.
+            Subject lines that help us route quickly:
+            <em>&ldquo;Pilot request&rdquo;</em>,
+            <em>&ldquo;API access&rdquo;</em> or
+            <em>&ldquo;Investor deck&rdquo;</em>.
           </p>
         </div>
       </div>
