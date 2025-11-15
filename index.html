@@ -31,7 +31,7 @@
     <style>
       body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "Inter", sans-serif;
+        "Inter", sans-serif;
       }
       .glow {
         filter: blur(40px);
@@ -99,7 +99,7 @@
             >
           </nav>
 
-          <!-- Language selector (26+ languages) -->
+          <!-- Language selector (with Persian + 20+ options) -->
           <div class="flex items-center gap-2">
             <label
               for="languageSelect"
@@ -112,7 +112,7 @@
               class="text-xs sm:text-sm bg-slate-900/70 border border-slate-700/70 rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent"
             >
               <option value="en">English</option>
-              <option value="fa">فارسی</option>
+              <option value="fa">فارسی (Persian)</option>
               <option value="ar">العربية</option>
               <option value="es">Español</option>
               <option value="fr">Français</option>
@@ -521,6 +521,111 @@
           </div>
         </section>
 
+        <!-- EMOTION ENGINE -->
+        <section id="emotion-engine" class="mt-14 sm:mt-16 space-y-5">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">
+                Emotion Engine – Fast + Deep
+              </h2>
+              <p class="text-sm text-slate-300 max-w-2xl">
+                Combine fast, lightweight signals with deeper narrative analysis
+                for any match, market or event. Start with a quick pulse, then
+                unlock a deeper AI summary when you need more context.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-5 lg:gap-6">
+            <!-- LEFT: Input + Mode -->
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4"
+            >
+              <div class="space-y-2 text-sm">
+                <p class="text-slate-300 font-medium">
+                  1. Describe the context
+                </p>
+                <p class="text-slate-400 text-xs sm:text-[13px]">
+                  Type a short description of the fixture, market or scenario
+                  you want to analyse. For example: “Derby match, late goal, big
+                  odds move on home team”.
+                </p>
+              </div>
+              <textarea
+                id="emotion-input"
+                rows="4"
+                class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-slate-50"
+                placeholder="Describe the match state, market move or fan reaction you want to analyse…"
+              ></textarea>
+
+              <div class="space-y-2 text-sm">
+                <p class="text-slate-300 font-medium">
+                  2. Choose analysis mode
+                </p>
+                <div
+                  class="grid grid-cols-2 gap-2 text-xs sm:text-sm text-slate-200"
+                >
+                  <button
+                    type="button"
+                    id="emotion-fast-btn"
+                    class="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsBlue hover:bg-slate-900 transition"
+                  >
+                    Quick Emotion
+                  </button>
+                  <button
+                    type="button"
+                    id="emotion-deep-btn"
+                    class="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsPurple hover:bg-slate-900 transition"
+                  >
+                    Deep Emotion
+                  </button>
+                </div>
+                <p class="text-[11px] text-slate-500">
+                  Quick = fast pulse, ideal for live trading. Deep = richer
+                  narrative, ideal for reports and investors.
+                </p>
+              </div>
+            </div>
+
+            <!-- RIGHT: Output -->
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-slate-400 text-xs">AI output</p>
+                  <p
+                    id="emotion-output-mode"
+                    class="text-sm sm:text-base font-semibold text-slate-100"
+                  >
+                    Waiting for input…
+                  </p>
+                </div>
+                <span
+                  id="emotion-output-tag"
+                  class="text-[11px] px-2 py-0.5 rounded-full border border-slate-700 text-slate-300"
+                >
+                  Idle
+                </span>
+              </div>
+
+              <div
+                id="emotion-output"
+                class="rounded-xl bg-slate-950/60 border border-slate-800 px-3 py-3 text-xs sm:text-sm text-slate-200 min-h-[120px] whitespace-pre-line"
+              >
+                Type a short scenario on the left and choose Quick or Deep
+                analysis to see how Emotion Engine might describe the situation
+                for traders, marketing or investors.
+              </div>
+
+              <p class="text-[11px] text-slate-500">
+                This is a front-end demo. In production, this block connects
+                directly to your live feeds and the BetSense AI Engine API.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <!-- PRICING / CONTACT -->
         <section
           id="pricing"
@@ -652,7 +757,7 @@
       </main>
     </div>
 
-    <!-- i18n script: full EN + FA, others fall back to EN -->
+    <!-- i18n + Emotion Engine script -->
     <script>
       const translations = {
         en: {
@@ -869,7 +974,7 @@
       function applyLanguage(lang) {
         const dict =
           translations[lang] ||
-          translations.en; // if no translation, fall back to EN
+          translations.en; // fallback به انگلیسی
 
         document.documentElement.lang = lang;
         document.body.dir = rtlLangs.includes(lang) ? "rtl" : "ltr";
@@ -885,9 +990,77 @@
       }
 
       const select = document.getElementById("languageSelect");
-      select.addEventListener("change", (e) => {
-        applyLanguage(e.target.value);
-      });
+      if (select) {
+        select.addEventListener("change", (e) => {
+          applyLanguage(e.target.value);
+        });
+      }
+
+      // Emotion Engine demo logic
+      function makeEmotionOutput(mode, text) {
+        const base =
+          text && text.trim().length
+            ? text.trim()
+            : "Generic high-pressure match state with sharp odds movement.";
+
+        if (mode === "fast") {
+          return (
+            "FAST PULSE:\n" +
+            "- Snapshot: " +
+            base +
+            "\n- Emotion pulse: Elevated tension, strong bias toward home side.\n" +
+            "- Trading hint: Monitor liquidity + sharp money; consider micro-adjustments instead of full reprice."
+          );
+        } else {
+          return (
+            "DEEP NARRATIVE:\n" +
+            "- Context: " +
+            base +
+            "\n- Fan sentiment: Social feeds skew positive for the home side, but volatility indicates fear of late reversal.\n" +
+            "- Market structure: Odds drifted aggressively after the last event; retail flow is chasing, sharp flow is more cautious.\n" +
+            "- Risk view: This looks like a momentum + narrative overreaction. If your internal models agree, there may be room to offer slightly more aggressive home pricing while tightening exposure limits.\n" +
+            "- Story for stakeholders: Emotion Engine is capturing not just numbers, but how the match actually feels in the market."
+          );
+        }
+      }
+
+      const inputEl = document.getElementById("emotion-input");
+      const outEl = document.getElementById("emotion-output");
+      const modeEl = document.getElementById("emotion-output-mode");
+      const tagEl = document.getElementById("emotion-output-tag");
+      const fastBtn = document.getElementById("emotion-fast-btn");
+      const deepBtn = document.getElementById("emotion-deep-btn");
+
+      if (
+        inputEl &&
+        outEl &&
+        modeEl &&
+        tagEl &&
+        fastBtn &&
+        deepBtn
+      ) {
+        function setMode(mode) {
+          const text = inputEl.value || "";
+          const result = makeEmotionOutput(mode, text);
+
+          outEl.textContent = result;
+
+          if (mode === "fast") {
+            modeEl.textContent = "Quick Emotion analysis";
+            tagEl.textContent = "Fast mode";
+            tagEl.className =
+              "text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/40";
+          } else {
+            modeEl.textContent = "Deep Emotion analysis";
+            tagEl.textContent = "Deep mode";
+            tagEl.className =
+              "text-[11px] px-2 py-0.5 rounded-full bg-bsPurple/20 text-bsPurple border border-bsPurple/40";
+          }
+        }
+
+        fastBtn.addEventListener("click", () => setMode("fast"));
+        deepBtn.addEventListener("click", () => setMode("deep"));
+      }
 
       // default language
       applyLanguage("en");
