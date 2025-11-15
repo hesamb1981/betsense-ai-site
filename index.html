@@ -2,1061 +2,1327 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BetSense AI Suite – Unified Sports Intelligence</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>BetSense AI Suite – Unified Sports Intelligence Stack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into one operator-ready platform for bookmakers and trading desks." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg-main: #050819;
-      --bg-elevated: #090f24;
-      --accent: #31e2b2;
-      --accent-soft: rgba(49, 226, 178, 0.15);
-      --accent-2: #7f5dff;
-      --accent-3: #ff7ac2;
-      --text-main: #f3f5ff;
-      --text-soft: #9aa4d4;
+      --bg-main: #050816;
+      --bg-card: #0b1020;
+      --bg-card-soft: #0f1424;
+      --accent: #38f2c6;
+      --accent-soft: rgba(56, 242, 198, 0.14);
+      --accent-purple: #8a5bff;
+      --accent-pink: #ff4ecd;
       --border-subtle: rgba(255, 255, 255, 0.06);
-      --chip-bg: rgba(255, 255, 255, 0.04);
-      --danger: #ff9b5a;
+      --text-main: #f9fafb;
+      --text-soft: #a5b4fc;
+      --text-muted: #9ca3af;
+      --chip-bg: rgba(15, 23, 42, 0.9);
+      --chip-border: rgba(148, 163, 184, 0.4);
+      --nav-height: 64px;
+      --radius-xl: 20px;
+      --radius-lg: 16px;
+      --radius-full: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --shadow-glow: 0 0 40px rgba(56, 189, 248, 0.4);
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at top left, #172047 0, #050819 55%, #02030b 100%);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 40%, #020617 100%);
       color: var(--text-main);
-      overflow-x: hidden; /* جلوی عرض ۳ متری را می‌گیرد */
+      -webkit-font-smoothing: antialiased;
     }
 
-    body {
-      display: flex;
-      justify-content: center;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .page-shell {
-      width: 100%;
-      max-width: 1120px;
-      padding: 24px 16px 64px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    @media (min-width: 768px) {
-      .page-shell {
-        padding: 32px 0 80px;
-      }
+    /* HEADER / NAVBAR */
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.82), transparent);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #ffffff 0, #111827 40%, #020617 100%);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+      transition: width 0.18s ease-out;
+    }
+
+    .nav-links a:hover {
+      color: #e5e7eb;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.13em;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: radial-gradient(circle at top left, rgba(127, 93, 255, 0.45), rgba(17, 24, 56, 0.95));
-      color: #e8ebff;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.4), rgba(15, 23, 42, 0.9));
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.55);
+      color: #e5e7eb;
+      white-space: nowrap;
     }
 
     .pill-dot {
       width: 7px;
       height: 7px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #31e2b2, #0fb58c);
-      box-shadow: 0 0 10px rgba(49, 226, 178, 0.8);
-    }
-
-    header.hero {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    @media (min-width: 900px) {
-      header.hero {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 32px;
-      }
-    }
-
-    .hero-main {
-      flex: 1.2;
-    }
-
-    .hero-eyebrow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .logo-mark {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .logo-circle {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: conic-gradient(from 210deg, #31e2b2, #7f5dff, #ff7ac2, #31e2b2);
-      padding: 3px;
-      box-shadow: 0 0 16px rgba(127, 93, 255, 0.8);
-    }
-
-    .logo-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #1a1e3a, #050819);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 13px;
-      color: #ffffff;
-    }
-
-    .hero-title {
-      font-size: 26px;
-      line-height: 1.18;
-      margin: 0 0 8px;
-    }
-
-    @media (min-width: 768px) {
-      .hero-title {
-        font-size: 32px;
-      }
-    }
-
-    .hero-subtitle {
-      color: var(--text-soft);
-      font-size: 14px;
-      max-width: 540px;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .meta-chip {
-      font-size: 11px;
-      padding: 5px 10px;
       border-radius: 999px;
-      background: var(--chip-bg);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--text-soft);
+      background: #22c55e;
+      box-shadow: 0 0 9px rgba(34, 197, 94, 0.9);
+    }
+
+    .lang-select-wrapper {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
-    .meta-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #31e2b2, #7f5dff);
+    .lang-select-wrapper label {
+      display: none;
     }
 
-    .hero-side {
-      flex: 0.9;
-      margin-top: 20px;
-    }
-
-    @media (min-width: 900px) {
-      .hero-side {
-        margin-top: 0;
-        text-align: right;
-      }
-    }
-
-    .primary-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(90deg, #31e2b2, #7f5dff);
-      color: #02030b;
-      font-weight: 600;
-      font-size: 13px;
-      box-shadow: 0 0 20px rgba(49, 226, 178, 0.5);
-    }
-
-    .primary-cta span.icon {
-      font-size: 14px;
-    }
-
-    .secondary-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-soft);
-      font-size: 12px;
-      margin-left: 10px;
-    }
-
-    .secondary-link span {
-      font-size: 14px;
-    }
-
-    .language-select-wrap {
-      margin-top: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--text-soft);
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(8, 13, 39, 0.78);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .language-select-wrap select {
+    .lang-select-wrapper select {
       background: transparent;
       border: none;
-      color: var(--text-main);
-      font-size: 11px;
       outline: none;
+      color: inherit;
+      font: inherit;
+      padding-right: 2px;
     }
 
-    .badge {
-      font-size: 10px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(49, 226, 178, 0.14);
-      color: #7df1cd;
-      border: 1px solid rgba(49, 226, 178, 0.35);
+    .lang-select-wrapper option {
+      color: #020617;
     }
 
-    /* layout grid for cards */
-    .grid {
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .pill {
+        display: none;
+      }
+
+      .nav-inner {
+        padding-inline: 12px;
+      }
+    }
+
+    /* LAYOUT */
+
+    main {
+      flex: 1;
+    }
+
+    .section-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px 16px 40px;
+    }
+
+    .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    @media (min-width: 900px) {
-      .grid-2 {
-        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
-      }
-    }
-
-    .card {
-      background: radial-gradient(circle at top left, rgba(49, 226, 178, 0.08), rgba(5, 8, 25, 0.98));
-      border-radius: 22px;
-      border: 1px solid var(--border-subtle);
-      padding: 16px 14px 16px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    @media (min-width: 768px) {
-      .card {
-        padding: 18px 18px 18px;
-      }
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 28px;
       align-items: center;
-      margin-bottom: 10px;
-      gap: 12px;
+      margin-top: 12px;
     }
 
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin: 0;
+    .hero-left h1 {
+      font-size: clamp(2.1rem, 4.2vw, 2.9rem);
+      margin: 0 0 10px;
     }
 
-    .card-subtitle {
-      font-size: 12px;
-      color: var(--text-soft);
-      margin-top: 4px;
+    .hero-left h1 span {
+      background: linear-gradient(90deg, #38f2c6, #4f46e5, #e879f9);
+      -webkit-background-clip: text;
+      color: transparent;
     }
 
-    .chip-soft {
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(10, 16, 52, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text-soft);
+    .hero-lead {
+      font-size: 0.98rem;
+      color: #d1d5db;
+      max-width: 34rem;
+      line-height: 1.6;
+      margin-bottom: 14px;
     }
 
-    .card-body {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    .field-label {
-      font-size: 11px;
-      margin-bottom: 4px;
-      color: var(--text-soft);
-    }
-
-    .textarea {
-      width: 100%;
-      min-height: 64px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(9, 13, 39, 0.9);
-      padding: 8px 10px;
-      color: var(--text-main);
-      font-size: 12px;
-      resize: vertical;
-      outline: none;
-    }
-
-    .textarea::placeholder {
-      color: rgba(154, 164, 212, 0.6);
-    }
-
-    .button-row {
+    .hero-bullets {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 10px;
+      margin-bottom: 18px;
     }
 
-    .btn {
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 11px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(8, 13, 39, 0.85);
-      color: #e1e6ff;
-      cursor: pointer;
+    .hero-chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(90deg, #31e2b2, #7f5dff);
-      border-color: transparent;
-      color: #02030b;
-      font-weight: 600;
-    }
-
-    .btn-toggle {
-      background: rgba(11, 16, 49, 0.95);
-    }
-
-    .btn-toggle.active {
-      background: linear-gradient(90deg, #31e2b2, #7f5dff);
-      color: #02030b;
-      border-color: transparent;
-    }
-
-    .small-label {
-      font-size: 11px;
+      padding: 5px 11px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--chip-border);
+      background: var(--chip-bg);
+      font-size: 0.78rem;
       color: var(--text-soft);
-      margin-top: 8px;
     }
 
-    .output-box {
-      margin-top: 12px;
-      padding: 10px 11px;
-      border-radius: 16px;
-      background: rgba(4, 7, 22, 0.96);
-      border: 1px dashed rgba(255, 255, 255, 0.16);
-      font-size: 12px;
-      line-height: 1.5;
-      color: var(--text-soft);
-      max-height: 210px;
-      overflow-y: auto;
-    }
-
-    .output-box strong {
-      color: #e4e8ff;
-    }
-
-    /* chart card */
-
-    .chart-card {
-      background: radial-gradient(circle at top left, rgba(127, 93, 255, 0.12), rgba(5, 8, 25, 0.98));
-      border-radius: 22px;
-      border: 1px solid var(--border-subtle);
-      padding: 16px 14px 18px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    @media (min-width: 768px) {
-      .chart-card {
-        padding: 18px 18px 22px;
-      }
-    }
-
-    .scenario-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-      margin-bottom: 6px;
-    }
-
-    .scenario-tab {
-      flex: 1 1 90px;
+    .hero-chip-dot {
+      width: 6px;
+      height: 6px;
       border-radius: 999px;
-      padding: 7px 10px;
-      font-size: 11px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(7, 11, 34, 0.96);
-      color: var(--text-soft);
-      cursor: pointer;
-      text-align: center;
-      white-space: nowrap;
+      background: var(--accent);
     }
 
-    .scenario-tab.active {
-      background: radial-gradient(circle at top left, #31e2b2, #7f5dff);
-      border-color: transparent;
-      color: #02030b;
-      font-weight: 600;
-      box-shadow: 0 0 18px rgba(49, 226, 178, 0.45);
-    }
-
-    .chart-wrapper {
-      position: relative;
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 18px;
-      background: radial-gradient(circle at top, rgba(10, 16, 52, 0.9), #050819);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      overflow: hidden;
-    }
-
-    .chart-inner {
-      position: relative;
-      width: 100%;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .chart-inner canvas {
-      width: 100% !important;
-      height: 260px !important;
-    }
-
-    @media (min-width: 900px) {
-      .chart-inner canvas {
-        height: 280px !important;
-      }
-    }
-
-    .chart-legend-soft {
+    .hero-cta-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .btn-primary {
+      border-radius: var(--radius-full);
+      padding: 8px 18px;
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: radial-gradient(circle at 0 0, #ecfeff 0, #38f2c6 30%, #4f46e5 75%);
+      color: #020617;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-outline {
+      border-radius: var(--radius-full);
+      padding: 7px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.65);
+      font-size: 0.86rem;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+    }
+
+    .hero-footnote {
+      font-size: 0.78rem;
+      color: var(--text-muted);
       margin-top: 8px;
-      font-size: 11px;
+    }
+
+    .hero-right {
+      position: relative;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.95));
+      padding: 16px 16px 18px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hero-card-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .hero-card-tag {
+      font-size: 0.78rem;
+      padding: 3px 11px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(248, 250, 252, 0.28);
+      background: rgba(15, 23, 42, 0.7);
       color: var(--text-soft);
     }
 
-    .legend-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 0.75rem;
+    }
+
+    .metric {
+      border-radius: 12px;
+      padding: 8px 9px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .metric-label {
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .metric-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      background: rgba(22, 163, 74, 0.2);
+      color: #bbf7d0;
+    }
+
+    .metric-pill.negative {
+      background: rgba(220, 38, 38, 0.14);
+      color: #fecaca;
+    }
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        margin-top: 6px;
+      }
+      .hero-card {
+        margin-top: 4px;
+      }
+    }
+
+    /* GENERIC SECTIONS */
+
+    .section {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .section-header {
+      padding-right: 4px;
+    }
+
+    .section-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      margin: 0 0 6px;
+    }
+
+    .section-body {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .section-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .section-tag {
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 14px 16px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    @media (max-width: 880px) {
+      .section {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* EMOTION ENGINE */
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 0.98rem;
+      font-weight: 500;
+    }
+
+    .pill-soft {
+      border-radius: var(--radius-full);
+      padding: 3px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .scenario-input {
+      width: 100%;
+      resize: vertical;
+      min-height: 70px;
+      max-height: 130px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 0.84rem;
+      margin-bottom: 8px;
+    }
+
+    .scenario-input::placeholder {
+      color: #6b7280;
+    }
+
+    .mode-toggle-row {
+      display: inline-flex;
+      padding: 3px;
+      border-radius: var(--radius-full);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      margin-bottom: 10px;
+    }
+
+    .mode-btn {
+      border-radius: var(--radius-full);
+      border: none;
+      font-size: 0.78rem;
+      padding: 6px 13px;
+      background: transparent;
+      color: #e5e7eb;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+      color: #020617;
+      font-weight: 500;
+    }
+
+    .mode-caption {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .ai-output {
+      margin-top: 8px;
+      border-radius: 14px;
+      background: var(--bg-card-soft);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 9px 10px 11px;
+      font-size: 0.84rem;
+      color: #e5e7eb;
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-output::before {
+      content: "AI output";
+      position: absolute;
+      top: 7px;
+      right: 10px;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+    }
+
+    /* TIMELINE */
+
+    .timeline-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .timeline-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .timeline-tab {
+      border-radius: var(--radius-full);
+      padding: 6px 12px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .timeline-tab.active {
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.7), var(--accent));
+      color: #020617;
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.65);
+    }
+
+    .chart-frame {
+      border-radius: 18px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.96));
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 10px 10px 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .chart-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .chart-legend {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .legend-item {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
-    .mode-caption {
+    .legend-swatch {
+      width: 11px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .legend-swatch.draw {
+      background: #a855f7;
+    }
+
+    .legend-swatch.away {
+      background: #f97316;
+    }
+
+    .chart-svg-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .chart-x-labels {
+      display: flex;
+      justify-content: space-between;
       margin-top: 6px;
-      font-size: 11px;
-      color: var(--text-soft);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      padding-inline: 2px;
     }
 
-    /* contact */
-
-    .contact-card {
-      margin-top: 20px;
-      background: radial-gradient(circle at top left, rgba(49, 226, 178, 0.12), rgba(4, 7, 20, 0.98));
-      border-radius: 22px;
-      border: 1px solid var(--border-subtle);
-      padding: 16px 14px 18px;
+    .chart-note {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
     }
 
-    @media (min-width: 768px) {
-      .contact-card {
-        padding: 18px 18px 22px;
-      }
+    /* REPORTS */
+
+    .report-mode-row {
+      display: inline-flex;
+      padding: 3px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.96);
+      margin-top: 6px;
+      margin-bottom: 10px;
     }
+
+    .report-btn {
+      border-radius: var(--radius-full);
+      border: none;
+      font-size: 0.78rem;
+      padding: 6px 13px;
+      background: transparent;
+      color: #e5e7eb;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .report-btn.active {
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+      color: #f9fafb;
+      font-weight: 500;
+    }
+
+    .report-output {
+      border-radius: 16px;
+      background: var(--bg-card-soft);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 10px 12px 13px;
+      font-size: 0.84rem;
+      color: #e5e7eb;
+      line-height: 1.7;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    .report-output h4 {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+    }
+
+    .report-output p {
+      margin: 0 0 7px;
+    }
+
+    .report-output ul {
+      margin: 0 0 8px 18px;
+      padding: 0;
+    }
+
+    .report-output li {
+      margin-bottom: 4px;
+    }
+
+    /* CONTACT */
 
     .contact-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
-      margin-top: 10px;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 18px;
     }
 
-    @media (min-width: 720px) {
+    @media (max-width: 880px) {
       .contact-grid {
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
     .contact-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-size: 12px;
-      color: var(--text-soft);
+      display: grid;
+      gap: 8px;
+      font-size: 0.86rem;
     }
 
-    .contact-list li {
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    .contact-item {
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: var(--bg-card-soft);
+      border: 1px solid rgba(148, 163, 184, 0.45);
     }
 
-    .contact-list li:last-child {
-      border-bottom: none;
+    .contact-item span {
+      display: block;
     }
 
-    .contact-list span.label {
-      display: inline-block;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: rgba(154, 164, 212, 0.9);
-      margin-right: 8px;
+    .contact-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 3px;
     }
 
-    .contact-cta {
-      font-size: 12px;
-      color: var(--text-soft);
+    .contact-email {
+      font-size: 0.86rem;
+      color: var(--accent);
     }
 
-    .contact-cta button {
-      margin-top: 10px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(90deg, #31e2b2, #7f5dff);
-      color: #02030b;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
+    .contact-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
     }
 
     footer {
-      margin-top: 22px;
-      font-size: 10px;
-      color: rgba(154, 164, 212, 0.7);
+      border-top: 1px solid rgba(51, 65, 85, 0.9);
+      padding: 14px 16px 18px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    footer .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
       justify-content: space-between;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
   </style>
 </head>
 <body>
-  <main class="page-shell">
-    <!-- HERO -->
-    <header class="hero">
-      <div class="hero-main">
-        <div class="hero-eyebrow">
-          <div class="logo-mark">
-            <div class="logo-circle">
-              <div class="logo-inner">BS</div>
-            </div>
-            <div>
-              <div style="font-size:13px;font-weight:600;">BetSense AI Suite</div>
-              <div style="font-size:11px;color:var(--text-soft);">Unified sports intelligence stack</div>
-            </div>
+  <div class="page-shell">
+    <!-- NAVBAR -->
+    <header class="top-nav">
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-badge">BS</div>
+          <div class="brand-text">
+            <div class="brand-title">BetSense AI Suite</div>
+            <div class="brand-sub">Unified sports intelligence stack</div>
           </div>
-          <span class="pill">
+        </div>
+        <div class="nav-right">
+          <nav class="nav-links">
+            <a href="#emotion">Modules</a>
+            <a href="#timeline">Live-edge</a>
+            <a href="#reports">Reports</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <div class="pill">
             <span class="pill-dot"></span>
-            Realtime AI for bookmakers &amp; trading desks
-          </span>
-        </div>
-        <h1 class="hero-title">
-          One suite. Four unique engines for sharper sports decisions.
-        </h1>
-        <p class="hero-subtitle">
-          BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into one operator-ready platform – built to show investors, buyers and partners what your stack can already do today.
-        </p>
-        <div class="hero-meta">
-          <span class="meta-chip"><span class="meta-dot"></span>4 integrated modules</span>
-          <span class="meta-chip">API-ready architecture</span>
-          <span class="meta-chip">Live-match analytics</span>
-        </div>
-      </div>
-      <div class="hero-side">
-        <button class="primary-cta">
-          <span class="icon">⚡</span>
-          Explore BetSense AI Suite
-        </button>
-        <a href="#contact" class="secondary-link">
-          Talk to the team
-          <span>↗</span>
-        </a>
-        <div class="language-select-wrap">
-          <span>Language</span>
-          <select id="language-select">
-            <option value="en" selected>English (default)</option>
-            <option value="fa">فارسی (Farsi)</option>
-            <option value="es">Español</option>
-            <option value="pt">Português</option>
-            <option value="de">Deutsch</option>
-            <option value="fr">Français</option>
-            <option value="it">Italiano</option>
-            <option value="tr">Türkçe</option>
-            <option value="ar">العربية</option>
-            <option value="zh">中文 (Chinese)</option>
-            <option value="ja">日本語 (Japanese)</option>
-            <option value="ko">한국어 (Korean)</option>
-            <option value="nl">Nederlands</option>
-            <option value="sv">Svenska</option>
-            <option value="no">Norsk</option>
-            <option value="da">Dansk</option>
-            <option value="fi">Suomi</option>
-            <option value="pl">Polski</option>
-            <option value="cs">Čeština</option>
-            <option value="ru">Русский</option>
-          </select>
-          <span class="badge">Roadmap: full UI</span>
+            <span>Realtime AI for bookmakers &amp; trading desks</span>
+          </div>
+          <div class="lang-select-wrapper">
+            <label for="languageSelect">Language</label>
+            <span style="font-size:0.8rem;">🌐</span>
+            <select id="languageSelect">
+              <option value="en" selected>English (default)</option>
+              <option value="de">Deutsch</option>
+              <option value="fr">Français</option>
+              <option value="es">Español</option>
+              <option value="it">Italiano</option>
+              <option value="pt">Português</option>
+              <option value="tr">Türkçe</option>
+              <option value="fa">فارسی</option>
+              <option value="ar">العربية</option>
+              <option value="hi">हिन्दी</option>
+              <option value="ru">Русский</option>
+              <option value="uk">Українська</option>
+              <option value="pl">Polski</option>
+              <option value="nl">Nederlands</option>
+              <option value="sv">Svenska</option>
+              <option value="no">Norsk</option>
+              <option value="da">Dansk</option>
+              <option value="fi">Suomi</option>
+              <option value="el">Ελληνικά</option>
+              <option value="zh">中文</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+            </select>
+          </div>
         </div>
       </div>
     </header>
 
-    <!-- MODULES GRID -->
-    <section>
-      <div class="grid grid-2">
-        <!-- Emotion Engine -->
-        <article class="card">
-          <div class="card-header">
-            <div>
-              <h2 class="card-title">Emotion Engine – Quick &amp; Deep</h2>
-              <p class="card-subtitle">
-                Turn live-match chaos into a narrative your traders and investors can understand in seconds.
-              </p>
+    <main>
+      <div class="section-shell">
+
+        <!-- HERO -->
+        <section class="hero">
+          <div class="hero-left">
+            <h1>
+              One suite. <span>Four unique engines</span> for sharper sports decisions.
+            </h1>
+            <p class="hero-lead" id="heroLead">
+              BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into one operator-ready platform – built to show investors, buyers and partners what your stack can already do today.
+            </p>
+            <div class="hero-bullets">
+              <div class="hero-chip">
+                <div class="hero-chip-dot"></div>
+                <span>4 integrated modules</span>
+              </div>
+              <div class="hero-chip">
+                <div class="hero-chip-dot"></div>
+                <span>API-ready architecture</span>
+              </div>
+              <div class="hero-chip">
+                <div class="hero-chip-dot"></div>
+                <span>Live-match analytics</span>
+              </div>
             </div>
-            <span class="chip-soft">Emotion Index module</span>
+            <div class="hero-cta-row">
+              <button class="btn-primary">Explore BetSense AI Suite</button>
+              <button class="btn-outline">Talk to the team ↗</button>
+            </div>
+            <div class="hero-footnote">
+              Built to show investors &amp; buyers your unique capabilities in a single page.
+            </div>
           </div>
 
-          <div class="card-body">
-            <label class="field-label" for="emotion-scenario">
-              1. Describe the scenario
-            </label>
+          <div class="hero-right">
+            <div class="hero-card">
+              <div class="hero-card-header">
+                <div>
+                  <div class="hero-card-title">BetSense Engine – live edge snapshot</div>
+                  <div style="font-size:0.75rem;color:var(--text-soft);">
+                    Demo: Premier league match, minute 72, home pressure building.
+                  </div>
+                </div>
+                <div class="hero-card-tag">Live match view</div>
+              </div>
+              <div class="hero-metrics">
+                <div class="metric">
+                  <div class="metric-label">Model win % (home)</div>
+                  <div class="metric-value">62%</div>
+                  <div class="metric-pill">
+                    ▲ 10 pts edge
+                  </div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">Market price</div>
+                  <div class="metric-value">1.85 &rarr; 1.70</div>
+                  <div class="metric-pill">
+                    ▲ steam move
+                  </div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">Emotion Index</div>
+                  <div class="metric-value">+0.76</div>
+                  <div class="metric-pill negative">
+                    retail chasing
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EMOTION ENGINE SECTION -->
+        <section id="emotion" class="section">
+          <div class="section-header">
+            <div class="section-kicker">Emotion Engine – Quick &amp; Deep</div>
+            <h2 class="section-title">Turn match chaos into a narrative your traders and investors can actually use.</h2>
+            <p class="section-body">
+              Emotion Engine ingests live stats, odds and behavioural signals to describe what the market is really
+              reacting to. Operators can toggle between a quick pulse for trading floors, or a deeper narrative that is
+              investor-ready.
+            </p>
+            <div class="section-tags">
+              <div class="section-tag">Live-match comms</div>
+              <div class="section-tag">Edge explanation</div>
+              <div class="section-tag">Behavioural signals</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-row">
+              <div class="card-title">Emotion Engine demo</div>
+              <div class="pill-soft">Front-end demo – connects to BetSense Engine API in production</div>
+            </div>
+
             <textarea
-              id="emotion-scenario"
-              class="textarea"
-              placeholder="Derby match, late goal for home side, big odds move from 2.40 to 1.70"
-            ></textarea>
+              id="emotionScenario"
+              class="scenario-input"
+              placeholder="Type a short description of the scenario you want to analyse. For example: Derby match, late goal for home side, odds move from 2.40 to 1.70."
+            >Derby match, late goal for home side, big odds move from 2.40 to 1.70.</textarea>
 
-            <p class="small-label">
-              2. Choose analysis mode
-            </p>
-            <div class="button-row">
-              <button class="btn btn-toggle active" id="btn-quick-emotion">
-                Quick Emotion
-              </button>
-              <button class="btn btn-toggle" id="btn-deep-emotion">
-                Deep Emotion
-              </button>
+            <div class="mode-toggle-row">
+              <button class="mode-btn active" data-mode="quick" id="quickEmotionBtn">Quick Emotion</button>
+              <button class="mode-btn" data-mode="deep" id="deepEmotionBtn">Deep Emotion</button>
+            </div>
+            <div class="mode-caption">
+              Quick = fast pulse, ideal for trading chat. Deep = richer narrative, ideal for reports &amp; investors.
             </div>
 
-            <div class="output-box" id="emotion-output">
-              <strong>Waiting for input…</strong><br />
-              Type a short scenario above and choose Quick or Deep to see how Emotion Engine might describe the situation for trading, marketing or investors.
+            <div id="emotionOutput" class="ai-output">
+              Waiting for input…
             </div>
           </div>
-        </article>
+        </section>
 
-        <!-- Probability Timeline -->
-        <article class="chart-card">
-          <div class="card-header">
-            <div>
-              <h2 class="card-title">Probability Timeline – 0’ to 90’</h2>
-              <p class="card-subtitle">
-                Visualise how model win probabilities evolve through key match states – ideal for trading and investor decks.
-              </p>
-            </div>
-            <span class="chip-soft">BetSense Engine</span>
-          </div>
-
-          <div class="scenario-tabs">
-            <button class="scenario-tab active" data-scenario="balanced">
-              Balanced opener
-            </button>
-            <button class="scenario-tab" data-scenario="home">
-              Home pressure
-            </button>
-            <button class="scenario-tab" data-scenario="away">
-              Away comeback
-            </button>
-          </div>
-
-          <div class="chart-wrapper">
-            <div class="chart-inner">
-              <canvas id="timeline-chart"></canvas>
-            </div>
-            <div class="chart-legend-soft">
-              <span class="legend-item">
-                <span class="legend-dot" style="background:#31e2b2;"></span>
-                Home win %
-              </span>
-              <span class="legend-item">
-                <span class="legend-dot" style="background:#7f5dff;"></span>
-                Draw %
-              </span>
-              <span class="legend-item">
-                <span class="legend-dot" style="background:#ff9b5a;"></span>
-                Away win %
-              </span>
-            </div>
-            <p class="mode-caption" id="timeline-caption">
-              Mode: Balanced opener – early swings are modest, market still respects all three outcomes.
+        <!-- TIMELINE SECTION -->
+        <section id="timeline" class="section">
+          <div class="section-header">
+            <div class="section-kicker">Probability Timeline</div>
+            <h2 class="section-title">Show how live probabilities evolve from minute 0 to 90.</h2>
+            <p class="section-body">
+              Timeline gives investors a clean view of where your model agreed with the market – and where it didn’t.
+              Switch between scenarios to highlight different stories in the same match.
             </p>
           </div>
-        </article>
+
+          <div class="card">
+            <div class="timeline-shell">
+              <div class="timeline-tabs">
+                <button class="timeline-tab active" data-scenario="balanced">Balanced opener</button>
+                <button class="timeline-tab" data-scenario="homePressure">Home pressure</button>
+                <button class="timeline-tab" data-scenario="awayComeback">Away comeback</button>
+              </div>
+
+              <div class="chart-frame">
+                <div class="chart-meta">
+                  <div>Model win % vs minute</div>
+                  <div class="chart-legend">
+                    <span class="legend-item">
+                      <span class="legend-swatch"></span> Home win %
+                    </span>
+                    <span class="legend-item">
+                      <span class="legend-swatch draw"></span> Draw %
+                    </span>
+                    <span class="legend-item">
+                      <span class="legend-swatch away"></span> Away win %
+                    </span>
+                  </div>
+                </div>
+
+                <div class="chart-svg-wrapper">
+                  <svg
+                    id="timelineChart"
+                    class="chart-svg"
+                    viewBox="0 0 100 60"
+                    preserveAspectRatio="none"
+                  >
+                    <!-- grid lines -->
+                    <g stroke="rgba(148,163,184,0.4)" stroke-width="0.2">
+                      <line x1="0" y1="10" x2="100" y2="10"></line>
+                      <line x1="0" y1="20" x2="100" y2="20"></line>
+                      <line x1="0" y1="30" x2="100" y2="30"></line>
+                      <line x1="0" y1="40" x2="100" y2="40"></line>
+                      <line x1="0" y1="50" x2="100" y2="50"></line>
+                    </g>
+                    <!-- series -->
+                    <polyline id="homeLine" fill="none" stroke="#38f2c6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <polyline id="drawLine" fill="none" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <polyline id="awayLine" fill="none" stroke="#f97316" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  </svg>
+                </div>
+
+                <div class="chart-x-labels">
+                  <span>0'</span>
+                  <span>15'</span>
+                  <span>30'</span>
+                  <span>45'</span>
+                  <span>60'</span>
+                  <span>75'</span>
+                  <span>90'</span>
+                </div>
+
+                <div class="chart-note" id="timelineNote">
+                  Mode: Balanced opener – early swings are modest, market still respects all three outcomes.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- REPORTS SECTION -->
+        <section id="reports" class="section">
+          <div class="section-header">
+            <div class="section-kicker">AI Match Report – Simple &amp; Full</div>
+            <h2 class="section-title">Generate investor-ready or operator-ready summaries from the same scenario.</h2>
+            <p class="section-body">
+              Use the same match context from Emotion Engine, then export either a one-page view for management or a
+              multi-section report for investors and trading leadership.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-header-row">
+              <div class="card-title">Report builder demo</div>
+              <div class="pill-soft">Structure &amp; language only – PDF export connects to your stack.</div>
+            </div>
+
+            <div style="margin-bottom:6px;font-size:0.8rem;color:var(--text-muted);">
+              1. Define the report focus
+            </div>
+            <textarea
+              id="reportScenario"
+              class="scenario-input"
+              placeholder="Optional: refine the scenario for the report (league, scoreline, odds move, key events)…"
+            >Derby match, late goal for home side, odds move from 2.40 to 1.70.</textarea>
+
+            <div style="margin-top:6px;font-size:0.8rem;color:var(--text-muted);">
+              2. Choose report depth
+            </div>
+
+            <div class="report-mode-row">
+              <button class="report-btn active" data-report="simple" id="simpleReportBtn">Simple report – 1-page summary</button>
+              <button class="report-btn" data-report="full" id="fullReportBtn">Full report – investor-level detail</button>
+            </div>
+
+            <div class="report-output" id="reportOutput">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT / FOOTER SECTION -->
+        <section id="contact" class="section" style="margin-top:30px;">
+          <div class="section-header">
+            <div class="section-kicker">Contact &amp; pilots</div>
+            <h2 class="section-title">Built for pilots, then scale.</h2>
+            <p class="section-body">
+              BetSense AI Suite is designed to plug into existing trading tools, risk systems and back-office reporting.
+              Use this one-page interface to secure pilots with operators, data buyers or investors – then unlock the
+              full API stack.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="contact-grid">
+              <div>
+                <div style="font-size:0.86rem;color:var(--text-soft);margin-bottom:6px;">
+                  Direct lines into the same operations desk:
+                </div>
+                <div class="contact-list">
+                  <div class="contact-item">
+                    <span class="contact-label">Support &amp; operations</span>
+                    <span class="contact-email">support@betsense.casino</span>
+                  </div>
+                  <div class="contact-item">
+                    <span class="contact-label">General info &amp; partnerships</span>
+                    <span class="contact-email">info@betsense.casino</span>
+                  </div>
+                  <div class="contact-item">
+                    <span class="contact-label">Admin &amp; compliance</span>
+                    <span class="contact-email">admin@betsense.casino</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="contact-note">
+                  On your side, you can route all three inboxes into a single operational mailbox – investors still see
+                  clean, role-based contacts on the site, while your team handles everything from one place.
+                </div>
+                <div class="contact-note" style="margin-top:10px;">
+                  Ready for live integration? Swap these demos for your real feeds:
+                  BetSense Engine, HBboard, Emotion Index and LiveApe.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
-    </section>
-
-    <!-- MATCH REPORTS -->
-    <section style="margin-top:22px;">
-      <article class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">AI Match Report – Simple &amp; Full</h2>
-            <p class="card-subtitle">
-              Generate operator-ready or investor-ready match summaries in one click. Re-use the Emotion Engine scenario or define a new focus.
-            </p>
-          </div>
-          <span class="chip-soft">Export-ready templates</span>
-        </div>
-
-        <div class="card-body">
-          <label class="field-label" for="report-scenario">
-            1. Define the report focus
-          </label>
-          <textarea
-            id="report-scenario"
-            class="textarea"
-            placeholder="Optional: refine the scenario you want in the report (league, scoreline, odds move, key events)…"
-          ></textarea>
-
-          <p class="small-label">
-            2. Choose report depth
-          </p>
-          <div class="button-row">
-            <button class="btn btn-toggle active" id="btn-simple-report">
-              Simple report – 1-page summary
-            </button>
-            <button class="btn btn-toggle" id="btn-full-report">
-              Full report – multi-section investor view
-            </button>
-          </div>
-
-          <div class="output-box" id="report-output">
-            <strong>Report preview</strong><br />
-            Waiting for a report type… choose Simple or Full to see how an AI-generated report might read for your scenario.
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <article class="contact-card">
-        <div class="card-header" style="margin-bottom:6px;">
-          <div>
-            <h2 class="card-title">Talk to the BetSense team</h2>
-            <p class="card-subtitle">
-              Ready to discuss pilots, custom feeds or white-label options? Reach the right contact in one step.
-            </p>
-          </div>
-          <span class="chip-soft">Contact</span>
-        </div>
-
-        <div class="contact-grid">
-          <div>
-            <ul class="contact-list">
-              <li>
-                <span class="label">Support</span>
-                support@betsense.casino
-              </li>
-              <li>
-                <span class="label">Product &amp; sales</span>
-                info@betsense.casino
-              </li>
-              <li>
-                <span class="label">Partnerships</span>
-                admin@betsense.casino
-              </li>
-            </ul>
-          </div>
-          <div class="contact-cta">
-            Use these addresses to route questions directly to support, product or management.  
-            For investor demos we recommend a short call to align on leagues, feeds and timelines.
-            <br />
-            <button type="button" onclick="window.location.href='mailto:info@betsense.casino?subject=BetSense%20AI%20Suite%20enquiry';">
-              Book a call with BetSense
-            </button>
-          </div>
-        </div>
-      </article>
-    </section>
+    </main>
 
     <footer>
-      <span>BetSense AI Suite – demo interface. Copy and flows for illustration only.</span>
-      <span>Built for pilots first, then scale.</span>
+      <div class="footer-inner">
+        <span>© BetSense AI Suite – demo interface for illustration only.</span>
+        <span>Roadmap: full multi-language UI &amp; operator tooling.</span>
+      </div>
     </footer>
-  </main>
+  </div>
 
-  <!-- SCRIPTS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script>
-    // LANGUAGE SELECTOR (فقط پیام کوچک برای الان)
-    const langSelect = document.getElementById('language-select');
-    langSelect.addEventListener('change', () => {
-      if (langSelect.value === 'fa') {
-        alert('Persian (فارسی) UI is on the roadmap – main demo remains in English for now.');
+    document.addEventListener("DOMContentLoaded", function () {
+      /* LANGUAGE SELECTOR (simple demo, اصلی سایت انگلیسی می‌مونه) */
+      const langSelect = document.getElementById("languageSelect");
+      const heroLead = document.getElementById("heroLead");
+
+      const heroLeadTranslations = {
+        en: "BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into one operator-ready platform – built to show investors, buyers and partners what your stack can already do today.",
+        fa: "بت‌سِنس AI سوئیت، BetSense Engine، HBboard، Emotion Index و LiveApe را در یک پلتفرم واحد و آمادهٔ اپراتور ادغام می‌کند – برای این که به سرمایه‌گذاران و خریداران نشان دهید استک شما همین امروز چه کارهایی می‌تواند انجام دهد.",
+        de: "Die BetSense AI Suite verbindet BetSense Engine, HBboard, Emotion Index und LiveApe zu einer einzigen, operator-fertigen Plattform – ideal, um Investoren und Partnern Ihre bestehenden Fähigkeiten zu zeigen.",
+        fr: "BetSense AI Suite connecte BetSense Engine, HBboard, Emotion Index et LiveApe dans une seule plateforme prête pour les opérateurs – conçue pour montrer à vos investisseurs et partenaires ce que votre stack fait déjà.",
+        es: "BetSense AI Suite conecta BetSense Engine, HBboard, Emotion Index y LiveApe en una única plataforma lista para operadores, diseñada para mostrar a inversores y socios lo que su stack ya puede hacer hoy."
+        // سایر زبان‌ها فعلاً از متن انگلیسی استفاده می‌کنند
+      };
+
+      function updateLanguage() {
+        const value = langSelect.value;
+        heroLead.textContent = heroLeadTranslations[value] || heroLeadTranslations.en;
       }
-    });
 
-    // EMOTION ENGINE DEMO
-    const emotionScenario = document.getElementById('emotion-scenario');
-    const emotionOutput = document.getElementById('emotion-output');
-    const btnQuickEmotion = document.getElementById('btn-quick-emotion');
-    const btnDeepEmotion = document.getElementById('btn-deep-emotion');
+      langSelect.addEventListener("change", updateLanguage);
 
-    function setEmotionMode(mode) {
-      btnQuickEmotion.classList.toggle('active', mode === 'quick');
-      btnDeepEmotion.classList.toggle('active', mode === 'deep');
+      /* EMOTION ENGINE DEMO */
 
-      const scenario =
-        (emotionScenario.value && emotionScenario.value.trim()) ||
-        'Derby match, late goal for home side, big odds move from 2.40 to 1.70';
+      const scenarioInput = document.getElementById("emotionScenario");
+      const quickBtn = document.getElementById("quickEmotionBtn");
+      const deepBtn = document.getElementById("deepEmotionBtn");
+      const emotionOutput = document.getElementById("emotionOutput");
 
-      if (mode === 'quick') {
-        emotionOutput.innerHTML =
-          '<strong>Quick Emotion snapshot</strong><br>' +
-          '• Scenario: ' + scenario + '<br>' +
-          '• Mood shift: cautious optimism → confident momentum on home side.<br>' +
-          '• Trading signal: price move is supported by volume and shot profile, not just retail noise.<br>' +
-          'Use this view for live trading and fast comms with non-technical teams.';
-      } else {
-        emotionOutput.innerHTML =
-          '<strong>Deep Emotion narrative</strong><br>' +
-          'Scenario: ' + scenario + '<br><br>' +
-          'Emotion Engine stitches behaviour, odds and tempo into a single storyline. ' +
-          'It highlights where pressure truly flips the market – showing when traders can lean into momentum, ' +
-          'and when the move is driven by fragile sentiment.<br><br>' +
-          'Use this narrative in investor decks, operator reviews or long-form trading notes.';
-      }
-    }
-
-    btnQuickEmotion.addEventListener('click', () => setEmotionMode('quick'));
-    btnDeepEmotion.addEventListener('click', () => setEmotionMode('deep'));
-    setEmotionMode('quick'); // default
-
-    // TIMELINE CHART
-    const minutes = [0, 15, 30, 45, 60, 75, 90];
-
-    const scenarios = {
-      balanced: {
-        label: 'Balanced opener',
-        caption:
-          'Mode: Balanced opener – early swings are modest, market still respects all three outcomes.',
-        home: [0.40, 0.45, 0.50, 0.56, 0.54, 0.59, 0.63],
-        draw: [0.34, 0.33, 0.31, 0.29, 0.27, 0.25, 0.22],
-        away: [0.26, 0.22, 0.19, 0.15, 0.19, 0.16, 0.15]
-      },
-      home: {
-        label: 'Home pressure',
-        caption:
-          'Mode: Home pressure – sustained attacks push the home curve higher while away drifts.',
-        home: [0.40, 0.48, 0.56, 0.61, 0.65, 0.69, 0.73],
-        draw: [0.32, 0.29, 0.25, 0.22, 0.19, 0.17, 0.15],
-        away: [0.28, 0.23, 0.19, 0.17, 0.16, 0.14, 0.12]
-      },
-      away: {
-        label: 'Away comeback',
-        caption:
-          'Mode: Away comeback – home curve stalls as a late surge and goal flip the live picture.',
-        home: [0.55, 0.52, 0.48, 0.42, 0.38, 0.34, 0.30],
-        draw: [0.27, 0.28, 0.29, 0.30, 0.28, 0.27, 0.24],
-        away: [0.18, 0.20, 0.23, 0.28, 0.34, 0.39, 0.46]
-      }
-    };
-
-    const ctx = document.getElementById('timeline-chart').getContext('2d');
-
-    let timelineChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: minutes,
-        datasets: [
-          {
-            label: 'Home win %',
-            data: scenarios.balanced.home,
-            borderColor: '#31e2b2',
-            backgroundColor: 'rgba(49,226,178,0.15)',
-            borderWidth: 2,
-            tension: 0.35,
-            fill: true
-          },
-          {
-            label: 'Draw %',
-            data: scenarios.balanced.draw,
-            borderColor: '#7f5dff',
-            backgroundColor: 'rgba(127,93,255,0.15)',
-            borderWidth: 2,
-            tension: 0.35,
-            fill: true
-          },
-          {
-            label: 'Away win %',
-            data: scenarios.balanced.away,
-            borderColor: '#ff9b5a',
-            backgroundColor: 'rgba(255,155,90,0.18)',
-            borderWidth: 2,
-            tension: 0.35,
-            fill: true
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            ticks: {
-              color: '#9aa4d4',
-              callback: (val) => minutes[val] + '’'
-            },
-            grid: {
-              color: 'rgba(154,164,212,0.12)'
-            }
-          },
-          y: {
-            min: 0,
-            max: 1,
-            ticks: {
-              stepSize: 0.2,
-              color: '#9aa4d4',
-              callback: (val) => Math.round(val * 100) + '%'
-            },
-            grid: {
-              color: 'rgba(154,164,212,0.08)'
-            }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => ctx.dataset.label + ': ' + Math.round(ctx.parsed.y * 100) + '%'
-            }
-          }
+      function renderEmotion(mode) {
+        const scenario = scenarioInput.value.trim() || "Derby match, late goal for home side, odds move from 2.40 to 1.70.";
+        if (mode === "quick") {
+          emotionOutput.textContent =
+            "Quick pulse: Market mood flips after the key event. Traders focus on price action, not the narrative – BetSense flags a clean break in probability and confirms sentiment turning decisively towards the home side. Scenario: " +
+            scenario;
+        } else {
+          emotionOutput.textContent =
+            "Deep narrative: Before the key event, probabilities for home, draw and away trade in a tight band, with no single outcome dominating. The late goal introduces a structural break – home win accelerates, draw collapses and away drifts. Emotion Index shows a shift from cautious optimism to confident momentum on the home side, while social feeds amplify the move without leading it. BetSense explains this pattern to trading desks and investors in one language. Scenario: " +
+            scenario;
         }
       }
-    });
 
-    const captionEl = document.getElementById('timeline-caption');
-    const scenarioTabs = document.querySelectorAll('.scenario-tab');
-
-    function setScenario(key) {
-      const s = scenarios[key];
-      timelineChart.data.datasets[0].data = s.home;
-      timelineChart.data.datasets[1].data = s.draw;
-      timelineChart.data.datasets[2].data = s.away;
-      timelineChart.update();
-
-      captionEl.textContent = s.caption;
-      scenarioTabs.forEach((tab) => {
-        tab.classList.toggle('active', tab.dataset.scenario === key);
+      quickBtn.addEventListener("click", function () {
+        quickBtn.classList.add("active");
+        deepBtn.classList.remove("active");
+        renderEmotion("quick");
       });
-    }
 
-    scenarioTabs.forEach((tab) => {
-      tab.addEventListener('click', () => setScenario(tab.dataset.scenario));
-    });
+      deepBtn.addEventListener("click", function () {
+        deepBtn.classList.add("active");
+        quickBtn.classList.remove("active");
+        renderEmotion("deep");
+      });
 
-    // MATCH REPORT DEMO
-    const reportScenario = document.getElementById('report-scenario');
-    const reportOutput = document.getElementById('report-output');
-    const btnSimpleReport = document.getElementById('btn-simple-report');
-    const btnFullReport = document.getElementById('btn-full-report');
+      scenarioInput.addEventListener("input", function () {
+        const activeMode = quickBtn.classList.contains("active") ? "quick" : "deep";
+        renderEmotion(activeMode);
+      });
 
-    function setReportMode(mode) {
-      btnSimpleReport.classList.toggle('active', mode === 'simple');
-      btnFullReport.classList.toggle('active', mode === 'full');
+      /* TIMELINE DEMO */
 
-      const scenario =
-        (reportScenario.value && reportScenario.value.trim()) ||
-        (emotionScenario.value && emotionScenario.value.trim()) ||
-        'Derby match, late goal for home side, odds move from 2.40 to 1.70.';
+      const scenarios = {
+        balanced: {
+          note: "Mode: Balanced opener – early swings are modest, market still respects all three outcomes.",
+          home: [40, 45, 50, 55, 58, 60, 63],
+          draw: [35, 33, 32, 30, 28, 26, 24],
+          away: [25, 22, 18, 15, 14, 13, 13]
+        },
+        homePressure: {
+          note: "Mode: Home pressure – sustained attacks push the home curve higher while away drifts.",
+          home: [40, 48, 56, 60, 64, 67, 72],
+          draw: [33, 30, 27, 24, 21, 19, 17],
+          away: [27, 22, 17, 16, 15, 14, 11]
+        },
+        awayComeback: {
+          note: "Mode: Away comeback – late pressure pulls home curve down and re-prices risk.",
+          home: [55, 57, 58, 55, 50, 45, 42],
+          draw: [28, 27, 26, 28, 29, 30, 31],
+          away: [17, 16, 16, 17, 21, 25, 27]
+        }
+      };
 
-      if (mode === 'simple') {
-        reportOutput.innerHTML =
-          '<strong>SIMPLE MATCH REPORT</strong><br><br>' +
-          'Key scenario: ' + scenario + '<br><br>' +
-          '<strong>Headline:</strong><br>' +
-          'Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.<br><br>' +
-          '<strong>Trading summary:</strong><br>' +
-          '• BetSense Engine highlights a clear break in probability trend after the key event.<br>' +
-          '• Price move is supported by volume and shot profile, not just retail noise.<br>' +
-          '• Risk position is comfortable but requires monitoring if a second goal arrives.<br><br>' +
-          'Use this view for fast communication with management or non-technical stakeholders.';
-      } else {
-        reportOutput.innerHTML =
-          '<strong>FULL MATCH REPORT – INVESTOR VIEW</strong><br><br>' +
-          '<strong>Scenario overview</strong><br>' +
-          scenario + '<br><br>' +
-          '1. <strong>Market structure &amp; price action</strong><br>' +
-          'BetSense Engine tracked live probabilities from kick-off to full time. The late goal acts as an inflection point: ' +
-          'home probability accelerates, draw collapses and away drifts, mirroring the move in quoted odds.<br><br>' +
-          '2. <strong>Emotion Index &amp; behavioural signals</strong><br>' +
-          'Emotion Index shows a clean shift from cautious optimism to confident momentum on the home side. ' +
-          'LiveApe confirms a tactical change on the pitch – higher press, more shots and visible energy in the stadium. ' +
-          'Social feeds amplify the move but do not lead it, which is typically a healthy pattern for trading desks.<br><br>' +
-          '3. <strong>Risk, PnL and exposure notes</strong><br>' +
-          '• Concentration risk now sits inside the home win bucket after the move in price.<br>' +
-          '• Draw and away positions provide a partial hedge but may need re-balancing if a second goal lands.<br>' +
-          '• From an investor standpoint this fixture is a clean case study in how BetSense AI turns noisy live data into a structured, explainable narrative.<br><br>' +
-          '4. <strong>Next-step recommendations</strong><br>' +
-          'For operators: integrate this report template into post-match reviews for trading and management. ' +
-          'For investors: use similar case studies to understand win-probability edges and capital efficiency across the portfolio.';
+      const minutes = [0, 15, 30, 45, 60, 75, 90];
+      const homeLine = document.getElementById("homeLine");
+      const drawLine = document.getElementById("drawLine");
+      const awayLine = document.getElementById("awayLine");
+      const timelineNote = document.getElementById("timelineNote");
+      const timelineTabs = document.querySelectorAll(".timeline-tab");
+
+      function buildPolyline(points) {
+        const coords = [];
+        const n = points.length;
+        for (let i = 0; i < n; i++) {
+          const x = (i / (n - 1)) * 100;
+          const prob = points[i];
+          const y = 55 - (prob / 100) * 40; // invert + scale into [15,55]
+          coords.push(x.toFixed(2) + "," + y.toFixed(2));
+        }
+        return coords.join(" ");
       }
-    }
 
-    btnSimpleReport.addEventListener('click', () => setReportMode('simple'));
-    btnFullReport.addEventListener('click', () => setReportMode('full'));
-    setReportMode('simple'); // default
+      function renderTimeline(scenarioKey) {
+        const sc = scenarios[scenarioKey] || scenarios.balanced;
+        homeLine.setAttribute("points", buildPolyline(sc.home));
+        drawLine.setAttribute("points", buildPolyline(sc.draw));
+        awayLine.setAttribute("points", buildPolyline(sc.away));
+        timelineNote.textContent = sc.note;
+      }
+
+      timelineTabs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          timelineTabs.forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          const key = btn.getAttribute("data-scenario");
+          renderTimeline(key);
+        });
+      });
+
+      /* REPORTS DEMO */
+
+      const reportScenarioInput = document.getElementById("reportScenario");
+      const simpleReportBtn = document.getElementById("simpleReportBtn");
+      const fullReportBtn = document.getElementById("fullReportBtn");
+      const reportOutput = document.getElementById("reportOutput");
+
+      function renderReport(mode) {
+        const baseScenario =
+          reportScenarioInput.value.trim() || "Derby match, late goal for home side, odds move from 2.40 to 1.70.";
+        if (mode === "simple") {
+          reportOutput.innerHTML =
+            '<h4>SIMPLE MATCH REPORT</h4>' +
+            "<p><strong>Key scenario:</strong> " +
+            baseScenario +
+            "</p>" +
+            "<p><strong>Headline:</strong> Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.</p>" +
+            "<p><strong>Trading summary:</strong></p>" +
+            "<ul>" +
+            "<li>BetSense Engine highlights a clear break in the probability trend after the key event.</li>" +
+            "<li>Price move is supported by volume, not just retail noise.</li>" +
+            "<li>Risk position is comfortable but requires monitoring if a second goal arrives.</li>" +
+            "</ul>" +
+            "<p>Use this view for fast communication with management or non-technical stakeholders.</p>";
+        } else {
+          reportOutput.innerHTML =
+            '<h4>FULL MATCH REPORT – INVESTOR VIEW</h4>' +
+            "<p><strong>Scenario overview:</strong> " +
+            baseScenario +
+            ".</p>" +
+            "<p><strong>1. Market structure &amp; price action</strong><br>" +
+            "BetSense Engine tracked live probabilities from kick-off to full time. Before the key event, home win sat in a relatively tight band, with draw and away priced fairly. The late goal acts as an inflection point: home probability accelerates, draw collapses and away drifts, mirroring the move in quoted odds.</p>" +
+            "<p><strong>2. Emotion Index &amp; behavioural signals</strong><br>" +
+            "Emotion Index shows a clean shift from cautious optimism to confident momentum on the home side. LiveApe confirms a tactical change on the pitch – higher press, more shots and visible energy in the stadium. Social feeds amplify the move but do not lead it, which is typically a healthy pattern for trading desks.</p>" +
+            "<p><strong>3. Risk, PnL and exposure notes</strong></p>" +
+            "<ul>" +
+            "<li>Concentration risk now sits on the home win bucket after the move in price.</li>" +
+            "<li>Draw and away positions provide partial hedge but may need re-balancing if a second goal lands.</li>" +
+            "<li>From an investor standpoint this fixture is a strong case study in how BetSense AI turns chaotic live data into a structured, explainable narrative.</li>" +
+            "</ul>" +
+            "<p><strong>4. Next-step recommendations</strong><br>" +
+            "For operators: integrate this template directly into trading and risk reports. For investors: treat this as a reference pattern for future pilots and data-licensing conversations.</p>";
+        }
+      }
+
+      simpleReportBtn.addEventListener("click", function () {
+        simpleReportBtn.classList.add("active");
+        fullReportBtn.classList.remove("active");
+        renderReport("simple");
+      });
+
+      fullReportBtn.addEventListener("click", function () {
+        fullReportBtn.classList.add("active");
+        simpleReportBtn.classList.remove("active");
+        renderReport("full");
+      });
+
+      reportScenarioInput.addEventListener("input", function () {
+        const mode = fullReportBtn.classList.contains("active") ? "full" : "simple";
+        renderReport(mode);
+      });
+
+      /* INITIAL RENDERS */
+      updateLanguage();
+      renderEmotion("quick");
+      renderTimeline("balanced");
+      renderReport("simple");
+    });
   </script>
 </body>
 </html>
