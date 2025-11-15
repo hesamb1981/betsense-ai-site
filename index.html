@@ -1,1558 +1,378 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>BetSense AI Suite – Unified Sports Intelligence Stack</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    :root {
-      --bg-main: #020617;
-      --bg-elevated: #02091b;
-      --bg-card: #020617;
-      --bg-chip: #0f172a;
-      --bg-chip-soft: #111827;
-      --grad-primary: linear-gradient(135deg,#38bdf8,#a855f7);
-      --grad-secondary: linear-gradient(135deg,#22c55e,#0ea5e9);
-      --border-soft: rgba(148,163,184,0.35);
-      --border-strong: rgba(148,163,184,0.6);
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --accent: #22c55e;
-      --accent-soft: #1d4ed8;
-      --danger: #f97373;
-      --success: #4ade80;
-      --shadow-soft: 0 18px 60px rgba(15,23,42,0.85);
-      --radius-card: 26px;
-      --radius-chip: 999px;
-      --radius-inner: 18px;
-      --transition-fast: 0.18s ease-out;
-      --transition-med: 0.25s ease-out;
-      --max-width: 1120px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Betsense AI – Emotion Engine</title>
+
+<style>
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0f0f0f;
+  font-family: "Inter", sans-serif;
+  color: white;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* TOP BAR */
+.topbar {
+  width: 100%;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #080808;
+  border-bottom: 1px solid #222;
+}
+
+/* LOGO SMALL */
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #f5f5f5;
+}
+
+/* LANGUAGE SELECTOR */
+.lang-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lang-select {
+  background: #1b1b1b;
+  color: white;
+  border: 1px solid #333;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* MAIN CONTAINER */
+.container {
+  width: 100%;
+  padding: 25px;
+}
+
+/* SECTION TITLES */
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/* CARD */
+.card {
+  width: 100%;
+  background: #141414;
+  border: 1px solid #1f1f1f;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 22px;
+  box-shadow: 0 0 18px rgba(255, 180, 60, 0.04);
+}
+
+/* BUTTONS */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 10px 16px;
+  background: #222;
+  border: 1px solid #333;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: #333;
+  border-color: #555;
+}
+
+/* CHART BOX */
+.chart-box {
+  width: 100%;
+  height: 240px;
+  background: #101010;
+  border: 1px solid #1d1d1d;
+  border-radius: 12px;
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* -------------------- LIVE API BLOCK -------------------- */
+
+.live-box {
+  width: 100%;
+  background: #161616;
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid #262626;
+  margin-top: 24px;
+}
+
+.live-input {
+  width: 100%;
+  padding: 12px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.live-btn {
+  background: #ffb444;
+  border: none;
+  padding: 12px 18px;
+  color: black;
+  font-weight: 700;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.live-btn:hover {
+  background: #ffca6b;
+}
+
+.live-status {
+  margin-top: 14px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+</style>
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top,#02091b 0,#020617 45%,#020617 100%);
-      color: var(--text-main);
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-      overflow-x: hidden;
-    }
-
-    body.bet-fa {
-      direction: rtl;
-      font-family: system-ui,-apple-system,"SF Pro Text","Segoe UI","Vazirmatn","IRANSans",sans-serif;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .page-shell {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 22px 16px 72px;
-    }
-
-    @media (min-width: 768px) {
-      .page-shell {
-        padding: 28px 24px 88px;
-      }
-    }
-
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .brand-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 20% 0,#4ade80,#22d3ee 36%,#a855f7 72%,#0f172a 100%);
-      box-shadow: 0 0 30px rgba(56,189,248,0.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f9fafb;
-      font-weight: 700;
-      font-size: 16px;
-    }
-
-    .brand-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-title {
-      font-weight: 650;
-      letter-spacing: 0.02em;
-      font-size: 17px;
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .lang-wrapper {
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .lang-toggle {
-      border-radius: 999px;
-      padding: 7px 13px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: radial-gradient(circle at top left,#02091b,#020617 55%);
-      color: var(--text-main);
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      cursor: pointer;
-      box-shadow: 0 8px 26px rgba(15,23,42,0.7);
-      backdrop-filter: blur(10px);
-    }
-
-    .lang-toggle span.dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 0,#38bdf8,#a855f7 70%);
-      display: inline-block;
-    }
-
-    .lang-toggle span.label {
-      white-space: nowrap;
-    }
-
-    .lang-toggle span.chevron {
-      font-size: 9px;
-      opacity: 0.7;
-    }
-
-    .lang-menu {
-      position: absolute;
-      right: 0;
-      top: 34px;
-      width: 220px;
-      max-height: 280px;
-      overflow-y: auto;
-      background: #020617;
-      border-radius: 18px;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      padding: 6px;
-      display: none;
-      z-index: 20;
-    }
-
-    .lang-menu.open {
-      display: block;
-    }
-
-    .lang-option {
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      cursor: pointer;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .lang-option:hover {
-      background: #02091b;
-      color: var(--text-main);
-    }
-
-    .lang-option.active {
-      background: radial-gradient(circle at left,#38bdf8,#a855f7);
-      color: #f9fafb;
-    }
-
-    .hero {
-      margin-bottom: 28px;
-    }
-
-    .hero-tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      border-radius: var(--radius-chip);
-      background: #02091b;
-      border: 1px solid rgba(148,163,184,0.45);
-      padding: 4px 11px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .chip span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34,197,94,0.9);
-    }
-
-    .chip.primary {
-      background: radial-gradient(circle at left,#38bdf8,#a855f7);
-      border: none;
-      color: #f9fafb;
-      font-weight: 500;
-    }
-
-    .hero-title {
-      font-size: 28px;
-      line-height: 1.18;
-      letter-spacing: 0.01em;
-      margin: 8px 0 10px;
-    }
-
-    @media (min-width: 768px) {
-      .hero-title {
-        font-size: 32px;
-      }
-    }
-
-    .hero-sub {
-      color: var(--text-muted);
-      font-size: 13px;
-      line-height: 1.55;
-      max-width: 640px;
-    }
-
-    .hero-pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 16px 0 22px;
-    }
-
-    .pill {
-      border-radius: var(--radius-chip);
-      border: 1px solid rgba(148,163,184,0.4);
-      font-size: 11px;
-      padding: 4px 11px;
-      color: var(--text-muted);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn-primary {
-      border-radius: var(--radius-chip);
-      padding: 8px 18px;
-      border: none;
-      background-image: var(--grad-primary);
-      color: #f9fafb;
-      font-size: 13px;
-      font-weight: 550;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 14px 40px rgba(56,189,248,0.65);
-    }
-
-    .btn-secondary {
-      border-radius: var(--radius-chip);
-      padding: 7px 15px;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: #020617;
-      color: var(--text-main);
-      font-size: 12px;
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .btn-secondary span.link {
-      text-decoration: underline;
-      text-decoration-style: dotted;
-      text-underline-offset: 3px;
-    }
-
-    .section {
-      margin-top: 26px;
-    }
-
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .section-title {
-      font-size: 17px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .section-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      max-width: 620px;
-    }
-
-    .card {
-      background: radial-gradient(circle at top left,#02091b,#020617 52%);
-      border-radius: var(--radius-card);
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      padding: 14px 14px 16px;
-      margin-bottom: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card + .card {
-      margin-top: 12px;
-    }
-
-    @media (min-width: 840px) {
-      .grid-2 {
-        display: grid;
-        grid-template-columns: minmax(0,1.02fr) minmax(0,0.96fr);
-        gap: 16px;
-      }
-    }
-
-    .tab-row {
-      display: inline-flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .tab-pill {
-      border-radius: var(--radius-chip);
-      padding: 5px 11px;
-      font-size: 11px;
-      border: 1px solid rgba(148,163,184,0.6);
-      color: var(--text-muted);
-      background: #020617;
-      cursor: pointer;
-    }
-
-    .tab-pill.active {
-      background-image: var(--grad-secondary);
-      color: #f9fafb;
-      border-color: transparent;
-    }
-
-    .field-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .input-shell {
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: #020617;
-      padding: 8px 10px;
-      font-size: 12px;
-      color: var(--text-main);
-      width: 100%;
-      resize: vertical;
-      min-height: 58px;
-    }
-
-    .output-shell {
-      margin-top: 10px;
-      padding: 10px 11px;
-      border-radius: 16px;
-      border: 1px dashed rgba(148,163,184,0.4);
-      background: rgba(15,23,42,0.75);
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .output-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .chart-shell {
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.3);
-      background: radial-gradient(circle at top,#02091b,#020617);
-      padding: 10px 12px 12px;
-      margin-top: 12px;
-    }
-
-    .chart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .legend-row {
-      display: flex;
-      gap: 10px;
-      font-size: 10px;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .legend-swatch {
-      width: 10px;
-      height: 2px;
-      border-radius: 999px;
-    }
-
-    .legend-home { background: #38bdf8; }
-    .legend-draw { background: #a855f7; }
-    .legend-away { background: #fb923c; }
-
-    .chart-viewport {
-      margin-top: 6px;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(30,64,175,0.7);
-      background: radial-gradient(circle at top,#020617,#020617 55%,#020617 100%);
-      position: relative;
-    }
-
-    .chart-grid {
-      position: absolute;
-      inset: 0;
-      background-image: linear-gradient(to right,rgba(30,64,175,0.5) 1px,transparent 1px),
-                        linear-gradient(to bottom,rgba(30,64,175,0.5) 1px,transparent 1px);
-      background-size: 14% 24%;
-      opacity: 0.35;
-    }
-
-    .chart-svg {
-      display: block;
-      width: 100%;
-      height: 150px;
-    }
-
-    @media (min-width: 768px) {
-      .chart-svg {
-        height: 170px;
-      }
-    }
-
-    .chart-caption {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    .badge {
-      font-size: 10px;
-      border-radius: 999px;
-      padding: 3px 8px;
-      border: 1px solid rgba(148,163,184,0.5);
-      background: #020617;
-      color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .badge.live {
-      border-color: #22c55e;
-      color: #bbf7d0;
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34,197,94,0.9);
-    }
-
-    .api-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .btn-ghost {
-      border-radius: var(--radius-chip);
-      border: 1px solid rgba(148,163,184,0.4);
-      background: #020617;
-      color: var(--text-main);
-      padding: 5px 11px;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-
-    .api-status {
-      margin-top: 6px;
-      font-size: 11px;
-    }
-
-    .api-status.ok {
-      color: var(--success);
-    }
-    .api-status.error {
-      color: var(--danger);
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 12px;
-    }
-
-    @media (min-width: 840px) {
-      .pricing-grid {
-        grid-template-columns: repeat(3,minmax(0,1fr));
-      }
-    }
-
-    .pricing-card {
-      background: radial-gradient(circle at top left,#02091b,#020617 55%);
-      border-radius: var(--radius-card);
-      border: 1px solid var(--border-soft);
-      padding: 13px 13px 15px;
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .pricing-card.featured {
-      border-image: linear-gradient(135deg,#a855f7,#38bdf8) 1;
-      box-shadow: 0 18px 60px rgba(56,189,248,0.55);
-    }
-
-    .pricing-name {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .pricing-price {
-      font-size: 15px;
-      font-weight: 650;
-      margin-top: 4px;
-    }
-
-    .pricing-price span.per {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-
-    .pricing-meta {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .pricing-list {
-      margin: 6px 0 2px;
-      padding-left: 16px;
-      font-size: 11px;
-      color: var(--text-main);
-    }
-
-    .pricing-tag {
-      margin-top: 6px;
-      font-size: 10px;
-      border-radius: 999px;
-      padding: 3px 8px;
-      border: 1px solid rgba(148,163,184,0.4);
-      color: var(--text-muted);
-      align-self: flex-start;
-    }
-
-    .contact-card {
-      background: radial-gradient(circle at top,#02091b,#020617 60%);
-      border-radius: var(--radius-card);
-      border: 1px solid var(--border-soft);
-      padding: 14px 14px 16px;
-      box-shadow: var(--shadow-soft);
-      margin-top: 10px;
-    }
-
-    .contact-emails {
-      margin: 8px 0 10px;
-      font-size: 12px;
-    }
-
-    .contact-emails div {
-      margin-bottom: 4px;
-    }
-
-    .contact-email {
-      font-weight: 500;
-      color: #e5e7eb;
-    }
-
-    .contact-note {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    footer {
-      margin-top: 14px;
-      font-size: 11px;
-      color: var(--text-muted);
-      text-align: left;
-    }
-
-    body.bet-fa footer {
-      text-align: right;
-    }
-  </style>
 </head>
 <body>
-  <div class="page-shell" id="page">
-    <header class="top-bar">
-      <div class="brand">
-        <div class="brand-mark">BS</div>
-        <div class="brand-copy">
-          <div class="brand-title" data-i18n="brandTitle">
-            BetSense AI Suite
-          </div>
-          <div class="brand-sub" data-i18n="brandSub">
-            Unified sports intelligence stack
-          </div>
-        </div>
-      </div>
-      <div class="lang-wrapper">
-        <button class="lang-toggle" id="langToggle" type="button">
-          <span class="dot"></span>
-          <span class="label" id="langLabel">English (default)</span>
-          <span class="chevron">▾</span>
-        </button>
-        <div class="lang-menu" id="langMenu">
-          <!-- main languages first -->
-          <div class="lang-option active" data-lang="en">
-            <span>English (default)</span><span>EN</span>
-          </div>
-          <div class="lang-option" data-lang="fa">
-            <span>فارسی (Farsi)</span><span>FA</span>
-          </div>
-          <hr style="border:0;border-top:1px solid rgba(30,64,175,0.7);margin:4px 0;">
-          <div class="lang-option" data-lang="cs"><span>Čeština</span><span>CS</span></div>
-          <div class="lang-option" data-lang="ru"><span>Русский</span><span>RU</span></div>
-          <div class="lang-option" data-lang="uk"><span>Українська</span><span>UK</span></div>
-          <div class="lang-option" data-lang="ar"><span>العربية</span><span>AR</span></div>
-          <div class="lang-option" data-lang="hi"><span>हिन्दी</span><span>HI</span></div>
-          <div class="lang-option" data-lang="bn"><span>বাংলা</span><span>BN</span></div>
-          <div class="lang-option" data-lang="zh"><span>中文</span><span>ZH</span></div>
-          <div class="lang-option" data-lang="ja"><span>日本語</span><span>JA</span></div>
-          <div class="lang-option" data-lang="ko"><span>한국어</span><span>KO</span></div>
-          <div class="lang-option" data-lang="es"><span>Español</span><span>ES</span></div>
-          <div class="lang-option" data-lang="pt"><span>Português</span><span>PT</span></div>
-          <div class="lang-option" data-lang="de"><span>Deutsch</span><span>DE</span></div>
-          <div class="lang-option" data-lang="fr"><span>Français</span><span>FR</span></div>
-          <div class="lang-option" data-lang="tr"><span>Türkçe</span><span>TR</span></div>
-          <div class="lang-option" data-lang="it"><span>Italiano</span><span>IT</span></div>
-          <div class="lang-option" data-lang="nl"><span>Nederlands</span><span>NL</span></div>
-          <div class="lang-option" data-lang="sv"><span>Svenska</span><span>SV</span></div>
-          <div class="lang-option" data-lang="pl"><span>Polski</span><span>PL</span></div>
-        </div>
-      </div>
-    </header>
 
-    <main>
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero-tag-row">
-          <div class="chip primary" data-i18n="heroChipPrimary">
-            REALTIME AI for bookmakers &amp; trading desks
-          </div>
-          <div class="chip">
-            <span class="dot"></span>
-            <span data-i18n="heroChipSecondary">
-              Demo interface – copy, flows & visuals for illustration only
-            </span>
-          </div>
-        </div>
-        <h1 class="hero-title" data-i18n="heroTitle">
-          One suite. Four unique engines for sharper sports decisions.
-        </h1>
-        <p class="hero-sub" data-i18n="heroSub">
-          BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe
-          into one operator-ready platform – built to show investors, buyers and partners
-          what your stack can already do today.
-        </p>
-        <div class="hero-pill-row">
-          <div class="pill" data-i18n="pill1">4 integrated modules</div>
-          <div class="pill" data-i18n="pill2">API-first architecture</div>
-          <div class="pill" data-i18n="pill3">Live-match analytics</div>
-          <div class="pill" data-i18n="pill4">Investors &amp; trading teams</div>
-        </div>
-        <div class="hero-actions">
-          <button class="btn-primary" type="button">
-            <span data-i18n="ctaExplore">Explore BetSense AI Suite</span> <span>⚡</span>
-          </button>
-          <button class="btn-secondary" type="button">
-            <span>🔗</span>
-            <span class="link" data-i18n="ctaApi">Connect your live data (API)</span>
-          </button>
-        </div>
-      </section>
+<div class="topbar">
+  <div class="logo">Betsense AI</div>
 
-      <!-- EMOTION ENGINE + REPORT -->
-      <section class="section">
-        <div class="section-label" data-i18n="secEmotionLabel">
-          Emotion engine · timelines · single match
-        </div>
-        <div class="section-title" data-i18n="secEmotionTitle">
-          Emotion Engine – Quick &amp; Deep
-        </div>
-        <p class="section-sub" data-i18n="secEmotionSub">
-          Turn live-match chaos into a narrative your traders and investors can understand
-          in seconds. Use the demo below to flip between quick pulses and rich reports.
-        </p>
+  <div class="lang-box">
+    <select id="langSelect" class="lang-select">
+      <option value="en">🇬🇧 English</option>
+      <option value="fa">🇮🇷 Persian</option>
+      <option value="es">🇪🇸 Spanish</option>
+      <option value="fr">🇫🇷 French</option>
+      <option value="de">🇩🇪 German</option>
+      <option value="tr">🇹🇷 Turkish</option>
+      <option value="ar">🇸🇦 Arabic</option>
+      <option value="it">🇮🇹 Italian</option>
+      <option value="pt">🇵🇹 Portuguese</option>
+      <option value="ru">🇷🇺 Russian</option>
+      <option value="ja">🇯🇵 Japanese</option>
+      <option value="zh">🇨🇳 Chinese</option>
+      <option value="hi">🇮🇳 Hindi</option>
+      <option value="nl">🇳🇱 Dutch</option>
+      <option value="sv">🇸🇪 Swedish</option>
+      <option value="no">🇳🇴 Norwegian</option>
+      <option value="da">🇩🇰 Danish</option>
+      <option value="fi">🇫🇮 Finnish</option>
+      <option value="ko">🇰🇷 Korean</option>
+      <option value="pl">🇵🇱 Polish</option>
+    </select>
+  </div>
+</div>
 
-        <div class="grid-2">
-          <!-- LEFT: SCENARIO + OUTPUT -->
-          <div class="card">
-            <div class="tab-row" id="modeTabs">
-              <button class="tab-pill active" data-mode="quick" type="button" data-i18n="tabQuick">
-                Quick Emotion
-              </button>
-              <button class="tab-pill" data-mode="deep" type="button" data-i18n="tabDeep">
-                Deep Emotion
-              </button>
-              <button class="tab-pill" data-mode="hybrid" type="button" data-i18n="tabHybrid">
-                Hybrid (Quick + Deep)
-              </button>
-            </div>
+<div class="container">
 
-            <div class="field-label" data-i18n="scenarioLabel">
-              Describe the scenario (e.g. derby, late goal, odds move)
-            </div>
-            <textarea class="input-shell" id="scenarioInput">
-Derby match, late goal for home side, odds move from 2.40 to 1.70.</textarea>
+  <!-- EMOTION ENGINE -->
+  <div class="card">
+    <div class="section-title">Emotion Engine – Match Insights</div>
 
-            <div class="output-shell" id="scenarioOutput">
-              <div class="output-title" data-i18n="scenarioOutputTitle">
-                Quick read for traders
-              </div>
-              <div id="scenarioCopy">
-Home momentum turns into a decisive edge after the late goal. Market mood jumps from cautious optimism to confident trend on the home side – spreads tighten and retail money chases price.
-              </div>
-            </div>
+    <div class="btn-group">
+      <button class="btn" onclick="setChart(1)">Momentum Shift</button>
+      <button class="btn" onclick="setChart(2)">Pressure Index</button>
+      <button class="btn" onclick="setChart(3)">Emotion Wave</button>
+      <button class="btn" onclick="setChart(4)">Win Probability</button>
+    </div>
 
-            <div class="chart-shell">
-              <div class="chart-header">
-                <span class="badge">
-                  <span data-i18n="probTimeline">Probability timeline</span>
-                </span>
-                <div class="legend-row">
-                  <span class="legend-item">
-                    <span class="legend-swatch legend-home"></span>
-                    <span data-i18n="homeWin">Home win %</span>
-                  </span>
-                  <span class="legend-item">
-                    <span class="legend-swatch legend-draw"></span>
-                    <span data-i18n="draw">Draw %</span>
-                  </span>
-                  <span class="legend-item">
-                    <span class="legend-swatch legend-away"></span>
-                    <span data-i18n="awayWin">Away win %</span>
-                  </span>
-                </div>
-              </div>
-              <div class="tab-row" id="curveTabs" style="margin-top:4px;">
-                <button class="tab-pill active" data-curve="balanced" type="button" data-i18n="curveBalanced">
-                  Balanced opener
-                </button>
-                <button class="tab-pill" data-curve="home" type="button" data-i18n="curveHome">
-                  Home pressure
-                </button>
-                <button class="tab-pill" data-curve="away" type="button" data-i18n="curveAway">
-                  Away comeback
-                </button>
-              </div>
-              <div class="chart-viewport">
-                <div class="chart-grid"></div>
-                <svg class="chart-svg" viewBox="0 0 100 60" preserveAspectRatio="none" id="probChart">
-                  <!-- curves are added via JS -->
-                </svg>
-              </div>
-              <div class="chart-caption" id="curveCaption">
-Mode: Balanced opener – early swings are modest, market still respects all three outcomes.
-              </div>
-            </div>
-          </div>
-
-          <!-- RIGHT: SIMPLE & FULL REPORT -->
-          <div class="card">
-            <div class="section-label" style="margin-bottom:4px;font-size:10px;" data-i18n="reportLabel">
-              AI Match Report – Simple &amp; Full
-            </div>
-            <div class="section-sub" style="margin-bottom:10px;" data-i18n="reportSub">
-              Generate investor-ready or operator-ready match summaries in one click. Use
-              the same scenario you analysed above, then export a simple or full report structure.
-            </div>
-
-            <div class="field-label" data-i18n="reportFocus">
-              Define the report focus
-            </div>
-            <textarea class="input-shell" id="reportInput">
-Optional: add or refine the scenario you want in the report (league, scoreline, odds move, key events)…</textarea>
-
-            <div class="tab-row" id="reportTabs" style="margin-top:10px;">
-              <button class="tab-pill active" data-report="simple" type="button" data-i18n="reportSimpleTab">
-                Simple report – 1-page, non-technical summary
-              </button>
-              <button class="tab-pill" data-report="full" type="button" data-i18n="reportFullTab">
-                Full report – multi-section, investor-level detail
-              </button>
-            </div>
-
-            <div class="output-shell" id="reportOutput">
-              <div class="output-title" id="reportModeLabel">
-                SIMPLE MATCH REPORT
-              </div>
-              <div id="reportCopy">
-Key scenario: Derby match, late goal for home side, odds move from 2.40 to 1.70.<br><br>
-Headline: Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.<br><br>
-Trading summary:<br>
-• BetSense Engine highlights a clear break in probability trend after the key event.<br>
-• Price move is supported by volume, not just retail noise.<br>
-• Risk position is comfortable but requires monitoring if a second goal arrives.<br><br>
-Use this view for fast communication with management or non-technical stakeholders.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- LIVE DATA API -->
-      <section class="section">
-        <div class="section-label" data-i18n="apiLabel">
-          Live data API
-        </div>
-        <div class="section-title" data-i18n="apiTitle">
-          Connect your live feeds into BetSense AI Suite
-        </div>
-        <p class="section-sub" data-i18n="apiSub">
-          Paste a live tick payload to see how an operator could ingest odds, stats and sentiment into
-          a single AI-ready stream. In production, this block connects directly to your data providers.
-        </p>
-
-        <div class="grid-2">
-          <!-- LEFT: JSON + buttons -->
-          <div class="card">
-            <span class="badge live">
-              <span class="badge-dot"></span>
-              <span data-i18n="samplePayload">Sample payload &amp; schema</span>
-            </span>
-
-            <p class="section-sub" style="margin:6px 0 8px;font-size:12px;" data-i18n="apiHelper">
-              Use the demo payload or paste your own JSON tick from a trading feed. The validator checks
-              structure only – operators can adapt this to their internal schema.
-            </p>
-
-            <textarea class="input-shell" id="payloadInput" style="min-height:140px;">
-{
-  "matchId": "EPL-2025-001",
-  "minute": 72,
-  "homeTeam": "Chelsea",
-  "awayTeam": "Arsenal",
-  "stats": {
-    "xgHome": 2.1,
-    "xgAway": 0.9,
-    "shotsHome": 12,
-    "shotsAway": 7
-  },
-  "marketOdds": {
-    "homeWin": 1.85,
-    "draw": 3.60,
-    "awayWin": 4.40
-  },
-  "socialSentiment": "home_fans_excited"
-}</textarea>
-
-            <div class="api-buttons">
-              <button class="btn-ghost" type="button" id="btnUseDemo">
-                <span>📥</span><span data-i18n="btnUseDemo">Use demo payload</span>
-              </button>
-              <button class="btn-ghost" type="button" id="btnValidate">
-                <span>✔</span><span data-i18n="btnValidate">Validate payload</span>
-              </button>
-              <button class="btn-ghost" type="button" id="btnSimulate">
-                <span>🎯</span><span data-i18n="btnSimulate">Simulate edge snapshot</span>
-              </button>
-            </div>
-            <div class="api-status" id="apiStatus"></div>
-          </div>
-
-          <!-- RIGHT: SNAPSHOT -->
-          <div class="card">
-            <span class="badge" data-i18n="liveSnapshotLabel">
-              Live snapshot
-            </span>
-            <div class="output-shell" style="margin-top:10px;">
-              <div id="snapshotTitle" style="font-weight:600;font-size:13px;margin-bottom:4px;">
-                EPL-2025-001 — Chelsea vs Arsenal
-              </div>
-              <div id="snapshotMinute" style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">
-                Minute 72 · Single-tick view for traders and AI pipelines.
-              </div>
-              <div id="snapshotBody" style="font-size:12px;">
-                xG trend: Chelsea 2.1 vs Arsenal 0.9.<br>
-                Market odds snapshot — home: 1.85, draw: 3.6, away: 4.4.<br>
-                Social sentiment: home_fans_excited.<br><br>
-                In production, this card becomes part of a streaming service that continuously
-                enriches your feeds with Emotion Index, LiveApe and BetSense Engine probabilities.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PRICING -->
-      <section class="section">
-        <div class="section-label" data-i18n="pricingLabel">
-          Operator pricing
-        </div>
-        <div class="section-title" data-i18n="pricingTitle">
-          Built for pilots first, then scale across desks
-        </div>
-        <p class="section-sub" data-i18n="pricingSub">
-          Typical commercial structures for early-stage pilots and operator rollouts. Final pricing
-          depends on leagues, latency requirements and integration scope.
-        </p>
-
-        <div class="pricing-grid">
-          <div class="pricing-card">
-            <div class="pricing-name" data-i18n="pilotName">Pilot</div>
-            <div class="pricing-price" data-i18n="pilotPrice">
-              £3k–£5k <span class="per">/ month</span>
-            </div>
-            <div class="pricing-meta" data-i18n="pilotMeta">
-              Best for: early pilots, proof-of-concept
-            </div>
-            <ul class="pricing-list">
-              <li data-i18n="pilotItem1">1–2 key leagues, 1–3 trading teams</li>
-              <li data-i18n="pilotItem2">Single region, single environment</li>
-              <li data-i18n="pilotItem3">Emotion Engine + Timeline + basic reports</li>
-              <li data-i18n="pilotItem4">Email &amp; Slack support during trading hours</li>
-            </ul>
-            <div class="pricing-tag" data-i18n="pilotTag">Best for pilots &amp; quick validation</div>
-          </div>
-
-          <div class="pricing-card featured">
-            <div class="pricing-name" data-i18n="operatorName">Operator</div>
-            <div class="pricing-price" data-i18n="operatorPrice">
-              £8k–£15k <span class="per">/ month</span>
-            </div>
-            <div class="pricing-meta" data-i18n="operatorMeta">
-              Best for: live operators, multi-league coverage
-            </div>
-            <ul class="pricing-list">
-              <li data-i18n="operatorItem1">3–6 leagues, multiple trading teams</li>
-              <li data-i18n="operatorItem2">Live data API ingestion + Emotion Index</li>
-              <li data-i18n="operatorItem3">Full report builder + export to PDF / BI</li>
-              <li data-i18n="operatorItem4">Shared roadmap &amp; quarterly edge reviews</li>
-            </ul>
-            <div class="pricing-tag" data-i18n="operatorTag">
-              Most common starting tier
-            </div>
-          </div>
-
-          <div class="pricing-card">
-            <div class="pricing-name" data-i18n="enterpriseName">Enterprise</div>
-            <div class="pricing-price" data-i18n="enterprisePrice">
-              POA <span class="per">/ bespoke</span>
-            </div>
-            <div class="pricing-meta" data-i18n="enterpriseMeta">
-              Best for: global sportsbooks, exchanges &amp; B2B feeds
-            </div>
-            <ul class="pricing-list">
-              <li data-i18n="enterpriseItem1">
-                Global coverage, custom latency &amp; redundancy
-              </li>
-              <li data-i18n="enterpriseItem2">
-                Full BetSense AI Suite – Engine, HBboard, Emotion Index &amp; LiveApe
-              </li>
-              <li data-i18n="enterpriseItem3">
-                Dedicated SLA, integration squad &amp; data science support
-              </li>
-              <li data-i18n="enterpriseItem4">
-                Co-branded investor packs &amp; on-site workshops
-              </li>
-            </ul>
-            <div class="pricing-tag" data-i18n="enterpriseTag">
-              Enterprise SLAs &amp; partnerships
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section class="section">
-        <div class="section-label" data-i18n="contactLabel">
-          Contact &amp; pilots
-        </div>
-        <div class="section-title" data-i18n="contactTitle">
-          Three entry points, one inbox – easy to route pilots, sales and support.
-        </div>
-        <p class="section-sub" data-i18n="contactSub">
-          Use BetSense AI Suite as a pilot with a small group of traders or partners, then scale across
-          desks. All addresses below forward into the same operator-owned mailbox so you can track pilots,
-          sales and support in one place:
-        </p>
-
-        <div class="contact-card">
-          <div class="contact-emails">
-            <div>
-              <span class="contact-email">support@betsense.casino</span>
-              <span> — </span>
-              <span data-i18n="contactSupport">
-                live issues, technical support
-              </span>
-            </div>
-            <div>
-              <span class="contact-email">info@betsense.casino</span>
-              <span> — </span>
-              <span data-i18n="contactInfo">
-                general questions, partnerships
-              </span>
-            </div>
-            <div>
-              <span class="contact-email">admin@betsense.casino</span>
-              <span> — </span>
-              <span data-i18n="contactAdmin">
-                contracts, billing, legal
-              </span>
-            </div>
-          </div>
-
-          <div class="contact-note" data-i18n="contactPilotTip">
-            For early-stage pilots, we typically recommend:
-          </div>
-          <ul class="pricing-list" style="margin-top:4px;">
-            <li data-i18n="contactPilotItem1">
-              1–2 key leagues, 1–3 trading teams.
-            </li>
-            <li data-i18n="contactPilotItem2">
-              Daily snapshot reports for management or investors.
-            </li>
-            <li data-i18n="contactPilotItem3">
-              Weekly review call on edge, risk and commercial impact.
-            </li>
-          </ul>
-
-          <div class="contact-note" data-i18n="contactSubjectLines">
-            Subject lines that help us route quickly: “Pilot request”, “API access” or “Investor deck”.
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      BetSense AI Suite — demo interface. Copy, flows and visuals for illustration only.
-    </footer>
+    <div class="chart-box" id="chartBox">
+      <span style="opacity:0.5;">Select a metric…</span>
+    </div>
   </div>
 
-  <script>
-    // Simple i18n for EN & FA
-    const dictionary = {
-      en: {
-        brandTitle: "BetSense AI Suite",
-        brandSub: "Unified sports intelligence stack",
-        heroChipPrimary: "REALTIME AI for bookmakers & trading desks",
-        heroChipSecondary: "Demo interface – copy, flows & visuals for illustration only",
-        heroTitle: "One suite. Four unique engines for sharper sports decisions.",
-        heroSub:
-          "BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into one operator-ready platform – built to show investors, buyers and partners what your stack can already do today.",
-        pill1: "4 integrated modules",
-        pill2: "API-first architecture",
-        pill3: "Live-match analytics",
-        pill4: "Investors & trading teams",
-        ctaExplore: "Explore BetSense AI Suite",
-        ctaApi: "Connect your live data (API)",
-        secEmotionLabel: "Emotion engine · timelines · single match",
-        secEmotionTitle: "Emotion Engine – Quick & Deep",
-        secEmotionSub:
-          "Turn live-match chaos into a narrative your traders and investors can understand in seconds. Use the demo below to flip between quick pulses and rich reports.",
-        tabQuick: "Quick Emotion",
-        tabDeep: "Deep Emotion",
-        tabHybrid: "Hybrid (Quick + Deep)",
-        scenarioLabel: "Describe the scenario (e.g. derby, late goal, odds move)",
-        scenarioOutputTitle: "Quick read for traders",
-        probTimeline: "Probability timeline",
-        homeWin: "Home win %",
-        draw: "Draw %",
-        awayWin: "Away win %",
-        curveBalanced: "Balanced opener",
-        curveHome: "Home pressure",
-        curveAway: "Away comeback",
-        reportLabel: "AI Match Report – Simple & Full",
-        reportSub:
-          "Generate investor-ready or operator-ready match summaries in one click. Use the same scenario you analysed above, then export a simple or full report structure.",
-        reportFocus: "Define the report focus",
-        reportSimpleTab: "Simple report – 1-page, non-technical summary",
-        reportFullTab: "Full report – multi-section, investor-level detail",
-        apiLabel: "Live data API",
-        apiTitle: "Connect your live feeds into BetSense AI Suite",
-        apiSub:
-          "Paste a live tick payload to see how an operator could ingest odds, stats and sentiment into a single AI-ready stream. In production, this block connects directly to your data providers.",
-        samplePayload: "Sample payload & schema",
-        apiHelper:
-          "Use the demo payload or paste your own JSON tick from a trading feed. The validator checks structure only – operators can adapt this to their internal schema.",
-        btnUseDemo: "Use demo payload",
-        btnValidate: "Validate payload",
-        btnSimulate: "Simulate edge snapshot",
-        liveSnapshotLabel: "Live snapshot",
-        pricingLabel: "Operator pricing",
-        pricingTitle: "Built for pilots first, then scale across desks",
-        pricingSub:
-          "Typical commercial structures for early-stage pilots and operator rollouts. Final pricing depends on leagues, latency requirements and integration scope.",
-        pilotName: "Pilot",
-        pilotPrice: "£3k–£5k <span class=\"per\">/ month</span>",
-        pilotMeta: "Best for: early pilots, proof-of-concept",
-        pilotItem1: "1–2 key leagues, 1–3 trading teams",
-        pilotItem2: "Single region, single environment",
-        pilotItem3: "Emotion Engine + Timeline + basic reports",
-        pilotItem4: "Email & Slack support during trading hours",
-        pilotTag: "Best for pilots & quick validation",
-        operatorName: "Operator",
-        operatorPrice: "£8k–£15k <span class=\"per\">/ month</span>",
-        operatorMeta: "Best for: live operators, multi-league coverage",
-        operatorItem1: "3–6 leagues, multiple trading teams",
-        operatorItem2: "Live data API ingestion + Emotion Index",
-        operatorItem3: "Full report builder + export to PDF / BI",
-        operatorItem4: "Shared roadmap & quarterly edge reviews",
-        operatorTag: "Most common starting tier",
-        enterpriseName: "Enterprise",
-        enterprisePrice: "POA <span class=\"per\">/ bespoke</span>",
-        enterpriseMeta: "Best for: global sportsbooks, exchanges & B2B feeds",
-        enterpriseItem1: "Global coverage, custom latency & redundancy",
-        enterpriseItem2: "Full BetSense AI Suite – Engine, HBboard, Emotion Index & LiveApe",
-        enterpriseItem3: "Dedicated SLA, integration squad & data science support",
-        enterpriseItem4: "Co-branded investor packs & on-site workshops",
-        enterpriseTag: "Enterprise SLAs & partnerships",
-        contactLabel: "Contact & pilots",
-        contactTitle:
-          "Three entry points, one inbox – easy to route pilots, sales and support.",
-        contactSub:
-          "Use BetSense AI Suite as a pilot with a small group of traders or partners, then scale across desks. All addresses below forward into the same operator-owned mailbox so you can track pilots, sales and support in one place:",
-        contactSupport: "live issues, technical support",
-        contactInfo: "general questions, partnerships",
-        contactAdmin: "contracts, billing, legal",
-        contactPilotTip: "For early-stage pilots, we typically recommend:",
-        contactPilotItem1: "1–2 key leagues, 1–3 trading teams.",
-        contactPilotItem2: "Daily snapshot reports for management or investors.",
-        contactPilotItem3: "Weekly review call on edge, risk and commercial impact.",
-        contactSubjectLines:
-          "Subject lines that help us route quickly: “Pilot request”, “API access” or “Investor deck”."
-      },
-      fa: {
-        brandTitle: "مجموعه BetSense AI",
-        brandSub: "استک هوش مصنوعیِ یکپارچه برای داده‌ های ورزشی",
-        heroChipPrimary: "هوش مصنوعی لحظه‌ای برای بوک‌میکرها و تریدینگ دسک‌ ها",
-        heroChipSecondary: "این یک دموی مفهومی است؛ متن‌ ها و ویژوال‌ ها فقط برای نمایش هستند.",
-        heroTitle: "یک سوئیت؛ چهار موتور یونیک برای تصمیم‌ های دقیق‌ تر در شرط‌ بندی ورزشی.",
-        heroSub:
-          "مجموعه BetSense Engine ،HBboard ،Emotion Index و LiveApe را در یک پلتفرم آماده‌ ی اپراتور یکپارچه می‌کند تا سرمایه‌گذاران، خریداران و پارتنرها ببینند همین امروز استک شما چه کارهایی می‌تواند انجام دهد.",
-        pill1: "۴ ماژول یکپارچه",
-        pill2: "معماری API-first",
-        pill3: "آنالیتیکس لحظه‌ای مسابقات",
-        pill4: "تیم‌ های تریدینگ و سرمایه‌گذار",
-        ctaExplore: "Explore BetSense AI Suite",
-        ctaApi: "اتصال فید زنده (API)",
-        secEmotionLabel: "Emotion Engine · تایم‌لاین‌ ها · تک مسابقه",
-        secEmotionTitle: "Emotion Engine – سریع و عمیق",
-        secEmotionSub:
-          "آشوب مسابقه‌ ی زنده را به روایتی تبدیل کنید که تریدرها و سرمایه‌گذاران در چند ثانیه بفهمند. در این دمو بین تحلیل سریع و روایت عمیق جابه‌جا شوید.",
-        tabQuick: "تحلیل سریع (Quick)",
-        tabDeep: "تحلیل عمیق (Deep)",
-        tabHybrid: "ترکیبی (Quick + Deep)",
-        scenarioLabel: "سناریوی مسابقه را بنویسید (مثلاً دربی، گل دیرهنگام، حرکت ضریب‌ها)",
-        scenarioOutputTitle: "جمع‌بندی سریع برای تریدرها",
-        probTimeline: "تایم‌لاین احتمال‌ها",
-        homeWin: "برد میزبان %",
-        draw: "تساوی %",
-        awayWin: "برد مهمان %",
-        curveBalanced: "شروع متعادل",
-        curveHome: "فشار میزبان",
-        curveAway: "بازگشت تیم مهمان",
-        reportLabel: "گزارش مسابقه – نسخه ساده و کامل",
-        reportSub:
-          "در یک کلیک گزارش آماده برای سرمایه‌گذار یا اپراتور تولید کنید. از همان سناریویی که بالاتر تحلیل کردید استفاده کنید و نسخه ساده یا چندبخشی را ببینید.",
-        reportFocus: "تمرکز گزارش را مشخص کنید",
-        reportSimpleTab: "گزارش ساده – یک صفحه، غیر فنی",
-        reportFullTab: "گزارش کامل – چند بخش، سطح سرمایه‌گذار",
-        apiLabel: "API داده‌ ی زنده",
-        apiTitle: "اتصال فیدهای زنده به BetSense AI Suite",
-        apiSub:
-          "یک تیک زنده از فید معاملاتی را پیست کنید تا ببینید اپراتور چطور می‌تواند ضریب‌ها، آمار و احساس بازار را در یک استریم آماده‌ ی هوش مصنوعی ادغام کند.",
-        samplePayload: "نمونه payload و اسکیم",
-        apiHelper:
-          "از payload دمو استفاده کنید یا JSON واقعی خودتان را وارد کنید. این ولیدیتور فقط ساختار را چک می‌کند؛ اپراتورها می‌توانند آن را با اسکیمای داخلی خودشان تطبیق دهند.",
-        btnUseDemo: "استفاده از دمو",
-        btnValidate: "بررسی ساختار",
-        btnSimulate: "شبیه‌سازی اسنپ‌شات",
-        liveSnapshotLabel: "اسنپ‌شات زنده",
-        pricingLabel: "ساختار قیمت‌گذاری اپراتور",
-        pricingTitle: "اول پایلوت، بعد مقیاس‌پذیری روی چند دسک",
-        pricingSub:
-          "ساختارهای متداول برای پایلوت‌ های اولیه و رول‌اوت اپراتور. عدد نهایی به لیگ‌ها، نیازهای latency و سطح اینتگریشن بستگی دارد.",
-        pilotName: "Pilot",
-        pilotPrice: "۳k–۵k£ <span class=\"per\">در ماه</span>",
-        pilotMeta: "مناسب برای: پایلوت اولیه و POC",
-        pilotItem1: "۱–۲ لیگ اصلی، ۱–۳ تیم تریدینگ",
-        pilotItem2: "یک ریجن، یک محیط",
-        pilotItem3: "Emotion Engine + Timeline + گزارش‌های ساده",
-        pilotItem4: "پشتیبانی ایمیل و Slack در ساعات تریدینگ",
-        pilotTag: "بهترین گزینه برای شروع سریع",
-        operatorName: "Operator",
-        operatorPrice: "۸k–۱۵k£ <span class=\"per\">در ماه</span>",
-        operatorMeta: "مناسب برای: اپراتور زنده با چند لیگ",
-        operatorItem1: "۳–۶ لیگ، چند تیم تریدینگ",
-        operatorItem2: "ورود API داده زنده + Emotion Index",
-        operatorItem3: "گزارش‌ ساز کامل + خروجی PDF / BI",
-        operatorItem4: "Roadmap مشترک و ریویوی فصلی Edge",
-        operatorTag: "رایج‌ترین سطح شروع",
-        enterpriseName: "Enterprise",
-        enterprisePrice: "POA <span class=\"per\">/ سفارشی</span>",
-        enterpriseMeta: "مناسب برای: اسپورتسبوک‌ های جهانی، اکسچنج‌ها و فیدهای B2B",
-        enterpriseItem1: "کاور جهانی، latency و redundancy اختصاصی",
-        enterpriseItem2:
-          "کل سوئیت BetSense – Engine ،HBboard ،Emotion Index و LiveApe",
-        enterpriseItem3: "SLA اختصاصی، تیم اینتگریشن و پشتیبانی دیتا ساینس",
-        enterpriseItem4: "پَک سرمایه‌گذار co-brand و ورکشاپ حضوری",
-        enterpriseTag: "قراردادهای Enterprise و پارتنرشیپ",
-        contactLabel: "تماس و پایلوت‌ ها",
-        contactTitle:
-          "سه ورودی، یک inbox – مسیردهی ساده برای پایلوت، فروش و ساپورت.",
-        contactSub:
-          "BetSense AI Suite را ابتدا با یک گروه کوچک از تریدرها یا پارتنرها پایلوت کنید، بعد روی چند دسک گسترش دهید. همه آدرس‌ های زیر به یک inbox متعلق به اپراتور فوروارد می‌شوند تا پایلوت‌ ها، فروش و ساپورت را در یک جا ببینید.",
-        contactSupport: "مسائل لایو، پشتیبانی فنی",
-        contactInfo: "سؤالات عمومی، پارتنرشیپ‌ ها",
-        contactAdmin: "قراردادها، صورتحساب، حقوقی",
-        contactPilotTip: "برای پایلوت‌ های اولیه معمولاً پیشنهاد می‌کنیم:",
-        contactPilotItem1: "۱–۲ لیگ اصلی، ۱–۳ تیم تریدینگ.",
-        contactPilotItem2: "گزارش‌ های روزانه برای مدیریت یا سرمایه‌گذاران.",
-        contactPilotItem3: "کال هفتگی روی Edge، ریسک و اینپکت تجاری.",
-        contactSubjectLines:
-          "Subject پیشنهادی برای روت سریع: «Pilot request»، «API access» یا «Investor deck»."
-      }
-    };
+  <!-- LIVE API INGESTION -->
+  <div class="live-box">
+    <div class="section-title">Live Match API – External Feed</div>
 
-    function applyLanguage(lang) {
-      const dict = dictionary[lang] || dictionary.en;
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        if (dict[key]) {
-          el.innerHTML = dict[key];
-        }
-      });
-      const page = document.getElementById("page");
-      if (lang === "fa") {
-        document.body.classList.add("bet-fa");
-        document.documentElement.lang = "fa";
-      } else {
-        document.body.classList.remove("bet-fa");
-        document.documentElement.lang = "en";
-      }
-    }
+    <input id="apiURL" class="live-input" placeholder="Enter live-data JSON feed URL…" />
 
-    const langToggle = document.getElementById("langToggle");
-    const langMenu = document.getElementById("langMenu");
-    const langLabel = document.getElementById("langLabel");
-    let currentLang = "en";
+    <button class="live-btn" onclick="connectFeed()">Connect Feed</button>
 
-    langToggle.addEventListener("click", () => {
-      langMenu.classList.toggle("open");
-    });
+    <div class="live-status" id="liveStatus">
+      Waiting for input…
+    </div>
+  </div>
+  <!-- PRICING TIERS -->
+  <div class="card" id="pricing">
+    <div class="section-title">Pricing tiers – Operator ready</div>
 
-    langMenu.addEventListener("click", (e) => {
-      const option = e.target.closest(".lang-option");
-      if (!option) return;
-      const lang = option.dataset.lang;
-      currentLang = lang;
-      document.querySelectorAll(".lang-option").forEach(o => o.classList.remove("active"));
-      option.classList.add("active");
-      langLabel.textContent = option.firstElementChild.textContent;
-      langMenu.classList.remove("open");
-      applyLanguage(lang);
-    });
+    <p style="font-size:14px;opacity:0.75;margin-bottom:16px;">
+      Start small with pilot data, scale to full trading teams, or lock in a custom enterprise feed.
+    </p>
 
-    document.addEventListener("click", (e) => {
-      if (!langMenu.contains(e.target) && !langToggle.contains(e.target)) {
-        langMenu.classList.remove("open");
-      }
-    });
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="padding:14px;border-radius:10px;border:1px solid #2a2a2a;background:#121212;">
+        <div style="font-weight:600;margin-bottom:4px;">Pilot</div>
+        <div style="font-size:13px;opacity:0.75;margin-bottom:6px;">
+          Single-sport sandbox, delayed feed, analyst-only view.
+        </div>
+        <div style="font-size:14px;color:#ffb444;">From £3,000 / month</div>
+      </div>
 
-    // Emotion Engine tabs
-    const modeTabs = document.getElementById("modeTabs");
-    const scenarioOutput = document.getElementById("scenarioCopy");
+      <div style="padding:14px;border-radius:10px;border:1px solid #2e2e2e;background:#151515;">
+        <div style="font-weight:600;margin-bottom:4px;">Operator</div>
+        <div style="font-size:13px;opacity:0.75;margin-bottom:6px;">
+          Multi-sport, near-live feeds, full Emotion Engine and reporting stack.
+        </div>
+        <div style="font-size:14px;color:#ffb444;">From £9,500 / month</div>
+      </div>
 
-    const modeTexts = {
-      quick:
-        "Home momentum turns into a decisive edge after the late goal. Market mood jumps from cautious optimism to confident trend on the home side – spreads tighten and retail money chases price.",
-      deep:
-        "Emotion Index shows a clean break in behaviour around the late goal: shot volume, xG trend and social sentiment all flip in favour of the home side. Order-book data confirms real money following the move rather than fading it.",
-      hybrid:
-        "Quick view: clear inflection after the late goal, with odds and mood aligned. Deep layer: Emotion Index and LiveApe show crowd, pitch and pricing all pointing in the same direction, giving traders confidence to lean into the move while risk stays controlled."
-    };
+      <div style="padding:14px;border-radius:10px;border:1px solid #3a2b14;background:linear-gradient(135deg,#1a1206,#2a1a0a);box-shadow:0 0 24px rgba(255,180,68,0.15);">
+        <div style="font-weight:700;margin-bottom:4px;">Enterprise</div>
+        <div style="font-size:13px;opacity:0.85;margin-bottom:6px;">
+          Full-stack integration, custom alerts, dedicated cluster and white-label UX.
+        </div>
+        <div style="font-size:14px;color:#ffd27a;">Custom 7–8 figure licensing</div>
+      </div>
+    </div>
+  </div>
 
-    modeTabs.addEventListener("click", (e) => {
-      const btn = e.target.closest(".tab-pill");
-      if (!btn) return;
-      const mode = btn.dataset.mode;
-      modeTabs.querySelectorAll(".tab-pill").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      scenarioOutput.textContent = modeTexts[mode] || modeTexts.quick;
-    });
+  <!-- CONTACT / EMAILS -->
+  <div class="card" id="contact">
+    <div class="section-title">Contact & licensing</div>
 
-    // Probability chart data
-    const probChart = document.getElementById("probChart");
-    const curveTabs = document.getElementById("curveTabs");
-    const curveCaption = document.getElementById("curveCaption");
+    <p style="font-size:14px;opacity:0.8;margin-bottom:14px;">
+      For pilots, operator access or acquisition talks, use the emails below. All three addresses route into the same secure inbox.
+    </p>
 
-    const curves = {
-      balanced: {
-        home: [40, 43, 46, 49, 52, 55, 58],
-        draw: [32, 31, 30, 29, 28, 27, 26],
-        away: [28, 26, 24, 22, 20, 18, 16],
-        caption:
-          "Mode: Balanced opener – early swings are modest, market still respects all three outcomes."
-      },
-      home: {
-        home: [40, 45, 50, 55, 60, 65, 70],
-        draw: [32, 29, 26, 23, 20, 18, 16],
-        away: [28, 26, 24, 22, 20, 17, 14],
-        caption:
-          "Mode: Home pressure – sustained attacks push the home curve higher while away drifts."
-      },
-      away: {
-        home: [46, 44, 42, 40, 38, 36, 34],
-        draw: [30, 30, 30, 29, 28, 27, 26],
-        away: [24, 26, 28, 31, 34, 37, 40],
-        caption:
-          "Mode: Away comeback – sharp reversal as the away side finds momentum and price follows."
-      }
-    };
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+      <div>
+        <span style="opacity:0.7;">Support:</span>
+        <span style="font-weight:600;">support@betsense.casino</span>
+      </div>
+      <div>
+        <span style="opacity:0.7;">Info:</span>
+        <span style="font-weight:600;">info@betsense.casino</span>
+      </div>
+      <div>
+        <span style="opacity:0.7;">Admin:</span>
+        <span style="font-weight:600;">admin@betsense.casino</span>
+      </div>
+    </div>
 
-    function buildPath(points) {
-      const n = points.length;
-      return points
-        .map((p, i) => {
-          const x = (i / (n - 1)) * 100;
-          const y = 60 - (p / 100) * 50;
-          return `${i === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
-        })
-        .join(" ");
-    }
+    <p style="font-size:12px;opacity:0.6;margin-top:14px;">
+      All emails are monitored 7 days a week for operator and investor requests.
+    </p>
+  </div>
 
-    function renderCurve(name) {
-      const data = curves[name] || curves.balanced;
-      probChart.innerHTML = `
-        <path d="${buildPath(data.home)}" fill="none" stroke="#38bdf8" stroke-width="1.4" />
-        <path d="${buildPath(data.draw)}" fill="none" stroke="#a855f7" stroke-width="1.4" />
-        <path d="${buildPath(data.away)}" fill="none" stroke="#fb923c" stroke-width="1.4" />
-      `;
-      curveCaption.textContent = data.caption;
-    }
+</div> <!-- /container -->
 
-    curveTabs.addEventListener("click", (e) => {
-      const btn = e.target.closest(".tab-pill");
-      if (!btn) return;
-      const curve = btn.dataset.curve;
-      curveTabs.querySelectorAll(".tab-pill").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderCurve(curve);
-    });
+<script>
+// SIMPLE CHART PLACEHOLDER
+function setChart(mode) {
+  const box = document.getElementById("chartBox");
+  let label = "";
+  if (mode === 1) label = "Momentum shift over 90 minutes";
+  if (mode === 2) label = "Pressure index vs crowd reaction";
+  if (mode === 3) label = "Emotion wave – rising / crashing phases";
+  if (mode === 4) label = "Win probability – live trajectory";
+  box.innerHTML = '<span style="opacity:0.8;font-size:14px;">' + label + "</span>";
+}
 
-    // Report tabs
-    const reportTabs = document.getElementById("reportTabs");
-    const reportModeLabel = document.getElementById("reportModeLabel");
-    const reportCopy = document.getElementById("reportCopy");
+// LIVE API MOCK CONNECTION
+function connectFeed() {
+  const url = document.getElementById("apiURL").value.trim();
+  const status = document.getElementById("liveStatus");
 
-    const simpleReport =
-      "Key scenario: Derby match, late goal for home side, odds move from 2.40 to 1.70.<br><br>" +
-      "Headline: Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.<br><br>" +
-      "Trading summary:<br>" +
-      "• BetSense Engine highlights a clear break in probability trend after the key event.<br>" +
-      "• Price move is supported by volume, not just retail noise.<br>" +
-      "• Risk position is comfortable but requires monitoring if a second goal arrives.<br><br>" +
-      "Use this view for fast communication with management or non-technical stakeholders.";
+  if (!url) {
+    status.textContent = "Please paste a JSON URL or sample payload endpoint.";
+    status.style.color = "#ffb444";
+    return;
+  }
 
-    const fullReport =
-      "Scenario overview:<br>" +
-      "Derby match, late goal for home side, odds move from 2.40 to 1.70.<br><br>" +
-      "1. Market structure and price action<br>" +
-      "BetSense Engine tracked live probabilities from kick-off to full time. Before the key event, home win sat in a relatively tight band, with draw and away priced fairly. The late goal acts as an inflection point: home probability accelerates, draw collapses and away drifts, mirroring the move in quoted odds.<br><br>" +
-      "2. Emotion Index & behavioural signals<br>" +
-      "Emotion Index shows a clean shift from cautious optimism to confident momentum on the home side. LiveApe confirms a tactical change on the pitch – higher press, more shots and visible energy in the stadium. Social feeds amplify the move but do not lead it, which is typically a healthy pattern for trading desks.<br><br>" +
-      "3. Risk, PnL and exposure notes<br>" +
-      "• Concentration risk now sits on the home win bucket after the move in price.<br>" +
-      "• Draw and away positions provide partial hedge but may need re-balancing if a second goal lands.<br>" +
-      "• From an investor standpoint this fixture is a strong case study in how BetSense AI turns noisy live data into a structured, explainable narrative.<br><br>" +
-      "4. Next-step recommendations<br>" +
-      "For operators: integrate this report template into post-match reviews across key leagues.<br>" +
-      "For investors: use this match as a reference scenario when assessing future expansion or new-market launches.";
+  status.textContent = "Preview only – this demo endpoint will be wired to your live feed during integration.";
+  status.style.color = "#9be97a";
+}
 
-    reportTabs.addEventListener("click", (e) => {
-      const btn = e.target.closest(".tab-pill");
-      if (!btn) return;
-      const kind = btn.dataset.report;
-      reportTabs.querySelectorAll(".tab-pill").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      if (kind === "full") {
-        reportModeLabel.textContent = "FULL MATCH REPORT – INVESTOR VIEW";
-        reportCopy.innerHTML = fullReport;
-      } else {
-        reportModeLabel.textContent = "SIMPLE MATCH REPORT";
-        reportCopy.innerHTML = simpleReport;
-      }
-    });
-
-    // Live API demo logic
-    const demoPayload = `{
-  "matchId": "EPL-2025-001",
-  "minute": 72,
-  "homeTeam": "Chelsea",
-  "awayTeam": "Arsenal",
-  "stats": {
-    "xgHome": 2.1,
-    "xgAway": 0.9,
-    "shotsHome": 12,
-    "shotsAway": 7
+// LANGUAGE SWITCH (SIMPLE DEMO TEXT CHANGE)
+const langStrings = {
+  en: {
+    emotionTitle: "Emotion Engine – Match Insights",
+    liveTitle: "Live Match API – External Feed",
+    pricingTitle: "Pricing tiers – Operator ready",
+    contactTitle: "Contact & licensing"
   },
-  "marketOdds": {
-    "homeWin": 1.85,
-    "draw": 3.60,
-    "awayWin": 4.40
+  fa: {
+    emotionTitle: "موتور احساسات – بینش زنده مسابقه",
+    liveTitle: "‏API مسابقه زنده – فید خارجی",
+    pricingTitle: "پلن‌های قیمتی – آماده برای اپراتور",
+    contactTitle: "تماس و لایسنس"
   },
-  "socialSentiment": "home_fans_excited"
-}`;
+  es: {
+    emotionTitle: "Motor de emoción – Insights del partido",
+    liveTitle: "API de partido en vivo – Fuente externa",
+    pricingTitle: "Niveles de precios – Listo para operadores",
+    contactTitle: "Contacto y licencias"
+  },
+  fr: {
+    emotionTitle: "Moteur d’émotion – Insights de match",
+    liveTitle: "API de match en direct – Flux externe",
+    pricingTitle: "Paliers tarifaires – Prêt pour opérateurs",
+    contactTitle: "Contact et licences"
+  },
+  de: {
+    emotionTitle: "Emotion Engine – Match Einblicke",
+    liveTitle: "Live Match API – Externer Feed",
+    pricingTitle: "Preisstufen – Operator ready",
+    contactTitle: "Kontakt & Lizenzen"
+  }
+  // سایر زبان‌ها فعلاً با انگلیسی کار می‌کنند
+};
 
-    const payloadInput = document.getElementById("payloadInput");
-    const btnUseDemo = document.getElementById("btnUseDemo");
-    const btnValidate = document.getElementById("btnValidate");
-    const btnSimulate = document.getElementById("btnSimulate");
-    const apiStatus = document.getElementById("apiStatus");
-    const snapshotTitle = document.getElementById("snapshotTitle");
-    const snapshotMinute = document.getElementById("snapshotMinute");
-    const snapshotBody = document.getElementById("snapshotBody");
+document.getElementById("langSelect").addEventListener("change", function() {
+  const val = this.value;
+  const s = langStrings[val] || langStrings["en"];
 
-    btnUseDemo.addEventListener("click", () => {
-      payloadInput.value = demoPayload;
-      apiStatus.textContent = "";
-    });
+  document.querySelectorAll(".section-title")[0].textContent = s.emotionTitle;
+  document.querySelectorAll(".section-title")[1].textContent = s.liveTitle;
+  document.querySelectorAll(".section-title")[2].textContent = s.pricingTitle;
+  document.querySelectorAll(".section-title")[3].textContent = s.contactTitle;
 
-    btnValidate.addEventListener("click", () => {
-      try {
-        const data = JSON.parse(payloadInput.value);
-        if (!data.matchId || !data.homeTeam || !data.awayTeam) {
-          apiStatus.textContent = "Payload is valid JSON but missing key match fields.";
-          apiStatus.className = "api-status error";
-          return;
-        }
-        apiStatus.textContent = "Payload is valid JSON and contains key match fields.";
-        apiStatus.className = "api-status ok";
-      } catch (err) {
-        apiStatus.textContent = "Payload is not valid JSON – please check brackets and quotes.";
-        apiStatus.className = "api-status error";
-      }
-    });
+  // جهت متن فارسی
+  if (val === "fa" || val === "ar") {
+    document.body.dir = "rtl";
+    document.body.style.textAlign = "right";
+  } else {
+    document.body.dir = "ltr";
+    document.body.style.textAlign = "left";
+  }
+});
+</script>
 
-    btnSimulate.addEventListener("click", () => {
-      try {
-        const data = JSON.parse(payloadInput.value);
-        const id = data.matchId || "MATCH-ID";
-        const minute = typeof data.minute === "number" ? data.minute : "–";
-        const home = data.homeTeam || "Home";
-        const away = data.awayTeam || "Away";
-        const stats = data.stats || {};
-        const odds = data.marketOdds || {};
-        const sentiment = data.socialSentiment || "n/a";
-
-        snapshotTitle.textContent = id + " — " + home + " vs " + away;
-        snapshotMinute.textContent =
-          "Minute " + minute + " · Single-tick view for traders and AI pipelines.";
-
-        snapshotBody.innerHTML =
-          "xG trend: " +
-          (home + " " + (stats.xgHome ?? "–")) +
-          " vs " +
-          (away + " " + (stats.xgAway ?? "–")) +
-          ".<br>" +
-          "Market odds snapshot — home: " +
-          (odds.homeWin ?? "–") +
-          ", draw: " +
-          (odds.draw ?? "–") +
-          ", away: " +
-          (odds.awayWin ?? "–") +
-          ".<br>" +
-          "Social sentiment: " +
-          sentiment +
-          ".<br><br>" +
-          "In production, this card becomes part of a streaming service that continuously " +
-          "enriches your feeds with Emotion Index, LiveApe and BetSense Engine probabilities.";
-
-        apiStatus.textContent = "Snapshot updated from your payload. In production this is streamed in real time.";
-        apiStatus.className = "api-status ok";
-      } catch (err) {
-        apiStatus.textContent = "Unable to parse payload – please validate JSON first.";
-        apiStatus.className = "api-status error";
-      }
-    });
-
-    // Initial render
-    renderCurve("balanced");
-    applyLanguage("en");
-  </script>
 </body>
 </html>
