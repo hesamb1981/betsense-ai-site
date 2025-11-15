@@ -94,15 +94,17 @@
     }
 
     .lang-toggle {
-      background: rgba(15, 23, 42, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), #020617 80%);
       border-radius: 999px;
-      padding: 6px 12px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 6px 14px;
+      border: 1px solid rgba(56, 189, 248, 0.6);
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-size: 13px;
       cursor: pointer;
+      color: var(--text-main);
+      box-shadow: 0 14px 35px rgba(56, 189, 248, 0.35);
     }
 
     .lang-dot {
@@ -119,6 +121,7 @@
       padding: 3px;
       border: 1px solid rgba(148, 163, 184, 0.35);
       gap: 4px;
+      flex-wrap: wrap; /* برای موبایل، دکمه‌ها از کادر نزنن بیرون */
     }
 
     .pill-option {
@@ -160,6 +163,7 @@
       padding: 22px 20px 20px;
       border: 1px solid rgba(148, 163, 184, 0.25);
       box-shadow: var(--shadow-soft);
+      overflow: hidden;
     }
 
     .hero-pill {
@@ -269,6 +273,7 @@
       background: linear-gradient(145deg, #020617, #02091f);
       border: 1px solid rgba(148, 163, 184, 0.26);
       box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      overflow: hidden;
     }
 
     .mini-card-label {
@@ -346,6 +351,7 @@
       background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), #020617 70%);
       border: 1px solid var(--border-soft);
       box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
+      overflow: hidden;
     }
 
     .split-2 {
@@ -718,12 +724,12 @@
       <div class="hero-main">
         <div class="hero-pill">
           <span class="hero-pill-dot"></span>
-          <span>Realtime demo – static sample data</span>
+          <span id="heroPillLabel">Realtime demo – static sample data</span>
         </div>
         <h1 class="hero-title">
           One suite. <span class="accent">Four unique engines</span> for sharper sports decisions.
         </h1>
-        <p class="hero-text">
+        <p class="hero-text" id="heroText">
           BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into one
           operator-ready stack – giving traders, partners and investors a single view of how your
           models already behave in live markets.
@@ -736,11 +742,11 @@
         </div>
 
         <div class="hero-actions">
-          <button class="btn-primary">
+          <button class="btn-primary" id="exploreBtn">
             <span>Explore BetSense AI Suite</span>
             <span class="btn-primary-icon">⚡</span>
           </button>
-          <button class="btn-ghost">Connect your live data (API)</button>
+          <button class="btn-ghost" id="apiBtn">Connect your live data (API)</button>
         </div>
       </div>
 
@@ -861,7 +867,7 @@ Derby match, late goal for home side, big odds move from 2.40 to 1.70.</textarea
     <section class="section" id="reports">
       <div class="section-header">
         <div>
-          <div class="section-eyebrow">AI Match Report — Simple &amp; Full</div>
+          <div class="section-eyebrow">AI MATCH REPORT — SIMPLE &amp; FULL</div>
           <div class="section-title">Generate management-ready summaries from the same live context.</div>
         </div>
         <div class="pill-toggle" data-group="reportDepth">
@@ -1140,7 +1146,6 @@ X-API-Key: YOUR_KEY_HERE
       // Generic pill toggle behaviour
       document.querySelectorAll(".pill-toggle").forEach((group) => {
         const options = group.querySelectorAll(".pill-option");
-
         options.forEach((opt) => {
           opt.addEventListener("click", () => {
             options.forEach((o) => o.classList.remove("active"));
@@ -1159,12 +1164,57 @@ X-API-Key: YOUR_KEY_HERE
 
       if (langToggle && langLabel) {
         langToggle.addEventListener("click", () => {
-          langState = langState === "en" ? "en-dev" : "en";
+          langState = langState === "en" ? "en-investor" : "en";
           langLabel.textContent =
             langState === "en"
               ? "English (default)"
               : "English – investor deck copy";
         });
+      }
+
+      // Suite (operator vs investor) – فقط متن بالا رو عوض می‌کنه که حس کنی دکمه کار می‌کنه
+      const suiteGroup = document.querySelector(
+        '.pill-toggle[data-group="suite"]'
+      );
+      const heroTextEl = document.getElementById("heroText");
+      const heroPillLabelEl = document.getElementById("heroPillLabel");
+
+      const setSuiteMode = (mode) => {
+        if (!heroTextEl || !heroPillLabelEl) return;
+        if (mode === "investor") {
+          heroPillLabelEl.textContent = "Live demo – investor lens";
+          heroTextEl.textContent =
+            "Same live stack, but framed for investors and M&A: how your engines behave under pressure, and where the commercial edge sits.";
+        } else {
+          heroPillLabelEl.textContent = "Realtime demo – static sample data";
+          heroTextEl.textContent =
+            "BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into one operator-ready stack – giving traders, partners and investors a single view of how your models already behave in live markets.";
+        }
+      };
+
+      if (suiteGroup) {
+        setSuiteMode("operator");
+        suiteGroup.addEventListener("pillchange", (e) => {
+          setSuiteMode(e.detail.mode);
+        });
+      }
+
+      // Scroll buttons (Explore + Connect API)
+      const exploreBtn = document.getElementById("exploreBtn");
+      const apiBtn = document.getElementById("apiBtn");
+
+      const scrollToSection = (id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      };
+
+      if (exploreBtn) {
+        exploreBtn.addEventListener("click", () => scrollToSection("emotion"));
+      }
+      if (apiBtn) {
+        apiBtn.addEventListener("click", () => scrollToSection("live-api"));
       }
 
       // Emotion Engine mode
@@ -1300,7 +1350,6 @@ X-API-Key: YOUR_KEY_HERE
         const snapshot = snapshotSel.value;
         const scenario = scenarioSel.value;
 
-        // Very simple demo logic – just different texts.
         if (context === "prematch") {
           if (snapshot === "balanced" && scenario === "goalHome") {
             mpFairPrice.textContent = "Home 61% • Fair 1.64";
@@ -1349,7 +1398,6 @@ X-API-Key: YOUR_KEY_HERE
               "This is the screen risk and trading leads will live in every weekend – it’s your kill feature.";
           }
         } else {
-          // In-play context
           if (snapshot === "derby" && scenario === "goalHome") {
             mpFairPrice.textContent = "Home 74% • Fair 1.62";
             mpFairNote.textContent =
