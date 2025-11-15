@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -31,11 +31,15 @@
     <style>
       body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "Inter", sans-serif;
+          "SF Pro Display", "Inter", sans-serif;
       }
       .glow {
         filter: blur(40px);
         opacity: 0.6;
+      }
+      .report-mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
       }
     </style>
   </head>
@@ -338,10 +342,16 @@
                     class="flex items-center justify-between rounded-xl bg-gradient-to-r from-bsPurple/30 via-bsBlue/30 to-bsPink/30 px-3 py-2.5"
                   >
                     <div class="text-[11px] sm:text-xs">
-                      <p class="text-slate-100" data-i18n="hero.cardEdgeLabel">
+                      <p
+                        class="text-slate-100"
+                        data-i18n="hero.cardEdgeLabel"
+                      >
                         Recommended position
                       </p>
-                      <p class="font-semibold" data-i18n="hero.cardEdgeValue">
+                      <p
+                        class="font-semibold"
+                        data-i18n="hero.cardEdgeValue"
+                      >
                         Back Home @ 1.85 (edge +10%)
                       </p>
                     </div>
@@ -747,6 +757,120 @@
           </div>
         </section>
 
+        <!-- REPORT ENGINE: SIMPLE + FULL -->
+        <section id="report-engine" class="mt-14 sm:mt-16 space-y-5">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2 class="text-xl sm:text-2xl font-semibold">
+                AI Match Report – Simple &amp; Full
+              </h2>
+              <p class="text-sm text-slate-300 max-w-2xl">
+                Generate investor-ready or operator-ready match summaries in one
+                click. Use the same scenario you analysed above, then export a
+                simple or full report structure.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-5 lg:gap-6">
+            <!-- RIGHT: Input & buttons (for mobile it appears first, but code order can be either) -->
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm order-2 lg:order-1"
+            >
+              <div class="space-y-2">
+                <p class="text-slate-300 font-medium">
+                  1. Define the report focus
+                </p>
+                <p class="text-slate-400 text-xs sm:text-[13px]">
+                  You can paste a fresh scenario here, or leave it blank to
+                  reuse the context from Emotion Engine (above).
+                </p>
+              </div>
+
+              <textarea
+                id="report-input"
+                rows="4"
+                class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-slate-50"
+                placeholder="Optional: add or refine the scenario you want in the report (league, scoreline, odds move, key events)…"
+              ></textarea>
+
+              <div class="space-y-2">
+                <p class="text-slate-300 font-medium">
+                  2. Choose report depth
+                </p>
+                <div
+                  class="grid grid-cols-2 gap-2 text-xs sm:text-sm text-slate-200"
+                >
+                  <button
+                    type="button"
+                    id="simple-report-btn"
+                    class="inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsBlue hover:bg-slate-900 transition"
+                  >
+                    <span class="font-medium">Simple report</span>
+                    <span class="text-[11px] text-slate-400"
+                      >1-page, non-technical summary</span
+                    >
+                  </button>
+                  <button
+                    type="button"
+                    id="full-report-btn"
+                    class="inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsPurple hover:bg-slate-900 transition"
+                  >
+                    <span class="font-medium">Full report</span>
+                    <span class="text-[11px] text-slate-400"
+                      >Multi-section, investor-level detail</span
+                    >
+                  </button>
+                </div>
+                <p class="text-[11px] text-slate-500">
+                  This demo shows the structure and language. In production, a
+                  &ldquo;Download PDF&rdquo; button can export these reports
+                  straight into your workflows.
+                </p>
+              </div>
+            </div>
+
+            <!-- LEFT: Report preview -->
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm order-1 lg:order-2"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-slate-400 text-xs">Report preview</p>
+                  <p
+                    id="report-output-title"
+                    class="text-sm sm:text-base font-semibold text-slate-100"
+                  >
+                    Waiting for a report type…
+                  </p>
+                </div>
+                <span
+                  id="report-output-tag"
+                  class="text-[11px] px-2 py-0.5 rounded-full border border-slate-700 text-slate-300"
+                >
+                  Idle
+                </span>
+              </div>
+
+              <div
+                id="report-output"
+                class="rounded-xl bg-slate-950/60 border border-slate-800 px-3 py-3 text-[11px] sm:text-xs text-slate-200 min-h-[140px] whitespace-pre-line report-mono"
+              >
+SIMPLE &amp; FULL REPORT DEMO
+
+Use Simple report for quick sharing with non-technical stakeholders.
+Use Full report for investors, trading leadership and detailed reviews.
+              </div>
+
+              <p class="text-[11px] text-slate-500">
+                The language here uses the same scenario, Emotion Engine mode
+                and Timeline context from above, so everything feels consistent
+                inside a single story.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <!-- PRICING / CONTACT -->
         <section
           id="pricing"
@@ -878,7 +1002,7 @@
       </main>
     </div>
 
-    <!-- i18n + Emotion Engine + Trend Engine script -->
+    <!-- i18n + Emotion Engine + Trend Engine + Report Engine script -->
     <script>
       const translations = {
         en: {
@@ -948,300 +1072,4 @@
           "modules.liveape.title": "LiveApe",
           "modules.liveape.body":
             "Match-day experience layer showing live edges, momentum and fan mood in a language that marketing teams can use.",
-          "modules.liveape.li1": "Visual edge story for each fixture.",
-          "modules.liveape.li2":
-            "Embeddable widgets for web & apps.",
-          "modules.liveape.li3":
-            "Built on the same engine traders trust.",
-          "pricing.title": "Built for pilots, then scale.",
-          "pricing.body":
-            "Start with a small proof-of-concept on a limited set of leagues or markets. Once the numbers make sense, scale to your full trading universe.",
-          "pricing.li1":
-            "Flexible commercial models for operators and data providers.",
-          "pricing.li2":
-            "White-label or fully integrated deployment options.",
-          "pricing.li3":
-            "Technical support from concept to production.",
-          "contact.title": "Request access or investor demo",
-          "contact.body":
-            "Share a work email and a short note about your role (operator, data provider, investor, trading desk). We’ll respond with a live demo slot and technical deck.",
-          "contact.emailLabel": "Work email",
-          "contact.roleLabel": "Role",
-          "contact.roleOperator": "Operator / Sportsbook",
-          "contact.roleData": "Data provider / feed",
-          "contact.roleInvestor": "Investor",
-          "contact.roleOther": "Other",
-          "contact.msgLabel": "Short message",
-          "contact.submit": "Send request",
-          "contact.disclaimer":
-            "Form is a visual placeholder. Connect it to your CRM, email or ticketing system when you go live.",
-          "footer.copy":
-            "© BetSense AI Suite. Concept demo for unified sports intelligence.",
-          "footer.note":
-            "Language selector shows English, Persian and 20+ global options. Additional locales can be added as partners require.",
-        },
-        fa: {
-          "brand.title": "BetSense AI Suite",
-          "brand.subtitle": "استک یکپارچه هوش ورزشی",
-          "nav.modules": "ماژول‌ها",
-          "nav.capabilities": "قابلیت‌ها",
-          "nav.pricing": "قیمت‌گذاری",
-          "nav.contact": "تماس",
-          "nav.languageLabel": "زبان",
-          "nav.requestAccess": "درخواست دسترسی",
-          "hero.badge":
-            "هوش مصنوعی همزمان برای بوک‌میکرها و تریدینگ دسک‌ها",
-          "hero.title":
-            "یک سوئیت. چهار انجین منحصربه‌فرد برای تصمیم‌های دقیق‌تر در ورزش.",
-          "hero.subtitle":
-            "BetSense AI Suite، BetSense Engine، HBboard، Emotion Index و LiveApe را در یک پلتفرم آماده‌ی اپراتور برای قیمت‌گذاری، ریسک و احساسات هواداری به هم متصل می‌کند.",
-          "hero.ctaPrimary": "مشاهده همه ماژول‌ها",
-          "hero.ctaSecondary": "مشاهده جریان لایو مسابقه",
-          "hero.kpi1Label": "ماژول‌های یکپارچه",
-          "hero.kpi1Value": "۴",
-          "hero.kpi2Label": "معماری API-ready",
-          "hero.kpi2Value": "Plug & play",
-          "hero.kpi3Label": "پوشش مسابقه زنده",
-          "hero.kpi3Value": "۹۰+ دقیقه",
-          "hero.investorNote":
-            "ساخته شده تا تمام توانایی‌های یونیک شما را در یک صفحه آماده‌ی اپراتور به اینوستورها و خریداران نشان دهد.",
-          "hero.cardLabelTop": "اسنپ‌شات هوش لایو مسابقه",
-          "hero.cardTitle": "لیگ برتر – برتری در حین بازی",
-          "hero.cardChip": "Quantum engine فعال است",
-          "hero.cardHomeTeam": "میزبان",
-          "hero.cardAwayTeam": "میهمان",
-          "hero.cardProbTitle": "احتمالات برد از دید مدل",
-          "hero.cardProbHome": "برد میزبان",
-          "hero.cardProbDraw": "مساوی",
-          "hero.cardProbAway": "برد میهمان",
-          "hero.cardEdgeTitle": "برتری مدل نسبت به مارکت",
-          "hero.cardEdgeLabel": "پوزیشن پیشنهادی",
-          "hero.cardEdgeValue": "پشت میزبان @ 1.85 (اِج +۱۰٪)",
-          "hero.cardEdgeReason": "داده لایو + احساسات",
-          "hero.cardEdgeReason2": "xG و مومنتوم هم‌راستا",
-          "hero.cardFooter":
-            "فقط دمو و تست API. برای پروداکشن به فید لایو واقعی خود وصل کنید.",
-          "modules.title": "ماژول‌های یکپارچه",
-          "modules.subtitle":
-            "چهار انجین تخصصی که می‌توانند مستقل کار کنند یا به صورت یک استک کامل، بسته به نحوه‌ی کاربوک شما.",
-          "modules.engine.title": "BetSense Engine",
-          "modules.engine.body":
-            "انجین قیمت‌گذاری با رویکرد کوانتومی که xG، استت‌های لایو و احساسات هواداری را ترکیب می‌کند تا اج‌های ارزشی را در لحظه پیدا کند.",
-          "modules.engine.li1":
-            "تشخیص اج در حین بازی نسبت به ضرایب مارکت.",
-          "modules.engine.li2":
-            "پروفایل ریسک قابل تنظیم برای هر لیگ.",
-          "modules.engine.li3":
-            "API برای تریدرها و مدل‌های کوانت.",
-          "modules.hbboard.title": "HBboard",
-          "modules.hbboard.body":
-            "داشبورد سبک اپراتور که یک صفحه‌ی واحد برای اج‌ها، اکسپوژر و آلارم‌های ریسک به تیم ترید می‌دهد.",
-          "modules.hbboard.li1":
-            "فید اج لایو از BetSense Engine.",
-          "modules.hbboard.li2":
-            "نمایش اکسپوژر و پوزیشن برای هر ایونت.",
-          "modules.hbboard.li3":
-            "طراحی‌شده برای تریدینگ روم‌ها و دسک‌های buy-side.",
-          "modules.emotion.title": "Emotion Index",
-          "modules.emotion.body":
-            "سیگنال لحظه‌ای احساسات هواداران بر اساس شبکه‌های اجتماعی و میکروموومنت‌های مارکت.",
-          "modules.emotion.li1":
-            "منحنی احساسات قبل بازی و داخل بازی.",
-          "modules.emotion.li2":
-            "تشخیص شوک در لحظه‌ی گل، کارت و خبر.",
-          "modules.emotion.li3":
-            "قابل استفاده به عنوان یک فاکتور آلفا برای مدل‌های کوانت.",
-          "modules.liveape.title": "LiveApe",
-          "modules.liveape.body":
-            "لایه تجربه‌ی روز مسابقه که اج‌ها، مومنتوم و مود هواداران را در زبانی نشان می‌دهد که تیم مارکتینگ بتواند استفاده کند.",
-          "modules.liveape.li1":
-            "داستان دیداری اج برای هر بازی.",
-          "modules.liveape.li2":
-            "ویجت‌های قابل امبد در وب و اپ.",
-          "modules.liveape.li3":
-            "ساخته شده روی همان انجینی که تیم ترید به آن اعتماد دارد.",
-          "pricing.title": "اول پایلوت، بعد اسکیل.",
-          "pricing.body":
-            "از یک پایلوت کوچک روی چند لیگ یا مارکت محدود شروع کنید. وقتی عددها جواب داد، روی کل یونیورس ترید خود اسکیل دهید.",
-          "pricing.li1":
-            "مدل‌های تجاری منعطف برای اوپراتورها و دیتا پرووایدرها.",
-          "pricing.li2":
-            "قابلیت white-label یا اینتگریشن کامل.",
-          "pricing.li3":
-            "همراهی فنی از فاز ایده تا پروداکشن.",
-          "contact.title": "درخواست دسترسی یا دمو برای اینوستور",
-          "contact.body":
-            "یک ایمیل کاری و توضیح کوتاه درباره نقش خودتان (اوپراتور، دیتا پرووایدر، اینوستور، تریدینگ دسک) بفرستید. با یک اسلات دمو لایو و دک فنی برمی‌گردیم.",
-          "contact.emailLabel": "ایمیل کاری",
-          "contact.roleLabel": "نقش",
-          "contact.roleOperator": "اوپراتور / اسپورتسبوک",
-          "contact.roleData": "دیتاپرووایدر / فید",
-          "contact.roleInvestor": "اینوستور",
-          "contact.roleOther": "سایر",
-          "contact.msgLabel": "پیام کوتاه",
-          "contact.submit": "ارسال درخواست",
-          "contact.disclaimer":
-            "این فرم فقط ماکت است. هنگام لانچ واقعی، آن را به CRM یا ایمیل خود وصل کنید.",
-          "footer.copy":
-            "© BetSense AI Suite. دمو کانسپت برای استک یکپارچه هوش ورزشی.",
-          "footer.note":
-            "سلکتور زبان در حال حاضر انگلیسی، فارسی و ۲۰+ گزینه جهانی را نشان می‌دهد. هر زمان لازم شد زبان‌های دیگر هم اضافه می‌شوند.",
-        },
-      };
-
-      const rtlLangs = ["fa", "ar", "he", "ur"];
-
-      function applyLanguage(lang) {
-        const dict = translations[lang] || translations.en;
-
-        document.documentElement.lang = lang;
-        document.body.dir = rtlLangs.includes(lang) ? "rtl" : "ltr";
-
-        document.querySelectorAll("[data-i18n]").forEach((el) => {
-          const key = el.getAttribute("data-i18n");
-          if (dict[key]) {
-            el.textContent = dict[key];
-          } else if (translations.en[key]) {
-            el.textContent = translations.en[key];
-          }
-        });
-      }
-
-      const select = document.getElementById("languageSelect");
-      if (select) {
-        select.addEventListener("change", (e) => {
-          applyLanguage(e.target.value);
-        });
-      }
-
-      // Emotion Engine demo logic
-      function makeEmotionOutput(mode, text) {
-        const base =
-          text && text.trim().length
-            ? text.trim()
-            : "Generic high-pressure match state with sharp odds movement.";
-
-        if (mode === "fast") {
-          return (
-            "FAST PULSE:\n" +
-            "- Snapshot: " +
-            base +
-            "\n- Emotion pulse: Elevated tension, strong bias toward home side.\n" +
-            "- Trading hint: Monitor liquidity + sharp money; consider micro-adjustments instead of full reprice."
-          );
-        } else {
-          return (
-            "DEEP NARRATIVE:\n" +
-            "- Context: " +
-            base +
-            "\n- Fan sentiment: Social feeds skew positive for the home side, but volatility indicates fear of late reversal.\n" +
-            "- Market structure: Odds drifted aggressively after the last event; retail flow is chasing, sharp flow is more cautious.\n" +
-            "- Risk view: This looks like a momentum + narrative overreaction. If your internal models agree, there may be room to offer slightly more aggressive home pricing while tightening exposure limits.\n" +
-            "- Story for stakeholders: Emotion Engine is capturing not just numbers, but how the match actually feels in the market."
-          );
-        }
-      }
-
-      const inputEl = document.getElementById("emotion-input");
-      const outEl = document.getElementById("emotion-output");
-      const modeEl = document.getElementById("emotion-output-mode");
-      const tagEl = document.getElementById("emotion-output-tag");
-      const fastBtn = document.getElementById("emotion-fast-btn");
-      const deepBtn = document.getElementById("emotion-deep-btn");
-
-      if (inputEl && outEl && modeEl && tagEl && fastBtn && deepBtn) {
-        function setMode(mode) {
-          const text = inputEl.value || "";
-          const result = makeEmotionOutput(mode, text);
-
-          outEl.textContent = result;
-
-          if (mode === "fast") {
-            modeEl.textContent = "Quick Emotion analysis";
-            tagEl.textContent = "Fast mode";
-            tagEl.className =
-              "text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/40";
-          } else {
-            modeEl.textContent = "Deep Emotion analysis";
-            tagEl.textContent = "Deep mode";
-            tagEl.className =
-              "text-[11px] px-2 py-0.5 rounded-full bg-bsPurple/20 text-bsPurple border border-bsPurple/40";
-          }
-        }
-
-        fastBtn.addEventListener("click", () => setMode("fast"));
-        deepBtn.addEventListener("click", () => setMode("deep"));
-      }
-
-      // Trend Engine / Emotion Timeline logic
-      const trendButtons = document.querySelectorAll(".trend-btn");
-      const trendTitle = document.getElementById("trend-output-title");
-      const trendTag = document.getElementById("trend-output-tag");
-      const trendDesc = document.getElementById("trend-output-description");
-      const trendBars = document.getElementById("trend-bars");
-
-      const trendScenarios = {
-        calm: {
-          title: "Calm market – controlled, rational pricing",
-          tag: "Low tension",
-          tagClass:
-            "text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/40",
-          description:
-            "The market trades in a narrow, stable band. Liquidity is healthy, spreads are consistent and there are no major emotional shocks. This kind of curve is ideal for disciplined trading and automated models.",
-          bars: [10, 12, 14, 16, 18, 20, 22, 22, 21, 20, 19, 18, 17, 16, 15],
-        },
-        derby: {
-          title: "Derby spike – high emotional pressure",
-          tag: "Tense & noisy",
-          tagClass:
-            "text-[11px] px-2 py-0.5 rounded-full bg-bsPurple/20 text-bsPurple border border-bsPurple/40",
-          description:
-            "From kick-off, sentiment is elevated. Small events produce outsized reactions. By mid-match, tension and noise are both high – great for engagement, but dangerous if risk controls are not aligned.",
-          bars: [20, 25, 30, 35, 50, 60, 70, 75, 78, 80, 82, 78, 70, 60, 45],
-        },
-        shock: {
-          title: "Late shock – red card / 90th-minute goal",
-          tag: "Volatile",
-          tagClass:
-            "text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-300 border border-red-500/40",
-          description:
-            "For most of the game, emotion is contained. Then a single late event – red card, penalty, or goal – sends both the market and fan sentiment into a sudden spike. This is where Emotion Index helps separate panic from genuine information.",
-          bars: [15, 18, 20, 22, 25, 30, 32, 35, 38, 40, 45, 50, 80, 82, 78],
-        },
-      };
-
-      function renderTrendBars(bars) {
-        if (!trendBars) return;
-        trendBars.innerHTML = "";
-        const max = Math.max(...bars);
-        bars.forEach((value) => {
-          const heightPercent = (value / max) * 100;
-          const bar = document.createElement("div");
-          bar.className =
-            "flex-1 rounded-full bg-gradient-to-t from-bsPurple/30 via-bsBlue/40 to-bsPink/60";
-          bar.style.height = `${Math.max(10, heightPercent)}%`;
-          trendBars.appendChild(bar);
-        });
-      }
-
-      if (trendButtons && trendButtons.length && trendTitle && trendTag && trendDesc && trendBars) {
-        trendButtons.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const key = btn.getAttribute("data-trend");
-            const scenario = trendScenarios[key];
-            if (!scenario) return;
-
-            trendTitle.textContent = scenario.title;
-            trendTag.textContent = scenario.tag;
-            trendTag.className = scenario.tagClass;
-            trendDesc.textContent = scenario.description;
-            renderTrendBars(scenario.bars);
-          });
-        });
-      }
-
-      // default language
-      applyLanguage("en");
-    </script>
-  </body>
-</html>        
+          "modules.liveape.li
