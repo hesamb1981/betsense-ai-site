@@ -1,1075 +1,1397 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>BetSense AI Suite – Unified Sports Intelligence Stack</title>
-    <meta
-      name="description"
-      content="BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into a single, operator-ready sports intelligence platform for bookmakers and trading desks."
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense AI Suite – Unified Sports Intelligence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="BetSense AI Suite – unified sports intelligence stack for bookmakers, trading desks and operators."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-elevated: #020617;
+      --panel: #020617;
+      --panel-soft: #020617;
+      --card: #020617;
+      --border-subtle: rgba(148, 163, 184, 0.18);
+      --border-strong: rgba(148, 163, 184, 0.35);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-muted: #6b7280;
+      --accent: #22d3ee;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --accent-2: #a855f7;
+      --accent-3: #4ade80;
+      --danger: #f97373;
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 60px rgba(15, 23, 42, 0.85);
+      --shadow-chip: 0 8px 26px rgba(15, 23, 42, 0.9);
+    }
 
-    <!-- Tailwind (CDN) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              bsPurple: "#7C3AED",
-              bsBlue: "#22D3EE",
-              bsGreen: "#22C55E",
-              bsPink: "#EC4899",
-              bsBg: "#020617",
-              bsCard: "#020617",
-            },
-          },
-        },
-      };
-    </script>
+    * {
+      box-sizing: border-box;
+    }
 
-    <style>
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "SF Pro Display", "Inter", sans-serif;
-      }
-      .glow {
-        filter: blur(40px);
-        opacity: 0.6;
-      }
-      .report-mono {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-      }
-    </style>
-  </head>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
 
-  <body class="bg-bsBg text-slate-50 min-h-screen">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-      <!-- HEADER -->
-      <header class="flex items-center justify-between gap-4">
-        <!-- Logo + Brand -->
-        <div class="flex items-center gap-3">
-          <div
-            class="h-11 w-11 rounded-full bg-gradient-to-tr from-bsPurple via-bsPink to-bsBlue flex items-center justify-center shadow-lg shadow-bsPurple/40"
-          >
-            <span class="font-semibold text-sm tracking-wide">BS</span>
+    body {
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 72px;
+    }
+
+    /* Top bar */
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-orb {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 140deg,
+        #22d3ee,
+        #a855f7,
+        #4ade80,
+        #22d3ee
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.85),
+        0 0 22px rgba(56, 189, 248, 0.95);
+    }
+
+    .logo-orb-inner {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 10%, #ffffff, #020617 65%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #020617;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Language selector */
+
+    .lang-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      min-width: 210px;
+    }
+
+    .lang-label {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .lang-select {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      background: radial-gradient(circle at top left, #0f172a, #020617 60%);
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow-chip);
+    }
+
+    .lang-select select {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
+      font-size: 12px;
+      padding-right: 2px;
+    }
+
+    .lang-select select option {
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    .lang-status {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Layout */
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 880px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .lang-wrapper {
+        align-items: flex-start;
+      }
+    }
+
+    /* Hero / suite card */
+
+    .suite-card {
+      border-radius: var(--radius-xl);
+      padding: 24px 22px 22px;
+      background:
+        radial-gradient(circle at 0 -20%, rgba(56, 189, 248, 0.35), transparent 50%),
+        radial-gradient(circle at 110% -20%, rgba(168, 85, 247, 0.35), transparent 50%),
+        linear-gradient(145deg, #020617 0, #020617 55%, #020617 100%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .suite-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .chip-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(22, 163, 74, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      font-size: 11px;
+      color: #bbf7d0;
+    }
+
+    .dot-live {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #bbf7d0, #22c55e);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .chip-mini {
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.85);
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .suite-title {
+      font-size: 26px;
+      line-height: 1.2;
+      margin: 0 0 6px;
+    }
+
+    .suite-title span.highlight {
+      background: linear-gradient(120deg, #38bdf8, #a855f7, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .suite-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      max-width: 430px;
+      margin-bottom: 16px;
+    }
+
+    .suite-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .suite-pill {
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.92);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .pill-dot.alt {
+      background: #a855f7;
+    }
+
+    .pill-dot.alt2 {
+      background: #22c55e;
+    }
+
+    .suite-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .btn-primary {
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: #0b1120;
+      background: linear-gradient(135deg, #38bdf8, #22c55e);
+      box-shadow: 0 14px 40px rgba(56, 189, 248, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary span.icon {
+      font-size: 14px;
+    }
+
+    .btn-ghost {
+      padding: 8px 13px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .suite-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .metric-pill {
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .metric-pill span.value {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .suite-orbit {
+      position: absolute;
+      inset: -120px -160px auto auto;
+      opacity: 0.26;
+      pointer-events: none;
+      filter: blur(0.2px);
+    }
+
+    .suite-orbit svg {
+      width: 280px;
+      height: 280px;
+    }
+
+    /* Right stack card */
+
+    .stack-card {
+      border-radius: var(--radius-xl);
+      padding: 18px 16px 16px;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #020617 100%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stack-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .stack-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .stack-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .stack-modules {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .module-card {
+      border-radius: var(--radius-lg);
+      padding: 10px 11px;
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      font-size: 11px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-tag {
+      font-size: 10px;
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 3px;
+    }
+
+    .module-title {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .module-desc {
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .badge-pill {
+      font-size: 10px;
+      color: var(--accent);
+      border-radius: var(--radius-pill);
+      padding: 2px 7px;
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      background: rgba(8, 47, 73, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .badge-pill span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    /* Section headings */
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      max-width: 420px;
+    }
+
+    /* Emotion Engine */
+
+    .panel {
+      border-radius: var(--radius-xl);
+      padding: 16px 16px 14px;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #020617 100%);
+      box-shadow: 0 16px 45px rgba(15, 23, 42, 0.95);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 880px) {
+      .split {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .field-label {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: var(--text-main);
+      padding: 9px 10px;
+      font-size: 12px;
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    textarea::placeholder,
+    input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-toggle {
+      padding: 7px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-toggle.active {
+      border-color: rgba(56, 189, 248, 0.85);
+      background: radial-gradient(circle at top left, #0ea5e9, #22c55e);
+      color: #0b1120;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.55);
+    }
+
+    .ai-output {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 10px 11px;
+      font-size: 12px;
+      color: #e5e7eb;
+      min-height: 88px;
+      line-height: 1.5;
+    }
+
+    .ai-output-status {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* Timeline */
+
+    .timeline-shell {
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, #020617, #020617 55%);
+      box-shadow: 0 16px 45px rgba(15, 23, 42, 0.95);
+    }
+
+    .timeline-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .timeline-btn {
+      padding: 6px 11px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .timeline-btn.active {
+      border-color: rgba(56, 189, 248, 0.9);
+      background: radial-gradient(circle at top left, #22d3ee, #4ade80);
+      color: #020617;
+      box-shadow: 0 12px 32px rgba(34, 197, 94, 0.6);
+    }
+
+    .timeline-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 3px;
+      border-radius: 999px;
+    }
+
+    .legend-home {
+      background: #38bdf8;
+    }
+
+    .legend-draw {
+      background: #a855f7;
+    }
+
+    .legend-away {
+      background: #f97316;
+    }
+
+    .timeline-footnote {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 100%;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, #020617, #020617 70%);
+      border: 1px solid rgba(30, 64, 175, 0.6);
+    }
+
+    /* Match report */
+
+    .report-shell {
+      border-radius: var(--radius-xl);
+      padding: 16px 16px 14px;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, #020617, #020617 55%);
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.95);
+    }
+
+    .report-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 880px) {
+      .report-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .report-preview-box {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #e5e7eb;
+      min-height: 120px;
+      white-space: pre-line;
+    }
+
+    .report-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .report-type-pill {
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      background: rgba(8, 47, 73, 0.9);
+      color: #e0f2fe;
+      font-size: 10px;
+    }
+
+    .report-depth-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .report-btn {
+      padding: 7px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .report-btn.active {
+      border-color: rgba(168, 85, 247, 0.9);
+      background: radial-gradient(circle at top left, #a855f7, #38bdf8);
+      color: #020617;
+      box-shadow: 0 12px 32px rgba(168, 85, 247, 0.55);
+    }
+
+    .report-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* Footer */
+
+    .footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(30, 64, 175, 0.65);
+      padding-top: 10px;
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Top bar -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="logo-orb">
+          <div class="logo-orb-inner">BS</div>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">BetSense AI Suite</div>
+          <div class="brand-sub">Unified sports intelligence for serious operators</div>
+        </div>
+      </div>
+
+      <div class="lang-wrapper">
+        <div class="lang-label">Interface language (demo only – product stays in English)</div>
+        <div class="lang-select">
+          <span style="font-size:13px;">🌐</span>
+          <select id="languageSelect" aria-label="Interface language"></select>
+        </div>
+        <div id="langStatus" class="lang-status">
+          Current: English (primary product language)
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero + Stack -->
+    <section class="grid">
+      <div class="suite-card">
+        <div class="suite-chip-row">
+          <div class="chip-live">
+            <span class="dot-live"></span>
+            Realtime AI for bookmakers &amp; trading desks
           </div>
+          <div class="chip-mini">Operator-ready from day one</div>
+        </div>
+
+        <h1 class="suite-title">
+          One suite. <span class="highlight">Four unique engines</span> for smarter sports decisions.
+        </h1>
+
+        <p class="suite-sub">
+          BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and
+          LiveApe into a single stack for risk, trading and product teams.
+        </p>
+
+        <div class="suite-pills">
+          <div class="suite-pill"><span class="pill-dot"></span> AI pricing &amp; edge detection</div>
+          <div class="suite-pill"><span class="pill-dot alt"></span> Live match context</div>
+          <div class="suite-pill"><span class="pill-dot alt2"></span> Investor-ready reporting</div>
+        </div>
+
+        <div class="suite-cta-row">
+          <button class="btn-primary">
+            <span class="icon">⚡</span>
+            Request pilot access
+          </button>
+          <button class="btn-ghost">
+            View API &amp; demo flows
+          </button>
+        </div>
+
+        <div class="suite-metrics">
+          <div class="metric-pill">
+            <span class="value">4</span> integrated engines
+          </div>
+          <div class="metric-pill">
+            <span class="value">API-ready</span> for your stack
+          </div>
+          <div class="metric-pill">
+            <span class="value">Live-match</span> intelligence
+          </div>
+        </div>
+
+        <div class="suite-orbit" aria-hidden="true">
+          <svg viewBox="0 0 260 260">
+            <defs>
+              <radialGradient id="orbGrad" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="40%" stop-color="#0f172a" />
+                <stop offset="100%" stop-color="#020617" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <circle cx="130" cy="130" r="82" fill="url(#orbGrad)" />
+            <circle
+              cx="130"
+              cy="130"
+              r="96"
+              fill="none"
+              stroke="rgba(56,189,248,0.35)"
+              stroke-width="1.4"
+              stroke-dasharray="6 5"
+            />
+            <circle
+              cx="130"
+              cy="130"
+              r="118"
+              fill="none"
+              stroke="rgba(168,85,247,0.4)"
+              stroke-width="1"
+              stroke-dasharray="4 6"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <aside class="stack-card">
+        <div class="stack-title-row">
+          <div class="stack-title">Modules in this suite</div>
+          <div class="stack-tag">Built for pilots, then scale</div>
+        </div>
+        <div class="stack-modules">
+          <div class="module-card">
+            <div class="module-tag">Engine · Pricing</div>
+            <div class="module-title">BetSense Engine</div>
+            <div class="module-desc">
+              Probability curves, live odds and edge analytics for pre-match and in-play.
+            </div>
+            <div class="badge-pill">
+              <span class="dot"></span> API-first
+            </div>
+          </div>
+
+          <div class="module-card">
+            <div class="module-tag">Console · Trading</div>
+            <div class="module-title">HBboard</div>
+            <div class="module-desc">
+              Single control room for traders, risk and product teams – powered by BetSense data.
+            </div>
+            <div class="badge-pill">
+              <span class="dot"></span> Operator view
+            </div>
+          </div>
+
+          <div class="module-card">
+            <div class="module-tag">Index · Emotion</div>
+            <div class="module-title">Emotion Index</div>
+            <div class="module-desc">
+              Real-time narrative on market mood, sharp vs public money and social sentiment.
+            </div>
+            <div class="badge-pill">
+              <span class="dot"></span> Sentiment OS
+            </div>
+          </div>
+
+          <div class="module-card">
+            <div class="module-tag">Feed · Live</div>
+            <div class="module-title">LiveApe</div>
+            <div class="module-desc">
+              Live match layer that turns raw feeds into AI-ready events and trading signals.
+            </div>
+            <div class="badge-pill">
+              <span class="dot"></span> Context engine
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Emotion Engine -->
+    <section id="emotion-engine" class="section">
+      <div class="section-header">
+        <div class="section-title">Emotion Engine – Quick &amp; Deep</div>
+        <div class="section-sub">
+          Type a scenario and choose <strong>Quick</strong> or <strong>Deep</strong> analysis.
+          In production this connects directly to the BetSense AI Engine.
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="split">
           <div>
-            <div
-              class="text-lg sm:text-xl font-semibold tracking-tight"
-              data-i18n="brand.title"
-            >
-              BetSense AI Suite
+            <div class="field-label">1. Describe the live scenario</div>
+            <textarea
+              id="emotionScenario"
+              placeholder="For example: Derby match, late goal for home side, odds move from 2.40 to 1.70, red card for away team..."
+            >Derby match, late goal for home side, odds move from 2.40 to 1.70.</textarea>
+
+            <div class="field-label" style="margin-top:10px;">2. Choose analysis mode</div>
+            <div class="btn-row">
+              <button id="quickEmotionBtn" class="btn-toggle active">Quick Emotion</button>
+              <button id="deepEmotionBtn" class="btn-toggle">Deep Emotion</button>
             </div>
-            <p
-              class="text-xs sm:text-sm text-slate-400"
-              data-i18n="brand.subtitle"
-            >
-              Unified Sports Intelligence Stack
-            </p>
+          </div>
+
+          <div>
+            <div class="ai-output-status" id="emotionStatus">Waiting for input…</div>
+            <div id="emotionOutput" class="ai-output">
+              Type a short scenario on the left and choose Quick or Deep to see how Emotion Engine might describe
+              the situation for traders, marketing or investors.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Probability Timeline -->
+    <section id="timeline" class="section">
+      <div class="section-header">
+        <div class="section-title">Probability Timeline – 0' to 90'</div>
+        <div class="section-sub">
+          Visualises how home, draw and away win probabilities evolve across the match.
+          Use the presets to illustrate different stories for investors or trading teams.
+        </div>
+      </div>
+
+      <div class="timeline-shell">
+        <div class="timeline-controls">
+          <button class="timeline-btn active" data-mode="baseline">Balanced opener</button>
+          <button class="timeline-btn" data-mode="homePressure">Home pressure</button>
+          <button class="timeline-btn" data-mode="awayComeback">Away comeback</button>
+        </div>
+
+        <div class="timeline-legend">
+          <div class="legend-item">
+            <span class="legend-swatch legend-home"></span> Home win %
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch legend-draw"></span> Draw %
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch legend-away"></span> Away win %
           </div>
         </div>
 
-        <!-- Nav + Language -->
-        <div class="flex items-center gap-4 sm:gap-6">
-          <nav
-            class="hidden md:flex items-center gap-5 text-sm text-slate-300"
-            aria-label="Main navigation"
-          >
-            <a
-              href="#modules"
-              class="hover:text-white transition"
-              data-i18n="nav.modules"
-              >Modules</a
-            >
-            <a
-              href="#capabilities"
-              class="hover:text-white transition"
-              data-i18n="nav.capabilities"
-              >Capabilities</a
-            >
-            <a
-              href="#pricing"
-              class="hover:text-white transition"
-              data-i18n="nav.pricing"
-              >Pricing</a
-            >
-            <a
-              href="#contact"
-              class="hover:text-white transition"
-              data-i18n="nav.contact"
-              >Contact</a
-            >
-          </nav>
+        <canvas id="timelineCanvas" height="220"></canvas>
 
-          <!-- Language selector (with Persian + 20+ options) -->
-          <div class="flex items-center gap-2">
-            <label
-              for="languageSelect"
-              class="hidden sm:inline text-xs text-slate-400"
-              data-i18n="nav.languageLabel"
-              >Language</label
-            >
-            <select
-              id="languageSelect"
-              class="text-xs sm:text-sm bg-slate-900/70 border border-slate-700/70 rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent"
-            >
-              <option value="en">English</option>
-              <option value="fa">فارسی (Persian)</option>
-              <option value="ar">العربية</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-              <option value="de">Deutsch</option>
-              <option value="it">Italiano</option>
-              <option value="pt">Português</option>
-              <option value="ru">Русский</option>
-              <option value="zh">中文</option>
-              <option value="ja">日本語</option>
-              <option value="ko">한국어</option>
-              <option value="tr">Türkçe</option>
-              <option value="hi">हिन्दी</option>
-              <option value="ur">اردو</option>
-              <option value="id">Bahasa Indonesia</option>
-              <option value="ms">Bahasa Melayu</option>
-              <option value="th">ไทย</option>
-              <option value="vi">Tiếng Việt</option>
-              <option value="nl">Nederlands</option>
-              <option value="sv">Svenska</option>
-              <option value="no">Norsk</option>
-              <option value="da">Dansk</option>
-              <option value="fi">Suomi</option>
-              <option value="pl">Polski</option>
-              <option value="el">Ελληνικά</option>
-              <option value="he">עברית</option>
-            </select>
-          </div>
-
-          <!-- CTA -->
-          <a
-            href="#contact"
-            class="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium bg-gradient-to-r from-bsPurple via-bsPink to-bsBlue px-4 py-2 rounded-full shadow-lg shadow-bsPurple/40 hover:shadow-bsBlue/40 transition"
-            data-i18n="nav.requestAccess"
-          >
-            Request access
-            <span aria-hidden="true">↗</span>
-          </a>
+        <div id="timelineNote" class="timeline-footnote">
+          Mode: Balanced opener – early swings are modest, market still respects all three outcomes.
         </div>
-      </header>
+      </div>
+    </section>
 
-      <!-- MAIN -->
-      <main class="mt-10 sm:mt-14 lg:mt-16">
-        <!-- HERO -->
-        <section class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-          <!-- Text -->
-          <div class="space-y-6">
-            <div
-              class="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs sm:text-sm text-emerald-300"
-            >
-              <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse">
-              </span>
-              <span data-i18n="hero.badge"
-                >Realtime AI for bookmakers &amp; trading desks</span
-              >
+    <!-- Match Report – Simple & Full -->
+    <section id="match-report" class="section">
+      <div class="section-header">
+        <div class="section-title">AI Match Report – Simple &amp; Full</div>
+        <div class="section-sub">
+          Generate investor-ready or operator-ready match summaries in one click.
+          Re-use the same context from Emotion Engine or paste a new focus below.
+        </div>
+      </div>
+
+      <div class="report-shell">
+        <div class="report-layout">
+          <div>
+            <div class="field-label">1. Define the report focus</div>
+            <textarea
+              id="reportFocus"
+              placeholder="Optional: add or refine the scenario (league, scoreline, odds move, key events)…"
+            ></textarea>
+
+            <div class="field-label" style="margin-top:10px;">2. Choose report depth</div>
+            <div class="report-depth-buttons">
+              <button id="simpleReportBtn" class="report-btn active">
+                Simple report – 1-page, non-technical summary
+              </button>
+              <button id="fullReportBtn" class="report-btn">
+                Full report – multi-section, investor-level detail
+              </button>
             </div>
 
-            <div class="space-y-3">
-              <h1
-                class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight"
-                data-i18n="hero.title"
-              >
-                One suite. Four unique engines for smarter sports decisions.
-              </h1>
-              <p
-                class="text-sm sm:text-base text-slate-300 max-w-xl"
-                data-i18n="hero.subtitle"
-              >
-                BetSense AI Suite connects BetSense Engine, HBboard, Emotion
-                Index and LiveApe into a single, operator-ready platform for
-                pricing, risk and fan-sentiment intelligence.
-              </p>
-            </div>
-
-            <div
-              class="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:items-center sm:gap-4"
-            >
-              <a
-                href="#modules"
-                class="inline-flex justify-center items-center rounded-full bg-white text-slate-900 px-4 py-2.5 text-sm font-medium shadow-md hover:bg-slate-100 transition"
-                data-i18n="hero.ctaPrimary"
-              >
-                Explore all modules
-              </a>
-              <a
-                href="#live-match"
-                class="inline-flex justify-center items-center rounded-full border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-100 hover:border-slate-500 hover:bg-slate-900/40 transition"
-                data-i18n="hero.ctaSecondary"
-              >
-                View live-match flow
-              </a>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
-              <div class="space-y-1">
-                <div class="text-slate-400" data-i18n="hero.kpi1Label">
-                  Integrated modules
-                </div>
-                <div class="text-lg font-semibold" data-i18n="hero.kpi1Value">
-                  4
-                </div>
-              </div>
-              <div class="space-y-1">
-                <div class="text-slate-400" data-i18n="hero.kpi2Label">
-                  API-ready architecture
-                </div>
-                <div class="text-lg font-semibold" data-i18n="hero.kpi2Value">
-                  Plug &amp; play
-                </div>
-              </div>
-              <div class="space-y-1">
-                <div class="text-slate-400" data-i18n="hero.kpi3Label">
-                  Live-match coverage
-                </div>
-                <div class="text-lg font-semibold" data-i18n="hero.kpi3Value">
-                  90+ mins
-                </div>
-              </div>
-            </div>
-
-            <p
-              class="text-xs sm:text-sm text-slate-400 max-w-lg"
-              data-i18n="hero.investorNote"
-            >
-              Built to show investors &amp; buyers your full stack of unique AI
-              capabilities in one operator-ready page.
-            </p>
-          </div>
-
-          <!-- Hero card -->
-          <div class="relative">
-            <div
-              class="absolute inset-0 bg-gradient-to-tr from-bsPurple/40 via-bsBlue/40 to-bsPink/40 rounded-3xl glow"
-            ></div>
-
-            <div
-              class="relative rounded-3xl border border-slate-700/70 bg-slate-900/80 backdrop-blur-sm p-5 sm:p-6 lg:p-7 shadow-2xl"
-            >
-              <div
-                class="flex items-center justify-between gap-3 mb-4 sm:mb-5"
-              >
-                <div>
-                  <p
-                    class="text-xs text-slate-400"
-                    data-i18n="hero.cardLabelTop"
-                  >
-                    Live-match AI snapshot
-                  </p>
-                  <p
-                    class="text-sm sm:text-base font-semibold"
-                    data-i18n="hero.cardTitle"
-                  >
-                    Premier League – in-play edge
-                  </p>
-                </div>
-                <span
-                  class="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300"
-                  data-i18n="hero.cardChip"
-                >
-                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                  Quantum engine online
-                </span>
-              </div>
-
-              <div class="space-y-4 text-xs sm:text-sm">
-                <div class="grid grid-cols-2 gap-3">
-                  <div class="space-y-1">
-                    <p class="text-slate-400" data-i18n="hero.cardHomeTeam">
-                      Home
-                    </p>
-                    <p class="font-semibold">Team A</p>
-                    <p class="text-[11px] text-slate-400">
-                      xG: <span>2.1</span> • Shots on target: <span>7</span>
-                    </p>
-                  </div>
-                  <div class="space-y-1 text-right">
-                    <p class="text-slate-400" data-i18n="hero.cardAwayTeam">
-                      Away
-                    </p>
-                    <p class="font-semibold">Team B</p>
-                    <p class="text-[11px] text-slate-400">
-                      xG: <span>0.9</span> • Shots on target: <span>3</span>
-                    </p>
-                  </div>
-                </div>
-
-                <div class="space-y-1">
-                  <p class="text-slate-400" data-i18n="hero.cardProbTitle">
-                    Model win probabilities
-                  </p>
-                  <div class="grid grid-cols-3 gap-2 text-[11px] sm:text-xs">
-                    <div
-                      class="rounded-xl bg-slate-900 border border-slate-700/80 px-3 py-2"
-                    >
-                      <p class="text-slate-400" data-i18n="hero.cardProbHome">
-                        Home win
-                      </p>
-                      <p class="font-semibold">62%</p>
-                    </div>
-                    <div
-                      class="rounded-xl bg-slate-900 border border-slate-700/80 px-3 py-2"
-                    >
-                      <p class="text-slate-400" data-i18n="hero.cardProbDraw">
-                        Draw
-                      </p>
-                      <p class="font-semibold">10%</p>
-                    </div>
-                    <div
-                      class="rounded-xl bg-slate-900 border border-slate-700/80 px-3 py-2"
-                    >
-                      <p class="text-slate-400" data-i18n="hero.cardProbAway">
-                        Away win
-                      </p>
-                      <p class="font-semibold">28%</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="space-y-1">
-                  <p class="text-slate-400" data-i18n="hero.cardEdgeTitle">
-                    Market vs model edge
-                  </p>
-                  <div
-                    class="flex items-center justify-between rounded-xl bg-gradient-to-r from-bsPurple/30 via-bsBlue/30 to-bsPink/30 px-3 py-2.5"
-                  >
-                    <div class="text-[11px] sm:text-xs">
-                      <p
-                        class="text-slate-100"
-                        data-i18n="hero.cardEdgeLabel"
-                      >
-                        Recommended position
-                      </p>
-                      <p
-                        class="font-semibold"
-                        data-i18n="hero.cardEdgeValue"
-                      >
-                        Back Home @ 1.85 (edge +10%)
-                      </p>
-                    </div>
-                    <div
-                      class="text-right text-[11px] sm:text-xs text-emerald-200"
-                    >
-                      <p data-i18n="hero.cardEdgeReason">
-                        Live data + sentiment
-                      </p>
-                      <p data-i18n="hero.cardEdgeReason2">
-                        xG &amp; momentum aligned
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <p
-                  class="text-[11px] sm:text-xs text-slate-400"
-                  data-i18n="hero.cardFooter"
-                >
-                  API demo only. Plug into your real-time feed for production
-                  deployment.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- MODULES -->
-        <section id="modules" class="mt-14 sm:mt-16 space-y-6">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <h2
-                class="text-xl sm:text-2xl font-semibold"
-                data-i18n="modules.title"
-              >
-                Integrated modules
-              </h2>
-              <p
-                class="text-sm text-slate-400 max-w-xl"
-                data-i18n="modules.subtitle"
-              >
-                Four specialised engines designed to work together or stand
-                alone – depending on how your sportsbook operates.
-              </p>
+            <div class="report-note">
+              This demo shows the structure and language. In production, a “Download PDF” button can export these
+              reports straight into your workflows.
             </div>
           </div>
 
-          <div
-            class="grid sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 text-sm"
-            id="capabilities"
-          >
-            <!-- BetSense Engine -->
-            <article
-              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
-            >
-              <h3
-                class="flex items-center gap-2 text-base font-semibold mb-2"
-                data-i18n="modules.engine.title"
-              >
-                BetSense Engine
-                <span
-                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsPurple/20 text-bsPurple"
-                  >Core</span
-                >
-              </h3>
-              <p class="text-slate-300 mb-3" data-i18n="modules.engine.body">
-                Quantum-style pricing engine combining xG, live stats and social
-                sentiment to surface value edges in real time.
-              </p>
-              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
-                <li data-i18n="modules.engine.li1">
-                  In-play edge detection vs market odds.
-                </li>
-                <li data-i18n="modules.engine.li2">
-                  Configurable risk profiles per league.
-                </li>
-                <li data-i18n="modules.engine.li3">
-                  API endpoints for traders &amp; models.
-                </li>
-              </ul>
-            </article>
-
-            <!-- HBboard -->
-            <article
-              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
-            >
-              <h3
-                class="flex items-center gap-2 text-base font-semibold mb-2"
-                data-i18n="modules.hbboard.title"
-              >
-                HBboard
-                <span
-                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsBlue/20 text-bsBlue"
-                  >Trading</span
-                >
-              </h3>
-              <p class="text-slate-300 mb-3" data-i18n="modules.hbboard.body">
-                Operator-style dashboard giving your traders a single screen for
-                match edges, exposure and risk alerts.
-              </p>
-              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
-                <li data-i18n="modules.hbboard.li1">
-                  Live edge feed from BetSense Engine.
-                </li>
-                <li data-i18n="modules.hbboard.li2">
-                  Position &amp; exposure overview per event.
-                </li>
-                <li data-i18n="modules.hbboard.li3">
-                  Designed for trading rooms &amp; buy-side desks.
-                </li>
-              </ul>
-            </article>
-
-            <!-- Emotion Index -->
-            <article
-              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
-            >
-              <h3
-                class="flex items-center gap-2 text-base font-semibold mb-2"
-                data-i18n="modules.emotion.title"
-              >
-                Emotion Index
-                <span
-                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsPink/20 text-bsPink"
-                  >Sentiment</span
-                >
-              </h3>
-              <p class="text-slate-300 mb-3" data-i18n="modules.emotion.body">
-                Real-time fan-sentiment signal built from social feeds and
-                market micro-movements.
-              </p>
-              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
-                <li data-i18n="modules.emotion.li1">
-                  Pre-match &amp; in-play sentiment curves.
-                </li>
-                <li data-i18n="modules.emotion.li2">
-                  Shock detection around goals, cards &amp; news.
-                </li>
-                <li data-i18n="modules.emotion.li3">
-                  Exportable as an alpha feature for quant models.
-                </li>
-              </ul>
-            </article>
-
-            <!-- LiveApe -->
-            <article
-              class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-6"
-              id="live-match"
-            >
-              <h3
-                class="flex items-center gap-2 text-base font-semibold mb-2"
-                data-i18n="modules.liveape.title"
-              >
-                LiveApe
-                <span
-                  class="text-[11px] px-2 py-0.5 rounded-full bg-bsGreen/20 text-bsGreen"
-                  >Engagement</span
-                >
-              </h3>
-              <p class="text-slate-300 mb-3" data-i18n="modules.liveape.body">
-                Match-day experience layer showing live edges, momentum and fan
-                mood in a language that marketing teams can use.
-              </p>
-              <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
-                <li data-i18n="modules.liveape.li1">
-                  Visual edge story for each fixture.
-                </li>
-                <li data-i18n="modules.liveape.li2">
-                  Embeddable widgets for web &amp; apps.
-                </li>
-                <li data-i18n="modules.liveape.li3">
-                  Built on the same engine traders trust.
-                </li>
-              </ul>
-            </article>
-          </div>
-        </section>
-
-        <!-- EMOTION ENGINE -->
-        <section id="emotion-engine" class="mt-14 sm:mt-16 space-y-5">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <h2 class="text-xl sm:text-2xl font-semibold">
-                Emotion Engine – Fast + Deep
-              </h2>
-              <p class="text-sm text-slate-300 max-w-2xl">
-                Combine fast, lightweight signals with deeper narrative analysis
-                for any match, market or event. Start with a quick pulse, then
-                unlock a deeper AI summary when you need more context.
-              </p>
+          <div>
+            <div class="report-header-line">
+              <span>Report preview</span>
+              <span id="reportTypeLabel" class="report-type-pill">Simple + Full demo</span>
             </div>
-          </div>
-
-          <div class="grid lg:grid-cols-2 gap-5 lg:gap-6">
-            <!-- LEFT: Input + Mode -->
-            <div
-              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4"
-            >
-              <div class="space-y-2 text-sm">
-                <p class="text-slate-300 font-medium">
-                  1. Describe the context
-                </p>
-                <p class="text-slate-400 text-xs sm:text-[13px]">
-                  Type a short description of the fixture, market or scenario
-                  you want to analyse. For example: “Derby match, late goal, big
-                  odds move on home team”.
-                </p>
-              </div>
-              <textarea
-                id="emotion-input"
-                rows="4"
-                class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-slate-50"
-                placeholder="Describe the match state, market move or fan reaction you want to analyse…"
-              ></textarea>
-
-              <div class="space-y-2 text-sm">
-                <p class="text-slate-300 font-medium">
-                  2. Choose analysis mode
-                </p>
-                <div
-                  class="grid grid-cols-2 gap-2 text-xs sm:text-sm text-slate-200"
-                >
-                  <button
-                    type="button"
-                    id="emotion-fast-btn"
-                    class="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsBlue hover:bg-slate-900 transition"
-                  >
-                    Quick Emotion
-                  </button>
-                  <button
-                    type="button"
-                    id="emotion-deep-btn"
-                    class="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsPurple hover:bg-slate-900 transition"
-                  >
-                    Deep Emotion
-                  </button>
-                </div>
-                <p class="text-[11px] text-slate-500">
-                  Quick = fast pulse, ideal for live trading. Deep = richer
-                  narrative, ideal for reports and investors.
-                </p>
-              </div>
-            </div>
-
-            <!-- RIGHT: Output -->
-            <div
-              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm"
-            >
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <p class="text-slate-400 text-xs">AI output</p>
-                  <p
-                    id="emotion-output-mode"
-                    class="text-sm sm:text-base font-semibold text-slate-100"
-                  >
-                    Waiting for input…
-                  </p>
-                </div>
-                <span
-                  id="emotion-output-tag"
-                  class="text-[11px] px-2 py-0.5 rounded-full border border-slate-700 text-slate-300"
-                >
-                  Idle
-                </span>
-              </div>
-
-              <div
-                id="emotion-output"
-                class="rounded-xl bg-slate-950/60 border border-slate-800 px-3 py-3 text-xs sm:text-sm text-slate-200 min-h-[120px] whitespace-pre-line"
-              >
-                Type a short scenario on the left and choose Quick or Deep
-                analysis to see how Emotion Engine might describe the situation
-                for traders, marketing or investors.
-              </div>
-
-              <p class="text-[11px] text-slate-500">
-                This is a front-end demo. In production, this block connects
-                directly to your live feeds and the BetSense AI Engine API.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- TREND ENGINE / EMOTION TIMELINE -->
-        <section id="trend-engine" class="mt-14 sm:mt-16 space-y-5">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <h2 class="text-xl sm:text-2xl font-semibold">
-                Emotion Timeline – Trend Engine
-              </h2>
-              <p class="text-sm text-slate-300 max-w-2xl">
-                See how emotion and market tension build over time. Choose a
-                scenario to visualise the fan mood and trading pressure across
-                key moments.
-              </p>
-            </div>
-          </div>
-
-          <div class="grid lg:grid-cols-2 gap-5 lg:gap-6">
-            <!-- LEFT: Scenario buttons -->
-            <div
-              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm"
-            >
-              <div class="space-y-2">
-                <p class="text-slate-300 font-medium">
-                  1. Pick a match scenario
-                </p>
-                <p class="text-slate-400 text-xs sm:text-[13px]">
-                  Each preset simulates a different type of emotional curve
-                  across the full 90 minutes – from calm, controlled markets to
-                  full chaos.
-                </p>
-              </div>
-
-              <div class="grid sm:grid-cols-3 gap-2 text-xs sm:text-sm">
-                <button
-                  type="button"
-                  class="trend-btn inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 hover:border-emerald-400 hover:bg-slate-900 transition"
-                  data-trend="calm"
-                >
-                  <span class="font-medium">Calm market</span>
-                  <span class="text-[11px] text-slate-400"
-                    >Low volatility, balanced flow</span
-                  >
-                </button>
-                <button
-                  type="button"
-                  class="trend-btn inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 hover:border-bsPurple hover:bg-slate-900 transition"
-                  data-trend="derby"
-                >
-                  <span class="font-medium">Derby spike</span>
-                  <span class="text-[11px] text-slate-400"
-                    >Tense, noisy, big swings</span
-                  >
-                </button>
-                <button
-                  type="button"
-                  class="trend-btn inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 hover:border-red-400 hover:bg-slate-900 transition"
-                  data-trend="shock"
-                >
-                  <span class="font-medium">Late shock</span>
-                  <span class="text-[11px] text-slate-400"
-                    >Red card / late goal chaos</span
-                  >
-                </button>
-              </div>
-
-              <p class="text-[11px] text-slate-500">
-                In production, these curves are driven by real-time feeds: odds
-                moves, bet volume, social sentiment and match events.
-              </p>
-            </div>
-
-            <!-- RIGHT: Timeline visualisation -->
-            <div
-              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm"
-            >
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <p class="text-slate-400 text-xs">Timeline output</p>
-                  <p
-                    id="trend-output-title"
-                    class="text-sm sm:text-base font-semibold text-slate-100"
-                  >
-                    Waiting for a scenario…
-                  </p>
-                </div>
-                <span
-                  id="trend-output-tag"
-                  class="text-[11px] px-2 py-0.5 rounded-full border border-slate-700 text-slate-300"
-                >
-                  Idle
-                </span>
-              </div>
-
-              <div
-                id="trend-output-description"
-                class="rounded-xl bg-slate-950/60 border border-slate-800 px-3 py-3 text-xs sm:text-sm text-slate-200 min-h-[80px]"
-              >
-                Choose a scenario on the left to see how Emotion Timeline might
-                illustrate the pressure curve for traders, risk and marketing.
-              </div>
-
-              <div class="space-y-2">
-                <p class="text-[11px] text-slate-400">
-                  Relative tension across the match (left = kick-off, right =
-                  final whistle).
-                </p>
-                <div
-                  id="trend-bars"
-                  class="flex items-end gap-0.5 h-24 rounded-xl bg-slate-950/70 border border-slate-800 px-2 py-2 overflow-hidden"
-                >
-                  <!-- bars injected by JS -->
-                </div>
-              </div>
-
-              <p class="text-[11px] text-slate-500">
-                This visual is intentionally simple for investor demos. The
-                production version can use your existing charts or BI stack.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- REPORT ENGINE: SIMPLE + FULL -->
-        <section id="report-engine" class="mt-14 sm:mt-16 space-y-5">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <h2 class="text-xl sm:text-2xl font-semibold">
-                AI Match Report – Simple &amp; Full
-              </h2>
-              <p class="text-sm text-slate-300 max-w-2xl">
-                Generate investor-ready or operator-ready match summaries in one
-                click. Use the same scenario you analysed above, then export a
-                simple or full report structure.
-              </p>
-            </div>
-          </div>
-
-          <div class="grid lg:grid-cols-2 gap-5 lg:gap-6">
-            <!-- RIGHT: Input & buttons (for mobile it appears first, but code order can be either) -->
-            <div
-              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm order-2 lg:order-1"
-            >
-              <div class="space-y-2">
-                <p class="text-slate-300 font-medium">
-                  1. Define the report focus
-                </p>
-                <p class="text-slate-400 text-xs sm:text-[13px]">
-                  You can paste a fresh scenario here, or leave it blank to
-                  reuse the context from Emotion Engine (above).
-                </p>
-              </div>
-
-              <textarea
-                id="report-input"
-                rows="4"
-                class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-slate-50"
-                placeholder="Optional: add or refine the scenario you want in the report (league, scoreline, odds move, key events)…"
-              ></textarea>
-
-              <div class="space-y-2">
-                <p class="text-slate-300 font-medium">
-                  2. Choose report depth
-                </p>
-                <div
-                  class="grid grid-cols-2 gap-2 text-xs sm:text-sm text-slate-200"
-                >
-                  <button
-                    type="button"
-                    id="simple-report-btn"
-                    class="inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsBlue hover:bg-slate-900 transition"
-                  >
-                    <span class="font-medium">Simple report</span>
-                    <span class="text-[11px] text-slate-400"
-                      >1-page, non-technical summary</span
-                    >
-                  </button>
-                  <button
-                    type="button"
-                    id="full-report-btn"
-                    class="inline-flex flex-col items-start justify-center rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 hover:border-bsPurple hover:bg-slate-900 transition"
-                  >
-                    <span class="font-medium">Full report</span>
-                    <span class="text-[11px] text-slate-400"
-                      >Multi-section, investor-level detail</span
-                    >
-                  </button>
-                </div>
-                <p class="text-[11px] text-slate-500">
-                  This demo shows the structure and language. In production, a
-                  &ldquo;Download PDF&rdquo; button can export these reports
-                  straight into your workflows.
-                </p>
-              </div>
-            </div>
-
-            <!-- LEFT: Report preview -->
-            <div
-              class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5 space-y-4 text-sm order-1 lg:order-2"
-            >
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <p class="text-slate-400 text-xs">Report preview</p>
-                  <p
-                    id="report-output-title"
-                    class="text-sm sm:text-base font-semibold text-slate-100"
-                  >
-                    Waiting for a report type…
-                  </p>
-                </div>
-                <span
-                  id="report-output-tag"
-                  class="text-[11px] px-2 py-0.5 rounded-full border border-slate-700 text-slate-300"
-                >
-                  Idle
-                </span>
-              </div>
-
-              <div
-                id="report-output"
-                class="rounded-xl bg-slate-950/60 border border-slate-800 px-3 py-3 text-[11px] sm:text-xs text-slate-200 min-h-[140px] whitespace-pre-line report-mono"
-              >
+            <div id="reportPreview" class="report-preview-box">
 SIMPLE &amp; FULL REPORT DEMO
 
 Use Simple report for quick sharing with non-technical stakeholders.
 Use Full report for investors, trading leadership and detailed reviews.
-              </div>
 
-              <p class="text-[11px] text-slate-500">
-                The language here uses the same scenario, Emotion Engine mode
-                and Timeline context from above, so everything feels consistent
-                inside a single story.
-              </p>
+The language here follows the same scenario used above, so everything feels
+consistent inside a single story.
             </div>
           </div>
-        </section>
+        </div>
+      </div>
+    </section>
 
-        <!-- PRICING / CONTACT -->
-        <section
-          id="pricing"
-          class="mt-14 sm:mt-16 grid lg:grid-cols-2 gap-8 items-start"
-        >
-          <div class="space-y-3">
-            <h2
-              class="text-xl sm:text-2xl font-semibold"
-              data-i18n="pricing.title"
-            >
-              Built for pilots, then scale.
-            </h2>
-            <p
-              class="text-sm text-slate-300 max-w-lg"
-              data-i18n="pricing.body"
-            >
-              Start with a small proof-of-concept on a limited set of leagues or
-              markets. Once the numbers make sense, scale to your full trading
-              universe.
-            </p>
-            <ul class="text-sm text-slate-300 space-y-1.5 list-disc pl-4">
-              <li data-i18n="pricing.li1">
-                Flexible commercial models for operators and data providers.
-              </li>
-              <li data-i18n="pricing.li2">
-                White-label or fully integrated deployment options.
-              </li>
-              <li data-i18n="pricing.li3">
-                Technical support from concept to production.
-              </li>
-            </ul>
-          </div>
+    <!-- Footer -->
+    <footer class="footer">
+      <span>BetSense AI Suite – demo interface. Copy and flows for illustration only.</span>
+      <span>Primary contact: info@betsense.ai (demo placeholder)</span>
+    </footer>
+  </main>
 
-          <div
-            id="contact"
-            class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 sm:p-6 space-y-4"
-          >
-            <h3 class="text-lg font-semibold" data-i18n="contact.title">
-              Request access or investor demo
-            </h3>
-            <p class="text-sm text-slate-300" data-i18n="contact.body">
-              Share a work email and a short note about your role (operator,
-              data provider, investor, trading desk). We&rsquo;ll respond with a
-              live demo slot and technical deck.
-            </p>
+  <script>
+    // ---------- Language selector ----------
 
-            <form class="space-y-3 text-sm">
-              <div>
-                <label
-                  for="email"
-                  class="block text-xs text-slate-400 mb-1"
-                  data-i18n="contact.emailLabel"
-                  >Work email</label
-                >
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="name@company.com"
-                  class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-sm"
-                />
-              </div>
-              <div>
-                <label
-                  for="role"
-                  class="block text-xs text-slate-400 mb-1"
-                  data-i18n="contact.roleLabel"
-                  >Role</label
-                >
-                <select
-                  id="role"
-                  class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-sm"
-                >
-                  <option data-i18n="contact.roleOperator">
-                    Operator / Sportsbook
-                  </option>
-                  <option data-i18n="contact.roleData">
-                    Data provider / feed
-                  </option>
-                  <option data-i18n="contact.roleInvestor">Investor</option>
-                  <option data-i18n="contact.roleOther">Other</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  for="message"
-                  class="block text-xs text-slate-400 mb-1"
-                  data-i18n="contact.msgLabel"
-                  >Short message</label
-                >
-                <textarea
-                  id="message"
-                  rows="3"
-                  placeholder="Tell us which leagues, markets or use-cases you care about."
-                  class="w-full rounded-xl bg-slate-950/70 border border-slate-700 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-bsBlue focus:border-transparent text-sm"
-                ></textarea>
-              </div>
-              <button
-                type="button"
-                class="w-full inline-flex justify-center items-center rounded-full bg-gradient-to-r from-bsPurple via-bsPink to-bsBlue px-4 py-2.5 text-sm font-medium shadow-md shadow-bsPurple/40 hover:shadow-bsBlue/40 transition"
-                data-i18n="contact.submit"
-              >
-                Send request
-              </button>
-              <p
-                class="text-[11px] text-slate-500"
-                data-i18n="contact.disclaimer"
-              >
-                Form is a visual placeholder. Connect it to your CRM, email or
-                ticketing system when you go live.
-              </p>
-            </form>
-          </div>
-        </section>
+    const languages = [
+      { code: "en", name: "English (primary)" },
+      { code: "es", name: "Spanish" },
+      { code: "pt", name: "Portuguese" },
+      { code: "fr", name: "French" },
+      { code: "de", name: "German" },
+      { code: "it", name: "Italian" },
+      { code: "nl", name: "Dutch" },
+      { code: "sv", name: "Swedish" },
+      { code: "da", name: "Danish" },
+      { code: "nb", name: "Norwegian" },
+      { code: "fi", name: "Finnish" },
+      { code: "pl", name: "Polish" },
+      { code: "cs", name: "Czech" },
+      { code: "tr", name: "Turkish" },
+      { code: "ar", name: "Arabic" },
+      { code: "fa", name: "Persian (Farsi)" }, // زبان فارسی
+      { code: "ru", name: "Russian" },
+      { code: "uk", name: "Ukrainian" },
+      { code: "el", name: "Greek" },
+      { code: "hi", name: "Hindi" },
+      { code: "zh", name: "Chinese" },
+      { code: "ja", name: "Japanese" },
+      { code: "ko", name: "Korean" }
+    ];
 
-        <!-- FOOTER -->
-        <footer class="mt-10 sm:mt-12 border-t border-slate-800 pt-4">
-          <div
-            class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-500"
-          >
-            <p data-i18n="footer.copy">
-              © BetSense AI Suite. Concept demo for unified sports intelligence.
-            </p>
-            <p data-i18n="footer.note">
-              Language selector shows English, Persian and 20+ global options.
-              Additional locales can be added as partners require.
-            </p>
-          </div>
-        </footer>
-      </main>
-    </div>
+    const langSelect = document.getElementById("languageSelect");
+    const langStatus = document.getElementById("langStatus");
 
-    <!-- i18n + Emotion Engine + Trend Engine + Report Engine script -->
-    <script>
-      const translations = {
-        en: {
-          "brand.title": "BetSense AI Suite",
-          "brand.subtitle": "Unified Sports Intelligence Stack",
-          "nav.modules": "Modules",
-          "nav.capabilities": "Capabilities",
-          "nav.pricing": "Pricing",
-          "nav.contact": "Contact",
-          "nav.languageLabel": "Language",
-          "nav.requestAccess": "Request access",
-          "hero.badge": "Realtime AI for bookmakers & trading desks",
-          "hero.title":
-            "One suite. Four unique engines for smarter sports decisions.",
-          "hero.subtitle":
-            "BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index and LiveApe into a single, operator-ready platform for pricing, risk and fan-sentiment intelligence.",
-          "hero.ctaPrimary": "Explore all modules",
-          "hero.ctaSecondary": "View live-match flow",
-          "hero.kpi1Label": "Integrated modules",
-          "hero.kpi1Value": "4",
-          "hero.kpi2Label": "API-ready architecture",
-          "hero.kpi2Value": "Plug & play",
-          "hero.kpi3Label": "Live-match coverage",
-          "hero.kpi3Value": "90+ mins",
-          "hero.investorNote":
-            "Built to show investors & buyers your full stack of unique AI capabilities in one operator-ready page.",
-          "hero.cardLabelTop": "Live-match AI snapshot",
-          "hero.cardTitle": "Premier League – in-play edge",
-          "hero.cardChip": "Quantum engine online",
-          "hero.cardHomeTeam": "Home",
-          "hero.cardAwayTeam": "Away",
-          "hero.cardProbTitle": "Model win probabilities",
-          "hero.cardProbHome": "Home win",
-          "hero.cardProbDraw": "Draw",
-          "hero.cardProbAway": "Away win",
-          "hero.cardEdgeTitle": "Market vs model edge",
-          "hero.cardEdgeLabel": "Recommended position",
-          "hero.cardEdgeValue": "Back Home @ 1.85 (edge +10%)",
-          "hero.cardEdgeReason": "Live data + sentiment",
-          "hero.cardEdgeReason2": "xG & momentum aligned",
-          "hero.cardFooter":
-            "API demo only. Plug into your real-time feed for production deployment.",
-          "modules.title": "Integrated modules",
-          "modules.subtitle":
-            "Four specialised engines designed to work together or stand alone – depending on how your sportsbook operates.",
-          "modules.engine.title": "BetSense Engine",
-          "modules.engine.body":
-            "Quantum-style pricing engine combining xG, live stats and social sentiment to surface value edges in real time.",
-          "modules.engine.li1": "In-play edge detection vs market odds.",
-          "modules.engine.li2": "Configurable risk profiles per league.",
-          "modules.engine.li3": "API endpoints for traders & models.",
-          "modules.hbboard.title": "HBboard",
-          "modules.hbboard.body":
-            "Operator-style dashboard giving your traders a single screen for match edges, exposure and risk alerts.",
-          "modules.hbboard.li1": "Live edge feed from BetSense Engine.",
-          "modules.hbboard.li2": "Position & exposure overview per event.",
-          "modules.hbboard.li3":
-            "Designed for trading rooms & buy-side desks.",
-          "modules.emotion.title": "Emotion Index",
-          "modules.emotion.body":
-            "Real-time fan-sentiment signal built from social feeds and market micro-movements.",
-          "modules.emotion.li1": "Pre-match & in-play sentiment curves.",
-          "modules.emotion.li2":
-            "Shock detection around goals, cards & news.",
-          "modules.emotion.li3":
-            "Exportable as an alpha feature for quant models.",
-          "modules.liveape.title": "LiveApe",
-          "modules.liveape.body":
-            "Match-day experience layer showing live edges, momentum and fan mood in a language that marketing teams can use.",
-          "modules.liveape.li
+    if (langSelect) {
+      languages.forEach((lng) => {
+        const opt = document.createElement("option");
+        opt.value = lng.code;
+        opt.textContent = lng.name;
+        langSelect.appendChild(opt);
+      });
+      langSelect.value = "en";
+
+      langSelect.addEventListener("change", () => {
+        const selected = languages.find((l) => l.code === langSelect.value);
+        if (!selected) return;
+        langStatus.textContent =
+          "Current: " +
+          selected.name +
+          " – product UI remains English by default.";
+      });
+    }
+
+    // ---------- Emotion Engine demo ----------
+
+    const emotionScenario = document.getElementById("emotionScenario");
+    const quickEmotionBtn = document.getElementById("quickEmotionBtn");
+    const deepEmotionBtn = document.getElementById("deepEmotionBtn");
+    const emotionOutput = document.getElementById("emotionOutput");
+    const emotionStatus = document.getElementById("emotionStatus");
+
+    function getScenarioText() {
+      const base =
+        "Derby match, late goal for home side, odds move from 2.40 to 1.70.";
+      const custom = (emotionScenario && emotionScenario.value.trim()) || "";
+      return custom || base;
+    }
+
+    function setEmotionMode(mode) {
+      if (!emotionOutput || !emotionStatus) return;
+      const scenario = getScenarioText();
+
+      if (mode === "quick") {
+        quickEmotionBtn.classList.add("active");
+        deepEmotionBtn.classList.remove("active");
+        emotionStatus.textContent = "Quick Emotion – trading pulse view";
+        emotionOutput.textContent =
+          "Quick pulse on scenario:\n\n" +
+          scenario +
+          "\n\n" +
+          "• Market mood: Home side now perceived as clear favourite after the late goal.\n" +
+          "• Price action: sharp money forced the move from 2.40 towards 1.70, indicating respected support.\n" +
+          "• Risk note: exposure now concentrated on home win; draw and away positions provide natural hedge.";
+      } else {
+        quickEmotionBtn.classList.remove("active");
+        deepEmotionBtn.classList.add("active");
+        emotionStatus.textContent = "Deep Emotion – narrative & investor view";
+        emotionOutput.textContent =
+          "Deep narrative on scenario:\n\n" +
+          scenario +
+          "\n\n" +
+          "The late goal fundamentally changes both crowd psychology and trading posture. " +
+          "LiveApe flags a visible shift in pressing intensity, while BetSense Engine tracks " +
+          "how each odds step reshapes implied probabilities.\n\n" +
+          "From an investor perspective this is a textbook example of how Emotion Index " +
+          "converts noisy in-stadium energy and social chatter into a clean, explainable signal " +
+          "that risk teams can act on in real time.";
+      }
+    }
+
+    if (quickEmotionBtn && deepEmotionBtn) {
+      quickEmotionBtn.addEventListener("click", () => setEmotionMode("quick"));
+      deepEmotionBtn.addEventListener("click", () => setEmotionMode("deep"));
+      // initial
+      setEmotionMode("quick");
+    }
+
+    // ---------- Probability timeline demo (canvas) ----------
+
+    const timelineCanvas = document.getElementById("timelineCanvas");
+    const timelineNote = document.getElementById("timelineNote");
+    const timelineButtons = document.querySelectorAll(".timeline-btn");
+
+    const timelineDatasets = {
+      baseline: {
+        note:
+          "Mode: Balanced opener – early swings are modest, market still respects all three outcomes.",
+        points: [
+          { m: 0, h: 0.40, d: 0.34, a: 0.26 },
+          { m: 15, h: 0.44, d: 0.33, a: 0.23 },
+          { m: 30, h: 0.47, d: 0.32, a: 0.21 },
+          { m: 45, h: 0.50, d: 0.30, a: 0.20 },
+          { m: 60, h: 0.52, d: 0.29, a: 0.19 },
+          { m: 75, h: 0.56, d: 0.27, a: 0.17 },
+          { m: 90, h: 0.60, d: 0.25, a: 0.15 }
+        ]
+      },
+      homePressure: {
+        note:
+          "Mode: Home pressure – sustained attacks push the home curve higher while away drifts.",
+        points: [
+          { m: 0, h: 0.38, d: 0.34, a: 0.28 },
+          { m: 15, h: 0.46, d: 0.31, a: 0.23 },
+          { m: 30, h: 0.54, d: 0.27, a: 0.19 },
+          { m: 45, h: 0.60, d: 0.24, a: 0.16 },
+          { m: 60, h: 0.66, d: 0.20, a: 0.14 },
+          { m: 75, h: 0.71, d: 0.18, a: 0.11 },
+          { m: 90, h: 0.75, d: 0.16, a: 0.09 }
+        ]
+      },
+      awayComeback: {
+        note:
+          "Mode: Away comeback – early dominance for home, then a sharp swing as away side responds.",
+        points: [
+          { m: 0, h: 0.45, d: 0.33, a: 0.22 },
+          { m: 15, h: 0.52, d: 0.30, a: 0.18 },
+          { m: 30, h: 0.58, d: 0.25, a: 0.17 },
+          { m: 45, h: 0.54, d: 0.27, a: 0.19 },
+          { m: 60, h: 0.48, d: 0.30, a: 0.22 },
+          { m: 75, h: 0.40, d: 0.30, a: 0.30 },
+          { m: 90, h: 0.34, d: 0.26, a: 0.40 }
+        ]
+      }
+    };
+
+    function drawTimeline(mode) {
+      if (!timelineCanvas || !timelineCanvas.getContext) return;
+      const dataset = timelineDatasets[mode] || timelineDatasets.baseline;
+      const ctx = timelineCanvas.getContext("2d");
+      const w = timelineCanvas.width;
+      const h = timelineCanvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Background
+      ctx.fillStyle = "#020617";
+      ctx.fillRect(0, 0, w, h);
+
+      // Grid
+      ctx.strokeStyle = "rgba(148,163,184,0.25)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i <= 5; i++) {
+        const y = 20 + ((h - 40) * i) / 5;
+        ctx.moveTo(40, y);
+        ctx.lineTo(w - 12, y);
+      }
+      ctx.stroke();
+
+      // Axes labels (simple % marks)
+      ctx.fillStyle = "rgba(148,163,184,0.7)";
+      ctx.font = "10px Inter, system-ui";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      const ticks = [1, 0.8, 0.6, 0.4, 0.2, 0];
+      ticks.forEach((t, i) => {
+        const y = 20 + ((h - 40) * i) / 5;
+        ctx.fillText(Math.round(t * 100) + "%", 36, y);
+      });
+
+      const pts = dataset.points;
+      const xFor = (m) => {
+        const minX = 40;
+        const maxX = w - 16;
+        return minX + ((maxX - minX) * m) / 90;
+      };
+      const yFor = (p) => {
+        const minY = 20;
+        const maxY = h - 20;
+        // invert: 1 -> minY, 0 -> maxY
+        return maxY - (maxY - minY) * p;
+      };
+
+      function drawLine(key, color) {
+        ctx.beginPath();
+        pts.forEach((pt, idx) => {
+          const x = xFor(pt.m);
+          const y = yFor(pt[key]);
+          if (idx === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw small dots
+        ctx.fillStyle = color;
+        pts.forEach((pt) => {
+          const x = xFor(pt.m);
+          const y = yFor(pt[key]);
+          ctx.beginPath();
+          ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      drawLine("h", "#38bdf8"); // home
+      drawLine("d", "#a855f7"); // draw
+      drawLine("a", "#f97316"); // away
+
+      if (timelineNote) {
+        timelineNote.textContent = dataset.note;
+      }
+    }
+
+    if (timelineButtons && timelineButtons.length) {
+      timelineButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          timelineButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const mode = btn.getAttribute("data-mode") || "baseline";
+          drawTimeline(mode);
+        });
+      });
+      // initial draw
+      drawTimeline("baseline");
+    }
+
+    // ---------- Match report demo ----------
+
+    const reportFocus = document.getElementById("reportFocus");
+    const simpleReportBtn = document.getElementById("simpleReportBtn");
+    const fullReportBtn = document.getElementById("fullReportBtn");
+    const reportPreview = document.getElementById("reportPreview");
+    const reportTypeLabel = document.getElementById("reportTypeLabel");
+
+    function getReportScenario() {
+      const base = getScenarioText();
+      const extra = (reportFocus && reportFocus.value.trim()) || "";
+      if (!extra) return base;
+      return base + " " + extra;
+    }
+
+    function buildSimpleReport() {
+      const scenario = getReportScenario();
+      return (
+        "SIMPLE MATCH REPORT\n\n" +
+        "Key scenario: " +
+        scenario +
+        "\n\n" +
+        "Headline:\n" +
+        "Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.\n\n" +
+        "Trading summary:\n" +
+        "• BetSense Engine highlights a clear break in probability trend after the key event.\n" +
+        "• Price move is supported by volume, not just retail noise.\n" +
+        "• Risk position is comfortable but requires monitoring if a second goal arrives.\n\n" +
+        "Use this view for fast communication with management or non-technical stakeholders."
+      );
+    }
+
+    function buildFullReport() {
+      const scenario = getReportScenario();
+      return (
+        "FULL MATCH REPORT – INVESTOR VIEW\n\n" +
+        "Scenario overview:\n" +
+        scenario +
+        "\n\n" +
+        "1. Market structure and price action\n" +
+        "BetSense Engine tracked live probabilities from kick-off to full time. " +
+        "Before the key event, home win sat in a relatively tight band, with draw and away priced fairly. " +
+        "The late goal acts as an inflection point: home probability accelerates, draw collapses and " +
+        "away drifts, mirroring the move in quoted odds.\n\n" +
+        "2. Emotion Index & behavioural signals\n" +
+        "Emotion Index shows a clean shift from cautious optimism to confident momentum on the home side. " +
+        "LiveApe confirms a tactical change on the pitch – higher press, more shots and visible energy in the stadium. " +
+        "Social feeds amplify the move but do not lead it, which is typically a healthy pattern for trading desks.\n\n" +
+        "3. Risk, PnL and exposure notes\n" +
+        "• Concentration risk sits on the home win bucket after the move in price.\n" +
+        "• Draw and away positions provide partial hedge but may need re-balancing if a second goal lands.\n" +
+        "• From an investor standpoint this fixture is a good case study in how BetSense AI turns chaotic " +
+        "live data into a structured, explainable narrative.\n\n" +
+        "4. Next-step recommendations\n" +
+        "For operators: integrate this report template into your post-match pack for trading leadership.\n" +
+        "For investors: use similar fixtures to track how consistently BetSense AI captures and prices late-match momentum."
+      );
+    }
+
+    function setReportMode(mode) {
+      if (!reportPreview || !reportTypeLabel) return;
+      if (mode === "simple") {
+        simpleReportBtn.classList.add("active");
+        fullReportBtn.classList.remove("active");
+        reportTypeLabel.textContent = "Simple report";
+        reportPreview.textContent = buildSimpleReport();
+      } else {
+        simpleReportBtn.classList.remove("active");
+        fullReportBtn.classList.add("active");
+        reportTypeLabel.textContent = "Full report";
+        reportPreview.textContent = buildFullReport();
+      }
+    }
+
+    if (simpleReportBtn && fullReportBtn) {
+      simpleReportBtn.addEventListener("click", () => setReportMode("simple"));
+      fullReportBtn.addEventListener("click", () => setReportMode("full"));
+      // initial mode
+      setReportMode("simple");
+    }
+  </script>
+</body>
+</html>
