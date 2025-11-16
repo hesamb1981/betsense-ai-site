@@ -1,128 +1,316 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BetSense Quantum Engine</title>
-
-  <!-- Tailwind -->
+  <title>BetSense Quantum Engine · Internal Demo UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     body {
-      background: radial-gradient(circle at top, #0e0f1a, #06070d);
-      color: #e4e6eb;
-      font-family: system-ui, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
     }
+    /* smooth card hover */
     .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 22px;
-      backdrop-filter: blur(6px);
-      transition: 0.2s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     .card:hover {
-      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
     }
-    .btn {
-      width: 100%;
-      border-radius: 12px;
-      padding: 10px 0;
-      color: white;
-      font-weight: 600;
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
     }
   </style>
 </head>
+<body class="h-full bg-slate-950 text-slate-100">
+  <div class="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <header class="max-w-5xl mx-auto mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-50">
+        BetSense Quantum Engine
+      </h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-400">
+        Production demo &amp; health check for the BetSense AI prediction engine.
+      </p>
 
-<body class="p-6 pb-20">
+      <!-- Engine status pill -->
+      <div class="mt-4 inline-flex items-center rounded-full bg-emerald-900/40 px-3 py-1 text-xs sm:text-sm text-emerald-300 ring-1 ring-emerald-500/40">
+        <span class="mr-2 inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+        <span id="engine-status-pill">Engine: LIVE on Render</span>
+      </div>
+    </header>
 
-  <h1 class="text-3xl font-bold mb-2">BetSense Quantum Engine</h1>
-  <p class="text-gray-300 mb-6">Production demo & health check for the BetSense AI prediction engine.</p>
+    <!-- Main content -->
+    <main class="max-w-5xl mx-auto space-y-6 pb-10">
+      <!-- Connection status -->
+      <section class="card rounded-2xl bg-slate-900/80 ring-1 ring-slate-800 shadow-lg">
+        <div class="p-5 sm:p-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-50">
+              Connection status
+            </h2>
+            <p class="mt-1 text-sm text-slate-400 break-all">
+              <span id="health-url">https://betsense-engine.onrender.com/api/health</span>
+            </p>
+          </div>
+          <button
+            id="btn-health"
+            class="mt-3 inline-flex items-center justify-center rounded-full bg-sky-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+          >
+            Check health
+          </button>
+        </div>
+        <div class="border-t border-slate-800 bg-slate-950/40 px-5 sm:px-6 py-4">
+          <pre
+            id="health-output"
+            class="text-xs sm:text-sm text-emerald-300 font-mono"
+          >Loading...</pre>
+        </div>
+      </section>
 
-  <!-- ENGINE STATUS -->
-  <div class="mb-6">
-    <span class="px-3 py-1 rounded-full bg-green-600/20 text-green-400 text-sm font-semibold">
-      ● Engine: LIVE on Render
-    </span>
+      <!-- 3 main cards -->
+      <section class="grid gap-6 sm:grid-cols-2">
+        <!-- Demo match snapshot -->
+        <div class="card rounded-2xl bg-slate-900/80 ring-1 ring-slate-800 shadow-lg flex flex-col">
+          <div class="p-5 sm:p-6 flex-1 flex flex-col">
+            <h2 class="text-lg font-semibold text-slate-50">
+              Demo match snapshot
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">
+              GET <code class="font-mono text-slate-300">/api/match</code> – basic information about the current demo match.
+            </p>
+            <button
+              id="btn-match"
+              class="mt-4 inline-flex items-center justify-center rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+            >
+              Run
+            </button>
+          </div>
+          <div class="border-t border-slate-800 bg-slate-950/40 px-5 sm:px-6 py-4">
+            <pre
+              id="match-output"
+              class="text-xs sm:text-sm text-slate-200 font-mono"
+            >Loading...</pre>
+          </div>
+        </div>
+
+        <!-- Live stats -->
+        <div class="card rounded-2xl bg-slate-900/80 ring-1 ring-slate-800 shadow-lg flex flex-col">
+          <div class="p-5 sm:p-6 flex-1 flex flex-col">
+            <h2 class="text-lg font-semibold text-slate-50">
+              Live stats (mock)
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">
+              GET <code class="font-mono text-slate-300">/api/stats</code> – xG, shots, dangerous attacks &amp; corners.
+            </p>
+            <button
+              id="btn-stats"
+              class="mt-4 inline-flex items-center justify-center rounded-full bg-violet-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+            >
+              Run
+            </button>
+          </div>
+          <div class="border-t border-slate-800 bg-slate-950/40 px-5 sm:px-6 py-4">
+            <pre
+              id="stats-output"
+              class="text-xs sm:text-sm text-slate-200 font-mono"
+            >Loading...</pre>
+          </div>
+        </div>
+
+        <!-- Pre-match & live odds -->
+        <div class="card rounded-2xl bg-slate-900/80 ring-1 ring-slate-800 shadow-lg flex flex-col">
+          <div class="p-5 sm:p-6 flex-1 flex flex-col">
+            <h2 class="text-lg font-semibold text-slate-50">
+              Pre-match &amp; live odds
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">
+              GET <code class="font-mono text-slate-300">/api/live-odds</code> – odds before kick-off and in-play.
+            </p>
+            <button
+              id="btn-live-odds"
+              class="mt-4 inline-flex items-center justify-center rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+            >
+              Run
+            </button>
+          </div>
+          <div class="border-t border-slate-800 bg-slate-950/40 px-5 sm:px-6 py-4">
+            <pre
+              id="live-odds-output"
+              class="text-xs sm:text-sm text-amber-100 font-mono"
+            >Loading...</pre>
+          </div>
+        </div>
+
+        <!-- Win probabilities -->
+        <div class="card rounded-2xl bg-slate-900/80 ring-1 ring-slate-800 shadow-lg flex flex-col">
+          <div class="p-5 sm:p-6 flex-1 flex flex-col">
+            <h2 class="text-lg font-semibold text-slate-50">
+              Win probabilities
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">
+              GET <code class="font-mono text-slate-300">/api/probabilities</code> – implied probabilities vs. market.
+            </p>
+            <button
+              id="btn-probabilities"
+              class="mt-4 inline-flex items-center justify-center rounded-full bg-lime-500 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-lime-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+            >
+              Run
+            </button>
+          </div>
+          <div class="border-t border-slate-800 bg-slate-950/40 px-5 sm:px-6 py-4">
+            <pre
+              id="probabilities-output"
+              class="text-xs sm:text-sm text-lime-100 font-mono"
+            >Loading...</pre>
+          </div>
+        </div>
+
+        <!-- Emotion & pressure model -->
+        <div class="card rounded-2xl bg-slate-900/80 ring-1 ring-slate-800 shadow-lg sm:col-span-2 flex flex-col">
+          <div class="p-5 sm:p-6 flex-1 flex flex-col">
+            <h2 class="text-lg font-semibold text-slate-50">
+              Emotion &amp; pressure model
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">
+              Uses a demo payload to compute home vs. away emotional momentum.
+            </p>
+            <button
+              id="btn-emotion"
+              class="mt-4 inline-flex items-center justify-center rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+            >
+              Run emotion probability
+            </button>
+          </div>
+          <div class="border-t border-slate-800 bg-slate-950/40 px-5 sm:px-6 py-4">
+            <pre
+              id="emotion-output"
+              class="text-xs sm:text-sm text-rose-100 font-mono"
+            >Loading...</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="pt-4 border-t border-slate-900/80 text-xs text-slate-500">
+        <p>BetSense Quantum Engine · Internal demo UI (English only)</p>
+        <p class="mt-1">
+          Backend: Node.js · Frontend: Static HTML + Tailwind
+        </p>
+      </footer>
+    </main>
   </div>
 
-  <!-- CONNECTION -->
-  <div class="card mb-8">
-    <h2 class="text-xl font-semibold mb-2">Connection status</h2>
-    <p id="engineUrl" class="text-sm text-blue-300 mb-3"></p>
-    <button id="healthBtn" class="btn bg-blue-600 hover:bg-blue-700">Check health</button>
-    <pre id="healthOutput" class="mt-4 text-sm text-gray-300">Loading...</pre>
-  </div>
-
-  <!-- DEMO MATCH -->
-  <div class="card mb-8">
-    <h2 class="text-xl font-semibold mb-2">Demo match snapshot</h2>
-    <p class="text-sm text-gray-400">GET /api/match – basic information about the current demo match.</p>
-    <button id="matchBtn" class="btn bg-purple-600 hover:bg-purple-700 mt-3">Run</button>
-    <pre id="matchOutput" class="mt-4 text-sm text-gray-300">Loading...</pre>
-  </div>
-
-  <!-- LIVE STATS -->
-  <div class="card mb-8">
-    <h2 class="text-xl font-semibold mb-2">Live stats (mock)</h2>
-    <p class="text-sm text-gray-400">GET /api/stats – xG, shots, dangerous attacks & corners.</p>
-    <button id="statsBtn" class="btn bg-indigo-600 hover:bg-indigo-700 mt-3">Run</button>
-    <pre id="statsOutput" class="mt-4 text-sm text-gray-300">Loading...</pre>
-  </div>
-
-  <!-- ODDS -->
-  <div class="card mb-8">
-    <h2 class="text-xl font-semibold mb-2">Pre-match & live odds</h2>
-    <p class="text-sm text-gray-400">GET /api/live-odds – odds before kick-off and in-play.</p>
-    <button id="oddsBtn" class="btn bg-yellow-600 hover:bg-yellow-700 mt-3">Run</button>
-    <pre id="oddsOutput" class="mt-4 text-sm text-gray-300">Loading...</pre>
-  </div>
-
-  <!-- WIN PROBABILITIES -->
-  <div class="card mb-8">
-    <h2 class="text-xl font-semibold mb-2">Win probabilities</h2>
-    <p class="text-sm text-gray-400">GET /api/probabilities – implied probabilities vs. market.</p>
-    <button id="probBtn" class="btn bg-green-600 hover:bg-green-700 mt-3">Run</button>
-    <pre id="probOutput" class="mt-4 text-sm text-gray-300">Loading...</pre>
-  </div>
-
-  <!-- EMOTION MODEL -->
-  <div class="card mb-8">
-    <h2 class="text-xl font-semibold mb-2">Emotion & pressure model</h2>
-    <p class="text-sm text-gray-400">Uses a demo payload to compute home vs. away emotional momentum.</p>
-    <button id="emotionBtn" class="btn bg-red-600 hover:bg-red-700 mt-3">Run emotion probability</button>
-    <pre id="emotionOutput" class="mt-4 text-sm text-gray-300">Loading...</pre>
-  </div>
-
-  <!-- FOOTER -->
-  <p class="text-center text-gray-500 text-xs mt-10">
-    BetSense Quantum Engine · Internal demo UI (English only)<br />
-    Backend: Node.js · Frontend: Static HTML + Tailwind
-  </p>
-
+  <!-- App script -->
   <script>
-    const ENGINE = "https://betsense-engine.onrender.com";
+    const ENGINE_BASE_URL = "https://betsense-engine.onrender.com";
 
-    document.getElementById("engineUrl").innerText = ENGINE + "/api/health";
+    const healthOutput = document.getElementById("health-output");
+    const matchOutput = document.getElementById("match-output");
+    const statsOutput = document.getElementById("stats-output");
+    const liveOddsOutput = document.getElementById("live-odds-output");
+    const probabilitiesOutput = document.getElementById("probabilities-output");
+    const emotionOutput = document.getElementById("emotion-output");
+    const engineStatusPill = document.getElementById("engine-status-pill");
 
-    async function callApi(path, outputElement) {
+    document.getElementById("health-url").textContent =
+      ENGINE_BASE_URL + "/api/health";
+
+    function formatJSON(obj) {
       try {
-        const res = await fetch(ENGINE + path);
-        const data = await res.json();
-        document.getElementById(outputElement).textContent = JSON.stringify(data, null, 2);
+        return JSON.stringify(obj, null, 2);
       } catch (e) {
-        document.getElementById(outputElement).textContent = "Error: " + e;
+        return String(obj);
       }
     }
 
-    healthBtn.onclick = () => callApi("/api/health", "healthOutput");
-    matchBtn.onclick = () => callApi("/api/match", "matchOutput");
-    statsBtn.onclick = () => callApi("/api/stats", "statsOutput");
-    oddsBtn.onclick = () => callApi("/api/live-odds", "oddsOutput");
-    probBtn.onclick = () => callApi("/api/probabilities", "probOutput");
-    emotionBtn.onclick = () => callApi("/api/emotion-probability", "emotionOutput");
-  </script>
+    async function callEndpoint(path, outputEl, options = {}) {
+      const url = ENGINE_BASE_URL + path;
+      outputEl.textContent = "Loading...";
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+        });
 
+        const contentType = res.headers.get("content-type") || "";
+
+        if (!res.ok) {
+          let text = await res.text();
+          outputEl.textContent =
+            "HTTP " + res.status + " " + res.statusText + "\\n\\n" + text;
+          return;
+        }
+
+        if (contentType.includes("application/json")) {
+          const data = await res.json();
+          outputEl.textContent = formatJSON(data);
+        } else {
+          const text = await res.text();
+          outputEl.textContent = text;
+        }
+      } catch (err) {
+        outputEl.textContent = "Error calling " + url + "\\n\\n" + err;
+      }
+    }
+
+    // Button handlers
+    document.getElementById("btn-health").addEventListener("click", () =>
+      callEndpoint("/api/health", healthOutput)
+    );
+
+    document.getElementById("btn-match").addEventListener("click", () =>
+      callEndpoint("/api/match", matchOutput)
+    );
+
+    document.getElementById("btn-stats").addEventListener("click", () =>
+      callEndpoint("/api/stats", statsOutput)
+    );
+
+    document
+      .getElementById("btn-live-odds")
+      .addEventListener("click", () =>
+        callEndpoint("/api/live-odds", liveOddsOutput)
+      );
+
+    document
+      .getElementById("btn-probabilities")
+      .addEventListener("click", () =>
+        callEndpoint("/api/probabilities", probabilitiesOutput)
+      );
+
+    document.getElementById("btn-emotion").addEventListener("click", () =>
+      callEndpoint("/api/emotion-probability", emotionOutput)
+    );
+
+    // Auto health check on load
+    (async function init() {
+      healthOutput.textContent = "Loading...";
+      try {
+        const res = await fetch(ENGINE_BASE_URL + "/api/health");
+        const data = await res.json();
+        healthOutput.textContent = formatJSON(data);
+        engineStatusPill.textContent = "Engine: LIVE on Render";
+      } catch (e) {
+        healthOutput.textContent =
+          "Could not reach engine at " +
+          ENGINE_BASE_URL +
+          "/api/health\\n\\n" +
+          e;
+        engineStatusPill.textContent = "Engine: unreachable";
+      }
+
+      // Set default texts for other panels
+      matchOutput.textContent = "Press Run to fetch demo match snapshot.";
+      statsOutput.textContent = "Press Run to fetch live stats payload.";
+      liveOddsOutput.textContent = "Press Run to fetch pre-match & live odds.";
+      probabilitiesOutput.textContent =
+        "Press Run to fetch win probabilities vs market.";
+      emotionOutput.textContent =
+        "Press Run emotion probability to compute emotional momentum.";
+    })();
+  </script>
 </body>
 </html>
