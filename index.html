@@ -1,194 +1,272 @@
-// server.js
-// BetSense AI - Emotion Probability Engine + Static UI
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense Quantum Engine – Live Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CDN for quick styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-6">
+    <!-- Header -->
+    <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">
+          BetSense Quantum Engine
+        </h1>
+        <p class="text-slate-400 text-sm sm:text-base">
+          Production demo &amp; health check for the BetSense AI prediction engine.
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <span class="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300 border border-emerald-500/40">
+          ● Engine: LIVE on Render
+        </span>
+      </div>
+    </header>
 
-const express = require('express');
-const path = require('path');
+    <!-- Connection status -->
+    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col gap-3">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="font-semibold text-sm sm:text-base">Connection status</h2>
+          <p id="engine-url" class="text-xs text-slate-400 break-all"></p>
+        </div>
+        <button
+          id="btn-health"
+          class="inline-flex items-center justify-center rounded-full bg-sky-500 hover:bg-sky-400 px-4 py-2 text-xs sm:text-sm font-medium text-white transition"
+        >
+          Check health
+        </button>
+      </div>
+      <div id="health-status" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap"></div>
+    </section>
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+    <!-- Actions -->
+    <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <button
+        id="btn-match"
+        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-sky-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
+      >
+        <div>
+          <h3 class="font-semibold text-sm mb-1">Demo match snapshot</h3>
+          <p class="text-xs text-slate-400">
+            GET /api/match – basic information about the current demo match.
+          </p>
+        </div>
+        <span class="mt-3 text-[11px] text-sky-300">Run</span>
+      </button>
 
-// ----- Middlewares -----
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+      <button
+        id="btn-stats"
+        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-purple-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
+      >
+        <div>
+          <h3 class="font-semibold text-sm mb-1">Live stats (mock)</h3>
+          <p class="text-xs text-slate-400">
+            GET /api/stats – xG, shots, dangerous attacks &amp; corners.
+          </p>
+        </div>
+        <span class="mt-3 text-[11px] text-purple-300">Run</span>
+      </button>
 
-// (Optional) Allow basic CORS for testing / external tools
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  res.header(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, PATCH, DELETE, OPTIONS'
-  );
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
+      <button
+        id="btn-odds"
+        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-emerald-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
+      >
+        <div>
+          <h3 class="font-semibold text-sm mb-1">Pre-match &amp; live odds</h3>
+          <p class="text-xs text-slate-400">
+            GET /api/live-odds – odds before kick-off and in-play.
+          </p>
+        </div>
+        <span class="mt-3 text-[11px] text-emerald-300">Run</span>
+      </button>
 
-// ----- Static Frontend Serving -----
-// اگر فایل‌های front توی پوشه‌ی public هستن:
-const publicDir = path.join(__dirname, 'public');
-app.use(express.static(publicDir));
+      <button
+        id="btn-prob"
+        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-amber-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
+      >
+        <div>
+          <h3 class="font-semibold text-sm mb-1">Win probabilities</h3>
+          <p class="text-xs text-slate-400">
+            GET /api/probabilities – implied probabilities vs. market.
+          </p>
+        </div>
+        <span class="mt-3 text-[11px] text-amber-300">Run</span>
+      </button>
+    </section>
 
-// اگر index.html توی ریشه‌ی پروژه است، این fallback کمک می‌کند:
-app.get('/', (req, res) => {
-  const indexInPublic = path.join(publicDir, 'index.html');
-  const indexInRoot = path.join(__dirname, 'index.html');
-  res.sendFile(indexInPublic, (err) => {
-    if (err) {
-      res.sendFile(indexInRoot, (err2) => {
-        if (err2) {
-          res.status(500).send('index.html not found');
-        }
-      });
-    }
-  });
-});
+    <!-- Emotion / Quantum layer -->
+    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col gap-3">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h2 class="font-semibold text-sm sm:text-base">Emotion &amp; pressure model</h2>
+          <p class="text-xs text-slate-400">
+            Uses a demo payload to compute home vs. away emotional momentum.
+          </p>
+        </div>
+        <button
+          id="btn-emotion"
+          class="inline-flex items-center justify-center rounded-full bg-rose-500 hover:bg-rose-400 px-4 py-2 text-xs sm:text-sm font-medium text-white transition"
+        >
+          Run emotion probability
+        </button>
+      </div>
+      <div id="emotion-output" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap"></div>
+    </section>
 
-// ----- Health check -----
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString() });
-});
+    <!-- Raw JSON output -->
+    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <h2 class="font-semibold text-sm sm:text-base">Raw JSON output</h2>
+        <span class="text-[11px] text-slate-500" id="last-endpoint-label"></span>
+      </div>
+      <pre
+        id="output"
+        class="text-xs sm:text-[13px] leading-relaxed bg-slate-950/60 border border-slate-800 rounded-xl p-3 overflow-x-auto min-h-[160px]"
+      >Click a card above to call an endpoint…</pre>
+    </section>
 
-// ----- Emotion Probability Engine API -----
-// POST /api/emotion-probability
-// توقع داریم body شامل match_state, market_state, sentiment_state باشد.
-app.post('/api/emotion-probability', (req, res) => {
-  try {
-    const { match_state = {}, market_state = {}, sentiment_state = {} } = req.body || {};
+    <footer class="text-[11px] text-slate-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mt-4 mb-2">
+      <span>BetSense Quantum Engine · Internal demo UI (English only)</span>
+      <span>Backend: Node.js · Frontend: Static HTML + Tailwind</span>
+    </footer>
+  </div>
 
-    // --- 1) Odds → Base Probabilities ---
-    const homeOdds = Number(market_state.home_odds) || 2.0;
-    const drawOdds = Number(market_state.draw_odds) || 3.5;
-    const awayOdds = Number(market_state.away_odds) || 4.0;
+  <script>
+    // ==========================
+    //  CONFIG
+    // ==========================
+    // If you ever move the engine, just change this line:
+    const API_BASE = "https://betsense-engine.onrender.com";
 
-    const homeBase = 1 / homeOdds;
-    const drawBase = 1 / drawOdds;
-    const awayBase = 1 / awayOdds;
-
-    const baseSum = homeBase + drawBase + awayBase || 1;
-
-    let pHomeBase = homeBase / baseSum;
-    let pDrawBase = drawBase / baseSum;
-    let pAwayBase = awayBase / baseSum;
-
-    // --- 2) Emotion Factors ---
-    const s = {
-      global_sentiment: clamp01(sentiment_state.global_sentiment),
-      home_fans_sentiment: clamp01(sentiment_state.home_fans_sentiment),
-      away_fans_sentiment: clamp01(sentiment_state.away_fans_sentiment),
-      social_volume: clamp01(sentiment_state.social_volume),
-      panic_index: clamp01(sentiment_state.panic_index),
-      confidence_index: clamp01(sentiment_state.confidence_index)
+    const dom = {
+      engineUrl: document.getElementById("engine-url"),
+      healthStatus: document.getElementById("health-status"),
+      lastEndpointLabel: document.getElementById("last-endpoint-label"),
+      output: document.getElementById("output"),
+      emotionOutput: document.getElementById("emotion-output"),
+      btnHealth: document.getElementById("btn-health"),
+      btnMatch: document.getElementById("btn-match"),
+      btnStats: document.getElementById("btn-stats"),
+      btnOdds: document.getElementById("btn-odds"),
+      btnProb: document.getElementById("btn-prob"),
+      btnEmotion: document.getElementById("btn-emotion"),
     };
 
-    const pressureIndex = clamp01(match_state.pressure_index);
+    dom.engineUrl.textContent = API_BASE;
 
-    const alpha = 0.3; // شدت اثر احساسات
-
-    const efHome =
-      0.4 * s.home_fans_sentiment +
-      0.2 * s.global_sentiment +
-      0.2 * s.confidence_index -
-      0.2 * s.panic_index;
-
-    const efAway =
-      0.4 * s.away_fans_sentiment +
-      0.2 * s.global_sentiment +
-      0.2 * (1 - s.confidence_index) +
-      0.2 * s.panic_index;
-
-    const efDraw =
-      0.3 * (1 - Math.abs(s.home_fans_sentiment - s.away_fans_sentiment)) +
-      0.2 * s.global_sentiment +
-      0.2 * (1 - s.panic_index) +
-      0.3 * (1 - pressureIndex);
-
-    const emMulHome = 1 + alpha * (efHome - 0.5);
-    const emMulAway = 1 + alpha * (efAway - 0.5);
-    const emMulDraw = 1 + alpha * (efDraw - 0.5);
-
-    // --- 3) Apply emotion multipliers & renormalize ---
-    let pHomeEm = pHomeBase * emMulHome;
-    let pDrawEm = pDrawBase * emMulDraw;
-    let pAwayEm = pAwayBase * emMulAway;
-
-    const emSum = pHomeEm + pDrawEm + pAwayEm || 1;
-
-    pHomeEm /= emSum;
-    pDrawEm /= emSum;
-    pAwayEm /= emSum;
-
-    // --- 4) Shifts & volatility ---
-    const homeShift = pHomeEm - pHomeBase;
-    const drawShift = pDrawEm - pDrawBase;
-    const awayShift = pAwayEm - pAwayBase;
-
-    const volatility =
-      Math.abs(homeShift) + Math.abs(drawShift) + Math.abs(awayShift);
-
-    const confidence = clamp01(1 - volatility); // هر چه نوسان بیشتر، confidence کمتر
-
-    // --- 5) Signals (علامت‌های مهم برای UI / خریدار) ---
-    const signals = [];
-
-    if (homeShift > 0.05) {
-      signals.push('HOME_SENTIMENT_BOOST');
-    }
-    if (awayShift < -0.05) {
-      signals.push('AWAY_SENTIMENT_COLLAPSING');
-    }
-    if (volatility > 0.2) {
-      signals.push('HIGH_EMOTIONAL_VOLATILITY');
-    }
-    if (s.social_volume > 0.8) {
-      signals.push('SOCIAL_ACTIVITY_SPIKE');
+    function setLoading(target, isLoading) {
+      if (!target) return;
+      if (isLoading) {
+        target.setAttribute("data-prev-text", target.textContent);
+        target.textContent = "Loading…";
+        target.disabled = true;
+        target.classList.add("opacity-70");
+      } else {
+        const prev = target.getAttribute("data-prev-text");
+        if (prev) target.textContent = prev;
+        target.disabled = false;
+        target.classList.remove("opacity-70");
+      }
     }
 
-    return res.json({
-      base_probabilities: {
-        home: round4(pHomeBase),
-        draw: round4(pDrawBase),
-        away: round4(pAwayBase)
-      },
-      emotion_adjusted_probabilities: {
-        home: round4(pHomeEm),
-        draw: round4(pDrawEm),
-        away: round4(pAwayEm)
-      },
-      emotion_impact: {
-        home_shift: round4(homeShift),
-        draw_shift: round4(drawShift),
-        away_shift: round4(awayShift),
-        confidence: round4(confidence),
-        volatility: round4(volatility)
-      },
-      signals
-    });
-  } catch (err) {
-    console.error('Emotion Probability Engine error:', err);
-    return res.status(500).json({
-      error: 'Emotion Probability Engine failed',
-      details: err.message
-    });
-  }
-});
+    function pretty(obj) {
+      return JSON.stringify(obj, null, 2);
+    }
 
-// ----- Helper functions -----
-function clamp01(value) {
-  const n = Number(value);
-  if (isNaN(n)) return 0.5; // اگر داده نداشتیم، حالت خنثی
-  return Math.max(0, Math.min(1, n));
-}
+    async function callEndpoint(path, label, buttonEl, outputTarget = "output") {
+      const url = API_BASE + path;
+      const out = outputTarget === "emotion" ? dom.emotionOutput : dom.output;
 
-function round4(value) {
-  return Math.round((value + Number.EPSILON) * 10000) / 10000;
-}
+      dom.lastEndpointLabel.textContent = label ? label + " · " + path : path;
+      out.textContent = "";
+      out.textContent = "Calling " + url + " …";
 
-// ----- Start server -----
-app.listen(PORT, () => {
-  console.log(`BetSense AI server running on port ${PORT}`);
-});
+      if (buttonEl) setLoading(buttonEl, true);
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          const text = await res.text();
+          out.textContent = "HTTP " + res.status + " " + res.statusText + "\\n\\n" + text;
+          return;
+        }
+        const data = await res.json();
+        out.textContent = pretty(data);
+      } catch (err) {
+        out.textContent = "Request failed:\\n" + err.message;
+      } finally {
+        if (buttonEl) setLoading(buttonEl, false);
+      }
+    }
+
+    async function checkHealth() {
+      dom.healthStatus.textContent = "Checking health…";
+      setLoading(dom.btnHealth, true);
+
+      try {
+        const res = await fetch(API_BASE + "/api/health");
+        const text = await res.text();
+        dom.healthStatus.textContent = text;
+      } catch (err) {
+        dom.healthStatus.textContent =
+          "Cannot reach engine. Please check Render service.\\n\\nError: " + err.message;
+      } finally {
+        setLoading(dom.btnHealth, false);
+      }
+    }
+
+    // Emotion probability uses the dedicated endpoint
+    async function runEmotion() {
+      dom.emotionOutput.textContent = "Calling emotion probability endpoint…";
+      setLoading(dom.btnEmotion, true);
+
+      try {
+        const res = await fetch(API_BASE + "/api/emotion-probability");
+        if (!res.ok) {
+          const text = await res.text();
+          dom.emotionOutput.textContent =
+            "HTTP " + res.status + " " + res.statusText + "\\n\\n" + text;
+          return;
+        }
+        const data = await res.json();
+        dom.emotionOutput.textContent = pretty(data);
+      } catch (err) {
+        dom.emotionOutput.textContent = "Request failed:\\n" + err.message;
+      } finally {
+        setLoading(dom.btnEmotion, false);
+      }
+    }
+
+    // Wire up buttons
+    dom.btnHealth.addEventListener("click", () =>
+      checkHealth()
+    );
+
+    dom.btnMatch.addEventListener("click", () =>
+      callEndpoint("/api/match", "Demo match snapshot", dom.btnMatch)
+    );
+
+    dom.btnStats.addEventListener("click", () =>
+      callEndpoint("/api/stats", "Live stats (mock)", dom.btnStats)
+    );
+
+    dom.btnOdds.addEventListener("click", () =>
+      callEndpoint("/api/live-odds", "Pre-match & live odds", dom.btnOdds)
+    );
+
+    dom.btnProb.addEventListener("click", () =>
+      callEndpoint("/api/probabilities", "Win probabilities", dom.btnProb)
+    );
+
+    dom.btnEmotion.addEventListener("click", () => runEmotion());
+
+    // Auto-check health & load match once on page load
+    checkHealth();
+    callEndpoint("/api/match", "Demo match snapshot");
+  </script>
+</body>
+</html>
