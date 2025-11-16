@@ -2,271 +2,236 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BetSense Quantum Engine – Live Demo</title>
+  <title>BetSense Quantum Engine · Demo & Health Check</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind CDN for quick styling -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
-  <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-6">
+<body class="min-h-screen bg-slate-950 text-slate-50">
+  <div class="max-w-5xl mx-auto px-4 py-10">
     <!-- Header -->
-    <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">
-          BetSense Quantum Engine
-        </h1>
-        <p class="text-slate-400 text-sm sm:text-base">
-          Production demo &amp; health check for the BetSense AI prediction engine.
-        </p>
-      </div>
-      <div class="flex gap-2">
-        <span class="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300 border border-emerald-500/40">
-          ● Engine: LIVE on Render
-        </span>
+    <header class="mb-10">
+      <h1 class="text-3xl md:text-4xl font-bold mb-3">
+        BetSense Quantum Engine
+      </h1>
+      <p class="text-slate-300 max-w-2xl">
+        Production demo &amp; health check for the BetSense AI prediction engine.
+      </p>
+
+      <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-900/60 px-4 py-1.5 text-sm">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-medium">Engine: LIVE on Render</span>
       </div>
     </header>
 
-    <!-- Connection status -->
-    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col gap-3">
-      <div class="flex items-center justify-between gap-3">
-        <div>
-          <h2 class="font-semibold text-sm sm:text-base">Connection status</h2>
-          <p id="engine-url" class="text-xs text-slate-400 break-all"></p>
+    <!-- Engine status card -->
+    <section class="mb-8">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-900/40">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-lg font-semibold mb-1">Connection status</h2>
+            <p class="text-sm text-slate-400 break-all" id="engine-url">
+              https://betsense-engine.onrender.com/api/health
+            </p>
+          </div>
+          <button
+            id="btn-health"
+            class="inline-flex items-center justify-center rounded-full bg-sky-500 hover:bg-sky-400 text-sm font-semibold px-5 py-2 transition"
+          >
+            Check health
+          </button>
         </div>
-        <button
-          id="btn-health"
-          class="inline-flex items-center justify-center rounded-full bg-sky-500 hover:bg-sky-400 px-4 py-2 text-xs sm:text-sm font-medium text-white transition"
-        >
-          Check health
-        </button>
+        <pre
+          id="health-output"
+          class="text-xs md:text-sm bg-black/40 border border-slate-800 rounded-xl px-3 py-3 overflow-x-auto text-emerald-300"
+        >Waiting for response...</pre>
       </div>
-      <div id="health-status" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap"></div>
     </section>
 
-    <!-- Actions -->
-    <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <button
-        id="btn-match"
-        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-sky-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
-      >
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Demo match snapshot</h3>
-          <p class="text-xs text-slate-400">
-            GET /api/match – basic information about the current demo match.
-          </p>
+    <!-- Grid of endpoints -->
+    <section class="space-y-6">
+      <!-- Demo match snapshot -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-900/40">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-base font-semibold mb-1">Demo match snapshot</h3>
+            <p class="text-xs md:text-sm text-slate-400">
+              GET <span class="font-mono">/api/match</span> – basic information about the current demo match.
+            </p>
+          </div>
+          <button
+            id="btn-match"
+            class="inline-flex items-center justify-center rounded-full bg-violet-500 hover:bg-violet-400 text-xs md:text-sm font-semibold px-4 py-2 transition"
+          >
+            Run
+          </button>
         </div>
-        <span class="mt-3 text-[11px] text-sky-300">Run</span>
-      </button>
-
-      <button
-        id="btn-stats"
-        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-purple-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
-      >
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Live stats (mock)</h3>
-          <p class="text-xs text-slate-400">
-            GET /api/stats – xG, shots, dangerous attacks &amp; corners.
-          </p>
-        </div>
-        <span class="mt-3 text-[11px] text-purple-300">Run</span>
-      </button>
-
-      <button
-        id="btn-odds"
-        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-emerald-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
-      >
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Pre-match &amp; live odds</h3>
-          <p class="text-xs text-slate-400">
-            GET /api/live-odds – odds before kick-off and in-play.
-          </p>
-        </div>
-        <span class="mt-3 text-[11px] text-emerald-300">Run</span>
-      </button>
-
-      <button
-        id="btn-prob"
-        class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left hover:border-amber-500/60 hover:bg-slate-900 transition flex flex-col justify-between"
-      >
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Win probabilities</h3>
-          <p class="text-xs text-slate-400">
-            GET /api/probabilities – implied probabilities vs. market.
-          </p>
-        </div>
-        <span class="mt-3 text-[11px] text-amber-300">Run</span>
-      </button>
-    </section>
-
-    <!-- Emotion / Quantum layer -->
-    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col gap-3">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div>
-          <h2 class="font-semibold text-sm sm:text-base">Emotion &amp; pressure model</h2>
-          <p class="text-xs text-slate-400">
-            Uses a demo payload to compute home vs. away emotional momentum.
-          </p>
-        </div>
-        <button
-          id="btn-emotion"
-          class="inline-flex items-center justify-center rounded-full bg-rose-500 hover:bg-rose-400 px-4 py-2 text-xs sm:text-sm font-medium text-white transition"
-        >
-          Run emotion probability
-        </button>
+        <pre
+          id="match-output"
+          class="text-xs md:text-sm bg-black/40 border border-slate-800 rounded-xl px-3 py-3 overflow-x-auto text-slate-100"
+        >{ }</pre>
       </div>
-      <div id="emotion-output" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap"></div>
-    </section>
 
-    <!-- Raw JSON output -->
-    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5">
-      <div class="flex items-center justify-between gap-2 mb-3">
-        <h2 class="font-semibold text-sm sm:text-base">Raw JSON output</h2>
-        <span class="text-[11px] text-slate-500" id="last-endpoint-label"></span>
+      <!-- Live stats (mock) -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-900/40">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-base font-semibold mb-1">Live stats (mock)</h3>
+            <p class="text-xs md:text-sm text-slate-400">
+              GET <span class="font-mono">/api/stats</span> – xG, shots, dangerous attacks &amp; corners.
+            </p>
+          </div>
+          <button
+            id="btn-stats"
+            class="inline-flex items-center justify-center rounded-full bg-indigo-500 hover:bg-indigo-400 text-xs md:text-sm font-semibold px-4 py-2 transition"
+          >
+            Run
+          </button>
+        </div>
+        <pre
+          id="stats-output"
+          class="text-xs md:text-sm bg-black/40 border border-slate-800 rounded-xl px-3 py-3 overflow-x-auto text-slate-100"
+        >{ }</pre>
       </div>
-      <pre
-        id="output"
-        class="text-xs sm:text-[13px] leading-relaxed bg-slate-950/60 border border-slate-800 rounded-xl p-3 overflow-x-auto min-h-[160px]"
-      >Click a card above to call an endpoint…</pre>
+
+      <!-- Pre-match & live odds -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-900/40">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-base font-semibold mb-1">Pre-match &amp; live odds</h3>
+            <p class="text-xs md:text-sm text-slate-400">
+              GET <span class="font-mono">/api/live-odds</span> – odds before kick-off and in-play.
+            </p>
+          </div>
+          <button
+            id="btn-odds"
+            class="inline-flex items-center justify-center rounded-full bg-amber-500 hover:bg-amber-400 text-xs md:text-sm font-semibold px-4 py-2 transition"
+          >
+            Run
+          </button>
+        </div>
+        <pre
+          id="odds-output"
+          class="text-xs md:text-sm bg-black/40 border border-slate-800 rounded-xl px-3 py-3 overflow-x-auto text-slate-100"
+        >{ }</pre>
+      </div>
+
+      <!-- Win probabilities -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-900/40">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-base font-semibold mb-1">Win probabilities</h3>
+            <p class="text-xs md:text-sm text-slate-400">
+              GET <span class="font-mono">/api/probabilities</span> – implied probabilities vs. market.
+            </p>
+          </div>
+          <button
+            id="btn-prob"
+            class="inline-flex items-center justify-center rounded-full bg-lime-500 hover:bg-lime-400 text-xs md:text-sm font-semibold px-4 py-2 transition"
+          >
+            Run
+          </button>
+        </div>
+        <pre
+          id="prob-output"
+          class="text-xs md:text-sm bg-black/40 border border-slate-800 rounded-xl px-3 py-3 overflow-x-auto text-slate-100"
+        >{ }</pre>
+      </div>
+
+      <!-- Emotion & pressure model -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-900/40">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div>
+            <h3 class="text-base font-semibold mb-1">Emotion &amp; pressure model</h3>
+            <p class="text-xs md:text-sm text-slate-400">
+              Uses a demo payload to compute home vs. away emotional momentum.
+            </p>
+          </div>
+          <button
+            id="btn-emotion"
+            class="inline-flex items-center justify-center rounded-full bg-rose-500 hover:bg-rose-400 text-xs md:text-sm font-semibold px-4 py-2 transition"
+          >
+            Run emotion probability
+          </button>
+        </div>
+        <pre
+          id="emotion-output"
+          class="text-xs md:text-sm bg-black/40 border border-slate-800 rounded-xl px-3 py-3 overflow-x-auto text-slate-100"
+        >{ }</pre>
+      </div>
     </section>
 
-    <footer class="text-[11px] text-slate-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mt-4 mb-2">
-      <span>BetSense Quantum Engine · Internal demo UI (English only)</span>
-      <span>Backend: Node.js · Frontend: Static HTML + Tailwind</span>
+    <!-- Footer -->
+    <footer class="mt-10 pt-6 border-t border-slate-800 text-xs text-slate-500">
+      BetSense Quantum Engine · Internal demo UI (English only) · Backend: Node.js · Frontend: Static HTML + Tailwind
     </footer>
   </div>
 
   <script>
-    // ==========================
-    //  CONFIG
-    // ==========================
-    // If you ever move the engine, just change this line:
-    const API_BASE = "https://betsense-engine.onrender.com";
+    // *** REAL ENGINE BASE URL ***
+    const ENGINE_BASE_URL = "https://betsense-engine.onrender.com";
 
-    const dom = {
-      engineUrl: document.getElementById("engine-url"),
-      healthStatus: document.getElementById("health-status"),
-      lastEndpointLabel: document.getElementById("last-endpoint-label"),
-      output: document.getElementById("output"),
-      emotionOutput: document.getElementById("emotion-output"),
-      btnHealth: document.getElementById("btn-health"),
-      btnMatch: document.getElementById("btn-match"),
-      btnStats: document.getElementById("btn-stats"),
-      btnOdds: document.getElementById("btn-odds"),
-      btnProb: document.getElementById("btn-prob"),
-      btnEmotion: document.getElementById("btn-emotion"),
-    };
-
-    dom.engineUrl.textContent = API_BASE;
-
-    function setLoading(target, isLoading) {
-      if (!target) return;
-      if (isLoading) {
-        target.setAttribute("data-prev-text", target.textContent);
-        target.textContent = "Loading…";
-        target.disabled = true;
-        target.classList.add("opacity-70");
-      } else {
-        const prev = target.getAttribute("data-prev-text");
-        if (prev) target.textContent = prev;
-        target.disabled = false;
-        target.classList.remove("opacity-70");
-      }
-    }
-
-    function pretty(obj) {
-      return JSON.stringify(obj, null, 2);
-    }
-
-    async function callEndpoint(path, label, buttonEl, outputTarget = "output") {
-      const url = API_BASE + path;
-      const out = outputTarget === "emotion" ? dom.emotionOutput : dom.output;
-
-      dom.lastEndpointLabel.textContent = label ? label + " · " + path : path;
-      out.textContent = "";
-      out.textContent = "Calling " + url + " …";
-
-      if (buttonEl) setLoading(buttonEl, true);
+    async function callEndpoint(path, outputId, buttonId) {
+      const outputEl = document.getElementById(outputId);
+      const btn = buttonId ? document.getElementById(buttonId) : null;
 
       try {
-        const res = await fetch(url);
-        if (!res.ok) {
-          const text = await res.text();
-          out.textContent = "HTTP " + res.status + " " + res.statusText + "\\n\\n" + text;
-          return;
+        if (btn) {
+          btn.disabled = true;
+          btn.classList.add("opacity-60", "cursor-wait");
         }
-        const data = await res.json();
-        out.textContent = pretty(data);
-      } catch (err) {
-        out.textContent = "Request failed:\\n" + err.message;
-      } finally {
-        if (buttonEl) setLoading(buttonEl, false);
-      }
-    }
+        outputEl.textContent = "Loading...";
 
-    async function checkHealth() {
-      dom.healthStatus.textContent = "Checking health…";
-      setLoading(dom.btnHealth, true);
-
-      try {
-        const res = await fetch(API_BASE + "/api/health");
+        const res = await fetch(ENGINE_BASE_URL + path);
         const text = await res.text();
-        dom.healthStatus.textContent = text;
-      } catch (err) {
-        dom.healthStatus.textContent =
-          "Cannot reach engine. Please check Render service.\\n\\nError: " + err.message;
-      } finally {
-        setLoading(dom.btnHealth, false);
-      }
-    }
 
-    // Emotion probability uses the dedicated endpoint
-    async function runEmotion() {
-      dom.emotionOutput.textContent = "Calling emotion probability endpoint…";
-      setLoading(dom.btnEmotion, true);
-
-      try {
-        const res = await fetch(API_BASE + "/api/emotion-probability");
-        if (!res.ok) {
-          const text = await res.text();
-          dom.emotionOutput.textContent =
-            "HTTP " + res.status + " " + res.statusText + "\\n\\n" + text;
-          return;
+        // Try to pretty-print JSON
+        try {
+          const json = JSON.parse(text);
+          outputEl.textContent = JSON.stringify(json, null, 2);
+        } catch {
+          // not JSON, show raw text
+          outputEl.textContent = text;
         }
-        const data = await res.json();
-        dom.emotionOutput.textContent = pretty(data);
       } catch (err) {
-        dom.emotionOutput.textContent = "Request failed:\\n" + err.message;
+        outputEl.textContent = "Error: " + err.message;
       } finally {
-        setLoading(dom.btnEmotion, false);
+        if (btn) {
+          btn.disabled = false;
+          btn.classList.remove("opacity-60", "cursor-wait");
+        }
       }
     }
 
-    // Wire up buttons
-    dom.btnHealth.addEventListener("click", () =>
-      checkHealth()
+    // Wire buttons
+    document.getElementById("btn-health").addEventListener("click", () =>
+      callEndpoint("/api/health", "health-output", "btn-health")
     );
 
-    dom.btnMatch.addEventListener("click", () =>
-      callEndpoint("/api/match", "Demo match snapshot", dom.btnMatch)
+    document.getElementById("btn-match").addEventListener("click", () =>
+      callEndpoint("/api/match", "match-output", "btn-match")
     );
 
-    dom.btnStats.addEventListener("click", () =>
-      callEndpoint("/api/stats", "Live stats (mock)", dom.btnStats)
+    document.getElementById("btn-stats").addEventListener("click", () =>
+      callEndpoint("/api/stats", "stats-output", "btn-stats")
     );
 
-    dom.btnOdds.addEventListener("click", () =>
-      callEndpoint("/api/live-odds", "Pre-match & live odds", dom.btnOdds)
+    document.getElementById("btn-odds").addEventListener("click", () =>
+      callEndpoint("/api/live-odds", "odds-output", "btn-odds")
     );
 
-    dom.btnProb.addEventListener("click", () =>
-      callEndpoint("/api/probabilities", "Win probabilities", dom.btnProb)
+    document.getElementById("btn-prob").addEventListener("click", () =>
+      callEndpoint("/api/probabilities", "prob-output", "btn-prob")
     );
 
-    dom.btnEmotion.addEventListener("click", () => runEmotion());
+    document.getElementById("btn-emotion").addEventListener("click", () =>
+      callEndpoint("/api/emotion-probability", "emotion-output", "btn-emotion")
+    );
 
-    // Auto-check health & load match once on page load
-    checkHealth();
-    callEndpoint("/api/match", "Demo match snapshot");
+    // Auto-check health on page load
+    window.addEventListener("load", () => {
+      callEndpoint("/api/health", "health-output", "btn-health");
+    });
   </script>
 </body>
 </html>
