@@ -2,23 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BetSense AI Engine</title>
+  <title>BetSense AI Suite</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Simple reset + layout -->
   <style>
     :root {
       --bg: #050814;
       --bg-elevated: #0b1022;
       --bg-soft: #11162a;
-      --accent: #4ade80;      /* green glow */
+      --accent: #4ade80;
       --accent-soft: rgba(74, 222, 128, 0.15);
-      --accent-warm: #f97373; /* coral */
-      --text: #f9fafb;
-      --text-dim: #9ca3af;
-      --border-subtle: #1f2933;
-      --error: #f97373;
+      --accent-2: #a855f7;
+      --accent-2-soft: rgba(168, 85, 247, 0.18);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-faint: #6b7280;
+      --border-subtle: rgba(148, 163, 184, 0.22);
       --card-radius: 18px;
-      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.75);
+      --shadow-pill: 0 10px 30px rgba(8, 47, 73, 0.9);
     }
 
     * {
@@ -30,1387 +31,975 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #141a33 0, #050814 55%, #020308 100%);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .page {
+      background: radial-gradient(circle at top, #111827 0, #020617 50%, #000 100%);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      padding: 24px 12px 40px;
     }
 
-    .shell {
+    .app {
       width: 100%;
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 18px 16px 40px;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: linear-gradient(to right, rgba(15,23,42,0.92), rgba(12,21,46,0.97));
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.7);
-      position: sticky;
-      top: 10px;
-      backdrop-filter: blur(18px);
-      z-index: 40;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      background:
-        radial-gradient(circle at 20% 10%, #f9fafb 0, transparent 40%),
-        radial-gradient(circle at 80% 80%, #22c55e 0, transparent 45%),
-        radial-gradient(circle at 0 100%, #f97373 0, transparent 55%),
-        radial-gradient(circle at 100% 0, #38bdf8 0, transparent 55%);
-      box-shadow:
-        0 0 0 1px rgba(148,163,184,0.25),
-        0 12px 30px rgba(0,0,0,0.7);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: 14%;
-      border-radius: 10px;
-      border: 1px solid rgba(15,23,42,0.9);
-      background:
-        linear-gradient(135deg, rgba(15,23,42,0.62), transparent 40%),
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.45) 0, transparent 55%);
-      mix-blend-mode: soft-light;
-    }
-
-    .brand-text-main {
-      font-size: 18px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .brand-text-sub {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-dim);
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text-dim);
-    }
-
-    .tag-pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.85);
-      border: 1px solid rgba(148,163,184,0.45);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .tag-pill-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(74,222,128,0.8);
-    }
-
-    /* Layout grid for main sections */
-    .layout {
+      max-width: 1200px;
       display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr);
-      gap: 18px;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 22px;
     }
 
-    @media (max-width: 900px) {
-      header {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .layout {
+    @media (max-width: 960px) {
+      .app {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
-    /* hero / left column */
-    .hero-card {
-      padding: 20px 18px 18px;
+    .card {
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
       border-radius: var(--card-radius);
-      background: radial-gradient(circle at top left, rgba(56,189,248,0.15), transparent 55%),
-                  radial-gradient(circle at bottom right, rgba(74,222,128,0.15), transparent 55%),
-                  #050814;
-      border: 1px solid rgba(148,163,184,0.5);
+      border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-soft);
+      padding: 20px 22px;
       position: relative;
       overflow: hidden;
     }
 
-    .hero-eyebrow {
-      font-size: 11px;
-      letter-spacing: 0.18em;
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18) 0, transparent 45%),
+        radial-gradient(circle at 100% 0, rgba(168, 85, 247, 0.18) 0, transparent 45%);
+      opacity: 0.9;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1, h2, h3, h4 {
+      letter-spacing: 0.01em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(to right, rgba(59, 130, 246, 0.18), rgba(45, 212, 191, 0.18));
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: var(--shadow-pill);
+      font-size: 12px;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 6px;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .badge-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #facc15, #fb923c);
+      box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.2);
     }
 
     .hero-title {
-      font-size: clamp(24px, 3vw, 30px);
-      line-height: 1.2;
-      margin-bottom: 6px;
+      font-size: clamp(26px, 2.7vw, 32px);
+      font-weight: 700;
+      margin-bottom: 10px;
     }
 
-    .hero-subtitle {
-      font-size: 13px;
-      color: var(--text-dim);
-      max-width: 540px;
+    .hero-title span {
+      background: linear-gradient(to right, #22c55e, #2dd4bf, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .hero-cta-row {
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-soft);
+      max-width: 520px;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text-faint);
+    }
+
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 16px 0 10px;
       align-items: center;
+      margin-bottom: 16px;
     }
 
     .btn-primary {
-      border-radius: 999px;
-      padding: 8px 16px;
-      border: 0;
+      border: none;
       cursor: pointer;
-      background: radial-gradient(circle at top left, #22c55e, #16a34a);
+      padding: 9px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #06b6d4, #a855f7);
       color: #020617;
       font-size: 13px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow:
-        0 0 30px rgba(74,222,128,0.7),
-        0 10px 30px rgba(0,0,0,0.8);
-      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.55);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow:
-        0 0 35px rgba(74,222,128,0.9),
-        0 16px 45px rgba(0,0,0,0.9);
-    }
-
-    .btn-ghost {
+    .btn-secondary {
       border-radius: 999px;
-      padding: 7px 12px;
-      border: 1px solid rgba(148,163,184,0.5);
-      background: rgba(15,23,42,0.8);
-      color: var(--text-dim);
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .pill-outline {
-      font-size: 11px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
-      color: var(--text-dim);
-      background: rgba(15,23,42,0.7);
-    }
-
-    .pill-outline strong {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    /* Engines row */
-    .engine-row {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 6px;
-      margin-top: 14px;
-    }
-
-    @media (max-width: 900px) {
-      .engine-row {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    .engine-pill {
-      border-radius: 999px;
-      padding: 6px 9px;
-      font-size: 11px;
-      border: 1px dashed rgba(148,163,184,0.45);
-      background: rgba(15,23,42,0.9);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .engine-pill span:first-child {
-      font-weight: 600;
-    }
-
-    .engine-pill span:last-child {
-      font-size: 10px;
-      color: var(--text-dim);
-    }
-
-    /* Right column: match + chart + emotion */
-    .stack {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .card {
-      border-radius: var(--card-radius);
-      background: var(--bg-elevated);
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: var(--shadow-soft);
-      padding: 14px 14px 12px;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .card-title {
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 8px 14px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
       font-size: 13px;
-      font-weight: 600;
-    }
-
-    .card-subtitle {
-      font-size: 11px;
-      color: var(--text-dim);
-    }
-
-    .pill-status {
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(34,197,94,0.12);
-      color: #bbf7d0;
-      border: 1px solid rgba(34,197,94,0.6);
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .pill-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 12px rgba(34,197,94,1);
-    }
-
-    .match-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 11px;
-      margin-bottom: 10px;
-      color: var(--text-dim);
-    }
-
-    .match-meta span {
-      padding: 4px 7px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.85);
-      border: 1px solid rgba(55,65,81,0.9);
-    }
-
-    .scoreline {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      gap: 10px;
-    }
-
-    .team-name {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .score {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .tag-minute {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.5);
-      color: var(--accent);
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .metric-card {
-      border-radius: 12px;
-      background: var(--bg-soft);
-      border: 1px solid rgba(55,65,81,0.95);
-      padding: 8px 8px 7px;
-      font-size: 11px;
-    }
-
-    .metric-label {
-      color: var(--text-dim);
-      margin-bottom: 4px;
-    }
-
-    .metric-value {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .metric-chip {
-      margin-top: 2px;
-      font-size: 10px;
-      padding: 3px 6px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.5);
-    }
-
-    .metric-chip-dot {
+    .btn-secondary span.dot {
       width: 6px;
       height: 6px;
       border-radius: 999px;
-      background: var(--accent-warm);
-      box-shadow: 0 0 10px rgba(248,113,113,0.9);
+      background: #22c55e;
     }
 
-    .slider-row {
-      margin-bottom: 4px;
-    }
-
-    .slider-row label {
+    .hero-footnote {
       font-size: 11px;
-      color: var(--text-dim);
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
+      color: var(--text-faint);
     }
 
-    input[type="range"] {
-      width: 100%;
+    .hero-footnote strong {
+      color: var(--text-soft);
+      font-weight: 500;
     }
 
-    .chart-container {
-      position: relative;
-      width: 100%;
-      height: 160px;
-      margin-top: 6px;
-    }
-
-    /* Emotion Engine */
-    .pill-tabs {
-      display: inline-flex;
-      background: rgba(15,23,42,0.95);
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 3px;
-      gap: 3px;
-      margin-bottom: 6px;
-    }
-
-    .pill-tab {
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      border: none;
-      background: transparent;
-      color: var(--text-dim);
-      cursor: pointer;
-    }
-
-    .pill-tab.active {
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    textarea {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(55,65,81,0.9);
-      background: rgba(15,23,42,0.95);
-      color: var(--text);
-      padding: 8px;
-      font-size: 12px;
-      resize: vertical;
-      min-height: 70px;
-    }
-
-    textarea::placeholder {
-      color: #4b5563;
-    }
-
-    .output-box {
-      margin-top: 8px;
-      border-radius: 12px;
-      border: 1px solid rgba(55,65,81,0.95);
-      background: rgba(15,23,42,0.95);
-      padding: 8px;
-      font-size: 12px;
-      color: var(--text-dim);
-      max-height: 150px;
-      overflow-y: auto;
-    }
-
-    /* bottom rows */
-    .triple-grid {
+    .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) minmax(0, 1.1fr);
-      gap: 14px;
-      margin-top: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
     }
 
-    @media (max-width: 1000px) {
-      .triple-grid {
+    @media (max-width: 640px) {
+      .hero-grid {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
-    .toggle-row {
+    .hero-mini-card {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.8));
+      padding: 10px 11px;
+      font-size: 12px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .mini-label {
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .mini-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .mini-main strong {
+      font-size: 15px;
+    }
+
+    .mini-main span {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .mini-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 6px;
-      margin-bottom: 6px;
+      margin-top: 4px;
     }
 
-    .toggle-chip {
-      font-size: 11px;
-      padding: 4px 8px;
+    .mini-pill {
+      font-size: 10px;
+      padding: 3px 7px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.55);
-      background: rgba(15,23,42,0.9);
-      color: var(--text-dim);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.4);
+      color: var(--text-faint);
+    }
+
+    .mini-timeline {
+      margin-top: 4px;
+      height: 20px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.4), transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(234, 179, 8, 0.35), transparent 40%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-line {
+      position: absolute;
+      inset: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: linear-gradient(to right, rgba(56, 189, 248, 0.3), rgba(74, 222, 128, 0.6));
+    }
+
+    .mini-dot {
+      position: absolute;
+      top: 50%;
+      right: 14%;
+      transform: translateY(-50%);
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.9);
+    }
+
+    .right-column {
+      display: grid;
+      gap: 14px;
+    }
+
+    .tab-header {
+      display: flex;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 999px;
+      padding: 4px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      text-align: center;
+      border-radius: 999px;
+      padding: 7px 0;
+      font-size: 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-soft);
       cursor: pointer;
     }
 
-    .toggle-chip.active {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border-color: rgba(74,222,128,0.8);
+    .tab-btn.active {
+      background: linear-gradient(to right, #6366f1, #22c55e, #0ea5e9);
+      color: #020617;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.55);
     }
 
-    .list-small {
-      font-size: 11px;
-      color: var(--text-dim);
-      padding-left: 16px;
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
     }
 
-    .list-small li {
-      margin-bottom: 3px;
+    .section-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 12px;
     }
 
-    .code-block {
-      margin-top: 6px;
+    .scenario-box {
       border-radius: 12px;
-      background: #020617;
-      border: 1px solid rgba(51,65,85,0.9);
-      padding: 8px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 10px 11px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .scenario-label {
       font-size: 11px;
-      color: #e5e7eb;
-      max-height: 180px;
-      overflow: auto;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
     }
 
-    .label-chip {
-      font-size: 10px;
-      padding: 3px 6px;
+    .scenario-text {
+      color: var(--text-main);
+      line-height: 1.55;
+    }
+
+    .timeline-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.55);
-      color: var(--text-dim);
     }
 
-    .divider {
-      margin: 12px 0;
-      border-top: 1px dashed rgba(75,85,99,0.9);
+    .legend-dot.home {
+      background: #38bdf8;
+    }
+    .legend-dot.draw {
+      background: #a855f7;
+    }
+    .legend-dot.away {
+      background: #fb923c;
+    }
+
+    .timeline-chart {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.8), #020617);
+      height: 120px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .timeline-grid-line {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+        to right,
+        rgba(148, 163, 184, 0.15) 1px,
+        transparent 1px
+      );
+      background-size: 16% 100%;
+      opacity: 0.4;
+    }
+
+    .timeline-path {
+      position: absolute;
+      inset: 10px 14px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at 25% 25%, rgba(56, 189, 248, 0.22), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(52, 211, 153, 0.24), transparent 55%);
+    }
+
+    .timeline-labels {
+      position: absolute;
+      inset: auto 12px 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-faint);
+    }
+
+    .timeline-badge {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-soft);
+    }
+
+    .report-box {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 10px 11px;
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    .report-row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .report-label {
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .report-text {
+      color: var(--text-main);
+      line-height: 1.55;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+    }
+
+    .chips-pill {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .chips-pill button {
+      border-radius: 999px;
+      border: none;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: transparent;
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+
+    .chips-pill button.active {
+      background: linear-gradient(to right, #6366f1, #22c55e);
+      color: #020617;
+      font-weight: 600;
+      box-shadow: 0 10px 22px rgba(59, 130, 246, 0.5);
+    }
+
+    .api-card {
+      margin-top: 8px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.16), transparent 55%),
+        rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 10px 11px;
+      font-size: 11px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .api-label {
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .api-endpoint {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 10px;
+      padding: 6px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .contact-card {
+      margin-top: 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.98);
+      padding: 10px 11px;
+      font-size: 11px;
+      display: grid;
+      gap: 6px;
     }
 
     .contact-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr);
-      gap: 12px;
+      gap: 6px;
     }
 
-    @media (max-width: 800px) {
-      .contact-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .contact-row {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr);
+      gap: 6px;
     }
 
-    .contact-list {
-      font-size: 12px;
-      color: var(--text-dim);
-      list-style: none;
-    }
-
-    .contact-list li {
-      margin-bottom: 4px;
+    .badge-soft {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      color: var(--text-soft);
+      font-size: 10px;
     }
 
     .contact-email {
+      color: #38bdf8;
       font-weight: 500;
-      color: var(--accent);
+      word-break: break-all;
+    }
+
+    .contact-note {
+      color: var(--text-soft);
+      font-size: 11px;
     }
 
     .footnote {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 10px;
+      font-size: 10px;
+      color: var(--text-faint);
+      margin-top: 4px;
     }
 
-    .highlight {
-      color: var(--accent);
-      font-weight: 500;
-    }
-
-    /* small badge row under hero */
-    .mini-kpis {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--text-dim);
-    }
-
-    .mini-kpis span {
-      padding: 3px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(55,65,81,0.9);
-      background: rgba(15,23,42,0.9);
-    }
-
-    .pill-highlight {
-      background: radial-gradient(circle at top left, rgba(74,222,128,0.18), transparent 60%),
-                  rgba(15,23,42,0.9);
-      border-color: rgba(74,222,128,0.7);
-      color: #bbf7d0;
-    }
   </style>
-
-  <!-- Chart.js for the probability timeline -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div class="page">
-  <div class="shell">
-    <!-- HEADER -->
-    <header>
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div>
-          <div class="brand-text-main">BetSense AI</div>
-          <div class="brand-text-sub">Emotion x Odds Intelligence</div>
+  <div class="app">
+    <!-- LEFT: HERO + MODULES -->
+    <div class="card">
+      <div class="card-inner">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Realtime demo — static sample data
         </div>
-      </div>
-      <div class="header-right">
-        <div class="tag-pill">
-          <span class="tag-pill-dot"></span>
-          <span>Live demo environment</span>
-        </div>
-        <span>Single-match engine preview</span>
-      </div>
-    </header>
 
-    <!-- MAIN GRID -->
-    <div class="layout">
-      <!-- LEFT: HERO + ENGINES -->
-      <section class="hero-card">
-        <div class="hero-eyebrow">Unified risk & sentiment layer for sports trading</div>
         <h1 class="hero-title">
-          One match. One screen.<br />
-          <span class="highlight">All emotions and edges, live.</span>
+          One suite. <span>Four unique engines</span> for sharper sports decisions.
         </h1>
-        <p class="hero-subtitle">
-          BetSense AI fuses live odds, in-stadium momentum and social emotion into a single,
-          trade-ready view any desk can use in under 30 seconds.
+
+        <p class="hero-sub">
+          BetSense AI Suite connects BetSense Engine, HBoard, Emotion Index and LiveApe into one
+          operator-ready stack — giving traders, partners and investors a single view of how your
+          models already behave in live markets.
         </p>
 
-        <div class="hero-cta-row">
-          <button class="btn-primary" id="btnDemoScenario">
-            Load live demo scenario
-            <span>⚡</span>
+        <div class="hero-tags">
+          <span class="hero-tag">4 integrated modules</span>
+          <span class="hero-tag">API-first architecture</span>
+          <span class="hero-tag">Live-match analytics</span>
+          <span class="hero-tag">Investors & trading teams</span>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn-primary" id="exploreSuiteBtn">
+            Explore BetSense AI Suite ⚡
           </button>
-          <button class="btn-ghost" id="btnReset">
-            Reset view
+          <button class="btn-secondary" id="connectApiBtn">
+            <span class="dot"></span>
+            Connect your live data (API)
           </button>
         </div>
 
-        <div class="hero-badges">
-          <span class="pill-outline"><strong>4</strong> modular engines</span>
-          <span class="pill-outline"><strong>1</strong> unified decision layer</span>
-          <span class="pill-outline">Designed for risk, data & trading teams</span>
+        <div class="hero-footnote">
+          <strong>Single match — unified view.</strong> Emotion Engine, BetSense Engine and
+          LiveApe align on a late home goal in a high-liquidity derby fixture.
         </div>
 
-        <div class="engine-row">
-          <div class="engine-pill">
-            <span>Emotion Engine</span>
-            <span>Quantifies fan mood in real-time</span>
+        <div class="hero-grid">
+          <!-- Single match summary -->
+          <div class="hero-mini-card">
+            <div class="mini-label">Single match — demo snapshot</div>
+            <div class="mini-main">
+              <strong>Home win probability</strong>
+              <span>68% → 74%</span>
+            </div>
+            <div class="mini-pills">
+              <span class="mini-pill">Pre-match: 2.40</span>
+              <span class="mini-pill">Live: 1.70</span>
+              <span class="mini-pill">Derby match • Late goal</span>
+            </div>
+            <div class="mini-timeline">
+              <div class="mini-line"></div>
+              <div class="mini-dot"></div>
+            </div>
           </div>
-          <div class="engine-pill">
-            <span>Edge Engine</span>
-            <span>Surfaces mispriced moments</span>
-          </div>
-          <div class="engine-pill">
-            <span>Timeline Engine</span>
-            <span>Play-by-play emotional swing</span>
-          </div>
-          <div class="engine-pill">
-            <span>Report Engine</span>
-            <span>1-page and board-ready briefs</span>
+
+          <!-- Engine alignment -->
+          <div class="hero-mini-card">
+            <div class="mini-label">Engine alignment (demo)</div>
+            <div class="mini-main">
+              <strong>All engines agree</strong>
+              <span>Edge: +3.1% vs market</span>
+            </div>
+            <div class="mini-pills">
+              <span class="mini-pill">BetSense Engine</span>
+              <span class="mini-pill">Emotion Index</span>
+              <span class="mini-pill">LiveApe</span>
+            </div>
+            <div class="mini-pills">
+              <span class="mini-pill">No panic away</span>
+              <span class="mini-pill">Crowd: confident</span>
+            </div>
           </div>
         </div>
-
-        <div class="mini-kpis">
-          <span class="pill-highlight">From raw chatter to risk-ready narrative in ~20s</span>
-          <span>Ready for football today & extensible to other sports</span>
-        </div>
-      </section>
-
-      <!-- RIGHT: MATCH + CHART + EMOTION -->
-      <div class="stack">
-        <!-- MATCH SNAPSHOT -->
-        <section class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Single match live snapshot</div>
-              <div class="card-subtitle">
-                Odds, emotion & edge on one line
-              </div>
-            </div>
-            <div class="pill-status">
-              <span class="pill-status-dot"></span>
-              Live engine (demo data)
-            </div>
-          </div>
-
-          <div class="match-meta" id="matchMeta">
-            <span id="matchLeague">Premier League</span>
-            <span id="matchRound">Matchweek 32</span>
-            <span id="matchStatus">Second half</span>
-          </div>
-
-          <div class="scoreline">
-            <div>
-              <div class="team-name" id="homeTeam">Chelsea</div>
-              <div class="card-subtitle">Home</div>
-            </div>
-            <div>
-              <div class="score" id="scoreLine">2 – 1</div>
-              <div class="tag-minute" id="minuteTag">68′ live</div>
-            </div>
-            <div style="text-align:right;">
-              <div class="team-name" id="awayTeam">Liverpool</div>
-              <div class="card-subtitle">Away</div>
-            </div>
-          </div>
-
-          <div class="metrics-grid">
-            <div class="metric-card">
-              <div class="metric-label">Home win probability</div>
-              <div class="metric-value" id="metricHomeProb">64%</div>
-              <div class="metric-chip">
-                <span class="metric-chip-dot"></span>
-                <span id="metricHomeProbNote">Drifting slightly after away goal xG spike</span>
-              </div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-label">Emotion Index</div>
-              <div class="metric-value" id="metricEmotion">+22</div>
-              <div class="metric-chip">
-                <span>Home crowd restless, but still net-positive</span>
-              </div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-label">BetSense Edge</div>
-              <div class="metric-value" id="metricEdge">+1.8%</div>
-              <div class="metric-chip">
-                <span>Value tilting to late home push</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="slider-row">
-            <label>
-              Timeline minute
-              <span id="minuteLabel">68'</span>
-            </label>
-            <input type="range" min="5" max="90" value="68" id="minuteSlider" />
-          </div>
-
-          <div class="chart-container">
-            <canvas id="probChart"></canvas>
-          </div>
-        </section>
-
-        <!-- EMOTION ENGINE -->
-        <section class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Emotion Engine</div>
-              <div class="card-subtitle">
-                Plug raw fan noise in, get a clean trade-ready read out.
-              </div>
-            </div>
-            <span class="label-chip">Quick or deep mode</span>
-          </div>
-
-          <div class="pill-tabs">
-            <button class="pill-tab active" data-mode="quick" id="tabQuick">Quick pulse</button>
-            <button class="pill-tab" data-mode="deep" id="tabDeep">Deep dive</button>
-          </div>
-
-          <textarea id="emotionInput"
-            placeholder="Paste live commentary, tweets or internal notes here. For this demo, you can type something like: 
-'Home fans are starting to whistle every misplaced pass, but still sing for the manager. Away end is bouncing after the last big chance.'"></textarea>
-
-          <div class="hero-cta-row" style="margin-top:8px; margin-bottom:6px;">
-            <button class="btn-primary" id="btnRunEmotion">
-              Run Emotion Engine
-            </button>
-            <button class="btn-ghost" id="btnEmotionExample">
-              Insert sample chatter
-            </button>
-          </div>
-
-          <div class="output-box" id="emotionOutput">
-            Emotion Engine is idle. Paste some text and hit “Run Emotion Engine” to see how we compress messy fan noise into a clean, trade-ready summary.
-          </div>
-        </section>
       </div>
     </div>
 
-    <!-- BOTTOM ROW: EDGE / API / REPORTS / CONTACT -->
-    <section class="triple-grid">
-      <!-- EDGE ENGINE -->
+    <!-- RIGHT: INTERACTIVE PANELS -->
+    <div class="right-column">
+      <!-- MATCH STORY + TIMELINE -->
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Edge Engine</div>
-            <div class="card-subtitle">
-              Turn emotion + odds into simple &quot;act / wait&quot; signals.
+        <div class="card-inner">
+          <div class="section-title">Single match, unified view (demo)</div>
+          <div class="section-sub">
+            Emotion Engine, BetSense Engine and LiveApe are aligned on a late home goal in a
+            high-liquidity derby fixture.
+          </div>
+
+          <div class="scenario-box">
+            <div class="scenario-label">1. Describe the scenario</div>
+            <div class="scenario-text" id="scenarioText">
+              Derby match, late goal for home side, big odds move from 2.40 to 1.70.
             </div>
           </div>
-          <span class="label-chip">Market overlay</span>
-        </div>
 
-        <div class="toggle-row">
-          <button class="toggle-chip active" data-edge="baseline">Baseline fair</button>
-          <button class="toggle-chip" data-edge="overreaction">Fan over-reaction</button>
-          <button class="toggle-chip" data-edge="hidden">Hidden value</button>
-        </div>
+          <div class="tab-header" id="storyTabs">
+            <button class="tab-btn active" data-story="balanced">
+              Balanced opener
+            </button>
+            <button class="tab-btn" data-story="home">
+              Home pressure
+            </button>
+            <button class="tab-btn" data-story="away">
+              Away comeback
+            </button>
+          </div>
 
-        <ul class="list-small" id="edgeList">
-          <li>Market is roughly in line with live xG and tempo.</li>
-          <li>Emotion index is elevated but not extreme: no forced hedge yet.</li>
-          <li>Desk can keep risk open and monitor next 5–10 match minutes.</li>
-        </ul>
+          <div class="timeline-legend">
+            <span class="legend-item">
+              <span class="legend-dot home"></span> Home win %
+            </span>
+            <span class="legend-item">
+              <span class="legend-dot draw"></span> Draw %
+            </span>
+            <span class="legend-item">
+              <span class="legend-dot away"></span> Away win %
+            </span>
+          </div>
+
+          <div class="timeline-chart">
+            <div class="timeline-grid-line"></div>
+            <div class="timeline-path"></div>
+            <div class="timeline-labels">
+              <span>0'</span>
+              <span>Late home goal, 72'</span>
+              <span>90'</span>
+            </div>
+            <div class="timeline-badge" id="timelineBadge">
+              Mode: Balanced opener — early swings are modest, market still respects all outcomes.
+            </div>
+          </div>
+
+          <div class="chips-pill" id="reportMode">
+            <button class="active" data-mode="simple">
+              Simple report — 1-page summary
+            </button>
+            <button data-mode="full">
+              Full report — investor-level detail
+            </button>
+          </div>
+
+          <div class="report-box" id="reportBox">
+            <div class="report-row">
+              <div class="report-label">Key scenario</div>
+              <div class="report-text">
+                Derby match, late goal for home side, odds move from 2.40 to 1.70.
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-label">Headline</div>
+              <div class="report-text">
+                Home side turns pressure into decisive advantage — odds and market mood move in sync.
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-label">Trading summary</div>
+              <div class="report-text">
+                BetSense Engine highlights a clear break in the probability trend after the key
+                event. Price move is supported by volume, not just retail noise. Risk position is
+                comfortable but requires monitoring if a second goal arrives.
+              </div>
+            </div>
+            <div class="chip-row">
+              <span class="chip">Use this view for fast communication with management or non-technical stakeholders.</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- LIVE API HOOK -->
+      <!-- API + CONTACT -->
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Live API hook (demo)</div>
-            <div class="card-subtitle">
-              How your feed would hit BetSense AI in production.
-            </div>
+        <div class="card-inner">
+          <div class="section-title">Live API hook — plug your feeds in</div>
+          <div class="section-sub">
+            In production, these same views run directly on your live prices, stats and social data
+            via a single API layer.
           </div>
-          <span class="label-chip">/v1/match/snapshot</span>
-        </div>
 
-        <p class="card-subtitle" style="margin-bottom:6px;">
-          In a real integration, your odds &amp; event feed would call our engines on every state change.
-          For this demo, we simulate the payload locally.
-        </p>
-
-        <div class="hero-cta-row" style="margin-top:6px; margin-bottom:6px;">
-          <button class="btn-ghost" id="btnShowApi">
-            Show sample payload
-          </button>
-          <button class="btn-ghost" id="btnApplyApi">
-            Apply payload to dashboard
-          </button>
-        </div>
-
-        <div class="code-block" id="apiBlock">
-          <!-- Filled by JS -->
-        </div>
-      </div>
-
-      <!-- REPORT ENGINE + CONTACT -->
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Report Engine & pilots</div>
-            <div class="card-subtitle">
-              From one match to full league coverage.
+          <div class="api-card">
+            <div class="api-label">Mock demo vs production</div>
+            <div class="contact-note">
+              This demo runs on static sample data, but the engine is designed to sit on top of
+              your existing stack. Connect match stats, live odds and social signals, then expose
+              a single operator-ready layer for:
             </div>
-          </div>
-          <span class="label-chip">1-page or board-ready</span>
-        </div>
-
-        <label for="reportType" class="card-subtitle" style="display:block; margin-bottom:4px;">
-          Choose report flavour
-        </label>
-        <select id="reportType" style="
-          width:100%;
-          border-radius:10px;
-          border:1px solid rgba(55,65,81,0.95);
-          background:rgba(15,23,42,0.95);
-          color:var(--text);
-          font-size:12px;
-          padding:6px 8px;
-          margin-bottom:6px;
-        ">
-          <option value="simple">Simple 1-page match readout</option>
-          <option value="investor">Board / investor-level summary</option>
-        </select>
-
-        <button class="btn-primary" id="btnGenerateReport" style="margin-bottom:6px;">
-          Generate sample report
-        </button>
-
-        <div class="output-box" id="reportOutput">
-          Pick a report flavour and hit “Generate sample report” to see the type of narrative we can attach to each match.
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="contact-grid">
-          <div>
-            <div class="card-subtitle" style="margin-bottom:4px;">
-              Ready to talk pilots?
-            </div>
-            <ul class="contact-list">
-              <li>
-                Product &amp; pilots:
-                <span class="contact-email">info@betsense.casino</span>
-              </li>
-              <li>
-                Trading &amp; risk teams:
-                <span class="contact-email">support@betsense.casino</span>
-              </li>
-              <li>
-                Commercial &amp; licensing:
-                <span class="contact-email">sales@betsense.casino</span>
-              </li>
+            <ul class="contact-note" style="margin-left: 14px; margin-top: 4px;">
+              <li>Trading teams and risk &amp; PnL desks</li>
+              <li>Executive and investor reporting</li>
+              <li>External partners and white-label clients</li>
             </ul>
+
+            <div class="api-label" style="margin-top: 8px;">Example live input (demo only)</div>
+            <div class="api-endpoint">
+POST /api/live-input
+Content-Type: application/json
+X-API-Key: YOUR_KEY_HERE
+
+{
+  "matchId": "EPL-2025-001",
+  "minute": 72,
+  "homeTeam": "Chelsea",
+  "awayTeam": "Arsenal",
+  "stats": { "shotsHome": 12, "shotsAway": 7, "xgHome": 2.1, "xgAway": 0.9 },
+  "marketOdds": { "homeWin": 1.85, "draw": 3.60, "awayWin": 4.40 },
+  "socialSentiment": "home_fans_excited"
+}
+            </div>
           </div>
-          <div>
-            <p class="card-subtitle">
-              We typically start with a <span class="highlight">4–6 week pilot</span>
-              on a single league, then scale to your full portfolio once your
-              teams are comfortable with the workflow.
-            </p>
+
+          <div class="contact-card">
+            <div class="section-title" style="font-size: 13px; margin-bottom: 4px;">
+              Contact & pilots
+            </div>
+            <div class="section-sub" style="font-size: 11px; margin-bottom: 6px;">
+              One inbox, three entry points. Keep pilots, API access and investor talks in a
+              single thread.
+            </div>
+
+            <div class="contact-grid">
+              <div class="contact-row">
+                <span class="badge-soft">Support</span>
+                <div>
+                  <div class="contact-email">support@betsense.casino</div>
+                  <div class="contact-note">
+                    Live issues, technical questions, API troubleshooting.
+                  </div>
+                </div>
+              </div>
+              <div class="contact-row">
+                <span class="badge-soft">General</span>
+                <div>
+                  <div class="contact-email">info@betsense.casino</div>
+                  <div class="contact-note">
+                    Product questions, partnership and commercial discussions.
+                  </div>
+                </div>
+              </div>
+              <div class="contact-row">
+                <span class="badge-soft">Admin</span>
+                <div>
+                  <div class="contact-email">admin@betsense.casino</div>
+                  <div class="contact-note">
+                    Contracts, billing, NDAs and legal.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-note" style="margin-top: 8px;">
+              For early-stage pilots, we typically recommend:
+              <ul style="margin-left: 14px; margin-top: 4px;">
+                <li>1–2 key leagues with 1–3 trading teams.</li>
+                <li>Daily snapshot reports for management or investors.</li>
+                <li>Weekly review call on edge, risk and commercial impact.</li>
+              </ul>
+            </div>
+
+            <div class="footnote">
+              Subject lines that help us route quickly: “Pilot request”, “API access” or
+              “Investor deck”.
+            </div>
+            <div class="footnote" style="margin-top: 6px;">
+              BetSense AI Suite — demo interface. Copy, flows and visuals for illustration only.
+            </div>
           </div>
         </div>
-
-        <p class="footnote">
-          This environment runs entirely client-side with demo data. A production deployment would sit
-          alongside your existing feed architecture and logging standards.
-        </p>
       </div>
-    </section>
+    </div>
   </div>
-</div>
 
-<script>
-  // -----------------------------
-  // Demo "live" data for timeline
-  // -----------------------------
-  const baseTimeline = [
-    { minute: 5,  homeProb: 0.52, emotion: 8 },
-    { minute: 15, homeProb: 0.55, emotion: 12 },
-    { minute: 25, homeProb: 0.61, emotion: 18 },
-    { minute: 35, homeProb: 0.66, emotion: 24 },
-    { minute: 45, homeProb: 0.63, emotion: 19 },
-    { minute: 55, homeProb: 0.58, emotion: 10 },
-    { minute: 65, homeProb: 0.62, emotion: 16 },
-    { minute: 75, homeProb: 0.69, emotion: 25 },
-    { minute: 85, homeProb: 0.73, emotion: 29 },
-    { minute: 90, homeProb: 0.75, emotion: 31 }
-  ];
+  <script>
+    // Simple front-end state for tabs and report depth
+    const storyTabs = document.querySelectorAll("#storyTabs .tab-btn");
+    const scenarioText = document.getElementById("scenarioText");
+    const timelineBadge = document.getElementById("timelineBadge");
 
-  let currentMinute = 68;
-
-  // UTIL: find closest point by minute
-  function getPointForMinute(minute) {
-    let best = baseTimeline[0];
-    let bestDiff = Math.abs(minute - best.minute);
-    for (const p of baseTimeline) {
-      const d = Math.abs(minute - p.minute);
-      if (d < bestDiff) {
-        best = p;
-        bestDiff = d;
-      }
-    }
-    return best;
-  }
-
-  // -----------------------------
-  // Chart initialisation
-  // -----------------------------
-  const canvas = document.getElementById('probChart');
-  const ctx = canvas.getContext('2d');
-
-  const chartConfig = {
-    type: 'line',
-    data: {
-      labels: baseTimeline.map(p => p.minute),
-      datasets: [
-        {
-          label: 'Home win probability',
-          data: baseTimeline.map(p => Math.round(p.homeProb * 100)),
-          tension: 0.35,
-          borderWidth: 2,
-          pointRadius: 0,
-          borderColor: '#4ade80',
-          backgroundColor: 'rgba(74,222,128,0.1)',
-          fill: true
-        },
-        {
-          label: 'Emotion index (scaled)',
-          data: baseTimeline.map(p => p.emotion * 2), // just scaled to sit on % axis
-          tension: 0.35,
-          borderWidth: 1.5,
-          pointRadius: 0,
-          borderColor: '#f97373',
-          backgroundColor: 'rgba(249,115,129,0.08)',
-          fill: false
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false
+    const stories = {
+      balanced: {
+        scenario:
+          "Derby match, late goal for home side, big odds move from 2.40 to 1.70.",
+        badge:
+          "Mode: Balanced opener — early swings are modest, market still respects all outcomes."
       },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#9ca3af',
-            font: { size: 10 }
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function(ctx) {
-              if (ctx.datasetIndex === 0) {
-                return ` Home win: ${ctx.parsed.y}%`;
-              }
-              return ` Emotion (scaled): ${ctx.parsed.y}`;
-            }
-          }
-        }
+      home: {
+        scenario:
+          "Home side dominates shots and xG, away team pinned back for 20+ minutes before the goal arrives.",
+        badge:
+          "Mode: Home pressure — probability line drifts steadily then jumps on the goal event."
       },
-      scales: {
-        x: {
-          ticks: { color: '#6b7280', font: { size: 10 }},
-          grid: { color: 'rgba(31,41,55,0.7)' }
-        },
-        y: {
-          ticks: { color: '#6b7280', font: { size: 10 }},
-          grid: { color: 'rgba(31,41,55,0.7)' },
-          suggestedMin: 0,
-          suggestedMax: 100
-        }
+      away: {
+        scenario:
+          "Away side fights back from 0–2, late goal re-opens all three outcomes as market re-prices momentum.",
+        badge:
+          "Mode: Away comeback — volatility is higher, draws and away win stay alive longer."
       }
-    }
-  };
+    };
 
-  const probChart = new Chart(ctx, chartConfig);
-
-  function updateDashboardForMinute(minute) {
-    currentMinute = minute;
-    const minuteLabel = document.getElementById('minuteLabel');
-    const minuteTag   = document.getElementById('minuteTag');
-    const metricHome  = document.getElementById('metricHomeProb');
-    const metricNote  = document.getElementById('metricHomeProbNote');
-    const metricEm    = document.getElementById('metricEmotion');
-
-    const pt = getPointForMinute(minute);
-    const pct = Math.round(pt.homeProb * 100);
-
-    minuteLabel.textContent = minute + "′";
-    minuteTag.textContent   = minute + "′ live";
-    metricHome.textContent  = pct + "%";
-    metricEm.textContent    = pt.emotion >= 0 ? `+${pt.emotion}` : `${pt.emotion}`;
-
-    if (minute < 25) {
-      metricNote.textContent = "Home slowly taking control after a balanced opening.";
-    } else if (minute < 55) {
-      metricNote.textContent = "Momentum swing around the interval, away side not out of it.";
-    } else if (minute < 80) {
-      metricNote.textContent = "Home pressure building, crowd ready to explode on a big chance.";
-    } else {
-      metricNote.textContent = "Nervy finish: probability high, but emotion index warns of volatility.";
-    }
-  }
-
-  const minuteSlider = document.getElementById('minuteSlider');
-  minuteSlider.addEventListener('input', (e) => {
-    updateDashboardForMinute(parseInt(e.target.value, 10));
-  });
-
-  // initial state
-  updateDashboardForMinute(currentMinute);
-
-  // -----------------------------
-  // DEMO SCENARIO + RESET
-  // -----------------------------
-  const btnDemoScenario = document.getElementById('btnDemoScenario');
-  const btnReset        = document.getElementById('btnReset');
-
-  btnDemoScenario.addEventListener('click', () => {
-    // update some match meta
-    document.getElementById('matchLeague').textContent = "Champions League";
-    document.getElementById('matchRound').textContent  = "Quarter-final, 2nd leg";
-    document.getElementById('matchStatus').textContent = "High-volatility phase";
-
-    document.getElementById('homeTeam').textContent    = "Real Madrid";
-    document.getElementById('awayTeam').textContent    = "Manchester City";
-    document.getElementById('scoreLine').textContent   = "3 – 2";
-
-    // push timeline to a new end-state
-    minuteSlider.value = 82;
-    updateDashboardForMinute(82);
-
-    // adjust chart slightly (just visual)
-    probChart.data.datasets[0].data = [48, 52, 57, 63, 59, 54, 60, 68, 74, 78];
-    probChart.data.datasets[1].data = [12, 18, 22, 26, 24, 16, 21, 30, 35, 38];
-    probChart.update();
-
-    document.getElementById('emotionOutput').textContent =
-      "Quick pulse: Home end is in full belief mode – every high press is cheered like a goal. " +
-      "Away bench looks anxious after the last momentum swing. Overall emotion index leans strongly " +
-      "towards a late decisive home moment, even though the underlying xG suggests the tie is still fragile.";
-  });
-
-  btnReset.addEventListener('click', () => {
-    // reset to default state
-    document.getElementById('matchLeague').textContent = "Premier League";
-    document.getElementById('matchRound').textContent  = "Matchweek 32";
-    document.getElementById('matchStatus').textContent = "Second half";
-
-    document.getElementById('homeTeam').textContent    = "Chelsea";
-    document.getElementById('awayTeam').textContent    = "Liverpool";
-    document.getElementById('scoreLine').textContent   = "2 – 1";
-
-    minuteSlider.value = 68;
-    probChart.data.datasets[0].data = baseTimeline.map(p => Math.round(p.homeProb * 100));
-    probChart.data.datasets[1].data = baseTimeline.map(p => p.emotion * 2);
-    probChart.update();
-
-    updateDashboardForMinute(68);
-
-    document.getElementById('emotionOutput').textContent =
-      "Emotion Engine is idle. Paste some text and hit “Run Emotion Engine” to see how we compress " +
-      "messy fan noise into a clean, trade-ready summary.";
-    document.getElementById('emotionInput').value = "";
-    document.getElementById('edgeList').innerHTML = `
-      <li>Market is roughly in line with live xG and tempo.</li>
-      <li>Emotion index is elevated but not extreme: no forced hedge yet.</li>
-      <li>Desk can keep risk open and monitor next 5–10 match minutes.</li>
-    `;
-    document.getElementById('reportOutput').textContent =
-      "Pick a report flavour and hit “Generate sample report” to see the type of narrative we can attach to each match.";
-
-    // reset API block
-    apiBlock.textContent = "";
-  });
-
-  // -----------------------------
-  // EMOTION ENGINE (Quick / Deep)
-  // -----------------------------
-  const tabQuick       = document.getElementById('tabQuick');
-  const tabDeep        = document.getElementById('tabDeep');
-  const emotionInput   = document.getElementById('emotionInput');
-  const emotionOutput  = document.getElementById('emotionOutput');
-  const btnRunEmotion  = document.getElementById('btnRunEmotion');
-  const btnExampleText = document.getElementById('btnEmotionExample');
-
-  let emotionMode = "quick";
-
-  tabQuick.addEventListener('click', () => {
-    emotionMode = "quick";
-    tabQuick.classList.add('active');
-    tabDeep.classList.remove('active');
-  });
-
-  tabDeep.addEventListener('click', () => {
-    emotionMode = "deep";
-    tabDeep.classList.add('active');
-    tabQuick.classList.remove('active');
-  });
-
-  btnExampleText.addEventListener('click', () => {
-    emotionInput.value =
-      "Home fans are starting to whistle every slow build-up, but still rise in volume on each high press. " +
-      "Away end explodes after every turnover and is taunting the home keeper. Local journalists are " +
-      "posting that the next ten minutes will 'define the manager’s season'.";
-  });
-
-  btnRunEmotion.addEventListener('click', () => {
-    const text = emotionInput.value.trim();
-    if (!text) {
-      emotionOutput.textContent = "Paste some live text first – commentary, tweets or internal notes.";
-      return;
-    }
-
-    // a very simple “sentiment” feel from keywords just for the demo
-    const lowered = text.toLowerCase();
-    let homePos = 0, homeNeg = 0, awayPos = 0, awayNeg = 0;
-
-    const homePosWords = ["cheer","believe","rise","roar","bounce","sing","push","dominating","control"];
-    const homeNegWords = ["whistle","boo","angry","furious","toxic","nervous","tense","quiet"];
-    const awayPosWords = ["bounce","celebrate","explodes","roaring","believe","comfortable"];
-    const awayNegWords = ["silent","quiet","worried","anxious"];
-
-    function countWords(words, target) {
-      let c = 0;
-      for (const w of words) {
-        if (target.includes(w)) c++;
-      }
-      return c;
-    }
-
-    homePos = countWords(homePosWords, lowered);
-    homeNeg = countWords(homeNegWords, lowered);
-    awayPos = countWords(awayPosWords, lowered);
-    awayNeg = countWords(awayNegWords, lowered);
-
-    const homeTilt = homePos - homeNeg;
-    const awayTilt = awayPos - awayNeg;
-    const net = homeTilt - awayTilt;
-
-    if (emotionMode === "quick") {
-      emotionOutput.textContent =
-        `Quick pulse → Home emotion skew: ${homeTilt >= 0 ? "+"+homeTilt : homeTilt}, ` +
-        `Away emotion skew: ${awayTilt >= 0 ? "+"+awayTilt : awayTilt}. ` +
-        (net > 0
-          ? "Crowd energy leans home-side – the next big chance is likely to be cheered, not booed."
-          : net < 0
-          ? "Crowd and online noise currently tilt towards the away side – caution if you're heavy on the home book."
-          : "Emotion is broadly balanced right now – no clear skew from fan noise alone.");
-    } else {
-      let narrative = "Deep dive → ";
-
-      if (homeTilt > 0) {
-        narrative += "Home crowd is net-positive, still finding reasons to believe even when possession slows. ";
-      } else if (homeTilt < 0) {
-        narrative += "Home crowd is drifting negative: whistles and frustration are creeping in between waves of support. ";
-      } else {
-        narrative += "Home end is emotionally mixed – pockets of belief sit next to clear frustration. ";
-      }
-
-      if (awayTilt > 0) {
-        narrative += "Away section is confident and noisy, amplifying every break and turnover. ";
-      } else if (awayTilt < 0) {
-        narrative += "Away block looks nervous: there is noise, but it spikes mainly around big escapes rather than control. ";
-      } else {
-        narrative += "Away support is relatively neutral in tone, reacting more to scoreline than to deeper control patterns. ";
-      }
-
-      narrative += "For the desk, the key point is how these emotional swings overlay your in-play model. " +
-        "A strongly tilted Emotion Index is often the first warning sign before a sudden price move or a liquidity shock.";
-
-      emotionOutput.textContent = narrative;
-    }
-  });
-
-  // -----------------------------
-  // EDGE ENGINE toggles
-  // -----------------------------
-  const edgeButtons = document.querySelectorAll('.toggle-chip');
-  const edgeList    = document.getElementById('edgeList');
-
-  edgeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      edgeButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const mode = btn.getAttribute('data-edge');
-
-      if (mode === 'baseline') {
-        edgeList.innerHTML = `
-          <li>Market is roughly in line with live xG and tempo.</li>
-          <li>Emotion index is elevated but not extreme: no forced hedge yet.</li>
-          <li>Desk can keep risk open and monitor next 5–10 match minutes.</li>
-        `;
-      } else if (mode === 'overreaction') {
-        edgeList.innerHTML = `
-          <li>Fan noise suggests a classic over-reaction: social feeds are behaving as if the match is already decided.</li>
-          <li>Underlying model still flags material risk for the leading side.</li>
-          <li>Consider shading prices against the emotional tide or reducing exposure until the game state stabilises.</li>
-        `;
-      } else {
-        edgeList.innerHTML = `
-          <li>Emotion is quietly diverging from the live odds – crowd belief is stronger than your current home price implies.</li>
-          <li>Timeline Engine shows increasing pressure without an equivalent market adjustment.</li>
-          <li>This is a good candidate for small, repeatable value extraction rather than a single large position.</li>
-        `;
-      }
+    storyTabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        storyTabs.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const key = btn.dataset.story;
+        scenarioText.textContent = stories[key].scenario;
+        timelineBadge.textContent = stories[key].badge;
+      });
     });
-  });
 
-  // -----------------------------
-  // API DEMO
-  // -----------------------------
-  const apiBlock   = document.getElementById('apiBlock');
-  const btnShowApi = document.getElementById('btnShowApi');
-  const btnApplyApi = document.getElementById('btnApplyApi');
+    const reportBtns = document.querySelectorAll("#reportMode button");
+    const reportBox = document.getElementById("reportBox");
 
-  const demoPayload = {
-    match_id: "sample-001",
-    league: "Premier League",
-    round: "Matchweek 32",
-    home_team: "Chelsea",
-    away_team: "Liverpool",
-    minute: 72,
-    score: { home: 2, away: 1 },
-    live_probabilities: {
-      home_win: 0.68,
-      draw: 0.19,
-      away_win: 0.13
-    },
-    emotion_index: {
-      home: 24,
-      away: -6,
-      global_sentiment: 0.18
-    },
-    edges: {
-      suggested_action: "Hold slight bias towards home",
-      confidence: 0.72
-    }
-  };
+    reportBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        reportBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const mode = btn.dataset.mode;
+        if (mode === "simple") {
+          reportBox.innerHTML = `
+            <div class="report-row">
+              <div class="report-label">Key scenario</div>
+              <div class="report-text">
+                Derby match, late goal for home side, odds move from 2.40 to 1.70.
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-label">Headline</div>
+              <div class="report-text">
+                Home side turns pressure into decisive advantage — odds and market mood move in sync.
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-label">Trading summary</div>
+              <div class="report-text">
+                BetSense Engine highlights a clear break in the probability trend after the key
+                event. Price move is supported by volume, not just retail noise. Risk position is
+                comfortable but requires monitoring if a second goal arrives.
+              </div>
+            </div>
+            <div class="chip-row">
+              <span class="chip">
+                Use this view for fast communication with management or non-technical stakeholders.
+              </span>
+            </div>
+          `;
+        } else {
+          reportBox.innerHTML = `
+            <div class="report-row">
+              <div class="report-label">Scenario detail</div>
+              <div class="report-text">
+                High-liquidity Premier League derby with tight pre-match pricing. Home side carries
+                most of the xG and territory but delays breakthrough until 70'+. Order-book data
+                shows institutional flows leaning home prior to the goal.
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-label">Market structure</div>
+              <div class="report-text">
+                Pre-match range 2.35–2.50, with limited depth on the lay side. Live book tightens
+                steadily as home pressure builds, then gaps down to ~1.70 on the goal event. Retail
+                activity is pro-cyclical but not dominant.
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-label">Engine read</div>
+              <div class="report-text">
+                BetSense Engine flags a 3.1% edge vs exchange-mid immediately post-goal. Emotion
+                Index confirms crowd and social sentiment have flipped from cautious to confident,
+                while LiveApe volatility indicators remain within normal band.
+              </div>
+            </div>
+            <div class="report-row">
+              <div class="report-label">Risk notes</div>
+              <div class="report-text">
+                Position is comfortable if game state remains 1–0. A quick equaliser would unwind
+                most of the edge and require active hedging. Recommended operator action: partial
+                green-up on next scheduled break in play.
+              </div>
+            </div>
+            <div class="chip-row">
+              <span class="chip">Use this view for board-level or investor-level reporting.</span>
+              <span class="chip">Exports cleanly into PDF / deck workflows.</span>
+            </div>
+          `;
+        }
+      });
+    });
 
-  btnShowApi.addEventListener('click', () => {
-    apiBlock.textContent =
-      "POST /v1/match/snapshot\n" +
-      "Content-Type: application/json\n\n" +
-      JSON.stringify(demoPayload, null, 2);
-  });
+    // Scroll helpers for hero buttons
+    const exploreBtn = document.getElementById("exploreSuiteBtn");
+    const apiBtn = document.getElementById("connectApiBtn");
 
-  btnApplyApi.addEventListener('click', () => {
-    // apply to dashboard
-    document.getElementById('matchLeague').textContent = demoPayload.league;
-    document.getElementById('matchRound').textContent  = demoPayload.round;
-    document.getElementById('homeTeam').textContent    = demoPayload.home_team;
-    document.getElementById('awayTeam').textContent    = demoPayload.away_team;
-    document.getElementById('scoreLine').textContent   =
-      `${demoPayload.score.home} – ${demoPayload.score.away}`;
+    exploreBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
-    minuteSlider.value = demoPayload.minute;
-    updateDashboardForMinute(demoPayload.minute);
-
-    const pct = Math.round(demoPayload.live_probabilities.home_win * 100);
-    document.getElementById('metricHomeProb').textContent = pct + "%";
-    document.getElementById('metricEmotion').textContent  =
-      demoPayload.emotion_index.home >= 0
-        ? `+${demoPayload.emotion_index.home}`
-        : `${demoPayload.emotion_index.home}`;
-    document.getElementById('metricHomeProbNote').textContent =
-      "API overlay: home win price shaded slightly vs crowd belief.";
-
-    edgeList.innerHTML = `
-      <li>API suggests a modest home edge at current prices.</li>
-      <li>Emotion Index confirms the crowd is leaning into that story.</li>
-      <li>Aligns with a “hold or slightly add” stance, within your internal limits.</li>
-    `;
-  });
-
-  // -----------------------------
-  // REPORT ENGINE
-  // -----------------------------
-  const reportType   = document.getElementById('reportType');
-  const reportOutput = document.getElementById('reportOutput');
-  const btnReport    = document.getElementById('btnGenerateReport');
-
-  btnReport.addEventListener('click', () => {
-    const type = reportType.value;
-    if (type === 'simple') {
-      reportOutput.textContent =
-        "Simple 1-page readout → In a volatile but controlled second half, the home side carried a " +
-        "60–70% implied win probability for most of the final 30 minutes. The BetSense Emotion Index " +
-        "never flipped into full panic, even after the away goal, suggesting the crowd still believed " +
-        "in a late winner. For trading, that meant we could hold our slight home bias without being " +
-        "forced into an emotional hedge by social noise.";
-    } else {
-      reportOutput.textContent =
-        "Board / investor-level summary → BetSense AI demonstrates how layering quantified emotion on top of " +
-        "existing models can smooth decision-making in high-volatility matches. In this fixture, our engines " +
-        "identified a persistent, modest home-side edge that the raw odds feed alone treated as noise. By " +
-        "encoding live fan behaviour, in-stadium momentum and social sentiment into a single metric, we " +
-        "reduced over-reactions to transient events and focused the desk on high-quality, repeatable edges " +
-        "rather than headline-driven swings. Over a full season, this style of overlay can improve risk " +
-        "consistency and narrative reporting without forcing any change to your core modelling stack.";
-    }
-  });
-</script>
+    apiBtn.addEventListener("click", () => {
+      const apiSection = document.querySelector(".api-card");
+      apiSection?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  </script>
 </body>
 </html>
