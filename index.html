@@ -365,6 +365,7 @@
       height: 7px;
       border-radius: 999px;
     }
+
     .badge-dot-green { background: #22c55e; }
     .badge-dot-purple { background: #a855f7; }
     .badge-dot-blue { background: #38bdf8; }
@@ -421,9 +422,17 @@
       font-weight: 600;
     }
 
-    .metric-value-green { color: #4ade80; }
-    .metric-value-red { color: #fb7185; }
-    .metric-value-amber { color: #fbbf24; }
+    .metric-value-green {
+      color: #4ade80;
+    }
+
+    .metric-value-red {
+      color: #fb7185;
+    }
+
+    .metric-value-amber {
+      color: #fbbf24;
+    }
 
     .muted {
       color: var(--text-soft);
@@ -610,9 +619,7 @@
     <!-- HERO -->
     <section class="hero">
       <div>
-        <div class="hero-main-title">
-          One suite. <span style="color:#38bdf8">Four unique engines</span> plus an Ultra Edge layer.
-        </div>
+        <div class="hero-main-title">One suite. <span style="color:#38bdf8">Four unique engines</span> plus an Ultra Edge layer.</div>
         <p class="hero-main-sub">
           BetSense AI Suite connects BetSense Engine, Emotion Engine, Ultra Edge Layer and AI Match Reports into an operator-ready stack — giving traders, partners and investors a single view of how your models already behave in live markets.
         </p>
@@ -706,8 +713,8 @@
             </div>
             <div class="metric-box">
               <div class="metric-label">Source</div>
-              <div class="metric-value">demo</div>
-              <div class="metric-caption">Demo payload (fallback)</div>
+              <div class="metric-value" id="metricSource">demo</div>
+              <div class="metric-caption" id="metricSourceCaption">Demo payload (fallback)</div>
             </div>
             <div class="metric-box">
               <div class="metric-label">Snapshot</div>
@@ -877,7 +884,7 @@
             </div>
           </div>
 
-          <!-- Market Psychology (static copy for now) -->
+          <!-- Market Psychology -->
           <div style="margin-top:10px">
             <div class="scenario-label">Market Psychology Engine</div>
             <p class="card-subtitle" style="margin-bottom:4px">
@@ -885,12 +892,12 @@
             </p>
 
             <p class="headline">Home pressure turns into FOMO chase</p>
-            <ul class="bullet-list">
+            <div class="bullet-list">
               <li><strong>Crowd tape:</strong> Retail buyers pile into home side after a flurry of shots.</li>
               <li><strong>Professional tape:</strong> Pro money already long, now trimming into the surge.</li>
               <li><strong>Regime:</strong> Euphoria with controlled profit-taking.</li>
               <li><strong>Flow split:</strong> Pro 58% · Retail 42% of volume.</li>
-            </ul>
+            </div>
 
             <div class="chip-row">
               <span class="chip">FOMO bid</span>
@@ -908,11 +915,11 @@
           </p>
 
           <p class="headline">Liquidity clusters around home win</p>
-          <ul class="bullet-list">
+          <div class="bullet-list">
             <li><strong>Heat:</strong> Home: High · Draw: Medium · Away: Thin.</li>
             <li><strong>Stress:</strong> Risk sits in home clean-sheet and late equaliser paths.</li>
             <li><strong>Depth pockets:</strong> Tight spreads 1.60–1.75, air pockets above 1.90.</li>
-          </ul>
+          </div>
           <div class="chip-row">
             <span class="chip">Order-book tone</span>
             <span class="chip">Stress pockets</span>
@@ -945,11 +952,11 @@
             Light-touch simulation of how the virtual order-book can evolve after key moments — base case, fade case and blow-off case.
           </p>
           <p class="headline">Base case – controlled repricing</p>
-          <ul class="bullet-list">
+          <div class="bullet-list">
             <li>First 30s: spreads widen, quotes chase new fair level.</li>
             <li>30–90s: depth rebuilds around tighter band, volatility cools.</li>
             <li>Beyond 90s: market trades within new, narrower corridor.</li>
-          </ul>
+          </div>
           <p class="scenario-body">
             <strong>Desk cue:</strong> Scale fills as depth returns; avoid first swing.
           </p>
@@ -966,12 +973,12 @@
             Tracks how market emotion drifts over the full match — from balanced openers to panic, capitulation or quiet control.
           </p>
           <p class="headline">Slow burn towards home control</p>
-          <ul class="bullet-list">
+          <div class="bullet-list">
             <li>0'–25': Balanced opener, no dominant edge.</li>
             <li>25'–55': Home pressure builds quietly, xG tilts.</li>
             <li>55'–75': Emotion Index shifts from cautious to confident.</li>
             <li>75'–90': Market treats home as sticky favourite.</li>
-          </ul>
+          </div>
           <p class="scenario-body">
             <strong>Regime:</strong> Gradual accumulation, low headline drama.
           </p>
@@ -1015,11 +1022,11 @@
           </p>
 
           <p class="headline" style="margin-top:8px">Trading summary</p>
-          <ul class="bullet-list">
-            <li>BetSense Engine confirms the break in trend.</li>
+          <div class="bullet-list">
+            <li>BetSense Engine highlights a clear break in the probability trend after the key event.</li>
             <li>Emotion Engine validates that sentiment supports the move.</li>
             <li>Ultra Edge Layer shows no structural stress in liquidity.</li>
-          </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -1084,91 +1091,101 @@ X-API-Key: YOUR_KEY_HERE
         tags: ["Regime break", "Sticky confidence", "Crowd in sync"]
       },
       deep: {
-        title: "DEEP DIVE: FROM NERVOUS ENERGY TO CONTROLLED MOMENTUM",
+        title: "DEEP READ: SENTIMENT, FLOW & REGIME",
         body:
-          "Across the full 90', Emotion Index tracks a steady rotation from anxiety to controlled confidence on the home side. Each wave of pressure nudges sentiment higher until the late goal crystallises the story and forces books to reprice.",
+          "Across pre-match, first half and the post-goal phase, the Emotion Index tracks a steady migration from cautious optimism to confident control on the home side. Social, venue and pricing signals line up instead of fighting each other, giving desks a clean read on when risk actually improved.",
         bullets: [
-          "Early spells of pressure lift home sentiment without fully breaking the market.",
-          "Social and in-stadium signals confirm that pressure is real, not just price noise.",
-          "After the goal, emotion stabilises higher rather than spiking and fading — classic control regime."
+          "Pre-match: mild home bias, but price and sentiment still respect all three outcomes.",
+          "First half: home pressure and xG tilt, yet frustration keeps Emotion Index below full conviction.",
+          "Post-goal: conviction band breaks higher, with very little evidence of an overreaction spike."
         ],
-        tags: ["Process over headline", "Sentiment validation", "Control regime"]
+        tags: ["Process over noise", "Conviction bands", "Desk-ready narrative"]
       }
     };
 
     function renderEmotionV1(mode) {
       const container = document.getElementById("emotion-v1-output");
-      const scenario = emotionV1Scenarios[mode];
-      if (!container || !scenario) return;
+      const data = emotionV1Scenarios[mode];
+      if (!container || !data) return;
+
+      const bulletsHtml = data.bullets
+        .map((b) => "<li>" + b + "</li>")
+        .join("");
+
+      const tagsHtml = data.tags
+        .map((t) => '<span class="chip">' + t + "</span>")
+        .join("");
 
       container.innerHTML = `
-        <div class="scenario-label">Quick read — ${mode === "quick" ? "trading lens" : "context lens"}</div>
-        <div class="scenario-pill">${scenario.title}</div>
-        <p class="scenario-body">${scenario.body}</p>
-        <ul class="bullet-list">
-          ${scenario.bullets.map(b => `<li>${b}</li>`).join("")}
-        </ul>
-        <div class="chip-row">
-          ${scenario.tags.map(t => `<span class="chip">${t}</span>`).join("")}
+        <div class="scenario-label">
+          ${mode === "quick" ? "Quick read — trading lens" : "Deep read — full-context lens"}
+        </div>
+        <p class="headline">${data.title}</p>
+        <p class="scenario-body">${data.body}</p>
+        <div class="bullet-list">
+          ${bulletsHtml}
+        </div>
+        <div class="chip-row" style="margin-top:8px">
+          ${tagsHtml}
         </div>
       `;
     }
 
-    // ===== Emotion Engine V2 (Execution-ready) =====
+    // ===== Emotion Engine V2 (Execution scenarios) =====
     const emotionV2Scenarios = [
       {
-        focus: "Derby match, late home goal, odds move from 2.40 to 1.70.",
-        headline: "Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.",
+        keyScenario: "Derby match, late home goal, odds move from 2.40 to 1.70.",
+        executionWindow: "90–240 seconds after goal",
+        executionView:
+          "Market impact is strongest while crowd and social sentiment are still repricing the new reality. Engine suggests scaling in rather than all-in fills.",
+        headline:
+          "Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.",
         tradingSummary: [
           "BetSense Engine highlights a clear break in the probability trend after the key event.",
           "Price move is supported by volume and sentiment, not just retail noise.",
           "Risk position is comfortable but requires monitoring if a second goal arrives."
         ],
-        executionWindow: "Trade window: 90–240 seconds after goal",
-        executionView:
-          "Market impact is strongest while crowd and social sentiment are still repricing the new reality. Engine suggests scaling in rather than all-in fills.",
         commsCues: [
           "Desk briefs management as 'controlled exposure with positive skew'.",
           "Marketing frames the story as 'home confidence finally pays off'."
         ],
-        tone: "Confident · Not euphoric",
-        tags: ["Board-ready narrative", "Desk summary", "Post-match pack"]
+        tags: ["Tone: Confident · Not euphoric", "Board-ready narrative", "Desk summary", "Post-match pack"]
       },
       {
-        focus: "Heavy favourite concedes early but regains control by half-time.",
-        headline: "Initial shock fades as process edge reasserts itself and emotion stabilises toward the pre-match script.",
-        tradingSummary: [
-          "Early away goal triggers short-lived panic in retail flows.",
-          "Professional money adds selectively at improved prices, keeping risk balanced.",
-          "By half-time, Emotion Index shows nerves cooling and control drifting back to the favourite."
-        ],
-        executionWindow: "Trade window: 5–25 minutes after concession",
+        keyScenario: "Cup tie, away equaliser in 88', odds swing from 1.60 to 2.30.",
+        executionWindow: "0–120 seconds after away goal",
         executionView:
-          "Best risk/reward sits in the window where panic is still visible but underlying process metrics (xG, territory) confirm the favourite is fine.",
-        commsCues: [
-          "Desk frames this as 'process over scoreboard noise'.",
-          "Investor pack highlights resilience rather than drama."
+          "Emotion Index shows home despair spike, but underlying xG still balanced. Suggest trimming rather than flipping the entire book.",
+        headline:
+          "Scoreboard shock is bigger than underlying process shift.",
+        tradingSummary: [
+          "Model flags that pre-goal dominance was overstated by crowd noise.",
+          "Sentiment overshoots, but liquidity on away side is still thin.",
+          "Risk desk is advised to reduce exposure without chasing worst prices."
         ],
-        tone: "Calm · Process-first",
-        tags: ["Shock then normalisation", "Value window", "Resilience story"]
+        commsCues: [
+          "Internal note: 'Shock, not regime change.'",
+          "External line: 'Equaliser keeps the tie alive, not turns it on its head.'"
+        ],
+        tags: ["Shock vs drift", "Avoid over-rotation", "Process-first message"]
       },
       {
-        focus: "Tight match, repeated near-misses, no goal until stoppage time.",
-        headline: "Emotion whipsaws but never breaks; late goal simply crystallises a story the market was already telling.",
-        tradingSummary: [
-          "Long stretches of balanced emotion keep books cautious on both sides.",
-          "Late goal resolves uncertainty but does not trigger extreme repricing.",
-          "Risk team focuses on limiting exposure to sudden extra-time chaos rather than the goal itself."
-        ],
-        executionWindow: "Trade window: 70–95 minutes",
+        keyScenario: "League game, early red card for away team, odds move from 2.10 to 1.55.",
+        executionWindow: "First 300 seconds after card",
         executionView:
-          "Execution lens focuses on clipping peaks and avoiding being trapped by last-minute overreaction.",
-        commsCues: [
-          "Desk briefs as 'managed uncertainty, no binary gamble'.",
-          "Comms team positions the game as 'disciplined risk, not casino drama'."
+          "Emotion Index jumps quickly but then plateaus as market digests the new baseline. Engine prefers staggered entry instead of immediate max-size fills.",
+        headline:
+          "Structural advantage appears, but market is quick to price most of it in.",
+        tradingSummary: [
+          "Live data confirms territorial shift rather than pure emotion swing.",
+          "Liquidity pockets form around the new home price band.",
+          "Desks keep some capacity for opportunistic adds if away resilience fades."
         ],
-        tone: "Measured · Low headline drama",
-        tags: ["Whipsaw control", "Late resolution", "Disciplined risk"]
+        commsCues: [
+          "Risk decks: 'Favourable structure, staged execution.'",
+          "Exec brief: 'Advantage real, but not a free roll.'"
+        ],
+        tags: ["Structural edge", "Execution window", "Card-state regime"]
       }
     ];
 
@@ -1176,145 +1193,200 @@ X-API-Key: YOUR_KEY_HERE
 
     function renderEmotionV2() {
       const container = document.getElementById("emotion-v2-output");
-      if (!container) return;
-      const scenario = emotionV2Scenarios[emotionV2Index];
+      const data = emotionV2Scenarios[emotionV2Index];
+      if (!container || !data) return;
+
+      const tradingHtml = data.tradingSummary
+        .map((t) => "<li>" + t + "</li>")
+        .join("");
+
+      const commsHtml = data.commsCues
+        .map((c) => "<li>" + c + "</li>")
+        .join("");
+
+      const tagsHtml = data.tags
+        .map((t) => '<span class="chip">' + t + "</span>")
+        .join("");
 
       container.innerHTML = `
         <div class="scenario-label">Key scenario</div>
-        <p class="scenario-body">${scenario.focus}</p>
+        <p class="scenario-body">${data.keyScenario}</p>
 
-        <div class="headline">Execution engine view</div>
-        <p class="scenario-body"><strong>${scenario.executionWindow}</strong><br>${scenario.executionView}</p>
+        <div class="headline" style="margin-top:10px">Execution engine view</div>
+        <p class="scenario-body"><strong>Trade window:</strong> ${data.executionWindow}</p>
+        <p class="scenario-body">${data.executionView}</p>
 
-        <div class="headline">Headline</div>
-        <p class="scenario-body">${scenario.headline}</p>
+        <div class="headline" style="margin-top:10px">Headline</div>
+        <p class="scenario-body">${data.headline}</p>
 
-        <div class="headline">Trading summary</div>
-        <ul class="bullet-list">
-          ${scenario.tradingSummary.map(p => `<li>${p}</li>`).join("")}
-        </ul>
+        <div class="headline" style="margin-top:10px">Trading summary</div>
+        <div class="bullet-list">
+          ${tradingHtml}
+        </div>
 
-        <div class="headline">Communication cues</div>
-        <ul class="bullet-list">
-          ${scenario.commsCues.map(p => `<li>${p}</li>`).join("")}
-        </ul>
+        <div class="headline" style="margin-top:10px">Communication cues</div>
+        <div class="bullet-list">
+          ${commsHtml}
+        </div>
 
-        <div class="chip-row">
-          <span class="chip">Tone: ${scenario.tone}</span>
-          ${scenario.tags.map(t => `<span class="chip">${t}</span>`).join("")}
+        <div class="chip-row" style="margin-top:8px">
+          ${tagsHtml}
         </div>
       `;
     }
 
-    // ===== Utility: random helpers for demo buttons =====
-    function randomInRange(min, max, decimals = 0) {
-      const val = Math.random() * (max - min) + min;
-      return Number(val.toFixed(decimals));
-    }
-
-    function refreshQuantum() {
-      const xg = randomInRange(1.0, 2.4, 2);
-      const shotsOn = randomInRange(3, 8);
-      const danger = randomInRange(18, 35);
-      const corners = randomInRange(3, 9);
-
-      document.getElementById("metricXgHome").textContent = xg;
-      document.getElementById("metricShotsOn").textContent = shotsOn;
-      document.getElementById("metricDanger").textContent = danger;
-      document.getElementById("metricCorners").textContent = corners;
-    }
-
+    // ===== Win probabilities & timeline refresh =====
     function refreshWinProbs() {
-      // simple normalised 100%
-      let home = randomInRange(45, 75);
-      let draw = randomInRange(10, 30);
-      let away = 100 - home - draw;
-      if (away < 5) {
-        away = 5;
-        home = 100 - draw - away;
-      }
+      const baseHome = 62;
+      const baseDraw = 27;
+      const baseAway = 11;
 
-      document.getElementById("wpHome").textContent = home.toFixed(0) + "%";
-      document.getElementById("wpDraw").textContent = draw.toFixed(0) + "%";
-      document.getElementById("wpAway").textContent = away.toFixed(0) + "%";
+      // small random wobble
+      let home = baseHome + (Math.random() * 6 - 3);
+      let draw = baseDraw + (Math.random() * 4 - 2);
+      let away = baseAway + (Math.random() * 4 - 2);
 
-      // update timeline roughly in sync with home prob
-      const homeTl = Math.min(90, Math.max(50, home));
-      const drawTl = Math.min(30, Math.max(5, draw));
-      const awayTl = Math.min(35, Math.max(5, away));
+      // normalise
+      const sum = home + draw + away;
+      home = Math.round((home / sum) * 100);
+      draw = Math.round((draw / sum) * 100);
+      away = 100 - home - draw;
 
-      document.getElementById("tlHomeBar").style.width = homeTl + "%";
-      document.getElementById("tlDrawBar").style.width = drawTl + "%";
-      document.getElementById("tlAwayBar").style.width = awayTl + "%";
+      const wpHome = document.getElementById("wpHome");
+      const wpDraw = document.getElementById("wpDraw");
+      const wpAway = document.getElementById("wpAway");
 
-      document.getElementById("tlHomeLabel").textContent = homeTl.toFixed(0) + "% at 72'";
-      document.getElementById("tlDrawLabel").textContent = drawTl.toFixed(0) + "%";
-      document.getElementById("tlAwayLabel").textContent = awayTl.toFixed(0) + "%";
+      if (wpHome) wpHome.textContent = home + "%";
+      if (wpDraw) wpDraw.textContent = draw + "%";
+      if (wpAway) wpAway.textContent = away + "%";
+
+      const tlHomeBar = document.getElementById("tlHomeBar");
+      const tlDrawBar = document.getElementById("tlDrawBar");
+      const tlAwayBar = document.getElementById("tlAwayBar");
+      const tlHomeLabel = document.getElementById("tlHomeLabel");
+      const tlDrawLabel = document.getElementById("tlDrawLabel");
+      const tlAwayLabel = document.getElementById("tlAwayLabel");
+
+      if (tlHomeBar) tlHomeBar.style.width = home + "%";
+      if (tlDrawBar) tlDrawBar.style.width = draw + "%";
+      if (tlAwayBar) tlAwayBar.style.width = away + "%";
+
+      if (tlHomeLabel) tlHomeLabel.textContent = home + "% at 72'";
+      if (tlDrawLabel) tlDrawLabel.textContent = draw + "%";
+      if (tlAwayLabel) tlAwayLabel.textContent = away + "%";
+
+      const heroProb = document.getElementById("heroProb");
+      if (heroProb) heroProb.textContent = home + "%";
     }
 
+    // ===== Quantum snapshot refresh =====
+    function refreshQuantum() {
+      const xgHomeEl = document.getElementById("metricXgHome");
+      const shotsOnEl = document.getElementById("metricShotsOn");
+      const dangerEl = document.getElementById("metricDanger");
+      const cornersEl = document.getElementById("metricCorners");
+
+      const xg = (1.1 + Math.random() * 1.2).toFixed(2);
+      const shots = 3 + Math.floor(Math.random() * 6);
+      const danger = 18 + Math.floor(Math.random() * 18);
+      const corners = 2 + Math.floor(Math.random() * 5);
+
+      if (xgHomeEl) xgHomeEl.textContent = xg;
+      if (shotsOnEl) shotsOnEl.textContent = String(shots);
+      if (dangerEl) dangerEl.textContent = String(danger);
+      if (cornersEl) cornersEl.textContent = String(corners);
+    }
+
+    // ===== Demo mode toggle (static vs mock live) =====
     function setDemoMode(mode) {
-      const staticBtn = document.getElementById("demoModeStatic");
-      const liveBtn = document.getElementById("demoModeLive");
+      const btnStatic = document.getElementById("demoModeStatic");
+      const btnLive = document.getElementById("demoModeLive");
+      const sourceEl = document.getElementById("metricSource");
+      const sourceCapEl = document.getElementById("metricSourceCaption");
+
+      if (!btnStatic || !btnLive) return;
 
       if (mode === "static") {
-        staticBtn.classList.add("active");
-        liveBtn.classList.remove("active");
-        document.getElementById("heroProb").textContent = "68%";
+        btnStatic.classList.add("active");
+        btnLive.classList.remove("active");
+        if (sourceEl) sourceEl.textContent = "demo";
+        if (sourceCapEl) sourceCapEl.textContent = "Demo payload (fallback)";
       } else {
-        liveBtn.classList.add("active");
-        staticBtn.classList.remove("active");
-        const liveProb = randomInRange(60, 80).toFixed(0) + "%";
-        document.getElementById("heroProb").textContent = liveProb;
+        btnLive.classList.add("active");
+        btnStatic.classList.remove("active");
+        if (sourceEl) sourceEl.textContent = "mock";
+        if (sourceCapEl) sourceCapEl.textContent = "Mock engine wired to sample feed";
       }
     }
 
-    // ===== Init bindings =====
-    document.addEventListener("DOMContentLoaded", () => {
-      // Emotion V1
+    // ===== Wire everything up =====
+    document.addEventListener("DOMContentLoaded", function () {
+      // Emotion V1 initial render
       renderEmotionV1("quick");
-      const quickBtn = document.getElementById("btnQuickEmotion");
-      const deepBtn = document.getElementById("btnDeepEmotion");
 
-      quickBtn.addEventListener("click", () => {
-        quickBtn.classList.add("active");
-        deepBtn.classList.remove("active");
-        renderEmotionV1("quick");
-      });
+      const btnQuick = document.getElementById("btnQuickEmotion");
+      const btnDeep = document.getElementById("btnDeepEmotion");
 
-      deepBtn.addEventListener("click", () => {
-        deepBtn.classList.add("active");
-        quickBtn.classList.remove("active");
-        renderEmotionV1("deep");
-      });
+      if (btnQuick) {
+        btnQuick.addEventListener("click", function () {
+          btnQuick.classList.add("active");
+          if (btnDeep) btnDeep.classList.remove("active");
+          renderEmotionV1("quick");
+        });
+      }
+
+      if (btnDeep) {
+        btnDeep.addEventListener("click", function () {
+          btnDeep.classList.add("active");
+          if (btnQuick) btnQuick.classList.remove("active");
+          renderEmotionV1("deep");
+        });
+      }
 
       // Emotion V2
       renderEmotionV2();
-      document
-        .getElementById("emotion-v2-next-btn")
-        .addEventListener("click", () => {
+      const btnV2Next = document.getElementById("emotion-v2-next-btn");
+      if (btnV2Next) {
+        btnV2Next.addEventListener("click", function () {
           emotionV2Index = (emotionV2Index + 1) % emotionV2Scenarios.length;
           renderEmotionV2();
         });
+      }
 
-      // Demo mode toggle
-      document
-        .getElementById("demoModeStatic")
-        .addEventListener("click", () => setDemoMode("static"));
-      document
-        .getElementById("demoModeLive")
-        .addEventListener("click", () => {
-          setDemoMode("live");
-          refreshQuantum();
+      // Win probabilities + timeline
+      refreshWinProbs();
+      const btnRefreshWin = document.getElementById("btnRefreshWin");
+      if (btnRefreshWin) {
+        btnRefreshWin.addEventListener("click", function () {
           refreshWinProbs();
         });
+      }
 
-      // Refresh buttons
-      document
-        .getElementById("btnRefreshQuantum")
-        .addEventListener("click", refreshQuantum);
-      document
-        .getElementById("btnRefreshWin")
-        .addEventListener("click", refreshWinProbs);
+      // Quantum
+      refreshQuantum();
+      const btnRefreshQuantum = document.getElementById("btnRefreshQuantum");
+      if (btnRefreshQuantum) {
+        btnRefreshQuantum.addEventListener("click", function () {
+          refreshQuantum();
+        });
+      }
+
+      // Demo mode
+      const btnStatic = document.getElementById("demoModeStatic");
+      const btnLive = document.getElementById("demoModeLive");
+
+      if (btnStatic) {
+        btnStatic.addEventListener("click", function () {
+          setDemoMode("static");
+        });
+      }
+      if (btnLive) {
+        btnLive.addEventListener("click", function () {
+          setDemoMode("live");
+        });
+      }
+
+      setDemoMode("static");
     });
   </script>
 </body>
