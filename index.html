@@ -1,378 +1,1205 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>BetSense Quantum Engine – Product Overview</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="BetSense Quantum Engine – AI layer that fuses live stats, bookmaker odds and match context into one clean, operator-ready signal."
-  />
+  <head>
+    <meta charset="UTF-8" />
+    <title>BetSense AI Suite – Quantum Engine for Live Sports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="BetSense AI Suite – four connected engines for sharper sports decisions: BetSense Engine, HBboard, Emotion Index and LiveApe, with live odds, stats and emotional momentum."
+    />
 
-  <!-- Tailwind via CDN (no build step needed) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            betsense: {
-              bg: "#020617",
-              card: "#020617",
-              accent: "#7C3AED",
-              accentSoft: "#C4B5FD",
-              lime: "#84CC16",
-              orange: "#F97316",
-              cyan: "#22D3EE",
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              betsense: {
+                bg: "#020617",
+                card: "#020617",
+                accent: "#7C3AED",
+                accentSoft: "#C4B5FD",
+                lime: "#84CC16",
+                orange: "#F97316",
+                cyan: "#22D3EE",
+              },
+            },
+            boxShadow: {
+              glass: "0 18px 60px rgba(15,23,42,0.9)",
             },
           },
-          boxShadow: {
-            glass: "0 18px 60px rgba(15,23,42,0.9)",
-          },
         },
-      },
-    };
-  </script>
-</head>
-<body class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 text-slate-50">
-  <div class="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
-    <!-- HEADER + NAV -->
-    <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
-      <div class="flex items-center gap-3">
-        <div
-          class="h-10 w-10 rounded-2xl bg-gradient-to-tr from-betsense-accent to-betsense-cyan flex items-center justify-center shadow-lg shadow-betsense-accent/40"
-        >
-          <span class="font-black text-xl">B</span>
-        </div>
-        <div>
-          <h1 class="text-xl md:text-2xl font-semibold tracking-tight">
-            BetSense <span class="text-betsense-accent">AI</span>
-          </h1>
-          <p class="text-xs md:text-sm text-slate-400">
-            Quantum Engine · Football Intelligence Stack
-          </p>
-        </div>
-      </div>
-
-      <!-- NAVIGATION -->
-      <nav class="flex flex-wrap gap-2 text-xs md:text-sm">
-        <a
-          href="/"
-          class="rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1.5 text-slate-200 hover:border-betsense-cyan/60 hover:text-betsense-cyan transition"
-        >
-          Home
-        </a>
-        <a
-          href="/engine.html"
-          class="rounded-full border border-betsense-accent/70 bg-betsense-accent/15 px-3 py-1.5 text-betsense-accentSoft font-medium"
-        >
-          Quantum Engine
-        </a>
-        <a
-          href="/emotion.html"
-          class="rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1.5 text-slate-200 hover:border-betsense-orange/60 hover:text-betsense-orange transition"
-        >
-          Emotion Index
-        </a>
-        <a
-          href="/demo.html"
-          class="rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1.5 text-slate-200 hover:border-betsense-lime/60 hover:text-betsense-lime transition"
-        >
-          Live demo &amp; API
-        </a>
-      </nav>
-    </header>
-
-    <!-- HERO SECTION -->
-    <section
-      class="mb-8 md:mb-10 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900/70 via-slate-900/60 to-slate-950/80 p-5 md:p-7 shadow-glass backdrop-blur"
-    >
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div class="space-y-4 max-w-xl">
-          <p class="inline-flex items-center gap-2 rounded-full border border-betsense-accent/40 bg-betsense-accent/10 px-3 py-1 text-[11px] md:text-xs text-betsense-accentSoft">
-            <span class="h-1.5 w-1.5 rounded-full bg-betsense-accent animate-ping"></span>
-            <span class="font-medium">Core engine · For operators, trading desks &amp; data teams</span>
-          </p>
-
-          <h2 class="text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight">
-            The <span class="text-betsense-accent">BetSense Quantum Engine</span>
-            turns raw football signal into clear trading decisions.
-          </h2>
-
-          <p class="text-sm md:text-base text-slate-300 leading-relaxed">
-            Under the UI, BetSense AI runs a single back-end engine that ingests live stats, odds and
-            market context, normalises them and outputs a clean, explainable signal: xG, implied
-            probabilities and pressure momentum – ready to plug into any sportsbook, model room or
-            research stack.
-          </p>
-
-          <div class="flex flex-wrap gap-3 text-xs md:text-sm">
-            <div class="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 border border-slate-700/70">
-              <span class="h-1.5 w-1.5 rounded-full bg-betsense-lime"></span>
-              Live match pipeline (stats &amp; events)
-            </div>
-            <div class="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 border border-slate-700/70">
-              <span class="h-1.5 w-1.5 rounded-full bg-betsense-cyan"></span>
-              Odds &amp; implied probability layer
-            </div>
-            <div class="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 border border-slate-700/70">
-              <span class="h-1.5 w-1.5 rounded-full bg-betsense-orange"></span>
-              Emotion / edge ready (on top)
-            </div>
+      };
+    </script>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 text-slate-50"
+  >
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10 space-y-10">
+      <!-- TOP BAR -->
+      <header
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="h-10 w-10 rounded-2xl bg-gradient-to-tr from-betsense-accent to-betsense-cyan flex items-center justify-center shadow-lg shadow-betsense-accent/40"
+          >
+            <span class="font-black text-xl">B</span>
           </div>
-        </div>
-
-        <!-- Engine health / status -->
-        <div class="flex-1 min-w-[260px] rounded-2xl border border-slate-800/80 bg-slate-950/90 p-4 space-y-3">
-          <div class="flex items-center justify-between text-xs text-slate-400">
-            <span>Engine status</span>
-            <span id="engine-health-time" class="text-[11px] text-slate-500">Waiting for check…</span>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <div id="engine-health-dot" class="h-2.5 w-2.5 rounded-full bg-slate-600"></div>
-            <div class="text-sm">
-              <p id="engine-health-text" class="font-medium text-slate-200">
-                Checking service…
-              </p>
-              <p class="text-[11px] text-slate-400">
-                Ping: <span id="engine-health-url" class="font-mono text-[11px] text-slate-300"></span>
-              </p>
-            </div>
-          </div>
-
-          <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-3 text-[11px] text-slate-400">
-            <p class="font-semibold text-slate-200 mb-1">What lives behind this endpoint?</p>
-            <p>
-              Node.js + Express service on Render, connected to API-Football plus internal models.
-              This is the same engine that feeds the live demo UI and can be pointed at any data
-              provider you already use.
+          <div>
+            <h1 class="text-xl md:text-2xl font-semibold tracking-tight">
+              BetSense <span class="text-betsense-accent">AI Suite</span>
+            </h1>
+            <p class="text-xs md:text-sm text-slate-400">
+              Quantum Engine · Live Match Intelligence Stack
             </p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- THREE COLUMN FEATURE GRID -->
-    <section class="mb-10 grid md:grid-cols-3 gap-5 md:gap-6">
-      <!-- Column 1: Live stats / xG -->
-      <article class="rounded-3xl border border-slate-800 bg-slate-950/70 p-4 md:p-5">
-        <h3 class="text-base md:text-lg font-semibold mb-1">1. Live stats &amp; xG layer</h3>
-        <p class="text-xs md:text-sm text-slate-400 mb-3">
-          Ingests live fixtures, shots, dangerous attacks and corners, then builds an approximate xG
-          and pressure model for the current match state.
-        </p>
-        <ul class="text-xs md:text-sm text-slate-300 space-y-1.5">
-          <li>· Live fixture stream (API-Football or your own feed)</li>
-          <li>· xG approximation tuned for trading desks</li>
-          <li>· Shots on target, dangerous attacks, corners</li>
-          <li>· Normalised per match, league and provider</li>
-        </ul>
-      </article>
+        <nav
+          class="flex flex-wrap items-center gap-2 text-[11px] md:text-xs text-slate-300"
+        >
+          <a href="#suite" class="px-3 py-1 rounded-full bg-slate-900/70"
+            >Suite</a
+          >
+          <a href="#engine-demo" class="px-3 py-1 rounded-full bg-slate-900/70"
+            >Live Engine</a
+          >
+          <a href="#api-hook" class="px-3 py-1 rounded-full bg-slate-900/70"
+            >API hook</a
+          >
+          <a href="#reports" class="px-3 py-1 rounded-full bg-slate-900/70"
+            >AI reports</a
+          >
+          <a href="#contact" class="px-3 py-1 rounded-full bg-slate-900/70"
+            >Contact & pilots</a
+          >
+        </nav>
+      </header>
 
-      <!-- Column 2: Odds & probabilities -->
-      <article class="rounded-3xl border border-slate-800 bg-slate-950/70 p-4 md:p-5">
-        <h3 class="text-base md:text-lg font-semibold mb-1">2. Odds &amp; implied probabilities</h3>
-        <p class="text-xs md:text-sm text-slate-400 mb-3">
-          Reads the market's opinion from your odds feed and converts it into clean, overround-free
-          probabilities that can be tracked over time.
-        </p>
-        <ul class="text-xs md:text-sm text-slate-300 space-y-1.5">
-          <li>· 1X2 odds snapshot (home / draw / away)</li>
-          <li>· Overround-adjusted win probabilities</li>
-          <li>· Easy to compare vs your internal model</li>
-          <li>· Works with any odds provider</li>
-        </ul>
-      </article>
+      <!-- HERO / SUITE OVERVIEW -->
+      <section
+        id="suite"
+        class="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900/70 via-slate-900/60 to-slate-950/80 p-5 md:p-7 shadow-glass backdrop-blur space-y-6"
+      >
+        <div class="flex flex-col lg:flex-row lg:items-start gap-8">
+          <div class="space-y-4 max-w-xl">
+            <p
+              class="inline-flex items-center gap-2 rounded-full border border-betsense-accent/40 bg-betsense-accent/10 px-3 py-1 text-xs text-betsense-accentSoft"
+            >
+              <span
+                class="h-1.5 w-1.5 rounded-full bg-betsense-accent animate-ping"
+              ></span>
+              <span class="font-medium"
+                >Realtime demo – static sample data</span
+              >
+            </p>
 
-      <!-- Column 3: Emotion / edge ready -->
-      <article class="rounded-3xl border border-slate-800 bg-slate-950/70 p-4 md:p-5">
-        <h3 class="text-base md:text-lg font-semibold mb-1">3. Edge &amp; emotion ready</h3>
-        <p class="text-xs md:text-sm text-slate-400 mb-3">
-          On top of stats and odds, BetSense can layer fan sentiment, pressure and momentum models
-          (BetSense Emotion Index &amp; BetSense LiveApe) without changing your feed.
-        </p>
-        <ul class="text-xs md:text-sm text-slate-300 space-y-1.5">
-          <li>· Emotion score per team (0–1)</li>
-          <li>· Momentum (home / away / neutral)</li>
-          <li>· Match-level “edge” explanation</li>
-          <li>· Ready to be plugged into UI or alerts</li>
-        </ul>
-      </article>
-    </section>
+            <h2
+              class="text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight"
+            >
+              One suite.
+              <span class="text-betsense-accent">Four unique engines</span> for
+              sharper sports decisions.
+            </h2>
 
-    <!-- HOW IT WORKS PIPELINE -->
-    <section class="mb-10">
-      <h2 class="text-lg md:text-xl font-semibold mb-2">How the engine fits into your stack</h2>
-      <p class="text-xs md:text-sm text-slate-400 mb-4 max-w-3xl">
-        BetSense Quantum Engine doesn't replace your sportsbook – it sits next to it. You point your
-        live data and odds into the engine, and it returns a single, clean view of how the match is
-        really behaving in this moment.
-      </p>
+            <p
+              class="text-sm md:text-base text-slate-300 leading-relaxed max-w-xl"
+            >
+              BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index
+              and LiveApe into one operator-ready stack – giving traders,
+              partners and investors a single view of how your models already
+              behave in live markets.
+            </p>
 
-      <div class="grid md:grid-cols-4 gap-3 text-xs md:text-sm">
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
-          <p class="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Step 1</p>
-          <p class="font-semibold text-slate-100 mb-1">Connect live data</p>
-          <p class="text-slate-400">
-            Fixtures, events and odds from API-Football, Sportradar, Genius Sports or your own feed.
-          </p>
-        </div>
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
-          <p class="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Step 2</p>
-          <p class="font-semibold text-slate-100 mb-1">Normalise &amp; model</p>
-          <p class="text-slate-400">
-            Standardised view of xG, volume, pressure and price for any league or provider.
-          </p>
-        </div>
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
-          <p class="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Step 3</p>
-          <p class="font-semibold text-slate-100 mb-1">Expose clean APIs</p>
-          <p class="text-slate-400">
-            Simple endpoints for live stats, odds and probabilities – plus emotion where enabled.
-          </p>
-        </div>
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-3">
-          <p class="text-[11px] uppercase tracking-wide text-slate-500 mb-1">Step 4</p>
-          <p class="font-semibold text-slate-100 mb-1">Plug into UI / tools</p>
-          <p class="text-slate-400">
-            Use our UI or your own dashboards, alerts and risk tools. The engine stays the same.
-          </p>
-        </div>
-      </div>
-    </section>
+            <div class="flex flex-wrap gap-3 text-xs md:text-sm">
+              <span
+                class="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 border border-slate-700/70"
+              >
+                <span
+                  class="h-1.5 w-1.5 rounded-full bg-betsense-lime"
+                ></span>
+                4 integrated modules
+              </span>
+              <span
+                class="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 border border-slate-700/70"
+              >
+                <span
+                  class="h-1.5 w-1.5 rounded-full bg-betsense-cyan"
+                ></span>
+                API-first architecture
+              </span>
+              <span
+                class="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 border border-slate-700/70"
+              >
+                <span
+                  class="h-1.5 w-1.5 rounded-full bg-betsense-orange"
+                ></span>
+                Live-match analytics
+              </span>
+              <span
+                class="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 border border-slate-700/70"
+              >
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                Investors & trading teams
+              </span>
+            </div>
 
-    <!-- API OVERVIEW -->
-    <section class="mb-10">
-      <h2 class="text-lg md:text-xl font-semibold mb-3">API overview (current demo endpoints)</h2>
-      <p class="text-xs md:text-sm text-slate-400 mb-4 max-w-3xl">
-        In this demo environment, the engine exposes three core read-only endpoints. In production,
-        these can be namespaced, authenticated and extended with client-specific logic.
-      </p>
-
-      <div class="grid md:grid-cols-3 gap-4 text-[11px] md:text-xs">
-        <!-- /api/stats -->
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-3 space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <span class="rounded-full bg-emerald-500/10 border border-emerald-500/40 px-2.5 py-1 text-[10px] font-medium text-emerald-300">
-              GET /api/stats
-            </span>
-            <span class="text-slate-500">Live match pulse</span>
+            <div class="flex flex-wrap gap-3 text-xs md:text-sm">
+              <button
+                class="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-gradient-to-r from-betsense-accent to-betsense-cyan text-slate-900 font-semibold shadow-lg shadow-betsense-accent/40"
+              >
+                Explore BetSense AI Suite
+                <span class="text-sm">⚡</span>
+              </button>
+              <button
+                class="inline-flex items-center gap-2 rounded-full px-4 py-2 border border-slate-700 bg-slate-950/80 text-slate-100"
+              >
+                Connect your live data (API)
+              </button>
+            </div>
           </div>
-          <p class="text-slate-400">
-            Returns xG (home), shots on target, dangerous attacks and corners for the current match
-            in focus.
+
+          <!-- Suite modules summary -->
+          <div
+            class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs md:text-sm"
+          >
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1"
+            >
+              <p class="text-[11px] uppercase tracking-wide text-slate-400">
+                Engine
+              </p>
+              <h3 class="font-semibold">BetSense Engine</h3>
+              <p class="text-slate-400 text-xs">
+                xG, live stats and implied probabilities in one unified feed.
+              </p>
+            </div>
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1"
+            >
+              <p class="text-[11px] uppercase tracking-wide text-slate-400">
+                Trading layer
+              </p>
+              <h3 class="font-semibold">HBboard</h3>
+              <p class="text-slate-400 text-xs">
+                Desk-ready tiles for traders, risk &amp; PnL teams.
+              </p>
+            </div>
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1"
+            >
+              <p class="text-[11px] uppercase tracking-wide text-slate-400">
+                Emotion
+              </p>
+              <h3 class="font-semibold">Emotion Index</h3>
+              <p class="text-slate-400 text-xs">
+                Compresses social, in-stadium and price moves into one confidence
+                score.
+              </p>
+            </div>
+            <div
+              class="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1"
+            >
+              <p class="text-[11px] uppercase tracking-wide text-slate-400">
+                Connectivity
+              </p>
+              <h3 class="font-semibold">LiveApe</h3>
+              <p class="text-slate-400 text-xs">
+                Live API hook – plug your existing feeds straight into the
+                stack.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SINGLE MATCH UNIFIED VIEW (static text) -->
+      <section
+        class="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 md:p-6 space-y-5"
+      >
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <p
+            class="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-300"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+            Single match – unified view (demo data)
           </p>
-          <pre class="mt-2 rounded-xl bg-slate-950 border border-slate-800 p-2 text-[10px] text-slate-300 overflow-auto">
+          <p class="text-[11px] md:text-xs text-slate-400">
+            Emotion Engine, BetSense Engine and LiveApe aligned on a late home
+            goal in a high-liquidity derby fixture.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-4 text-sm">
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-1"
+          >
+            <p class="text-[11px] uppercase text-slate-400">
+              Home win probability
+            </p>
+            <p class="text-2xl font-semibold text-betsense-cyan">
+              68% → 74%
+            </p>
+            <p class="text-[11px] text-slate-500">Pre: 2.40 · Post: 1.70</p>
+          </div>
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-1"
+          >
+            <p class="text-[11px] uppercase text-slate-400">
+              Emotion Index view
+            </p>
+            <p class="font-semibold">Cautious → Confident</p>
+            <p class="text-[11px] text-slate-500">
+              Home crowd surge, social feeds flip in sync with price move.
+            </p>
+          </div>
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-1"
+          >
+            <p class="text-[11px] uppercase text-slate-400">BetSense Edge</p>
+            <p class="text-xl font-semibold text-betsense-lime">
+              +3.1% vs market
+            </p>
+            <p class="text-[11px] text-slate-500">Edge window: 180s</p>
+          </div>
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-1"
+          >
+            <p class="text-[11px] uppercase text-slate-400">Usage</p>
+            <p class="font-semibold">Desk-ready views</p>
+            <p class="text-[11px] text-slate-500">
+              Traders · Risk &amp; PnL · Leadership
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LIVE ENGINE DEMO (xG + odds + probabilities) -->
+      <section id="engine-demo" class="space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <h2 class="text-lg md:text-xl font-semibold">
+            BetSense Quantum Engine – live demo
+          </h2>
+          <span
+            class="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-[11px] text-emerald-300"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Backend running on Render</span>
+          </span>
+        </div>
+
+        <!-- HERO MINI PANEL -->
+        <div
+          class="mb-4 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900/70 via-slate-900/60 to-slate-950/80 p-4 md:p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        >
+          <div class="space-y-2">
+            <p class="text-xs text-slate-400">Demo match snapshot</p>
+            <p class="text-sm text-slate-300">
+              One view for live xG, shots, dangerous attacks and corners from
+              the current demo feed.
+            </p>
+            <p
+              id="meta-updated"
+              class="text-[11px] text-slate-500"
+            >
+              Waiting for engine…
+            </p>
+          </div>
+
+          <div
+            class="grid grid-cols-2 gap-3 text-xs w-full md:w-auto md:min-w-[260px]"
+          >
+            <div
+              class="rounded-xl bg-slate-900/80 p-3 border border-slate-800"
+            >
+              <p
+                class="text-[11px] uppercase tracking-wide text-slate-400 mb-1"
+              >
+                xG (model)
+              </p>
+              <p class="text-lg font-semibold text-betsense-cyan">
+                <span id="hero-xg">–</span>
+              </p>
+            </div>
+            <div
+              class="rounded-xl bg-slate-900/80 p-3 border border-slate-800"
+            >
+              <p
+                class="text-[11px] uppercase tracking-wide text-slate-400 mb-1"
+              >
+                Shots on target
+              </p>
+              <p class="text-lg font-semibold text-betsense-lime">
+                <span id="hero-shots">–</span>
+              </p>
+            </div>
+            <div
+              class="rounded-xl bg-slate-900/80 p-3 border border-slate-800"
+            >
+              <p
+                class="text-[11px] uppercase tracking-wide text-slate-400 mb-1"
+              >
+                Dangerous attacks
+              </p>
+              <p class="text-lg font-semibold text-betsense-orange">
+                <span id="hero-attacks">–</span>
+              </p>
+            </div>
+            <div
+              class="rounded-xl bg-slate-900/80 p-3 border border-slate-800"
+            >
+              <p
+                class="text-[11px] uppercase tracking-wide text-slate-400 mb-1"
+              >
+                Corners
+              </p>
+              <p class="text-lg font-semibold text-slate-50">
+                <span id="hero-corners">–</span>
+              </p>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-slate-500">
+            Source:
+            <span
+              id="hero-source"
+              class="font-medium text-slate-300"
+              >–</span
+            >
+          </p>
+        </div>
+
+        <!-- MAIN GRID: 3 MODULE CARDS -->
+        <section class="grid md:grid-cols-3 gap-5 md:gap-6">
+          <!-- LIVE STATS CARD -->
+          <article
+            class="col-span-1 rounded-3xl border border-slate-800 bg-slate-950/70 p-4 md:p-5 flex flex-col justify-between"
+          >
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base md:text-lg font-semibold">
+                  Live match stats
+                </h3>
+                <button
+                  id="btn-refresh-stats"
+                  class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1 text-xs text-slate-200 hover:border-betsense-cyan/60 hover:text-betsense-cyan transition"
+                >
+                  ↻ Refresh
+                </button>
+              </div>
+              <p class="text-xs text-slate-400">
+                xG model, shots on target, dangerous possessions and corners
+                from the current demo match.
+              </p>
+
+              <dl class="mt-3 space-y-2 text-sm">
+                <div class="flex items-center justify-between">
+                  <dt class="text-slate-400">xG (home model)</dt>
+                  <dd
+                    id="stats-xg"
+                    class="font-medium text-betsense-cyan"
+                  >
+                    –
+                  </dd>
+                </div>
+                <div class="flex items-center justify-between">
+                  <dt class="text-slate-400">Shots on target</dt>
+                  <dd
+                    id="stats-shots"
+                    class="font-medium text-betsense-lime"
+                  >
+                    –
+                  </dd>
+                </div>
+                <div class="flex items-center justify-between">
+                  <dt class="text-slate-400">Dangerous attacks</dt>
+                  <dd
+                    id="stats-attacks"
+                    class="font-medium text-betsense-orange"
+                  >
+                    –
+                  </dd>
+                </div>
+                <div class="flex items-center justify-between">
+                  <dt class="text-slate-400">Corners</dt>
+                  <dd
+                    id="stats-corners"
+                    class="font-medium text-slate-100"
+                  >
+                    –
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            <div
+              class="mt-4 flex items-center justify-between text-[11px] text-slate-500"
+            >
+              <span id="stats-source">Source: –</span>
+              <span id="stats-status" class="text-slate-400">Waiting…</span>
+            </div>
+          </article>
+
+          <!-- LIVE ODDS CARD -->
+          <article
+            class="col-span-1 rounded-3xl border border-slate-800 bg-slate-950/70 p-4 md:p-5 flex flex-col justify-between"
+          >
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base md:text-lg font-semibold">
+                  Pre-match &amp; live odds
+                </h3>
+                <button
+                  id="btn-refresh-odds"
+                  class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1 text-xs text-slate-200 hover:border-betsense-lime/60 hover:text-betsense-lime transition"
+                >
+                  ↻ Refresh
+                </button>
+              </div>
+              <p class="text-xs text-slate-400">
+                Market view before kick-off and in-play. When live data is
+                unavailable, BetSense falls back to internal demo odds.
+              </p>
+
+              <div class="mt-3 space-y-2 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Home win</span>
+                  <span
+                    id="odds-home"
+                    class="font-medium text-betsense-lime"
+                    >–</span
+                  >
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Draw</span>
+                  <span
+                    id="odds-draw"
+                    class="font-medium text-slate-100"
+                    >–</span
+                  >
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Away win</span>
+                  <span
+                    id="odds-away"
+                    class="font-medium text-betsense-orange"
+                    >–</span
+                  >
+                </div>
+              </div>
+
+              <p
+                id="odds-message"
+                class="mt-3 text-[11px] text-slate-500 leading-relaxed"
+              >
+                Waiting for engine…
+              </p>
+            </div>
+
+            <div
+              class="mt-4 flex items-center justify-between text-[11px] text-slate-500"
+            >
+              <span id="odds-source">Source: –</span>
+              <span id="odds-status" class="text-slate-400">–</span>
+            </div>
+          </article>
+
+          <!-- WIN PROBABILITIES CARD -->
+          <article
+            class="col-span-1 rounded-3xl border border-slate-800 bg-slate-950/70 p-4 md:p-5 flex flex-col justify-between"
+          >
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-base md:text-lg font-semibold">
+                  Win probabilities
+                </h3>
+                <button
+                  id="btn-refresh-prob"
+                  class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1 text-xs text-slate-200 hover:border-betsense-accent/60 hover:text-betsense-accent transition"
+                >
+                  ↻ Refresh
+                </button>
+              </div>
+              <p class="text-xs text-slate-400">
+                Implied probabilities vs market, normalised to 100%. Perfect for
+                visualising how the model reads the current match context.
+              </p>
+
+              <div class="mt-4 space-y-2 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Home win</span>
+                  <span
+                    id="prob-home"
+                    class="font-semibold text-betsense-lime"
+                    >–</span
+                  >
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Draw</span>
+                  <span
+                    id="prob-draw"
+                    class="font-semibold text-slate-100"
+                    >–</span
+                  >
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Away win</span>
+                  <span
+                    id="prob-away"
+                    class="font-semibold text-betsense-orange"
+                    >–</span
+                  >
+                </div>
+              </div>
+
+              <p class="mt-3 text-[11px] text-slate-500">
+                Sum: <span id="prob-sum">–</span> ·
+                <span id="prob-status">Waiting for engine…</span>
+              </p>
+            </div>
+
+            <div
+              class="mt-4 flex items-center justify-between text-[11px] text-slate-500"
+            >
+              <span id="prob-source">Source: –</span>
+              <span class="text-slate-400">Output is illustrative only</span>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <!-- EMOTION ENGINE & TIMELINE (static copy) -->
+      <section class="space-y-6">
+        <div class="grid md:grid-cols-2 gap-5">
+          <!-- Emotion Engine block -->
+          <article
+            class="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 space-y-4"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="text-lg font-semibold">Emotion Engine – Quick & Deep</h2>
+              <div
+                class="inline-flex items-center gap-1 rounded-full bg-slate-900/80 px-3 py-1 text-[11px] text-slate-400 border border-slate-700/70"
+              >
+                AI output · demo language
+              </div>
+            </div>
+
+            <p class="text-sm text-slate-300">
+              Turn live-match chaos into a narrative your traders, investors and
+              marketing teams can act on in seconds.
+            </p>
+
+            <div
+              class="inline-flex text-xs rounded-full bg-slate-900/80 border border-slate-700/80 p-1"
+            >
+              <button
+                id="emotion-tab-quick"
+                class="flex-1 px-3 py-1 rounded-full bg-gradient-to-r from-betsense-accent to-betsense-cyan text-slate-900 font-medium"
+              >
+                Quick Emotion
+              </button>
+              <button
+                id="emotion-tab-deep"
+                class="flex-1 px-3 py-1 rounded-full text-slate-300"
+              >
+                Deep Emotion
+              </button>
+            </div>
+
+            <div
+              id="emotion-quick"
+              class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-2 text-sm"
+            >
+              <p class="text-xs uppercase text-slate-400">
+                Quick read: home confidence unlocks
+              </p>
+              <p class="text-slate-200">
+                The late home goal snaps the market into a new regime. Home odds
+                compress sharply while draw and away prices drift. Emotion Index
+                sees a clear shift from nervous energy to confident momentum on
+                the home side, with social and in-stadium signals amplifying the
+                move rather than contradicting it.
+              </p>
+            </div>
+
+            <div
+              id="emotion-deep"
+              class="hidden rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-2 text-sm"
+            >
+              <p class="text-xs uppercase text-slate-400">
+                Deep read: regime change & crowd psychology
+              </p>
+              <p class="text-slate-200">
+                Confidence breaks out of a fragile range into a stable
+                high-belief zone. Price action, xG build-up and crowd audio all
+                point in the same direction. For trading desks this supports
+                running a slightly larger home-side risk position, with clear
+                triggers for cutting exposure if the next big chance falls to
+                the away team.
+              </p>
+            </div>
+          </article>
+
+          <!-- Probability Timeline (static visual) -->
+          <article
+            class="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 space-y-4"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="text-lg font-semibold">Probability Timeline</h2>
+              <p class="text-[11px] text-slate-400">
+                Visualise how win probabilities evolve from 0' to 90'.
+              </p>
+            </div>
+
+            <div
+              class="inline-flex text-xs rounded-full bg-slate-900/80 border border-slate-700/80 p-1"
+            >
+              <button
+                class="flex-1 px-3 py-1 rounded-full bg-gradient-to-r from-betsense-lime to-betsense-cyan text-slate-900 font-medium"
+              >
+                Balanced opener
+              </button>
+              <button class="flex-1 px-3 py-1 rounded-full text-slate-300">
+                Home pressure
+              </button>
+              <button class="flex-1 px-3 py-1 rounded-full text-slate-300">
+                Away comeback
+              </button>
+            </div>
+
+            <!-- Simple fake timeline -->
+            <div class="mt-3 space-y-3 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="flex items-center gap-1">
+                  <span class="h-2 w-6 rounded-full bg-betsense-cyan"></span>
+                  Home win %
+                </span>
+                <span class="flex items-center gap-1">
+                  <span class="h-2 w-6 rounded-full bg-betsense-accent"></span>
+                  Draw %
+                </span>
+                <span class="flex items-center gap-1">
+                  <span class="h-2 w-6 rounded-full bg-betsense-orange"></span>
+                  Away win %
+                </span>
+              </div>
+
+              <div
+                class="rounded-2xl bg-slate-900/90 border border-slate-800 p-4 space-y-3"
+              >
+                <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    class="h-full w-[45%] bg-gradient-to-r from-betsense-cyan to-betsense-lime"
+                  ></div>
+                </div>
+                <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    class="h-full w-[30%] bg-betsense-accent"
+                  ></div>
+                </div>
+                <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    class="h-full w-[25%] bg-betsense-orange"
+                  ></div>
+                </div>
+
+                <div
+                  class="flex items-center justify-between text-[11px] text-slate-500"
+                >
+                  <span>0'</span>
+                  <span>Late home goal, 72'</span>
+                  <span>90'</span>
+                </div>
+              </div>
+
+              <p class="text-[11px] text-slate-500">
+                Mode: Balanced opener – early swings are modest, market still
+                respects all three outcomes until the late goal.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- AI MATCH REPORT + LIVE API HOOK -->
+      <section id="reports" class="space-y-6">
+        <!-- AI Match Report -->
+        <article
+          class="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 space-y-5"
+        >
+          <h2 class="text-lg md:text-xl font-semibold">
+            AI Match Report — Simple & Full
+          </h2>
+          <p class="text-sm text-slate-300 max-w-2xl">
+            Generate management-ready or investor-ready match summaries in one
+            click from the same live context. In production this connects
+            directly to your reporting stack and PDF export.
+          </p>
+
+          <div class="space-y-3 text-sm">
+            <div class="space-y-1">
+              <p class="text-xs uppercase text-slate-400">
+                1. Define the report focus
+              </p>
+              <textarea
+                class="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-3 py-2 text-xs text-slate-100 resize-none"
+                rows="3"
+              >
+Derby match, late goal for home side, odds move from 2.40 to 1.70.</textarea
+              >
+            </div>
+
+            <div class="space-y-3">
+              <p class="text-xs uppercase text-slate-400">
+                2. Choose report depth
+              </p>
+              <div
+                class="inline-flex text-xs rounded-full bg-slate-900/80 border border-slate-700/80 p-1"
+              >
+                <button
+                  id="report-tab-simple"
+                  class="flex-1 px-3 py-1 rounded-full bg-gradient-to-r from-betsense-accent to-betsense-cyan text-slate-900 font-medium"
+                >
+                  Simple report — 1-page summary
+                </button>
+                <button
+                  id="report-tab-full"
+                  class="flex-1 px-3 py-1 rounded-full text-slate-300"
+                >
+                  Full report — investor-level detail
+                </button>
+              </div>
+
+              <div
+                id="report-simple"
+                class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-2 text-sm"
+              >
+                <p class="font-semibold">Simple match report</p>
+                <p class="text-slate-200">
+                  <span class="font-medium">Key scenario:</span> Derby match,
+                  late goal for home side, odds move from 2.40 to 1.70.
+                </p>
+                <p class="text-slate-200">
+                  <span class="font-medium">Headline:</span> Home side turns
+                  pressure into a decisive advantage, with odds and market mood
+                  moving in sync.
+                </p>
+                <p class="text-slate-200 font-medium">Trading summary:</p>
+                <ul class="list-disc list-inside text-slate-300 text-sm space-y-1">
+                  <li>
+                    BetSense Engine highlights a clear break in the probability
+                    trend after the key event.
+                  </li>
+                  <li>
+                    Price move is supported by volume and sentiment, not just
+                    retail noise.
+                  </li>
+                  <li>
+                    Risk position is comfortable but requires monitoring if a
+                    second goal arrives.
+                  </li>
+                </ul>
+                <p class="text-[11px] text-slate-500">
+                  Use this view for fast communication with management or
+                  non-technical stakeholders.
+                </p>
+              </div>
+
+              <div
+                id="report-full"
+                class="hidden rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-2 text-sm"
+              >
+                <p class="font-semibold">
+                  Full investor-level match report (outline)
+                </p>
+                <ul class="list-disc list-inside text-slate-300 text-sm space-y-1">
+                  <li>Pre-match model vs market alignment.</li>
+                  <li>
+                    Live probability timeline with regime-change markers and
+                    confidence bands.
+                  </li>
+                  <li>
+                    Liquidity, volume and ticket-size breakdown before and after
+                    the key goal.
+                  </li>
+                  <li>
+                    Emotion Index decomposition – stadium audio, social,
+                    broadcast language.
+                  </li>
+                  <li>
+                    Risk &amp; PnL impact, including “what-if” scenarios for
+                    second goal and late equaliser.
+                  </li>
+                  <li>
+                    Recommended risk posture and follow-up monitoring points.
+                  </li>
+                </ul>
+                <p class="text-[11px] text-slate-500">
+                  In production this block exports straight into PDF, slide
+                  decks or internal reporting tools.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Live API Hook -->
+        <article
+          id="api-hook"
+          class="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 space-y-4"
+        >
+          <h2 class="text-lg md:text-xl font-semibold">
+            Live API hook — plug your feeds in
+          </h2>
+          <p class="text-sm text-slate-300 max-w-2xl">
+            In production, the same views run directly on your live prices,
+            stats and social data via a single API layer. This demo runs on
+            static sample data plus a live mock engine, but the architecture is
+            designed to sit on top of your existing stack.
+          </p>
+
+          <ul class="text-xs text-slate-300 space-y-1">
+            <li>• Trading teams and risk &amp; PnL desks</li>
+            <li>• Executive and investor reporting</li>
+            <li>• External partners and white-label clients</li>
+          </ul>
+
+          <p class="text-[11px] text-slate-500">
+            For API documentation and pilot access, use the contact section
+            below or the
+            <span class="text-slate-300 font-medium"
+              >support@betsense.casino</span
+            >
+            address.
+          </p>
+
+          <div
+            class="mt-3 rounded-2xl border border-slate-800 bg-slate-950/90 p-4 text-[11px] font-mono text-slate-200 overflow-x-auto"
+          >
+            <p class="mb-2 text-slate-400">
+              Example: LiveConnect input for a single match snapshot
+            </p>
+            <pre>
+POST /api/live-input
+Content-Type: application/json
+X-API-Key: YOUR_KEY_HERE
+
 {
-  "source": "demo | live",
+  "matchId": "EPL-2025-001",
+  "minute": 72,
+  "homeTeam": "Chelsea",
+  "awayTeam": "Arsenal",
   "stats": {
-    "xg": 1.32,
-    "shots_on_target": 4,
-    "dangerous_attacks": 28,
-    "corners": 5
-  }
+    "shotsHome": 12,
+    "shotsAway": 7,
+    "xgHome": 2.1,
+    "xgAway": 0.9
+  },
+  "marketOdds": {
+    "homeWin": 1.85,
+    "draw": 3.60,
+    "awayWin": 4.40
+  },
+  "socialSentiment": "home_fans_excited"
 }</pre>
-        </div>
-
-        <!-- /api/live-odds -->
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-3 space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <span class="rounded-full bg-cyan-500/10 border border-cyan-500/40 px-2.5 py-1 text-[10px] font-medium text-cyan-300">
-              GET /api/live-odds
-            </span>
-            <span class="text-slate-500">Market snapshot</span>
           </div>
-          <p class="text-slate-400">
-            Reads 1X2 odds from your feed and returns a clean “home / draw / away” structure for
-            downstream models.
-          </p>
-          <pre class="mt-2 rounded-xl bg-slate-950 border border-slate-800 p-2 text-[10px] text-slate-300 overflow-auto">
-{
-  "source": "demo | live",
-  "odds": {
-    "home_win": 1.85,
-    "draw": 3.20,
-    "away_win": 4.50
-  }
-}</pre>
-        </div>
+        </article>
+      </section>
 
-        <!-- /api/probabilities -->
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-3 space-y-2">
-          <div class="flex items-center justify-between gap-2">
-            <span class="rounded-full bg-betsense-accent/15 border border-betsense-accent/50 px-2.5 py-1 text-[10px] font-medium text-betsense-accentSoft">
-              GET /api/probabilities
-            </span>
-            <span class="text-slate-500">Implied probabilities</span>
+      <!-- CONTACT & PILOTS -->
+      <section
+        id="contact"
+        class="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 space-y-5"
+      >
+        <h2 class="text-lg md:text-xl font-semibold">Contact & pilots</h2>
+        <p class="text-sm text-slate-300 max-w-2xl">
+          One inbox, three entry points. Keep pilots, API access and investor
+          talks in a single thread.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-4 text-sm">
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-1"
+          >
+            <p class="text-xs uppercase text-slate-400">Support</p>
+            <p class="font-semibold">support@betsense.casino</p>
+            <p class="text-slate-400 text-xs">
+              Live issues, technical questions, API troubleshooting.
+            </p>
           </div>
-          <p class="text-slate-400">
-            Converts odds into normalised probabilities, ready for overlays such as edge, emotion
-            and fair price.
-          </p>
-          <pre class="mt-2 rounded-xl bg-slate-950 border border-slate-800 p-2 text-[10px] text-slate-300 overflow-auto">
-{
-  "source": "demo | live",
-  "probabilities": {
-    "home_probability": 0.54,
-    "draw_probability": 0.24,
-    "away_probability": 0.22
-  }
-}</pre>
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-1"
+          >
+            <p class="text-xs uppercase text-slate-400">
+              General &amp; partnerships
+            </p>
+            <p class="font-semibold">info@betsense.casino</p>
+            <p class="text-slate-400 text-xs">
+              Product questions, partnership and commercial discussions.
+            </p>
+          </div>
+          <div
+            class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-1"
+          >
+            <p class="text-xs uppercase text-slate-400">Admin</p>
+            <p class="font-semibold">admin@betsense.casino</p>
+            <p class="text-slate-400 text-xs">
+              Contracts, billing, NDAs and legal.
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer class="mt-8 pt-6 border-t border-slate-800 text-[11px] md:text-xs text-slate-500 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-      <p>
-        BetSense is an analytics engine only. It does not process or accept bets and is not a sportsbook.
-      </p>
-      <p class="text-slate-600">
-        Quantum Engine · This page describes the back-end only. UI, Emotion Index &amp; LiveApe are shown on other pages.
-      </p>
-    </footer>
-  </div>
+        <div class="text-[11px] text-slate-500 space-y-1">
+          <p>For early-stage pilots, we typically recommend:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>1–2 key leagues with 1–3 trading teams.</li>
+            <li>Daily snapshot reports for management or investors.</li>
+            <li>Weekly review call on edge, risk and commercial impact.</li>
+          </ul>
+          <p>
+            Subject lines that help us route quickly:
+            <span class="text-slate-300 font-medium"
+              >“Pilot request”, “API access” or “Investor deck”.</span
+            >
+          </p>
+        </div>
 
-  <script>
-    // تنظیم آدرس انجین – اگر بعداً دامین اختصاصی دادی، فقط اینو عوض کن
-    const ENGINE_BASE_URL = "https://betsense-engine.onrender.com";
+        <footer
+          class="pt-4 border-t border-slate-800 text-[11px] md:text-xs text-slate-500"
+        >
+          BetSense AI Suite — demo interface. Copy, flows and visuals for
+          illustration only. Engine endpoints and live behaviour can be adapted
+          to your environment.
+        </footer>
+      </section>
+    </div>
 
-    async function checkEngineHealth() {
-      const url = ENGINE_BASE_URL + "/";
-      const dot = document.getElementById("engine-health-dot");
-      const text = document.getElementById("engine-health-text");
-      const time = document.getElementById("engine-health-time");
-      const urlLabel = document.getElementById("engine-health-url");
+    <!-- ENGINE WIRING SCRIPT -->
+    <script>
+      const ENGINE_BASE_URL = "https://betsense-engine.onrender.com";
 
-      urlLabel.textContent = ENGINE_BASE_URL + "/";
-
-      try {
-        const res = await fetch(url, { headers: { Accept: "application/json" } });
-        const json = await res.json().catch(() => ({}));
-
-        dot.classList.remove("bg-slate-600", "bg-amber-400");
-        dot.classList.add("bg-emerald-400");
-
-        text.textContent =
-          json && json.ok
-            ? "Engine reachable and responding."
-            : "Engine reachable (non-standard response).";
-
-        const now = new Date();
-        time.textContent = "Last check · " + now.toLocaleTimeString();
-      } catch (err) {
-        console.error("Engine health error:", err);
-        dot.classList.remove("bg-slate-600", "bg-emerald-400");
-        dot.classList.add("bg-amber-400");
-        text.textContent = "Could not reach engine – check Render service.";
-        const now = new Date();
-        time.textContent = "Last check · " + now.toLocaleTimeString();
+      async function fetchJson(path) {
+        const url = ENGINE_BASE_URL + path;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
       }
-    }
 
-    // اولین بار که صفحه باز می‌شود، هِلث‌چک
-    checkEngineHealth();
-  </script>
-</body>
+      function formatPercent(v) {
+        if (v === null || v === undefined || isNaN(v)) return "–";
+        return (v * 100).toFixed(0) + "%";
+      }
+
+      // ---------- Live stats ----------
+      async function loadStats() {
+        const statusEl = document.getElementById("stats-status");
+        statusEl.textContent = "Loading…";
+
+        try {
+          const data = await fetchJson("/api/stats");
+          const stats = data.stats || data; // allow both shapes
+
+          const xg =
+            typeof stats.xg === "number"
+              ? stats.xg
+              : typeof data.xg === "number"
+              ? data.xg
+              : 0;
+
+          const shots = stats.shots_on_target ?? data.shots_on_target;
+          const attacks =
+            stats.dangerous_attacks ?? data.dangerous_attacks;
+          const corners = stats.corners ?? data.corners;
+
+          document.getElementById("stats-xg").textContent =
+            xg ? xg.toFixed(2) : "–";
+          document.getElementById("stats-shots").textContent =
+            shots ?? "–";
+          document.getElementById("stats-attacks").textContent =
+            attacks ?? "–";
+          document.getElementById("stats-corners").textContent =
+            corners ?? "–";
+
+          document.getElementById("stats-source").textContent =
+            "Source: " + (data.source || "demo");
+
+          // hero panel
+          document.getElementById("hero-xg").textContent =
+            xg ? xg.toFixed(2) : "–";
+          document.getElementById("hero-shots").textContent =
+            shots ?? "–";
+          document.getElementById("hero-attacks").textContent =
+            attacks ?? "–";
+          document.getElementById("hero-corners").textContent =
+            corners ?? "–";
+          document.getElementById("hero-source").textContent =
+            data.source || "demo";
+
+          const now = new Date();
+          document.getElementById("meta-updated").textContent =
+            "Last refresh · " + now.toLocaleTimeString();
+
+          statusEl.textContent =
+            data.source === "live"
+              ? "Live API data"
+              : "Demo payload (fallback)";
+        } catch (err) {
+          console.error("Stats error:", err);
+          statusEl.textContent = "Error loading stats";
+        }
+      }
+
+      // ---------- Odds ----------
+      async function loadOdds() {
+        const statusEl = document.getElementById("odds-status");
+        statusEl.textContent = "Loading…";
+
+        try {
+          const data = await fetchJson("/api/live-odds");
+          const odds = data.odds || {};
+
+          document.getElementById("odds-home").textContent =
+            odds.home_win ?? "–";
+          document.getElementById("odds-draw").textContent =
+            odds.draw ?? "–";
+          document.getElementById("odds-away").textContent =
+            odds.away_win ?? "–";
+
+          document.getElementById("odds-source").textContent =
+            "Source: " + (data.source || "demo");
+          document.getElementById("odds-message").textContent =
+            data.message || "Odds feed response.";
+
+          statusEl.textContent =
+            data.source === "live"
+              ? "Live odds feed"
+              : "Demo odds (fallback)";
+        } catch (err) {
+          console.error("Odds error:", err);
+          statusEl.textContent = "Error loading odds";
+          document.getElementById("odds-message").textContent =
+            "Could not reach engine. Check Render service status.";
+        }
+      }
+
+      // ---------- Probabilities ----------
+      async function loadProbabilities() {
+        const statusEl = document.getElementById("prob-status");
+        statusEl.textContent = "Loading…";
+
+        try {
+          const data = await fetchJson("/api/probabilities");
+          const probs = data.probabilities || {};
+          const pHome = probs.home_probability;
+          const pDraw = probs.draw_probability;
+          const pAway = probs.away_probability;
+
+          document.getElementById("prob-home").textContent =
+            formatPercent(pHome);
+          document.getElementById("prob-draw").textContent =
+            formatPercent(pDraw);
+          document.getElementById("prob-away").textContent =
+            formatPercent(pAway);
+
+          const sum =
+            (Number(pHome) || 0) +
+            (Number(pDraw) || 0) +
+            (Number(pAway) || 0);
+          document.getElementById("prob-sum").textContent = isNaN(sum)
+            ? "–"
+            : (sum * 100).toFixed(0) + "%";
+
+          document.getElementById("prob-source").textContent =
+            "Source: " + (data.source || "demo");
+
+          statusEl.textContent =
+            data.source === "live"
+              ? "Market-implied probabilities"
+              : "Demo probabilities (fallback)";
+        } catch (err) {
+          console.error("Probabilities error:", err);
+          statusEl.textContent = "Error loading probabilities";
+        }
+      }
+
+      // ---------- Small UI toggles (Emotion + Report tabs) ----------
+      function setupTabs(
+        tabAId,
+        tabBId,
+        panelAId,
+        panelBId,
+        gradientClass
+      ) {
+        const tabA = document.getElementById(tabAId);
+        const tabB = document.getElementById(tabBId);
+        const panelA = document.getElementById(panelAId);
+        const panelB = document.getElementById(panelBId);
+
+        tabA.addEventListener("click", () => {
+          tabA.classList.add(
+            "bg-gradient-to-r",
+            ...gradientClass.split(" ")
+          );
+          tabA.classList.add("text-slate-900", "font-medium");
+          tabB.classList.remove(
+            "bg-gradient-to-r",
+            ...gradientClass.split(" ")
+          );
+          tabB.classList.remove("text-slate-900", "font-medium");
+          tabB.classList.add("text-slate-300");
+          panelA.classList.remove("hidden");
+          panelB.classList.add("hidden");
+        });
+
+        tabB.addEventListener("click", () => {
+          tabB.classList.add(
+            "bg-gradient-to-r",
+            ...gradientClass.split(" ")
+          );
+          tabB.classList.add("text-slate-900", "font-medium");
+          tabA.classList.remove(
+            "bg-gradient-to-r",
+            ...gradientClass.split(" ")
+          );
+          tabA.classList.remove("text-slate-900", "font-medium");
+          tabA.classList.add("text-slate-300");
+          panelB.classList.remove("hidden");
+          panelA.classList.add("hidden");
+        });
+      }
+
+      document
+        .getElementById("btn-refresh-stats")
+        .addEventListener("click", loadStats);
+      document
+        .getElementById("btn-refresh-odds")
+        .addEventListener("click", loadOdds);
+      document
+        .getElementById("btn-refresh-prob")
+        .addEventListener("click", loadProbabilities);
+
+      setupTabs(
+        "emotion-tab-quick",
+        "emotion-tab-deep",
+        "emotion-quick",
+        "emotion-deep",
+        "from-betsense-accent to-betsense-cyan"
+      );
+      setupTabs(
+        "report-tab-simple",
+        "report-tab-full",
+        "report-simple",
+        "report-full",
+        "from-betsense-accent to-betsense-cyan"
+      );
+
+      // Initial load
+      loadStats();
+      loadOdds();
+      loadProbabilities();
+    </script>
+  </body>
 </html>
