@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="BetSense AI Suite – Quantum Engine, HBboard, Emotion Index and LiveApe for sharper sports trading and betting intelligence."
+    content="BetSense AI Suite – Quantum Engine, Emotion Engine, Ultra Edge Layer and AI Match Reports for sharper sports trading and betting intelligence."
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -525,6 +525,7 @@
       border: 1px solid rgba(148, 163, 184, 0.5);
       margin-top: 4px;
       gap: 3px;
+      flex-wrap: wrap;
     }
 
     .report-tab {
@@ -638,6 +639,151 @@
       border: 1px solid rgba(148, 163, 184, 0.45);
       color: var(--text-muted);
     }
+
+    /* Ultra Edge Layer styles */
+    .module-section {
+      margin-top: 14px;
+      border-radius: 22px;
+      padding: 16px 16px 18px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.9);
+    }
+
+    .module-header h2 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+
+    .module-header p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .module-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .module-grid-2 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .module-grid-3 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    @media (min-width: 900px) {
+      .module-grid-2 {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+      .module-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .module-card {
+      border-radius: 18px;
+      padding: 12px 12px 14px;
+      background: #020617;
+      border: 1px solid rgba(30, 64, 175, 0.6);
+    }
+
+    .module-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .module-card-header h3 {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .module-card-lead {
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .module-card-footer {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-muted);
+    }
+
+    .pill.pill-accent {
+      border-color: rgba(56, 189, 248, 0.6);
+      color: #e0f2fe;
+    }
+
+    .pill.pill-meta {
+      border-color: rgba(168, 85, 247, 0.7);
+      color: #ede9fe;
+    }
+
+    .pill.pill-sim {
+      border-color: rgba(249, 115, 22, 0.7);
+      color: #ffedd5;
+    }
+
+    .pill.pill-emotion {
+      border-color: rgba(34, 197, 94, 0.7);
+      color: #dcfce7;
+    }
+
+    .metric-stack {
+      font-size: 12px;
+      color: var(--text-main);
+      line-height: 1.55;
+    }
+
+    .metric-stack p {
+      margin: 0 0 4px;
+    }
+
+    .ghost-button {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: transparent;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .bullet-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .bullet-list li {
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
@@ -677,20 +823,20 @@
           <h1>
             One suite.
             <span class="accent-word">Four unique engines</span>
-            for sharper sports decisions.
+            plus an Ultra Edge layer for live markets.
           </h1>
           <p class="muted" style="margin-bottom: 14px;">
-            BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index
-            and LiveApe into one operator-ready stack — giving traders,
-            partners and investors a single view of how your models already
-            behave in live markets.
+            BetSense AI Suite connects BetSense Engine, Emotion Engine, Ultra
+            Edge Layer and AI Match Reports into an operator-ready stack —
+            giving traders, partners and investors a single view of how your
+            models already behave in live markets.
           </p>
 
           <div class="stack-label">Why this stack</div>
           <div class="stack-grid">
             <div class="stack-pill">
-              <strong>4 integrated modules</strong>
-              Engine · Emotion · Trading · Connectivity
+              <strong>4 integrated engines</strong>
+              Engine · Emotion · Ultra Edge · Reporting
             </div>
             <div class="stack-pill">
               <strong>API-first architecture</strong>
@@ -701,8 +847,8 @@
               xG · micro-moments · edge tracking
             </div>
             <div class="stack-pill">
-              <strong>Investors &amp; trading teams</strong>
-              Built for desks, boards &amp; pilots
+              <strong>Desks, boards &amp; investors</strong>
+              Built for decision-makers, not hobby users
             </div>
           </div>
 
@@ -715,7 +861,7 @@
               align-items: center;
             "
           >
-            <button class="btn-primary" onclick="scrollToId('suite')">
+            <button class="btn-primary" onclick="scrollToId('engine')">
               Explore BetSense AI Suite ⚡
             </button>
             <button class="btn-outline" onclick="scrollToId('api')">
@@ -727,8 +873,8 @@
         <div class="card-soft" id="suite">
           <h2>Stack snapshot – demo match</h2>
           <p class="muted" style="margin-bottom: 10px;">
-            Single derby fixture, late home goal, liquidity high. All four
-            engines read the same moment in different ways.
+            Single derby fixture, late home goal, liquidity high. All engines
+            read the same moment in different ways.
           </p>
 
           <div class="tag-row">
@@ -746,7 +892,7 @@
               <span class="dot"></span> Emotion – crowd &amp; social
             </span>
             <span class="pill-label orange">
-              <span class="dot"></span> Edge – vs market odds
+              <span class="dot"></span> Ultra Edge – market micro-structure
             </span>
           </div>
 
@@ -1095,7 +1241,9 @@
         <div class="scenario-grid">
           <div class="scenario-meta" id="scenarioMeta">
             <div class="scenario-badge-row">
-              <span class="scenario-badge" id="scenarioKey">Key scenario: Derby match, late home goal, odds move from 2.40 to 1.70.</span>
+              <span class="scenario-badge" id="scenarioKey">
+                Key scenario: Derby match, late home goal, odds move from 2.40 to 1.70.
+              </span>
             </div>
 
             <div class="scenario-label">Headline</div>
@@ -1153,6 +1301,167 @@
         </div>
       </section>
 
+      <!-- ULTRA EDGE LAYER – MARKET, LIQUIDITY & META-ODDS -->
+      <section class="module-section" id="ultra-edge">
+        <div class="module-header">
+          <h2>Ultra Edge Layer — Market, Liquidity &amp; Meta-Odds</h2>
+          <p>
+            A supra-enterprise layer built for desks who treat football as a
+            <strong>live market</strong>, not just a sport. These models sit on
+            top of the Emotion Index and BetSense Engine to create a
+            <strong>category-defining stack</strong>.
+          </p>
+        </div>
+
+        <div class="module-grid module-grid-2">
+          <!-- 1. Market Psychology Engine -->
+          <article class="module-card">
+            <header class="module-card-header">
+              <h3>Market Psychology Engine</h3>
+              <span class="pill pill-live">Crowd vs Pro Money</span>
+            </header>
+
+            <p class="module-card-lead">
+              Live narrative of how <strong>retail flows</strong> and
+              <strong>professional money</strong> respond to the same event —
+              fear, greed, FOMO and exhaustion states in one lens.
+            </p>
+
+            <div id="psychology-output" class="metric-stack">
+              <!-- Filled by JS -->
+            </div>
+
+            <footer class="module-card-footer">
+              <div class="tag-row">
+                <span class="chip">Sentiment regime</span>
+                <span class="chip">Pro vs retail split</span>
+                <span class="chip">Narrative engine</span>
+              </div>
+              <button id="psychology-shuffle" class="ghost-button">
+                ⟳ Shuffle scenario
+              </button>
+            </footer>
+          </article>
+
+          <!-- 2. Liquidity Heat Radar -->
+          <article class="module-card">
+            <header class="module-card-header">
+              <h3>Liquidity Heat Radar</h3>
+              <span class="pill pill-accent">Live risk map</span>
+            </header>
+
+            <p class="module-card-lead">
+              Visualises <strong>where money is clustering</strong> through the
+              game — quiet pools, crowded trades and stress points for risk
+              teams.
+            </p>
+
+            <div id="liquidity-output" class="metric-stack">
+              <!-- Filled by JS -->
+            </div>
+
+            <footer class="module-card-footer">
+              <div class="tag-row">
+                <span class="chip">Order-book tone</span>
+                <span class="chip">Stress pockets</span>
+                <span class="chip">Edge density</span>
+              </div>
+              <button id="liquidity-shuffle" class="ghost-button">
+                ⟳ Shuffle scenario
+              </button>
+            </footer>
+          </article>
+        </div>
+
+        <div class="module-grid module-grid-3">
+          <!-- 3. Meta-Odds Engine -->
+          <article class="module-card">
+            <header class="module-card-header">
+              <h3>Meta-Odds Engine</h3>
+              <span class="pill pill-meta">Odds-of-Odds</span>
+            </header>
+
+            <p class="module-card-lead">
+              A synthetic price built from <strong>all books + behaviour</strong>
+              — the closest thing to a &ldquo;true&rdquo; global odds line.
+            </p>
+
+            <div id="meta-odds-output" class="metric-stack">
+              <!-- Filled by JS -->
+            </div>
+
+            <footer class="module-card-footer">
+              <div class="tag-row">
+                <span class="chip">Global line</span>
+                <span class="chip">Compression</span>
+                <span class="chip">Mispricing alert</span>
+              </div>
+              <button id="meta-odds-shuffle" class="ghost-button">
+                ⟳ Shuffle scenario
+              </button>
+            </footer>
+          </article>
+
+          <!-- 4. Orderbook Simulator -->
+          <article class="module-card">
+            <header class="module-card-header">
+              <h3>Orderbook Simulator</h3>
+              <span class="pill pill-sim">Next 30–120s</span>
+            </header>
+
+            <p class="module-card-lead">
+              Light-touch simulation of how the
+              <strong>virtual order-book</strong> can evolve after key moments —
+              base case, fade case and blow-off case.
+            </p>
+
+            <div id="orderbook-output" class="metric-stack">
+              <!-- Filled by JS -->
+            </div>
+
+            <footer class="module-card-footer">
+              <div class="tag-row">
+                <span class="chip">Path analysis</span>
+                <span class="chip">Fade vs follow</span>
+                <span class="chip">Micro-structure</span>
+              </div>
+              <button id="orderbook-shuffle" class="ghost-button">
+                ⟳ Shuffle scenario
+              </button>
+            </footer>
+          </article>
+
+          <!-- 5. Emotion Drift Curve -->
+          <article class="module-card">
+            <header class="module-card-header">
+              <h3>Emotion Drift Curve</h3>
+              <span class="pill pill-emotion">0' → 90'</span>
+            </header>
+
+            <p class="module-card-lead">
+              Tracks how <strong>market emotion</strong> drifts over the full
+              match — from balanced openers to panic, capitulation or quiet
+              control.
+            </p>
+
+            <div id="drift-output" class="metric-stack">
+              <!-- Filled by JS -->
+            </div>
+
+            <footer class="module-card-footer">
+              <div class="tag-row">
+                <span class="chip">Regime shifts</span>
+                <span class="chip">Drift vs shock</span>
+                <span class="chip">Emotion bands</span>
+              </div>
+              <button id="drift-shuffle" class="ghost-button">
+                ⟳ Shuffle scenario
+              </button>
+            </footer>
+          </article>
+        </div>
+      </section>
+
       <!-- AI MATCH REPORT + LIVE API HOOK -->
       <section class="grid-2">
         <div class="card-soft" id="reports">
@@ -1203,10 +1512,10 @@
             </p>
             <p>
               <strong>Trading summary.</strong> BetSense Engine confirms the
-              break in trend, Emotion Index validates that sentiment supports
-              the move, and LiveApe shows no structural stress in liquidity.
-              Desk treats the new home price as fair but keeps some capacity for
-              a second goal or late away push.
+              break in trend, Emotion Engine validates that sentiment supports
+              the move, and Ultra Edge Layer shows no structural stress in
+              liquidity. Desk treats the new home price as fair but keeps some
+              capacity for a second goal or late away push.
             </p>
           </div>
 
@@ -1373,7 +1682,167 @@ X-API-Key: YOUR_KEY_HERE
       },
     ];
 
+    // Ultra Edge Layer – scenarios for market, liquidity & meta-odds
+    const ultraLayer = {
+      psychology: [
+        {
+          label: "Home pressure turns into FOMO chase",
+          crowdTone: "Retail buyers pile into home side after a flurry of shots.",
+          proTone: "Professional money already long, now trimming into the surge.",
+          regime: "Euphoria with controlled profit-taking",
+          split: "Pro: 58% of volume · Retail: 42%",
+          cue: "Frame as disciplined edge, not casino rush.",
+          tags: ["FOMO bid", "Smart-money trim", "Late buyers vulnerable"],
+        },
+        {
+          label: "Anxious drift, no-one in control",
+          crowdTone: "Retail flows flip between home and draw with every half-chance.",
+          proTone: "Desks stay light, waiting for a genuine information shock.",
+          regime: "Nervous stalemate",
+          split: "Pro: 34% · Retail: 66%",
+          cue: "Messaging focuses on patience and selectivity.",
+          tags: ["Choppy flow", "No conviction", "Stay selective"],
+        },
+        {
+          label: "Quiet confidence, professionals accumulate",
+          crowdTone: "Retail accounts bored, volume low on screen.",
+          proTone: "Specialist accounts quietly build into away side edge.",
+          regime: "Stealth accumulation",
+          split: "Pro: 71% · Retail: 29%",
+          cue: "Highlight professional conviction against sleepy tape.",
+          tags: ["Stealth build", "Low-noise edge", "Asymmetric upside"],
+        },
+      ],
+      liquidity: [
+        {
+          label: "Liquidity clusters around home win",
+          heat: "Home: High · Draw: Medium · Away: Thin",
+          stress: "Risk sits in home clean-sheet and late equaliser paths.",
+          pockets: "Tight spreads 1.60–1.75, air pockets above 1.80.",
+          deskCue: "Clip peaks, leave room for momentum extension.",
+          tags: ["Crowded home lane", "Air pockets", "Clip extremes"],
+        },
+        {
+          label: "Flat tape, liquidity spread evenly",
+          heat: "Home: Balanced · Draw: Balanced · Away: Balanced",
+          stress: "Low structural stress, but optionality cheap.",
+          pockets: "Order-book thick across the curve, no obvious pain point.",
+          deskCue: "Use options market feel — build low-stress structures.",
+          tags: ["Low stress", "Optionality cheap", "Structure building"],
+        },
+        {
+          label: "Liquidity vacuum after red card",
+          heat: "Home: Spiky · Draw: Thin · Away: Dislocated",
+          stress: "Book struggles to re-anchor fair price after shock.",
+          pockets: "Gaps in depth 15–40 ticks wide on away side.",
+          deskCue: "Scale carefully, avoid crossing full gaps in size.",
+          tags: ["Vacuum", "Re-anchoring", "Depth gaps"],
+        },
+      ],
+      metaOdds: [
+        {
+          label: "Global line compresses around BetSense view",
+          marketOdds: "Home 1.85 · Draw 3.20 · Away 4.40",
+          metaOdds: "Home 1.78 · Draw 3.35 · Away 4.75",
+          signal:
+            "Books slowly concede edge — home implied probability migrates toward BetSense.",
+          alert: "+2.9% structural edge vs blended market.",
+          tags: ["Meta-convergence", "Edge still present", "Controlled size OK"],
+        },
+        {
+          label: "Books over-react, meta-odds stay anchored",
+          marketOdds: "Home 1.62 · Draw 3.80 · Away 6.20",
+          metaOdds: "Home 1.88 · Draw 3.45 · Away 4.90",
+          signal:
+            "Retail chasing home; meta-line rejects full move, flashing fade risk.",
+          alert: "Caution: crowd chase, not information.",
+          tags: ["Over-reaction", "Fade candidate", "Crowd chase"],
+        },
+        {
+          label: "Silent mispricing on the draw",
+          marketOdds: "Home 2.10 · Draw 3.85 · Away 3.40",
+          metaOdds: "Home 2.18 · Draw 3.40 · Away 3.55",
+          signal:
+            "Books under-price grindy draw scenarios; meta-line pulls fair back in.",
+          alert: "Draw carry trade attractive for slow money.",
+          tags: ["Carry edge", "Under-priced grind", "Slow-burn alpha"],
+        },
+      ],
+      orderbook: [
+        {
+          label: "Base case – controlled repricing",
+          paths: [
+            "First 30s: spreads widen, quotes chase new fair level.",
+            "30–90s: depth rebuilds around tighter band, volatility cools.",
+            "Beyond 90s: market trades within new, narrower corridor.",
+          ],
+          deskCue: "Scale fills as depth returns; avoid first swing.",
+          tags: ["Rebuild depth", "Avoid first print", "Scale in"],
+        },
+        {
+          label: "Fade case – spike gets sold",
+          paths: [
+            "First 20s: quotes gap higher on home side after goal.",
+            "20–60s: professional money leans against extreme prints.",
+            "60–120s: price decays halfway back toward pre-event band.",
+          ],
+          deskCue: "Favour staged fading, keep powder for overshoot.",
+          tags: ["Mean-reversion", "Professional fade", "Staged entries"],
+        },
+        {
+          label: "Blow-off case – second wave momentum",
+          paths: [
+            "First 15s: prints rip through visible offers.",
+            "15–75s: crowd and quant momentum both chase.",
+            "75–120s: volatility compresses but at much higher level.",
+          ],
+          deskCue: "Only trade if already long; avoid fresh shorts.",
+          tags: ["Blow-off", "Momentum chase", "Risk of squeeze"],
+        },
+      ],
+      drift: [
+        {
+          label: "Slow burn towards home control",
+          stages: [
+            "0'–25': Balanced opener, no dominant edge.",
+            "25'–55': Home pressure builds quietly, xG tilts.",
+            "55'–75': Emotion Index shifts from cautious to confident.",
+            "75'–90': Market treats home as sticky favourite.",
+          ],
+          regime: "Gradual accumulation, low headline drama.",
+          tags: ["Drift not shock", "Sticky favourite", "Process edge"],
+        },
+        {
+          label: "Whipsaw then exhaustion",
+          stages: [
+            "0'–30': High-vol swings after early chances both sides.",
+            "30'–60': Market tires of chasing every move.",
+            "60'–80': Liquidity thins, only sharp money active.",
+            "80'–90': Emotion Index flatlines despite late flurry.",
+          ],
+          regime: "From chaos to fatigue.",
+          tags: ["Vol crush", "Tired tape", "Selective opportunity"],
+        },
+        {
+          label: "Crowd panic into late capitulation",
+          stages: [
+            "0'–40': Nervous but orderly tape.",
+            "40'–70': Missed chances and bookings spike frustration.",
+            "70'–85': Retail capitulates, closing positions at poor prices.",
+            "85'–90': Professionals harvest final mispricings.",
+          ],
+          regime: "Panic then professional clean-up.",
+          tags: ["Capitulation", "Late alpha", "Emotion wash-out"],
+        },
+      ],
+    };
+
     let scenarioIndex = 0;
+    let activePsychology = 0;
+    let activeLiquidity = 0;
+    let activeMetaOdds = 0;
+    let activeOrderbook = 0;
+    let activeDrift = 0;
 
     // --- Helpers -----------------------------------------------------------
     function $(id) {
@@ -1388,7 +1857,6 @@ X-API-Key: YOUR_KEY_HERE
     }
 
     function refreshDemo() {
-      // simple mock "wiggle" on stats
       demoState.stats.xgHome = +(1.2 + Math.random() * 0.4).toFixed(2);
       demoState.stats.shotsOn = 3 + Math.floor(Math.random() * 3);
       demoState.stats.dangerous = 24 + Math.floor(Math.random() * 8);
@@ -1407,7 +1875,6 @@ X-API-Key: YOUR_KEY_HERE
     }
 
     function refreshProbabilities() {
-      // random but sum ~100
       const home = 60 + Math.random() * 10;
       const draw = 15 + Math.random() * 10;
       const away = 100 - home - draw;
@@ -1508,6 +1975,91 @@ X-API-Key: YOUR_KEY_HERE
       applyScenario(scenarios[scenarioIndex]);
     }
 
+    // --- Ultra Edge renders ------------------------------------------------
+    function renderPsychology() {
+      const box = document.getElementById("psychology-output");
+      if (!box) return;
+      const s = ultraLayer.psychology[activePsychology];
+
+      box.innerHTML = `
+        <p class="metric-label">${s.label}</p>
+        <p><strong>Crowd tape:</strong> ${s.crowdTone}</p>
+        <p><strong>Professional tape:</strong> ${s.proTone}</p>
+        <p><strong>Regime:</strong> ${s.regime}</p>
+        <p><strong>Flow split:</strong> ${s.split}</p>
+        <p><strong>Comms cue:</strong> ${s.cue}</p>
+        <p style="margin-top:0.75rem;"><strong>Tags:</strong> ${s.tags.join(" · ")}</p>
+      `;
+    }
+
+    function renderLiquidity() {
+      const box = document.getElementById("liquidity-output");
+      if (!box) return;
+      const s = ultraLayer.liquidity[activeLiquidity];
+
+      box.innerHTML = `
+        <p class="metric-label">${s.label}</p>
+        <p><strong>Heat:</strong> ${s.heat}</p>
+        <p><strong>Stress:</strong> ${s.stress}</p>
+        <p><strong>Depth pockets:</strong> ${s.pockets}</p>
+        <p><strong>Desk cue:</strong> ${s.deskCue}</p>
+        <p style="margin-top:0.75rem;"><strong>Tags:</strong> ${s.tags.join(" · ")}</p>
+      `;
+    }
+
+    function renderMetaOdds() {
+      const box = document.getElementById("meta-odds-output");
+      if (!box) return;
+      const s = ultraLayer.metaOdds[activeMetaOdds];
+
+      box.innerHTML = `
+        <p class="metric-label">${s.label}</p>
+        <p><strong>Market odds:</strong> ${s.marketOdds}</p>
+        <p><strong>Meta-odds:</strong> ${s.metaOdds}</p>
+        <p><strong>Signal:</strong> ${s.signal}</p>
+        <p><strong>Alert:</strong> ${s.alert}</p>
+        <p style="margin-top:0.75rem;"><strong>Tags:</strong> ${s.tags.join(" · ")}</p>
+      `;
+    }
+
+    function renderOrderbook() {
+      const box = document.getElementById("orderbook-output");
+      if (!box) return;
+      const s = ultraLayer.orderbook[activeOrderbook];
+
+      const pathList = s.paths
+        .map((line) => `<li>${line}</li>`)
+        .join("");
+
+      box.innerHTML = `
+        <p class="metric-label">${s.label}</p>
+        <ul class="bullet-list">
+          ${pathList}
+        </ul>
+        <p><strong>Desk cue:</strong> ${s.deskCue}</p>
+        <p style="margin-top:0.75rem;"><strong>Tags:</strong> ${s.tags.join(" · ")}</p>
+      `;
+    }
+
+    function renderDrift() {
+      const box = document.getElementById("drift-output");
+      if (!box) return;
+      const s = ultraLayer.drift[activeDrift];
+
+      const stageList = s.stages
+        .map((line) => `<li>${line}</li>`)
+        .join("");
+
+      box.innerHTML = `
+        <p class="metric-label">${s.label}</p>
+        <ul class="bullet-list">
+          ${stageList}
+        </ul>
+        <p><strong>Regime:</strong> ${s.regime}</p>
+        <p style="margin-top:0.75rem;"><strong>Tags:</strong> ${s.tags.join(" · ")}</p>
+      `;
+    }
+
     // --- Reports -----------------------------------------------------------
     function switchReport(mode) {
       const bodySimple = $("reportBodySimple");
@@ -1538,6 +2090,59 @@ X-API-Key: YOUR_KEY_HERE
       applyScenario(scenarios[0]);
       switchEmotionMode("quick");
       switchReport("simple");
+
+      // Ultra Edge initial render
+      renderPsychology();
+      renderLiquidity();
+      renderMetaOdds();
+      renderOrderbook();
+      renderDrift();
+
+      // Ultra Edge buttons
+      const psychBtn = document.getElementById("psychology-shuffle");
+      if (psychBtn) {
+        psychBtn.addEventListener("click", () => {
+          activePsychology =
+            (activePsychology + 1) % ultraLayer.psychology.length;
+          renderPsychology();
+        });
+      }
+
+      const liqBtn = document.getElementById("liquidity-shuffle");
+      if (liqBtn) {
+        liqBtn.addEventListener("click", () => {
+          activeLiquidity =
+            (activeLiquidity + 1) % ultraLayer.liquidity.length;
+          renderLiquidity();
+        });
+      }
+
+      const metaBtn = document.getElementById("meta-odds-shuffle");
+      if (metaBtn) {
+        metaBtn.addEventListener("click", () => {
+          activeMetaOdds =
+            (activeMetaOdds + 1) % ultraLayer.metaOdds.length;
+          renderMetaOdds();
+        });
+      }
+
+      const obBtn = document.getElementById("orderbook-shuffle");
+      if (obBtn) {
+        obBtn.addEventListener("click", () => {
+          activeOrderbook =
+            (activeOrderbook + 1) % ultraLayer.orderbook.length;
+          renderOrderbook();
+        });
+      }
+
+      const driftBtn = document.getElementById("drift-shuffle");
+      if (driftBtn) {
+        driftBtn.addEventListener("click", () => {
+          activeDrift =
+            (activeDrift + 1) % ultraLayer.drift.length;
+          renderDrift();
+        });
+      }
     });
   </script>
 </body>
