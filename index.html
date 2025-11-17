@@ -116,6 +116,37 @@
       box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.35);
     }
 
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .header-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      font-size: 11px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      color: var(--text-soft);
+      text-decoration: none;
+    }
+
+    .nav-link-active {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #020617;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
     /* hero */
 
     .hero {
@@ -357,28 +388,31 @@
       gap: 6px;
     }
 
-    .badge-dot-green,
-    .badge-dot-purple,
-    .badge-dot-blue,
-    .badge-dot-amber {
+    .badge-dot-green {
       width: 7px;
       height: 7px;
       border-radius: 999px;
-    }
-
-    .badge-dot-green {
       background: #22c55e;
     }
 
     .badge-dot-purple {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
       background: #a855f7;
     }
 
     .badge-dot-blue {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
       background: #38bdf8;
     }
 
     .badge-dot-amber {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
       background: #fbbf24;
     }
 
@@ -533,7 +567,7 @@
       font-size: 14px;
     }
 
-    /* timeline small viz */
+    /* timeline */
 
     .timeline {
       margin-top: 10px;
@@ -621,18 +655,22 @@
           </div>
         </div>
       </div>
-      <div class="status-pill">
-        <span class="status-dot"></span>
-        <span>Backend running on Render</span>
+      <div class="header-right">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span>Backend running on Render</span>
+        </div>
+        <nav class="header-nav">
+          <span class="nav-link nav-link-active">Suite overview</span>
+          <a href="live.html" class="nav-link">Live match desk</a>
+        </nav>
       </div>
     </header>
 
     <!-- HERO -->
     <section class="hero">
       <div>
-        <div class="hero-main-title">
-          One suite. <span style="color:#38bdf8">Four unique engines</span> plus an Ultra Edge layer.
-        </div>
+        <div class="hero-main-title">One suite. <span style="color:#38bdf8">Four unique engines</span> plus an Ultra Edge layer.</div>
         <p class="hero-main-sub">
           BetSense AI Suite connects BetSense Engine, Emotion Engine, Ultra Edge Layer and AI Match Reports into an operator-ready stack — giving traders, partners and investors a single view of how your models already behave in live markets.
         </p>
@@ -645,7 +683,7 @@
         </div>
 
         <p class="hero-tagline">
-          Live-match analytics built for <span class="highlight">desks, boards &amp; investors</span> — not hobby users.
+          Live-match analytics built for <span class="highlight">desks, boards & investors</span> — not hobby users.
         </p>
 
         <div class="pill-row">
@@ -654,7 +692,7 @@
         </div>
         <div class="pill-row">
           <span class="pill"><span class="pill-dot"></span>Live-match analytics · xG · micro-moments · edge tracking</span>
-          <span class="pill"><span class="pill-dot"></span>Desks, boards &amp; investors · decision-makers, not retail users</span>
+          <span class="pill"><span class="pill-dot"></span>Desks, boards & investors · decision-makers, not retail users</span>
         </div>
 
         <div class="hero-demo">
@@ -714,7 +752,7 @@
             <div class="metric-box">
               <div class="metric-label">Dangerous attacks</div>
               <div class="metric-value" id="metricDanger">28</div>
-              <div class="metric-caption">Box entries &amp; big moves</div>
+              <div class="metric-caption">Box entries & big moves</div>
             </div>
           </div>
 
@@ -790,7 +828,7 @@
         <div class="card">
           <div class="card-header-row">
             <div>
-              <div class="card-title">Emotion Engine – Quick &amp; Deep</div>
+              <div class="card-title">Emotion Engine – Quick & Deep</div>
               <div class="card-subtitle">
                 Turn live-match chaos into a narrative your traders, investors and marketing teams can act on in seconds.
               </div>
@@ -890,14 +928,14 @@
         <div class="card">
           <div class="card-header-row">
             <div>
-              <div class="card-title">Ultra Edge Layer — Market, Liquidity &amp; Meta-Odds</div>
+              <div class="card-title">Ultra Edge Layer — Market, Liquidity & Meta-Odds</div>
               <div class="card-subtitle">
                 A supra-enterprise layer built for desks who treat football as a live market, not just a sport. Models sit on top of the Emotion Index and BetSense Engine to create a category-defining stack.
               </div>
             </div>
           </div>
 
-          <!-- Market Psychology (static copy) -->
+          <!-- Market Psychology (static copy for now) -->
           <div style="margin-top:10px">
             <div class="scenario-label">Market Psychology Engine</div>
             <p class="card-subtitle" style="margin-bottom:4px">
@@ -905,12 +943,12 @@
             </p>
 
             <p class="headline">Home pressure turns into FOMO chase</p>
-            <ul class="bullet-list">
+            <div class="bullet-list">
               <li><strong>Crowd tape:</strong> Retail buyers pile into home side after a flurry of shots.</li>
               <li><strong>Professional tape:</strong> Pro money already long, now trimming into the surge.</li>
               <li><strong>Regime:</strong> Euphoria with controlled profit-taking.</li>
               <li><strong>Flow split:</strong> Pro 58% · Retail 42% of volume.</li>
-            </ul>
+            </div>
 
             <div class="chip-row">
               <span class="chip">FOMO bid</span>
@@ -928,11 +966,11 @@
           </p>
 
           <p class="headline">Liquidity clusters around home win</p>
-          <ul class="bullet-list">
+          <div class="bullet-list">
             <li><strong>Heat:</strong> Home: High · Draw: Medium · Away: Thin.</li>
             <li><strong>Stress:</strong> Risk sits in home clean-sheet and late equaliser paths.</li>
             <li><strong>Depth pockets:</strong> Tight spreads 1.60–1.75, air pockets above 1.90.</li>
-          </ul>
+          </div>
           <div class="chip-row">
             <span class="chip">Order-book tone</span>
             <span class="chip">Stress pockets</span>
@@ -965,11 +1003,11 @@
             Light-touch simulation of how the virtual order-book can evolve after key moments — base case, fade case and blow-off case.
           </p>
           <p class="headline">Base case – controlled repricing</p>
-          <ul class="bullet-list">
+          <div class="bullet-list">
             <li>First 30s: spreads widen, quotes chase new fair level.</li>
             <li>30–90s: depth rebuilds around tighter band, volatility cools.</li>
             <li>Beyond 90s: market trades within new, narrower corridor.</li>
-          </ul>
+          </div>
           <p class="scenario-body">
             <strong>Desk cue:</strong> Scale fills as depth returns; avoid first swing.
           </p>
@@ -986,12 +1024,12 @@
             Tracks how market emotion drifts over the full match — from balanced openers to panic, capitulation or quiet control.
           </p>
           <p class="headline">Slow burn towards home control</p>
-          <ul class="bullet-list">
+          <div class="bullet-list">
             <li>0'–25': Balanced opener, no dominant edge.</li>
             <li>25'–55': Home pressure builds quietly, xG tilts.</li>
             <li>55'–75': Emotion Index shifts from cautious to confident.</li>
             <li>75'–90': Market treats home as sticky favourite.</li>
-          </ul>
+          </div>
           <p class="scenario-body">
             <strong>Regime:</strong> Gradual accumulation, low headline drama.
           </p>
@@ -1006,7 +1044,7 @@
         <div class="card">
           <div class="card-header-row">
             <div>
-              <div class="card-title">AI Match Report — Simple &amp; Full</div>
+              <div class="card-title">AI Match Report — Simple & Full</div>
               <div class="card-subtitle">
                 Generate management-ready or investor-ready match summaries in one click from the same live context. In production this connects directly to your reporting stack and PDF export.
               </div>
@@ -1035,11 +1073,11 @@
           </p>
 
           <p class="headline" style="margin-top:8px">Trading summary</p>
-          <ul class="bullet-list">
-            <li>BetSense Engine highlights a clear break in the probability trend after the key event.</li>
+          <div class="bullet-list">
+            <li>BetSense Engine confirms the break in trend.</li>
             <li>Emotion Engine validates that sentiment supports the move.</li>
             <li>Ultra Edge Layer shows no structural stress in liquidity.</li>
-          </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -1090,281 +1128,165 @@ X-API-Key: YOUR_KEY_HERE
   </div>
 
   <script>
-    // ===== Utility helpers =====
-    function randRange(min, max, decimals) {
-      const v = Math.random() * (max - min) + min;
-      const factor = Math.pow(10, decimals || 0);
-      return Math.round(v * factor) / factor;
-    }
-
     // ===== Emotion Engine V1 (Quick / Deep) =====
     const emotionV1Scenarios = {
       quick: {
-        title: "QUICK READ – TRADING LENS",
-        kicker: "HOME CONFIDENCE UNLOCKS",
-        bullets: [
-          "Home finally converts sustained pressure into scoreboard control.",
-          "Retail money chases the move; professional money scales rather than panics.",
-          "Volatility cools as the market accepts the new favourite regime."
-        ],
+        title: "QUICK READ: HOME CONFIDENCE UNLOCKS",
         body:
           "The late home goal snaps the market into a new regime. Home odds compress sharply while draw and away prices drift. Emotion Index sees a clear shift from nervous energy to confident momentum on the home side, with social and in-stadium signals amplifying the move rather than contradicting it.",
-        tags: ["Regime break", "Sticky confidence", "Crowd in sync"]
+        tags: ["Regime break", "Sticky confidence", "Market acceptance"]
       },
       deep: {
-        title: "DEEP DIVE – FULL EMOTION TAPE",
-        kicker: "FROM ANXIOUS PRESSURE TO QUIET CONTROL",
-        bullets: [
-          "Pre-goal period shows rising xG and territory but hesitant pricing.",
-          "In-stadium noise and social feeds lean heavily towards 'goal is coming'.",
-          "Post-goal, away belief collapses faster than raw numbers alone justify."
-        ],
+        title: "DEEP READ: REGIME SHIFT, NOT JUST A GOAL",
         body:
-          "Across the full 90 minutes the Emotion Index tracks a slow drift from balanced respect for both sides to an environment where every marginal signal is interpreted in favour of the home team. By the time the goal arrives, crowd and tape are already positioned for a home-favourable outcome, so the impact is to lock in a regime rather than create a shock.",
-        tags: ["Long-horizon drift", "Belief snap", "Process over noise"]
+          "Across the full 0'–72' window, the pattern is clear: xG has leaned home for a long time, but pricing stayed cautious. The goal is the visible trigger, not the origin of edge. Emotion Engine identifies a full regime shift where liquidity, flows and sentiment finally align with the underlying BetSense view of the match.",
+        tags: ["Regime analysis", "Hidden edge realised", "Full-stack confirmation"]
       }
     };
 
     function renderEmotionV1(mode) {
-      const data = emotionV1Scenarios[mode];
-      const container = document.getElementById("emotion-v1-output");
-      if (!container || !data) return;
+      const box = document.getElementById("emotion-v1-output");
+      const scenario = emotionV1Scenarios[mode] || emotionV1Scenarios.quick;
 
-      container.innerHTML = `
-        <div class="scenario-label">Quick / Deep narrative</div>
-        <div class="scenario-pill">
-          <strong>${data.title}</strong><br/>
-          <span class="muted" style="font-size:11px">${data.kicker}</span>
-        </div>
-        <p class="headline">Headline</p>
-        <p class="scenario-body">${data.body}</p>
-        <p class="headline" style="margin-top:8px">Key bullets</p>
-        <ul class="bullet-list">
-          ${data.bullets.map(b => `<li>${b}</li>`).join("")}
-        </ul>
-        <div class="chip-row">
-          ${data.tags.map(t => `<span class="chip">${t}</span>`).join("")}
+      const tagsHtml = scenario.tags
+        .map((t) => '<span class="chip">' + t + "</span>")
+        .join("");
+
+      box.innerHTML = `
+        <p class="scenario-label">${
+          mode === "quick" ? "Quick narrative" : "Deep narrative"
+        }</p>
+        <p class="headline">${scenario.title}</p>
+        <p class="scenario-body">${scenario.body}</p>
+        <div class="chip-row" style="margin-top:8px">
+          ${tagsHtml}
         </div>
       `;
     }
 
-    // ===== Emotion Engine V2 – Execution scenarios =====
+    const btnQuickEmotion = document.getElementById("btnQuickEmotion");
+    const btnDeepEmotion = document.getElementById("btnDeepEmotion");
+
+    btnQuickEmotion.addEventListener("click", () => {
+      btnQuickEmotion.classList.add("active");
+      btnDeepEmotion.classList.remove("active");
+      renderEmotionV1("quick");
+    });
+
+    btnDeepEmotion.addEventListener("click", () => {
+      btnDeepEmotion.classList.add("active");
+      btnQuickEmotion.classList.remove("active");
+      renderEmotionV1("deep");
+    });
+
+    renderEmotionV1("quick");
+
+    // ===== Emotion Engine V2 – Execution lens =====
+
     const emotionV2Scenarios = [
       {
-        key: "Derby match, late home goal, odds move from 2.40 to 1.70.",
-        window: "90–240 seconds after goal",
-        execution:
-          "Market impact is strongest while crowd and social sentiment are still repricing the new reality. Engine suggests scaling in rather than all-in fills.",
-        headline:
-          "Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.",
-        trading: [
-          "BetSense Engine highlights a clear break in the probability trend after the key event.",
-          "Price move is supported by volume and sentiment, not just retail noise.",
-          "Risk position is comfortable but requires monitoring if a second goal arrives."
+        key: "Trade window – pressure converts",
+        body:
+          "Market finally rewards home pressure. Odds compress, but flows remain orderly. Emotion Engine V2 marks this as a scale-in window rather than all-in territory.",
+        bullets: [
+          "Trade window: 90–240 seconds after goal – best price / risk balance.",
+          "Retail money chases the move; professional money trims into strength.",
+          "Volatility cools as the market accepts the new favourite regime."
         ],
-        comms: [
-          "Desk briefs management as 'controlled exposure with positive skew'.",
-          "Marketing frames the story as 'home confidence finally pays off'."
-        ],
-        tags: [
-          "Tone: Confident · Not euphoric",
-          "Board-ready narrative",
-          "Desk summary",
-          "Post-match pack"
-        ]
+        tags: ["Scale-in, not all-in", "Retail chase", "Trend confirmation"]
       },
       {
-        key: "Heavy underdog scores first, price snaps from 9.00 to 4.20.",
-        window: "0–120 seconds after goal",
-        execution:
-          "Largest mispricing risk sits in overreaction. Engine flags 'fade emotional spike' rather than chase.",
-        headline:
-          "Shock opener creates temporary chaos but structural edge still favours the stronger side.",
-        trading: [
-          "Probability curve shows big jump but long-run prior still anchored on favourite.",
-          "Retail flow chases the underdog; professional money waits for re-entry on the better team.",
-          "Risk instructions: keep size controlled, use lay levels to harvest overreaction."
+        key: "Controlled risk with positive skew",
+        body:
+          "Desk sits comfortably long home, with stops well below current odds. Emotion Index confirms that any away equaliser would be a genuine shock, not a replay of earlier swings.",
+        bullets: [
+          "Positioning: Long home with room to add on small pull-backs.",
+          "Stress: Clean-sheet risk and late equaliser paths, but no structural liquidity stress.",
+          "Action: Monitor flow; avoid over-hedging into retail noise."
         ],
-        comms: [
-          "Desk language: 'chaos but contained'.",
-          "External message: 'shock on the scoreboard, model stays calm'."
-        ],
-        tags: [
-          "Shock regime",
-          "Fade the spike",
-          "Retail overreaction",
-          "Calm model tone"
-        ]
+        tags: ["Comfortable risk", "Shock protection", "Flow-aware"]
       },
       {
-        key: "Favourite leads 2–0 early, live odds drift from 1.60 to 1.15.",
-        window: "60–180 seconds after second goal",
-        execution:
-          "Upside in home win line mostly exhausted; better risk/reward in alternative markets.",
-        headline:
-          "Match shifts from price discovery to risk clean-up and liability management.",
-        trading: [
-          "BetSense Engine shows diminishing marginal edge on main line.",
-          "Emotion Index signals early boredom and reduced trading depth.",
-          "Desk advised to recycle risk into correct-score and handicap markets."
+        key: "Edge realisation, not discovery",
+        body:
+          "By 72' the edge is no longer hidden. Market has migrated toward BetSense fair, but there is still incremental value in being first to adjust to a potential second goal.",
+        bullets: [
+          "Edge type: Structural edge largely realised; incremental timing edge remains.",
+          "Focus: Manage exit quality rather than hunting new entry.",
+          "Communication: Flag to management as 'edge harvested, exposure under control'."
         ],
-        comms: [
-          "Internal message: 'protect profit, avoid greed'.",
-          "Investor summary: 'edge realised, model in capital-preservation mode'."
-        ],
-        tags: [
-          "Edge harvested",
-          "Risk recycling",
-          "Low-drama control",
-          "Capital protection"
-        ]
+        tags: ["Edge harvested", "Timing focus", "Exit quality"]
       }
     ];
 
-    function renderEmotionV2(index) {
-      const data = emotionV2Scenarios[index];
-      const el = document.getElementById("emotion-v2-output");
-      if (!el || !data) return;
+    let emotionV2Index = 0;
 
-      el.innerHTML = `
-        <div class="scenario-label">Key scenario</div>
-        <p class="scenario-body">${data.key}</p>
+    function renderEmotionV2() {
+      const container = document.getElementById("emotion-v2-output");
+      const s = emotionV2Scenarios[emotionV2Index];
 
-        <p class="headline" style="margin-top:8px">Execution engine view</p>
-        <p class="scenario-body"><strong>Trade window:</strong> ${data.window}<br/>${data.execution}</p>
+      const bulletsHtml = s.bullets
+        .map((b) => "<li>" + b + "</li>")
+        .join("");
 
-        <p class="headline" style="margin-top:8px">Headline</p>
-        <p class="scenario-body">${data.headline}</p>
+      const tagsHtml = s.tags
+        .map((t) => '<span class="chip">' + t + "</span>")
+        .join("");
 
-        <p class="headline" style="margin-top:8px">Trading summary</p>
+      container.innerHTML = `
+        <p class="scenario-label">Execution summary</p>
+        <p class="headline">${s.key}</p>
+        <p class="scenario-body">${s.body}</p>
         <ul class="bullet-list">
-          ${data.trading.map(x => `<li>${x}</li>`).join("")}
+          ${bulletsHtml}
         </ul>
-
-        <p class="headline" style="margin-top:8px">Communication cues</p>
-        <ul class="bullet-list">
-          ${data.comms.map(x => `<li>${x}</li>`).join("")}
-        </ul>
-
-        <div class="chip-row">
-          ${data.tags.map(t => `<span class="chip">${t}</span>`).join("")}
+        <div class="chip-row" style="margin-top:8px">
+          ${tagsHtml}
         </div>
       `;
     }
 
-    // ===== Live-ish demo controls =====
+    const btnEmotionV2Next = document.getElementById("emotion-v2-next-btn");
+    btnEmotionV2Next.addEventListener("click", () => {
+      emotionV2Index = (emotionV2Index + 1) % emotionV2Scenarios.length;
+      renderEmotionV2();
+    });
+
+    renderEmotionV2();
+
+    // Simple demo: refresh Quantum metrics + win probs (fake numbers for now)
+    function randomInRange(min, max, decimals = 0) {
+      const v = Math.random() * (max - min) + min;
+      return Number(v.toFixed(decimals));
+    }
+
     function refreshQuantum() {
-      const xg = randRange(0.9, 2.4, 2);
-      const shotsOn = Math.round(randRange(3, 8));
-      const danger = Math.round(randRange(15, 35));
-      const corners = Math.round(randRange(2, 9));
+      const xg = randomInRange(1.1, 2.4, 2);
+      const shots = randomInRange(3, 8);
+      const danger = randomInRange(20, 36);
+      const corners = randomInRange(3, 9);
 
-      const xgEl = document.getElementById("metricXgHome");
-      const shotsEl = document.getElementById("metricShotsOn");
-      const dangerEl = document.getElementById("metricDanger");
-      const cornersEl = document.getElementById("metricCorners");
-
-      if (xgEl) xgEl.textContent = xg.toString();
-      if (shotsEl) shotsEl.textContent = shotsOn.toString();
-      if (dangerEl) dangerEl.textContent = danger.toString();
-      if (cornersEl) cornersEl.textContent = corners.toString();
+      document.getElementById("metricXgHome").textContent = xg;
+      document.getElementById("metricShotsOn").textContent = shots;
+      document.getElementById("metricDanger").textContent = danger;
+      document.getElementById("metricCorners").textContent = corners;
     }
 
     function refreshWinProbs() {
-      // Keep probabilities roughly in a home-fav regime
-      let home = randRange(55, 75, 0);
-      let draw = randRange(15, 30, 0);
-      let away = 100 - home - draw;
-
-      if (away < 5) {
-        // normalise a little
-        away = 5;
-        const extra = (home + draw + away) - 100;
-        home -= extra;
+      const home = randomInRange(50, 75);
+      const away = randomInRange(8, 20);
+      let draw = 100 - home - away;
+      if (draw < 8) {
+        draw = 8;
       }
 
-      const wpHome = document.getElementById("wpHome");
-      const wpDraw = document.getElementById("wpDraw");
-      const wpAway = document.getElementById("wpAway");
-      const tlHomeBar = document.getElementById("tlHomeBar");
-      const tlDrawBar = document.getElementById("tlDrawBar");
-      const tlAwayBar = document.getElementById("tlAwayBar");
-      const tlHomeLabel = document.getElementById("tlHomeLabel");
-      const tlDrawLabel = document.getElementById("tlDrawLabel");
-      const tlAwayLabel = document.getElementById("tlAwayLabel");
-      const heroProb = document.getElementById("heroProb");
-
-      if (wpHome) wpHome.textContent = home + "%";
-      if (wpDraw) wpDraw.textContent = draw + "%";
-      if (wpAway) wpAway.textContent = away + "%";
-
-      if (tlHomeBar) tlHomeBar.style.width = home + "%";
-      if (tlDrawBar) tlDrawBar.style.width = draw + "%";
-      if (tlAwayBar) tlAwayBar.style.width = away + "%";
-
-      if (tlHomeLabel) tlHomeLabel.textContent = home + "% at 72'";
-      if (tlDrawLabel) tlDrawLabel.textContent = draw + "%";
-      if (tlAwayLabel) tlAwayLabel.textContent = away + "%";
-
-      if (heroProb) heroProb.textContent = home + "%";
+      document.getElementById("wpHome").textContent = Math.round(home) + "%";
+      document.getElementById("wpDraw").textContent = Math.round(draw) + "%";
+      document.getElementById("wpAway").textContent = Math.round(100 - home - draw) + "%";
     }
 
-    // ===== Wiring everything together =====
-    (function init() {
-      // Emotion V1 tabs
-      const quickBtn = document.getElementById("btnQuickEmotion");
-      const deepBtn = document.getElementById("btnDeepEmotion");
-
-      if (quickBtn && deepBtn) {
-        quickBtn.addEventListener("click", function () {
-          quickBtn.classList.add("active");
-          deepBtn.classList.remove("active");
-          renderEmotionV1("quick");
-        });
-        deepBtn.addEventListener("click", function () {
-          deepBtn.classList.add("active");
-          quickBtn.classList.remove("active");
-          renderEmotionV1("deep");
-        });
-      }
-
-      // Emotion V2 carousel
-      let v2Index = 0;
-      renderEmotionV2(v2Index);
-      const v2Btn = document.getElementById("emotion-v2-next-btn");
-      if (v2Btn) {
-        v2Btn.addEventListener("click", function () {
-          v2Index = (v2Index + 1) % emotionV2Scenarios.length;
-          renderEmotionV2(v2Index);
-        });
-      }
-
-      // Quantum + Win probs buttons
-      const qBtn = document.getElementById("btnRefreshQuantum");
-      if (qBtn) qBtn.addEventListener("click", refreshQuantum);
-
-      const wBtn = document.getElementById("btnRefreshWin");
-      if (wBtn) wBtn.addEventListener("click", refreshWinProbs);
-
-      // Demo mode toggle (just cosmetic for now)
-      const demoStatic = document.getElementById("demoModeStatic");
-      const demoLive = document.getElementById("demoModeLive");
-      if (demoStatic && demoLive) {
-        demoStatic.addEventListener("click", function () {
-          demoStatic.classList.add("active");
-          demoLive.classList.remove("active");
-        });
-        demoLive.addEventListener("click", function () {
-          demoLive.classList.add("active");
-          demoStatic.classList.remove("active");
-        });
-      }
-
-      // Initial render
-      renderEmotionV1("quick");
-      refreshQuantum();
-      refreshWinProbs();
-    })();
+    document.getElementById("btnRefreshQuantum").addEventListener("click", refreshQuantum);
+    document.getElementById("btnRefreshWin").addEventListener("click", refreshWinProbs);
   </script>
 </body>
 </html>
