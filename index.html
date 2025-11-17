@@ -1201,5 +1201,150 @@ X-API-Key: YOUR_KEY_HERE
       loadOdds();
       loadProbabilities();
     </script>
+    <script>
+// ---------- DEMO EMOTION INPUT ----------
+const demoEmotionPayload = {
+  match: { home: "Team A", away: "Team B", score: "1-0", minute: 55 },
+  stats: {
+    xG: { home: 1.2, away: 0.8 },
+    shots: { home: 8, away: 5 },
+    dangerous_attacks: { home: 23, away: 14 },
+    corners: { home: 5, away: 3 }
+  },
+  odds: { home_win: 1.85, draw: 3.2, away_win: 4.5 },
+  probabilities: { home_win: 0.52, draw: 0.27, away_win: 0.21 },
+  emotion: { home_emotion: 0.71, away_emotion: 0.29, momentum: "home" }
+};
+
+// ---------- CORE EMOTION ENGINE ----------
+function runEmotionEngine(payload) {
+  const { match, stats, odds, probabilities, emotion } = payload;
+
+  const scoreParts = match.score.split("-").map(Number);
+  const homeGoals = scoreParts[0];
+  const awayGoals = scoreParts[1];
+
+  const xgDiff = stats.xG.home - stats.xG.away;
+  const shotDiff = stats.shots.home - stats.shots.away;
+  const attackDiff = stats.dangerous_attacks.home - stats.dangerous_attacks.away;
+  const probDiff = probabilities.home_win - probabilities.away_win;
+  const crowdDiff = emotion.home_emotion - emotion.away_emotion;
+
+  // مومنتوم ۰ تا ۱۰۰ برای تیم میزبان
+  let homeMomentum =
+    50 +
+    xgDiff * 12 +
+    shotDiff * 2 +
+    attackDiff * 0.7 +
+    probDiff * 40 +
+    crowdDiff * 35 +
+    (homeGoals - awayGoals) * 10;
+
+  homeMomentum = Math.max(0, Math.min(100, homeMomentum));
+  const awayMomentum = 100 - homeMomentum;
+
+  // وضعیت بازار / هوادار
+  let marketMood = "";
+  if (homeMomentum > 70) marketMood = "Home surge – market confidence high";
+  else if (homeMomentum > 55) marketMood = "Edge home – controlled confidence";
+  else if (homeMomentum >= 45) marketMood = "Balanced – market still respects all outcomes";
+  else if (homeMomentum >= 30) marketMood = "Away pushback – pressure building on home side";
+  else marketMood = "Away surge – home side under real pressure";
+
+  // Quick read
+  const quickRead =
+    homeMomentum > 65
+      ? "Home confidence unlocked – pressure has turned into a clear advantage."
+      : homeMomentum > 55
+      ? "Home side has the upper hand, but the market still leaves room for a twist."
+      : homeMomentum >= 45
+      ? "Match emotionally balanced – no side fully in control yet."
+      : "Away side feeding off momentum – home edge on the scoreboard, but not in energy.";
+
+  // Deep read – متن بلند
+  let deepRead = "";
+
+  if (homeMomentum > 70) {
+    deepRead =
+      "Sustained home pressure, xG edge and crowd energy all point in the same direction. " +
+      "Live prices compress towards the home outcome as traders gain confidence that the current lead is deserved rather than accidental. " +
+      "Any additional spike in attacks could trigger an aggressive odds move and force late hedging from risk desks.";
+  } else if (homeMomentum > 55) {
+    deepRead =
+      "Home side carries a steady emotional edge: better shot quality, more dangerous phases and a clearly supportive crowd. " +
+      "However, the market still respects variance – a single counter-attack or momentum break could reopen the draw and away paths. " +
+      "Ideal zone for controlled, low-panic price adjustments rather than big swings.";
+  } else if (homeMomentum >= 45) {
+    deepRead =
+      "Emotional signals are finely balanced. Numbers lean only slightly to one side, but neither crowd nor market has fully committed. " +
+      "Traders should expect choppy, two-way flow with no strongly favoured narrative. " +
+      "In this regime, over-reacting to small events is a bigger risk than being fractionally slow.";
+  } else {
+    deepRead =
+      "Scoreboard favours the home side but emotional flow does not. Away team’s attacks, body-language and market behaviour " +
+      "hint at a possible swing. Traders should treat the home lead as fragile: protection against an equaliser carries more value " +
+      "than chasing extra home exposure at this stage.";
+  }
+
+  const tags = [];
+
+  if (homeMomentum > 70) tags.push("home_surge", "high_confidence");
+  else if (homeMomentum > 55) tags.push("controlled_edge", "home_favoured");
+  else if (homeMomentum >= 45) tags.push("balanced", "two_way_flow");
+  else tags.push("away_pushback", "fragile_lead");
+
+  if (Math.abs(xgDiff) > 0.7) tags.push("xg_gap");
+  if (Math.abs(attackDiff) > 10) tags.push("pressure_gap");
+  if (emotion.momentum === "home" && homeMomentum < 50) tags.push("momentum_warning");
+
+  return {
+    homeMomentum: Math.round(homeMomentum),
+    awayMomentum: Math.round(awayMomentum),
+    marketMood,
+    quickRead,
+    deepRead,
+    tags
+  };
+}
+
+// ---------- RENDER HELPERS ----------
+function renderEmotionQuick() {
+  const result = runEmotionEngine(demoEmotionPayload);
+  const box = document.getElementById("emotion-output");
+  if (!box) return;
+
+  box.innerHTML = `
+    <div class="emotion-metrics">
+      <p><strong>Home momentum:</strong> ${result.homeMomentum}%</p>
+      <p><strong>Away momentum:</strong> ${result.awayMomentum}%</p>
+      <p><strong>Market mood:</strong> ${result.marketMood}</p>
+      <p><strong>Quick read:</strong> ${result.quickRead}</p>
+      <p><strong>Tags:</strong> ${result.tags.join(", ")}</p>
+    </div>
+  `;
+}
+
+function renderEmotionDeep() {
+  const result = runEmotionEngine(demoEmotionPayload);
+  const box = document.getElementById("emotion-output");
+  if (!box) return;
+
+  box.innerHTML = `
+    <div class="emotion-metrics">
+      <p><strong>Home momentum:</strong> ${result.homeMomentum}% · <strong>Away:</strong> ${result.awayMomentum}%</p>
+      <p><strong>Market mood:</strong> ${result.marketMood}</p>
+      <p><strong>Deep read:</strong> ${result.deepRead}</p>
+      <p><strong>Tags:</strong> ${result.tags.join(", ")}</p>
+    </div>
+  `;
+}
+
+// اگر خواستی موقع لود صفحه خودش Quick رو نشون بده:
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("emotion-output")) {
+    renderEmotionQuick();
+  }
+});
+</script>
   </body>
 </html>
