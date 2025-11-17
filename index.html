@@ -1,248 +1,1544 @@
-<script>
-// ------------ Emotion Engine v2.0 ------------
-
-// دمو استیت – بعداً می‌تونیم به فید واقعی وصلش کنیم
-const DEMO_STATE = {
-  minute: 72,
-  xgHome: 2.1,
-  xgAway: 0.9,
-  shotsHome: 12,
-  shotsAway: 7,
-  dangerousAttacksHome: 28,
-  dangerousAttacksAway: 11,
-  prePrice: 2.40,
-  livePrice: 1.70,
-  edgeVsMarket: 3.1
-};
-
-// هستهٔ Emotion Engine 2.0
-function runEmotionEngine(mode) {
-  const s = DEMO_STATE;
-
-  // فشار لحظه‌ای (۰ تا ۱۰۰)
-  const pressureRaw =
-    (s.xgHome - s.xgAway) * 28 +
-    (s.shotsHome - s.shotsAway) * 6 +
-    (s.dangerousAttacksHome - s.dangerousAttacksAway) * 1.2;
-
-  const pressureScore = Math.max(0, Math.min(100, Math.round(50 + pressureRaw)));
-
-  let pressureLabel;
-  if (pressureScore >= 80) {
-    pressureLabel = "Sustained home siege – market pinned back";
-  } else if (pressureScore >= 60) {
-    pressureLabel = "Persistent home pressure – away side hanging on";
-  } else if (pressureScore >= 40) {
-    pressureLabel = "Balanced but tilting home – volatility risk";
-  } else {
-    pressureLabel = "Thin home edge – fragile control, keep size small";
-  }
-
-  // فشردگی قیمت‌ها بین pre و live
-  const compression = ((s.prePrice / s.livePrice) - 1) * 100;
-
-  let marketMood;
-  if (compression >= 40) {
-    marketMood = "Market has chased the move – late money crowding in.";
-  } else if (compression >= 20) {
-    marketMood = "Market leaning home side but still leaves room for smart orders.";
-  } else {
-    marketMood = "Market slow to react – price still close to opener.";
-  }
-
-  // مود احساسی جمعیت و بازار
-  let crowdMood;
-  if (pressureScore >= 75 && compression >= 30) {
-    crowdMood = "Home side turns from anxious to confident – noise flips into one-way belief.";
-  } else if (pressureScore >= 60) {
-    crowdMood = "Momentum building – home crowd sensing a decisive phase, away bench nervous.";
-  } else if (pressureScore >= 40) {
-    crowdMood = "Both benches alert – one big moment could flip the read entirely.";
-  } else {
-    crowdMood = "Nervous calm – market and crowd still respect all three outcomes.";
-  }
-
-  // پنجرهٔ ترید – چیزی که برای بتینگ‌شاپ و دیسک ترید مهمه
-  let tradeWindow;
-  let tradeRationale;
-
-  if (pressureScore >= 80 && compression < 50) {
-    tradeWindow = "Now — high-conviction window";
-    tradeRationale =
-      "Pressure, xG and volume all align on the home side while price still lags slightly " +
-      "behind the true trend. Ideal spot for sized-up exposure with tight monitoring.";
-  } else if (pressureScore >= 60) {
-    tradeWindow = "Next 60–180s — stagger entries";
-    tradeRationale =
-      "Home pressure is real but market hasn’t fully resolved. Use smaller tickets and staggered " +
-      "entries rather than a single all-in click.";
-  } else if (pressureScore >= 40) {
-    tradeWindow = "Watch only — volatility phase";
-    tradeRationale =
-      "Signals conflict: pressure is rising but not clean, and any next event can reverse the edge. " +
-      "Use this zone to prepare levels, not to add risk.";
-  } else {
-    tradeWindow = "Edge mostly priced — protect P&L";
-    tradeRationale =
-      "Current read is close to market consensus. Focus on risk reduction and exit path rather than new risk.";
-  }
-
-  const phases = [
-    {
-      label: "Balanced opener",
-      minute: "0' – 30'",
-      description:
-        "Market respects all three outcomes. xG and shots are roughly aligned, liquidity deep on both sides."
-    },
-    {
-      label: "Home pressure unlocks",
-      minute: "30' – 72'",
-      description:
-        "Sustained home attacks push xG and dangerous entries higher. Live price starts to compress towards the home side."
-    },
-    {
-      label: "Late-game control",
-      minute: "72' – 90'",
-      description:
-        "After the late home goal, price and sentiment lock into a home-favoured regime. Biggest risk is a chaotic equaliser."
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense AI Suite – Live Match Intelligence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="BetSense AI Suite – Quantum Engine, HBboard, Emotion Index and LiveApe for sharper sports trading and betting intelligence."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #020617;
+      --bg-card-soft: #020617;
+      --border-soft: #1e293b;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent-1: #38bdf8;
+      --accent-2: #a855f7;
+      --accent-3: #22c55e;
+      --accent-4: #f97316;
+      --danger: #f97316;
+      --good: #22c55e;
+      --chip-bg: #020617;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 22px 60px rgba(0, 0, 0, 0.65);
     }
-  ];
 
-  const headline =
-    "Late home goal snaps the match into a new regime – market and mood now move in sync.";
-  const quickStory =
-    "BetSense Emotion Engine 2.0 reads a sustained home surge turning into a one-way phase. " +
-    "Pressure, xG and price compression all support a home-favouring stance, but the trade " +
-    "window is narrow and needs disciplined execution.";
-  const deepStory =
-    "Across the full match, the engine tracks how raw pressure, xG and crowd energy break away " +
-    "from the pre-match baseline. Once the late home goal lands, our regime detector flags a " +
-    "clean structural break – the game no longer behaves like the opener. From this point the " +
-    "priority shifts from hunting entry to managing exit and tail-risk around a possible equaliser.";
+    * {
+      box-sizing: border-box;
+    }
 
-  const tags = [
-    "Regime break",
-    "Sustained home pressure",
-    "Liquid derby fixture",
-    "Late-goal volatility",
-    `Edge +${s.edgeVsMarket.toFixed(1)}% vs market`
-  ];
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 40%, #020617 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
 
-  return {
-    mode,
-    headline,
-    quickStory,
-    deepStory,
-    tags,
-    pressureScore,
-    pressureLabel,
-    crowdMood,
-    marketMood,
-    tradeWindow,
-    tradeRationale,
-    phases,
-    compression: Math.round(compression)
-  };
-}
+    body {
+      min-height: 100vh;
+      padding: 24px 16px 40px;
+    }
 
-// رندر نسخهٔ سریع
-function renderEmotionQuick() {
-  const result = runEmotionEngine("quick");
-  const box = document.getElementById("emotion-output");
-  if (!box) return;
+    @media (min-width: 768px) {
+      body {
+        padding: 32px 40px 60px;
+      }
+    }
 
-  box.innerHTML = `
-    <div class="emotion-v2">
-      <p class="eyebrow">Quick read — Emotion Engine 2.0</p>
-      <h4>${result.headline}</h4>
-      <p>${result.quickStory}</p>
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
 
-      <div class="emotion-v2-grid">
-        <div class="emotion-v2-metric">
-          <p><strong>Real-time pressure</strong></p>
-          <p>${result.pressureLabel}</p>
-          <p>Pressure score: ${result.pressureScore} / 100</p>
-        </div>
-        <div class="emotion-v2-metric">
-          <p><strong>Crowd + market mood</strong></p>
-          <p>${result.crowdMood}</p>
-          <p>Price compression vs opener: ~${result.compression}%</p>
-        </div>
-        <div class="emotion-v2-metric">
-          <p><strong>Trade window</strong></p>
-          <p>${result.tradeWindow}</p>
-          <p>${result.tradeRationale}</p>
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 0% 0%, #38bdf8, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: 0 14px 35px rgba(56, 189, 248, 0.35);
+    }
+
+    .brand-text-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #4ade80;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.23);
+    }
+
+    .pill-live {
+      border-radius: var(--radius-pill);
+      padding: 6px 12px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #bbf7d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    main {
+      display: grid;
+      gap: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: 16px;
+        align-items: flex-start;
+      }
+    }
+
+    .card {
+      border-radius: 24px;
+      background: radial-gradient(circle at top left, #0b1220, #020617 55%);
+      border: 1px solid rgba(30, 64, 175, 0.55);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 20px;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 20px 22px 22px;
+      }
+    }
+
+    .card-soft {
+      border-radius: 20px;
+      background: radial-gradient(circle at top left, #020617, #020617 70%);
+      border: 1px solid rgba(30, 64, 175, 0.4);
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.9);
+      padding: 16px 16px 18px;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      line-height: 1.18;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 30px;
+      }
+    }
+
+    .accent-word {
+      background: linear-gradient(90deg, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .btn-primary,
+    .btn-outline {
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: white;
+      box-shadow: 0 14px 30px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-outline {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-main);
+    }
+
+    .btn-chip-toggle {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      font-size: 12px;
+      padding: 6px 14px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-chip-toggle.active {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #ecfeff;
+      border-color: transparent;
+    }
+
+    .pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-muted);
+    }
+
+    .pill-label .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .pill-label.orange .dot {
+      background: #fb923c;
+    }
+
+    .pill-label.blue .dot {
+      background: #38bdf8;
+    }
+
+    .section-title {
+      font-size: 15px;
+      margin: 0 0 4px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-muted);
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 768px) {
+      .metric-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    .metric {
+      border-radius: 16px;
+      padding: 10px 10px 9px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(30, 64, 175, 0.5);
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .metric-value.small {
+      font-size: 16px;
+    }
+
+    .metric-caption {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 900px) {
+      .grid-2 {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      }
+    }
+
+    .grid-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .odds-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .odds-pill {
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .odds-label {
+      color: var(--text-muted);
+    }
+
+    .odds-value {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .prob-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .prob-pill {
+      border-radius: 14px;
+      padding: 7px 9px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 11px;
+    }
+
+    .prob-label {
+      color: var(--text-muted);
+    }
+
+    .prob-value {
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    .bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .bar-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .bar-track {
+      position: relative;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      overflow: hidden;
+      border: 1px solid rgba(30, 64, 175, 0.6);
+    }
+
+    .bar-fill {
+      position: absolute;
+      inset: 0;
+      transform-origin: left;
+    }
+
+    .bar-fill.home {
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+    }
+
+    .bar-fill.draw {
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    }
+
+    .bar-fill.away {
+      background: linear-gradient(90deg, #f97316, #fb923c);
+    }
+
+    .timeline-label-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .api-box {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+        Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      padding: 10px 11px;
+      border-radius: 14px;
+      background: #020617;
+      border: 1px solid rgba(30, 64, 175, 0.5);
+      max-height: 220px;
+      overflow: auto;
+      white-space: pre;
+    }
+
+    footer {
+      margin-top: 22px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .stack-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    @media (min-width: 768px) {
+      .stack-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    .stack-pill {
+      border-radius: 14px;
+      padding: 7px 9px;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 11px;
+    }
+
+    .stack-pill strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .report-tabs {
+      display: inline-flex;
+      padding: 3px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-top: 4px;
+      gap: 3px;
+    }
+
+    .report-tab {
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 11px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .report-tab.active {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: white;
+    }
+
+    .report-body {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-main);
+      line-height: 1.55;
+    }
+
+    .report-body p {
+      margin: 0 0 6px;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 799px) {
+      .scenario-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .scenario-meta {
+      border-radius: 16px;
+      padding: 10px 11px;
+      background: #020617;
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      font-size: 12px;
+    }
+
+    .scenario-tags {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .scenario-tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-muted);
+    }
+
+    .scenario-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .scenario-badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-muted);
+    }
+
+    .scenario-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .scenario-value {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .scenario-muted {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .scenario-cta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .scenario-pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">B</div>
+        <div>
+          <div class="brand-text-title">BetSense AI Suite</div>
+          <div class="brand-text-sub">
+            Quantum Engine · Live Match Intelligence Stack
+          </div>
         </div>
       </div>
-
-      <p style="margin-top: 0.75rem;">
-        <strong>Tags:</strong> ${result.tags.join(" · ")}
-      </p>
-    </div>
-  `;
-}
-
-// رندر نسخهٔ دیپ
-function renderEmotionDeep() {
-  const result = runEmotionEngine("deep");
-  const box = document.getElementById("emotion-output");
-  if (!box) return;
-
-  const phasesHtml = result.phases
-    .map(
-      (p) => `
-        <li>
-          <strong>${p.label}</strong> (${p.minute}) — ${p.description}
-        </li>
-      `
-    )
-    .join("");
-
-  box.innerHTML = `
-    <div class="emotion-v2">
-      <p class="eyebrow">Deep read — Emotion Engine 2.0</p>
-      <h4>${result.headline}</h4>
-      <p>${result.deepStory}</p>
-
-      <div style="margin: 1.25rem 0;">
-        <h5>Regime &amp; momentum map</h5>
-        <ol class="emotion-phases">
-          ${phasesHtml}
-        </ol>
-      </div>
-
-      <div class="emotion-v2-grid">
-        <div class="emotion-v2-metric">
-          <p><strong>Pressure engine</strong></p>
-          <p>${result.pressureLabel}</p>
-          <p>Composite pressure: ${result.pressureScore} / 100</p>
-        </div>
-        <div class="emotion-v2-metric">
-          <p><strong>Sentiment engine</strong></p>
-          <p>${result.crowdMood}</p>
-          <p>${result.marketMood}</p>
-        </div>
-        <div class="emotion-v2-metric">
-          <p><strong>Execution engine</strong></p>
-          <p>${result.tradeWindow}</p>
-          <p>${result.tradeRationale}</p>
+      <div class="chip-row">
+        <div class="pill-live">
+          <span class="chip-dot"></span>
+          Backend running on Render
         </div>
       </div>
+    </header>
 
-      <p style="margin-top: 0.75rem;">
-        <strong>Tags:</strong> ${result.tags.join(" · ")}
-      </p>
-    </div>
-  `;
-}
+    <main>
+      <!-- HERO + SUITE OVERVIEW -->
+      <section class="hero-grid">
+        <div class="card">
+          <div class="chip-row" style="margin-bottom: 10px;">
+            <div class="chip">
+              <span class="chip-dot"></span>
+              Realtime demo – static sample data
+            </div>
+            <div class="chip">
+              Live engine wired to mock feed
+            </div>
+          </div>
 
-// روی لود صفحه، اگر emotion-output هست، نسخهٔ کوئیک رو نشون بده
-document.addEventListener("DOMContentLoaded", () => {
-  const box = document.getElementById("emotion-output");
-  if (box) {
-    renderEmotionQuick();
+          <h1>
+            One suite.
+            <span class="accent-word">Four unique engines</span>
+            for sharper sports decisions.
+          </h1>
+          <p class="muted" style="margin-bottom: 14px;">
+            BetSense AI Suite connects BetSense Engine, HBboard, Emotion Index
+            and LiveApe into one operator-ready stack — giving traders,
+            partners and investors a single view of how your models already
+            behave in live markets.
+          </p>
+
+          <div class="stack-label">Why this stack</div>
+          <div class="stack-grid">
+            <div class="stack-pill">
+              <strong>4 integrated modules</strong>
+              Engine · Emotion · Trading · Connectivity
+            </div>
+            <div class="stack-pill">
+              <strong>API-first architecture</strong>
+              Drop-in layer on top of your feed
+            </div>
+            <div class="stack-pill">
+              <strong>Live-match analytics</strong>
+              xG · micro-moments · edge tracking
+            </div>
+            <div class="stack-pill">
+              <strong>Investors &amp; trading teams</strong>
+              Built for desks, boards &amp; pilots
+            </div>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+              margin-top: 16px;
+              align-items: center;
+            "
+          >
+            <button class="btn-primary" onclick="scrollToId('suite')">
+              Explore BetSense AI Suite ⚡
+            </button>
+            <button class="btn-outline" onclick="scrollToId('api')">
+              Connect your live data (API)
+            </button>
+          </div>
+        </div>
+
+        <div class="card-soft" id="suite">
+          <h2>Stack snapshot – demo match</h2>
+          <p class="muted" style="margin-bottom: 10px;">
+            Single derby fixture, late home goal, liquidity high. All four
+            engines read the same moment in different ways.
+          </p>
+
+          <div class="tag-row">
+            <span class="tag">EPL-2025-001</span>
+            <span class="tag">Chelsea vs Arsenal (demo)</span>
+            <span class="tag">Minute 72 – home goal</span>
+            <span class="tag">High-liquidity market</span>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <span class="pill-label blue">
+              <span class="dot"></span> Engine – xG &amp; live stats
+            </span>
+            <span class="pill-label">
+              <span class="dot"></span> Emotion – crowd &amp; social
+            </span>
+            <span class="pill-label orange">
+              <span class="dot"></span> Edge – vs market odds
+            </span>
+          </div>
+
+          <div class="metric-grid" style="margin-top: 14px;">
+            <div class="metric">
+              <div class="metric-label">Home win probability</div>
+              <div class="metric-value" id="metricHomeProb">68% → 74%</div>
+              <div class="metric-caption">Pre 2.40 · Post 1.70</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Emotion Index view</div>
+              <div class="metric-value small" id="metricEmotion">
+                Cautious → Confident
+              </div>
+              <div class="metric-caption">
+                Crowd surge, feeds flip with the goal.
+              </div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">BetSense edge vs market</div>
+              <div
+                class="metric-value small"
+                id="metricEdge"
+                style="color: var(--good);"
+              >
+                +3.1% vs market
+              </div>
+              <div class="metric-caption">Edge window: 180s</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Risk stance</div>
+              <div class="metric-value small" id="metricRisk">
+                Comfortable, monitor comeback
+              </div>
+              <div class="metric-caption">Trading desk summary</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENGINE + LIVE STATS + ODDS -->
+      <section class="grid-2">
+        <div class="card-soft" id="engine">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 8px;
+              margin-bottom: 8px;
+            "
+          >
+            <h2 style="margin-bottom: 2px;">BetSense Quantum Engine – live demo</h2>
+            <span class="pill-live">
+              <span class="chip-dot"></span>
+              Backend running on Render
+            </span>
+          </div>
+          <p class="muted">
+            One view for live xG, shots, dangerous possessions and corners from
+            the current demo feed.
+          </p>
+
+          <div class="metric-grid" style="margin-top: 12px;">
+            <div class="metric">
+              <div class="metric-label">xG (home model)</div>
+              <div class="metric-value" id="statXg">1.32</div>
+              <div class="metric-caption">Model only, single fixture</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Shots on target</div>
+              <div class="metric-value" id="statShotsOn">4</div>
+              <div class="metric-caption">Home side pressure</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Dangerous attacks</div>
+              <div class="metric-value" id="statDanger">28</div>
+              <div class="metric-caption">Box entries &amp; big moves</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Corners</div>
+              <div class="metric-value" id="statCorners">5</div>
+              <div class="metric-caption">Sustained territory</div>
+            </div>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-top: 12px;
+              flex-wrap: wrap;
+              gap: 8px;
+            "
+          >
+            <div class="muted" style="font-size: 11px;">
+              Source: <strong>demo</strong> · Demo payload (fallback)
+            </div>
+            <button class="btn-chip-toggle" onclick="refreshDemo()">
+              ⟳ Refresh snapshot
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-stack">
+          <div class="card-soft">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+              "
+            >
+              <h2 class="section-title">Pre-match &amp; live odds</h2>
+              <button class="btn-chip-toggle" onclick="refreshOdds()">
+                ⟳ Refresh
+              </button>
+            </div>
+            <p class="muted">
+              Market view before kick-off and in-play. When live data is
+              unavailable, BetSense falls back to internal demo odds.
+            </p>
+
+            <div class="odds-row">
+              <div class="odds-pill">
+                <span class="odds-label">Home win</span>
+                <span class="odds-value" id="oddsHome">1.85</span>
+              </div>
+              <div class="odds-pill">
+                <span class="odds-label">Draw</span>
+                <span class="odds-value" id="oddsDraw">3.20</span>
+              </div>
+              <div class="odds-pill">
+                <span class="odds-label">Away win</span>
+                <span class="odds-value" id="oddsAway">4.50</span>
+              </div>
+            </div>
+
+            <div class="muted" style="font-size: 11px; margin-top: 8px;">
+              API did not return real odds → <strong>fallback to demo</strong>
+              odds.
+            </div>
+          </div>
+
+          <div class="card-soft" id="probabilities">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                gap: 8px;
+                align-items: center;
+              "
+            >
+              <h2 class="section-title">Win probabilities</h2>
+              <button class="btn-chip-toggle" onclick="refreshProbabilities()">
+                ⟳ Refresh
+              </button>
+            </div>
+            <p class="muted">
+              Implied probabilities vs market, normalised to 100%. Perfect for
+              visualising how the model reads the current match context.
+            </p>
+
+            <div class="prob-row">
+              <div class="prob-pill">
+                <div class="prob-label">Home win</div>
+                <div class="prob-value" id="probHome">54%</div>
+              </div>
+              <div class="prob-pill">
+                <div class="prob-label">Draw</div>
+                <div class="prob-value" id="probDraw">24%</div>
+              </div>
+              <div class="prob-pill">
+                <div class="prob-label">Away win</div>
+                <div class="prob-value" id="probAway">22%</div>
+              </div>
+            </div>
+
+            <div class="muted" style="font-size: 11px; margin-top: 8px;">
+              Sum: 100% · Demo probabilities (fallback) · Output is illustrative
+              only
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMOTION ENGINE V1 (QUICK / DEEP) -->
+      <section class="grid-2">
+        <div class="card-soft" id="emotion-v1">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              gap: 8px;
+              align-items: center;
+              margin-bottom: 6px;
+            "
+          >
+            <h2>Emotion Engine – Quick &amp; Deep</h2>
+            <span class="pill-label">
+              <span class="dot"></span> AI output · demo language
+            </span>
+          </div>
+          <p class="muted" style="margin-bottom: 10px;">
+            Turn live-match chaos into a narrative your traders, investors and
+            marketing teams can act on in seconds.
+          </p>
+
+          <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+            <button
+              id="btnQuickEmotion"
+              class="btn-chip-toggle active"
+              onclick="switchEmotionMode('quick')"
+            >
+              Quick Emotion
+            </button>
+            <button
+              id="btnDeepEmotion"
+              class="btn-chip-toggle"
+              onclick="switchEmotionMode('deep')"
+            >
+              Deep Emotion
+            </button>
+          </div>
+
+          <div id="emotionOutputQuick" class="card-soft">
+            <div class="stack-label">Quick read: home confidence unlocks</div>
+            <p class="muted" id="emotionQuickText">
+              The late home goal snaps the market into a new regime. Home odds
+              compress sharply while draw and away prices drift. Emotion Index
+              sees a clear shift from nervous energy to confident momentum on
+              the home side, with social and in-stadium signals amplifying the
+              move rather than contradicting it.
+            </p>
+          </div>
+
+          <div id="emotionOutputDeep" class="card-soft" style="display: none;">
+            <div class="stack-label">Deep read: regime change confirmed</div>
+            <p class="muted" id="emotionDeepText">
+              Order-book depth shows buy interest clustered around the new home
+              price, with little appetite to fade the move. Social feeds pivot
+              from frustration to celebration, while in-stadium noise metrics
+              spike and remain elevated. The engine flags a stable regime change
+              rather than a transient spike — risk teams can treat the new home
+              probability as sticky unless a second goal or red card arrives.
+            </p>
+            <div class="tag-row" id="emotionDeepTags">
+              <span class="tag">Regime break</span>
+              <span class="tag">Sticky confidence</span>
+              <span class="tag">Noisy retail sidelined</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROBABILITY TIMELINE -->
+        <div class="card-soft" id="timeline">
+          <h2 class="section-title">Probability Timeline</h2>
+          <p class="muted">
+            Visualise how win probabilities evolve from 0' to 90' in a single
+            match. In production, this runs directly on your live feed.
+          </p>
+
+          <div
+            style="
+              display: inline-flex;
+              gap: 6px;
+              margin-top: 8px;
+              flex-wrap: wrap;
+            "
+          >
+            <span class="tag">Balanced opener</span>
+            <span class="tag">Home pressure</span>
+            <span class="tag">Away comeback risk</span>
+          </div>
+
+          <div class="bar-row">
+            <div>
+              <div class="bar-label">Home win %</div>
+              <div class="bar-track">
+                <div
+                  class="bar-fill home"
+                  id="barHome"
+                  style="transform: scaleX(0.74);"
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div class="bar-label">Draw %</div>
+              <div class="bar-track">
+                <div
+                  class="bar-fill draw"
+                  id="barDraw"
+                  style="transform: scaleX(0.18);"
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div class="bar-label">Away win %</div>
+              <div class="bar-track">
+                <div
+                  class="bar-fill away"
+                  id="barAway"
+                  style="transform: scaleX(0.08);"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-label-row">
+            <span>0'</span>
+            <span>Late home goal, 72'</span>
+            <span>90'</span>
+          </div>
+
+          <div class="muted" style="font-size: 11px; margin-top: 6px;">
+            Mode: Balanced opener – early swings are modest, model still
+            respects all three outcomes until the late goal locks in home
+            momentum.
+          </div>
+        </div>
+      </section>
+
+      <!-- EMOTION ENGINE V2 – SCENARIO BUILDER -->
+      <section class="card-soft" id="emotion-v2">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: center;
+          "
+        >
+          <h2>Emotion Engine V2 – Execution-ready lens</h2>
+          <button class="btn-chip-toggle" onclick="nextScenario()">
+            🎯 Next scenario
+          </button>
+        </div>
+        <p class="muted">
+          Version 2 adds execution windows, risk posture and messaging cues on
+          top of the raw Emotion Index — built so traders, desks and marketing
+          teams can all read the same moment in one glance.
+        </p>
+
+        <div class="scenario-grid">
+          <div class="scenario-meta" id="scenarioMeta">
+            <div class="scenario-badge-row">
+              <span class="scenario-badge" id="scenarioKey">Key scenario: Derby match, late home goal, odds move from 2.40 to 1.70.</span>
+            </div>
+
+            <div class="scenario-label">Headline</div>
+            <div class="scenario-value" id="scenarioHeadline">
+              Home side turns pressure into a decisive advantage, with odds and
+              market mood moving in sync.
+            </div>
+
+            <div class="scenario-label">Trading summary</div>
+            <div class="scenario-muted" id="scenarioSummary">
+              • BetSense Engine highlights a clear break in the probability
+              trend after the key event.<br />
+              • Price move is supported by volume and sentiment, not just
+              retail noise.<br />
+              • Risk position is comfortable but requires monitoring if a second
+              goal arrives.
+            </div>
+
+            <div class="scenario-tags" id="scenarioTags">
+              <span class="scenario-tag">Board-ready narrative</span>
+              <span class="scenario-tag">Desk summary</span>
+              <span class="scenario-tag">Post-match pack</span>
+            </div>
+          </div>
+
+          <div class="scenario-meta">
+            <div class="scenario-label">Execution engine view</div>
+            <div class="scenario-value" id="scenarioExec">
+              Trade window: 90–240 seconds after goal
+            </div>
+            <div class="scenario-muted" id="scenarioExecDetail">
+              Market impact is strongest while crowd and social sentiment are
+              still repricing the new reality. Engine suggests scaling in
+              rather than all-in fills.
+            </div>
+
+            <div style="margin-top: 8px;">
+              <div class="scenario-label">Communication cues</div>
+              <div class="scenario-muted" id="scenarioComms">
+                Desk can brief management as “controlled exposure with positive
+                skew”, while marketing frames the story as “home confidence
+                finally pays off”.
+              </div>
+            </div>
+
+            <div class="scenario-cta-row">
+              <div class="scenario-pill" id="scenarioTone">
+                Tone: Confident · Not euphoric
+              </div>
+              <button class="btn-chip-toggle" onclick="nextScenario()">
+                ↻ Shuffle scenario
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI MATCH REPORT + LIVE API HOOK -->
+      <section class="grid-2">
+        <div class="card-soft" id="reports">
+          <h2>AI Match Report — Simple &amp; Full</h2>
+          <p class="muted">
+            Generate management-ready or investor-ready match summaries in one
+            click from the same live context. In production this connects
+            directly to your reporting stack and PDF export.
+          </p>
+
+          <div style="margin-top: 8px; margin-bottom: 4px;">
+            <div class="scenario-label">1. Define the report focus</div>
+            <div class="scenario-value" id="reportFocus">
+              Derby match, late goal for home side, odds move from 2.40 to
+              1.70.
+            </div>
+          </div>
+
+          <div>
+            <div class="scenario-label">2. Choose report depth</div>
+            <div class="report-tabs">
+              <button
+                id="tabSimple"
+                class="report-tab active"
+                onclick="switchReport('simple')"
+              >
+                Simple report — 1-page summary
+              </button>
+              <button
+                id="tabFull"
+                class="report-tab"
+                onclick="switchReport('full')"
+              >
+                Full report — investor-level detail
+              </button>
+            </div>
+          </div>
+
+          <div class="report-body" id="reportBodySimple">
+            <p>
+              <strong>Key scenario.</strong> Home side finally converts
+              sustained pressure into a late goal, with match odds moving from
+              2.40 to 1.70 and implied probability from 41% to 59%.
+            </p>
+            <p>
+              <strong>Headline.</strong> Market and momentum align as home goal
+              locks in a new probability regime.
+            </p>
+            <p>
+              <strong>Trading summary.</strong> BetSense Engine confirms the
+              break in trend, Emotion Index validates that sentiment supports
+              the move, and LiveApe shows no structural stress in liquidity.
+              Desk treats the new home price as fair but keeps some capacity for
+              a second goal or late away push.
+            </p>
+          </div>
+
+          <div
+            class="report-body"
+            id="reportBodyFull"
+            style="display: none;"
+          >
+            <p>
+              <strong>Market micro-structure.</strong> Order-book depth
+              thickens on the home side post-goal, with spreads tightening and
+              passive liquidity refilling quickly. Retail flows follow
+              professional money rather than front-running it.
+            </p>
+            <p>
+              <strong>Sentiment stack.</strong> Fan audio, social text and
+              price action all move in the same direction, producing a strong
+              “alignment score” on the Emotion Index. No material pockets of
+              dissent or contrarian narratives are detected.
+            </p>
+            <p>
+              <strong>Risk framing.</strong> From a board perspective, the
+              position is “controlled upside with capped downside”: exposure is
+              meaningful but backed by data and sentiment. Scenario analysis
+              shows only a narrow cluster of paths where the new price would be
+              judged aggressive ex-post.
+            </p>
+            <p>
+              <strong>Investor note.</strong> Over a season-long sample, this
+              type of regime-change event has historically delivered a positive
+              contribution to P&amp;L when managed with the same ruleset,
+              strengthening confidence in the engine’s live-use readiness.
+            </p>
+          </div>
+        </div>
+
+        <div class="card-soft" id="api">
+          <h2>Live API hook — plug your feeds in</h2>
+          <p class="muted">
+            In production, the same views run directly on your live prices,
+            stats and social data via a single API layer. This demo runs on
+            static sample data plus a live mock engine, but the architecture is
+            designed to sit on top of your existing stack.
+          </p>
+
+          <ul class="muted" style="font-size: 12px; padding-left: 18px;">
+            <li>Trading teams and risk &amp; PnL desks</li>
+            <li>Executive and investor reporting</li>
+            <li>External partners and white-label clients</li>
+          </ul>
+
+          <p class="muted" style="font-size: 11px; margin-top: 8px;">
+            For API documentation and pilot access, use the contact section
+            below or the <strong>support@betsense.casino</strong> address.
+          </p>
+
+          <div class="api-box" id="apiSample">
+POST /api/live-input
+Content-Type: application/json
+X-API-Key: YOUR_KEY_HERE
+
+{
+  "matchId": "EPL-2025-001",
+  "minute": 72,
+  "homeTeam": "Chelsea",
+  "awayTeam": "Arsenal",
+  "stats": {
+    "shotsHome": 12,
+    "shotsAway": 7,
+    "xgHome": 2.1,
+    "xgAway": 0.9
+  },
+  "marketOdds": {
+    "homeWin": 1.70,
+    "draw": 3.80,
+    "awayWin": 5.40
+  },
+  "social": {
+    "homeSentiment": 0.81,
+    "awaySentiment": 0.32,
+    "crowdNoise": 0.77
   }
-});
-</script>
-  </body>
+}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      BetSense AI Suite – demo environment. All numbers and narratives are
+      illustrative only and do not constitute betting advice or an offer.
+    </footer>
+  </div>
+
+  <script>
+    // --- Demo data ---------------------------------------------------------
+    const demoState = {
+      stats: {
+        xgHome: 1.32,
+        shotsOn: 4,
+        dangerous: 28,
+        corners: 5,
+      },
+      odds: {
+        home: 1.85,
+        draw: 3.2,
+        away: 4.5,
+      },
+      probs: {
+        home: 54,
+        draw: 24,
+        away: 22,
+      },
+    };
+
+    const scenarios = [
+      {
+        key: "Key scenario: Derby match, late home goal, odds move from 2.40 to 1.70.",
+        headline:
+          "Home side turns pressure into a decisive advantage, with odds and market mood moving in sync.",
+        summary:
+          "• BetSense Engine highlights a clear break in the probability trend after the key event.\n" +
+          "• Price move is supported by volume and sentiment, not just retail noise.\n" +
+          "• Risk position is comfortable but requires monitoring if a second goal arrives.",
+        tags: ["Board-ready narrative", "Desk summary", "Post-match pack"],
+        exec: "Trade window: 90–240 seconds after goal",
+        execDetail:
+          "Market impact is strongest while crowd and social sentiment are still repricing the new reality. Engine suggests scaling in rather than all-in fills.",
+        comms:
+          "Desk can brief management as “controlled exposure with positive skew”, while marketing frames the story as “home confidence finally pays off”.",
+        tone: "Tone: Confident · Not euphoric",
+      },
+      {
+        key: "Key scenario: Away red card, price over-reacts before stabilising.",
+        headline:
+          "Market initially overshoots on the home side before discipline and depth pull prices back into a sustainable range.",
+        summary:
+          "• Initial jump in home probability is sharper than historical patterns for similar events.\n" +
+          "• Secondary flows show professional money fading the first move.\n" +
+          "• Final fair price lands between the two extremes, with risk teams clipping peak exposure.",
+        tags: ["Volatility control", "Intraday note", "Risk governance"],
+        exec: "Trade window: 30–120 seconds after red card",
+        execDetail:
+          "Engine recommends partial profit-taking into the spike while keeping asymmetric upside if momentum continues.",
+        comms:
+          "Risk can describe the event as “controlled de-risking during volatility spike” for board reports.",
+        tone: "Tone: Calm · Emphasis on discipline",
+      },
+      {
+        key: "Key scenario: Quiet game, soft drift towards away side.",
+        headline:
+          "Lack of home threat slowly shifts the market’s centre of gravity without any single headline event.",
+        summary:
+          "• BetSense Engine tracks a steady accumulation of small away edges.\n" +
+          "• Emotion Index remains muted – no crowd panic, just growing impatience.\n" +
+          "• Edge is more about undervalued control than highlight-reel moments.",
+        tags: ["Long-horizon alpha", "Coaching insight", "Pattern library"],
+        exec: "Trade window: Entire 2nd half, size small but persistent",
+        execDetail:
+          "Engine recommends incremental positioning rather than large one-off trades, reflecting the slow-burn nature of the edge.",
+        comms:
+          "Analysts can frame this as “control-driven edge” in post-match reviews.",
+        tone: "Tone: Patient · Process-focused",
+      },
+    ];
+
+    let scenarioIndex = 0;
+
+    // --- Helpers -----------------------------------------------------------
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function scrollToId(id) {
+      const el = $(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function refreshDemo() {
+      // simple mock "wiggle" on stats
+      demoState.stats.xgHome = +(1.2 + Math.random() * 0.4).toFixed(2);
+      demoState.stats.shotsOn = 3 + Math.floor(Math.random() * 3);
+      demoState.stats.dangerous = 24 + Math.floor(Math.random() * 8);
+      demoState.stats.corners = 4 + Math.floor(Math.random() * 3);
+      updateStatsView();
+    }
+
+    function refreshOdds() {
+      const hBase = 1.7 + Math.random() * 0.25;
+      const dBase = 3.1 + Math.random() * 0.4;
+      const aBase = 4.2 + Math.random() * 0.6;
+      demoState.odds.home = +hBase.toFixed(2);
+      demoState.odds.draw = +dBase.toFixed(2);
+      demoState.odds.away = +aBase.toFixed(2);
+      updateOddsView();
+    }
+
+    function refreshProbabilities() {
+      // random but sum ~100
+      const home = 60 + Math.random() * 10;
+      const draw = 15 + Math.random() * 10;
+      const away = 100 - home - draw;
+      demoState.probs.home = Math.round(home);
+      demoState.probs.draw = Math.round(draw);
+      demoState.probs.away = Math.max(5, Math.round(away));
+      updateProbView();
+      updateTimelineBars();
+    }
+
+    function updateStatsView() {
+      if ($("statXg")) $("statXg").textContent = demoState.stats.xgHome;
+      if ($("statShotsOn"))
+        $("statShotsOn").textContent = demoState.stats.shotsOn;
+      if ($("statDanger"))
+        $("statDanger").textContent = demoState.stats.dangerous;
+      if ($("statCorners"))
+        $("statCorners").textContent = demoState.stats.corners;
+    }
+
+    function updateOddsView() {
+      if ($("oddsHome")) $("oddsHome").textContent = demoState.odds.home.toFixed(2);
+      if ($("oddsDraw")) $("oddsDraw").textContent = demoState.odds.draw.toFixed(2);
+      if ($("oddsAway")) $("oddsAway").textContent = demoState.odds.away.toFixed(2);
+    }
+
+    function updateProbView() {
+      if ($("probHome")) $("probHome").textContent = demoState.probs.home + "%";
+      if ($("probDraw")) $("probDraw").textContent = demoState.probs.draw + "%";
+      if ($("probAway")) $("probAway").textContent = demoState.probs.away + "%";
+    }
+
+    function updateTimelineBars() {
+      const total =
+        demoState.probs.home + demoState.probs.draw + demoState.probs.away || 1;
+      const homeScale = demoState.probs.home / total;
+      const drawScale = demoState.probs.draw / total;
+      const awayScale = demoState.probs.away / total;
+
+      if ($("barHome"))
+        $("barHome").style.transform = "scaleX(" + homeScale.toFixed(2) + ")";
+      if ($("barDraw"))
+        $("barDraw").style.transform = "scaleX(" + drawScale.toFixed(2) + ")";
+      if ($("barAway"))
+        $("barAway").style.transform = "scaleX(" + awayScale.toFixed(2) + ")";
+    }
+
+    // --- Emotion V1 --------------------------------------------------------
+    function switchEmotionMode(mode) {
+      const quickBox = $("emotionOutputQuick");
+      const deepBox = $("emotionOutputDeep");
+      const btnQuick = $("btnQuickEmotion");
+      const btnDeep = $("btnDeepEmotion");
+
+      if (!quickBox || !deepBox || !btnQuick || !btnDeep) return;
+
+      if (mode === "quick") {
+        quickBox.style.display = "block";
+        deepBox.style.display = "none";
+        btnQuick.classList.add("active");
+        btnDeep.classList.remove("active");
+      } else {
+        quickBox.style.display = "none";
+        deepBox.style.display = "block";
+        btnQuick.classList.remove("active");
+        btnDeep.classList.add("active");
+      }
+    }
+
+    // --- Emotion V2 scenarios ---------------------------------------------
+    function applyScenario(s) {
+      if (!s) return;
+      if ($("scenarioKey")) $("scenarioKey").textContent = s.key;
+      if ($("scenarioHeadline"))
+        $("scenarioHeadline").textContent = s.headline;
+      if ($("scenarioSummary"))
+        $("scenarioSummary").innerHTML = s.summary.replace(/\n/g, "<br />");
+      if ($("scenarioExec")) $("scenarioExec").textContent = s.exec;
+      if ($("scenarioExecDetail"))
+        $("scenarioExecDetail").textContent = s.execDetail;
+      if ($("scenarioComms")) $("scenarioComms").textContent = s.comms;
+      if ($("scenarioTone")) $("scenarioTone").textContent = s.tone;
+
+      const tagContainer = $("scenarioTags");
+      if (tagContainer) {
+        tagContainer.innerHTML = "";
+        s.tags.forEach((t) => {
+          const span = document.createElement("span");
+          span.className = "scenario-tag";
+          span.textContent = t;
+          tagContainer.appendChild(span);
+        });
+      }
+    }
+
+    function nextScenario() {
+      scenarioIndex = (scenarioIndex + 1) % scenarios.length;
+      applyScenario(scenarios[scenarioIndex]);
+    }
+
+    // --- Reports -----------------------------------------------------------
+    function switchReport(mode) {
+      const bodySimple = $("reportBodySimple");
+      const bodyFull = $("reportBodyFull");
+      const tabSimple = $("tabSimple");
+      const tabFull = $("tabFull");
+      if (!bodySimple || !bodyFull || !tabSimple || !tabFull) return;
+
+      if (mode === "simple") {
+        bodySimple.style.display = "block";
+        bodyFull.style.display = "none";
+        tabSimple.classList.add("active");
+        tabFull.classList.remove("active");
+      } else {
+        bodySimple.style.display = "none";
+        bodyFull.style.display = "block";
+        tabSimple.classList.remove("active");
+        tabFull.classList.add("active");
+      }
+    }
+
+    // --- Initial load ------------------------------------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+      updateStatsView();
+      updateOddsView();
+      updateProbView();
+      updateTimelineBars();
+      applyScenario(scenarios[0]);
+      switchEmotionMode("quick");
+      switchReport("simple");
+    });
+  </script>
+</body>
 </html>
