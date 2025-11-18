@@ -1,175 +1,1287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>BetSense AI – Live Match Feed (Real API)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>BetSense Live Match Desk – Simulation Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #02091a;
+      --card: #020617;
+      --border: #1f2937;
+      --border-soft: #111827;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --accent: #38bdf8;
+      --accent2: #a855f7;
+      --accent3: #22c55e;
+      --danger: #fb7185;
+      --warn: #fbbf24;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 60px rgba(15, 23, 42, 0.9);
+      --shadow-subtle: 0 10px 40px rgba(15, 23, 42, 0.7);
+    }
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #020617;
-            font-family: Arial, sans-serif;
-            color: #e2e8f0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .header {
-            padding: 18px;
-            text-align: center;
-            background: #0f172a;
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom: 1px solid #1e293b;
-        }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #020617 55%, #000 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
 
-        .container {
-            padding: 16px;
-        }
+    .page {
+      min-height: 100vh;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px 14px 40px;
+    }
 
-        .card {
-            background: #0f172a;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            border: 1px solid #1e293b;
-        }
+    @media (min-width: 768px) {
+      .page {
+        padding: 28px 22px 52px;
+      }
+    }
 
-        .title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
 
-        .sub {
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 8px;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .data-box {
-            padding: 12px;
-            border-radius: 10px;
-            background: #1e293b;
-            margin-bottom: 12px;
-        }
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0% 0%, #4ade80, #22d3ee, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4),
+        0 16px 40px rgba(15, 23, 42, 0.9);
+    }
 
-        .label {
-            font-size: 13px;
-            color: #94a3b8;
-        }
+    .brand-logo span {
+      font-weight: 800;
+      font-size: 20px;
+      color: #0b1120;
+    }
 
-        .value {
-            font-size: 16px;
-            font-weight: bold;
-            color: #f1f5f9;
-        }
+    .brand-text-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
 
-        .loader {
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            opacity: 0.7;
-        }
-    </style>
+    .brand-text-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .status-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.65);
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.2), #020617);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #bae6fd;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    .header-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .nav-link {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      color: var(--text-soft);
+      text-decoration: none;
+    }
+
+    .nav-link-active {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #020617;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    /* Layout */
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, #020617, #020617 60%, #020617);
+      padding: 14px 12px 12px;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    /* Match info */
+
+    .match-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .match-teams {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .match-meta {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 3px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.16), #020617);
+    }
+
+    .mode-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: transparent;
+      color: var(--text-soft);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #020617;
+      font-weight: 600;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: #020617;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .pill-dot-warn {
+      background: #fbbf24;
+    }
+
+    .pill-dot-danger {
+      background: #fb7185;
+    }
+
+    /* Metrics */
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .metric-box {
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, #020617, #020617);
+      padding: 8px 9px;
+      font-size: 11px;
+    }
+
+    .metric-label {
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .metric-sub {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .metric-value-green {
+      color: #4ade80;
+    }
+
+    .metric-value-blue {
+      color: #38bdf8;
+    }
+
+    .metric-value-amber {
+      color: #fbbf24;
+    }
+
+    .metric-value-red {
+      color: #fb7185;
+    }
+
+    /* Controls */
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 5px 11px;
+      background: #020617;
+      color: var(--text-soft);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(148, 163, 184, 0.8);
+      color: var(--text);
+    }
+
+    .btn-ghost-primary {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #020617;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    .btn-ghost-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-ghost .icon {
+      font-size: 13px;
+    }
+
+    .small-muted {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    /* Timeline / status */
+
+    .timeline {
+      margin-top: 10px;
+    }
+
+    .timeline-bars {
+      display: grid;
+      gap: 6px;
+      font-size: 10px;
+    }
+
+    .timeline-row-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+
+    .timeline-bar-track {
+      height: 6px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid #1f2937;
+      overflow: hidden;
+    }
+
+    .timeline-bar-fill-home {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+    }
+
+    .timeline-bar-fill-draw {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    }
+
+    .timeline-bar-fill-away {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #fb923c, #f97316);
+    }
+
+    .timeline-axis {
+      font-size: 9px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .status-highlight {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    /* Right column */
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .event-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.12);
+      background: radial-gradient(circle at top, rgba(248, 250, 252, 0.08), #020617);
+      margin-top: 4px;
+    }
+
+    .event-icon {
+      font-size: 13px;
+    }
+
+    .note-box {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .note-box strong {
+      color: #e5e7eb;
+    }
+
+    .list {
+      margin-top: 4px;
+      padding-left: 14px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .list li {
+      margin-bottom: 2px;
+    }
+
+    .label-inline {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .value-inline {
+      font-size: 11px;
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: var(--text-soft);
+    }
+
+    footer {
+      margin-top: 18px;
+      font-size: 10px;
+      color: var(--text-soft);
+      text-align: left;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="header">Live Match Feed – Real API</div>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo"><span>B</span></div>
+        <div>
+          <div class="brand-text-title">BetSense Live Match Desk</div>
+          <div class="brand-text-sub">Simulation Engine · Minute · Event · Hybrid</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span id="feedStatusLabel">Simulation feed · demo mode</span>
+        </div>
+        <nav class="header-nav">
+          <a href="index.html" class="nav-link">Suite overview</a>
+          <span class="nav-link nav-link-active">Live match desk</span>
+        </nav>
+      </div>
+    </header>
 
-    <div class="container">
-
-        <div class="card">
-            <div class="title">Match Info</div>
-            <div id="match-info">Loading...</div>
+    <main class="grid-main">
+      <!-- LEFT COLUMN: MAIN MATCH VIEW -->
+      <section class="card">
+        <div class="match-header">
+          <div>
+            <div class="match-teams" id="matchTeams">Chelsea vs Arsenal</div>
+            <div class="match-meta">
+              <span id="matchComp">EPL · Demo fixture</span> ·
+              <span id="matchMinuteLabel">Minute 65</span> ·
+              <span id="matchScoreLabel">1–0</span>
+            </div>
+          </div>
+          <div class="mode-toggle">
+            <button class="mode-btn active" id="btnModeMinute">Minute-by-minute</button>
+            <button class="mode-btn" id="btnModeEvent">Event-by-event</button>
+            <button class="mode-btn" id="btnModeHybrid">Hybrid</button>
+          </div>
         </div>
 
-        <div class="card">
-            <div class="title">Live Metrics</div>
-
-            <div class="sub">xG (Expected Goals)</div>
-            <div class="data-box">
-                <div class="label">Home xG</div>
-                <div class="value" id="xg-home">–</div>
-            </div>
-
-            <div class="data-box">
-                <div class="label">Away xG</div>
-                <div class="value" id="xg-away">–</div>
-            </div>
-
-            <div class="sub">Emotion Index (Market)</div>
-            <div class="data-box">
-                <div class="label">Emotion Score</div>
-                <div class="value" id="emotion-score">–</div>
-            </div>
-
-            <div class="sub">Momentum</div>
-            <div class="data-box">
-                <div class="label">Current Momentum</div>
-                <div class="value" id="momentum">–</div>
-            </div>
+        <div class="pill-row">
+          <span class="pill">
+            <span class="pill-dot"></span> Simulation engine – offline demo
+          </span>
+          <span class="pill">
+            <span class="pill-dot pill-dot-warn"></span> Built for desks, boards & investors
+          </span>
+          <span class="pill">
+            <span class="pill-dot pill-dot-danger"></span> Not a betting site · No real bets
+          </span>
         </div>
 
-        <div class="card">
-            <div class="title">Live Odds</div>
-
-            <div class="data-box">
-                <div class="label">Home</div>
-                <div class="value" id="odds-home">–</div>
-            </div>
-
-            <div class="data-box">
-                <div class="label">Draw</div>
-                <div class="value" id="odds-draw">–</div>
-            </div>
-
-            <div class="data-box">
-                <div class="label">Away</div>
-                <div class="value" id="odds-away">–</div>
-            </div>
+        <!-- METRICS GRID -->
+        <div class="metrics-grid" style="margin-top:10px">
+          <div class="metric-box">
+            <div class="metric-label">xG (Home · Away)</div>
+            <div class="metric-value metric-value-blue" id="metricXgPair">1.20 · 0.80</div>
+            <div class="metric-sub">Model view up to current minute</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Shots on target (H · A)</div>
+            <div class="metric-value metric-value-green" id="metricShotsPair">8 · 5</div>
+            <div class="metric-sub">Pressure & threat balance</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Dangerous attacks (H · A)</div>
+            <div class="metric-value metric-value-amber" id="metricDangerPair">23 · 14</div>
+            <div class="metric-sub">Final-third & box entries</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Corners (H · A)</div>
+            <div class="metric-value" id="metricCornersPair">5 · 3</div>
+            <div class="metric-sub">Territory & set-piece load</div>
+          </div>
         </div>
 
-        <div class="card">
-            <div class="title">Feed Status</div>
-            <div class="loader" id="status">Waiting for data…</div>
+        <!-- ODDS + PROBABILITIES -->
+        <div class="metrics-grid" style="margin-top:10px">
+          <div class="metric-box">
+            <div class="metric-label">Market odds (1 · X · 2)</div>
+            <div class="metric-value" id="metricOdds">1.85 · 3.20 · 4.50</div>
+            <div class="metric-sub">Illustrative market snapshot</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Implied win probabilities</div>
+            <div class="metric-value" id="metricProbs">52% · 27% · 21%</div>
+            <div class="metric-sub">Normalised to 100% (demo)</div>
+          </div>
         </div>
-    </div>
 
-    <script>
-        async function loadFeed() {
-            try {
-                const res = await fetch("https://api.b365api.com/v3/events/live?sport_id=1&token=demo");
-                const json = await res.json();
+        <!-- CONTROLS -->
+        <div class="controls-row">
+          <button class="btn-ghost btn-ghost-primary" id="btnPlayPause">
+            <span class="icon" id="iconPlayPause">▶</span>
+            <span id="labelPlayPause">Play simulation</span>
+          </button>
+          <button class="btn-ghost" id="btnNextFrame">
+            <span class="icon">⏭</span> Next step
+          </button>
+          <button class="btn-ghost" id="btnReset">
+            <span class="icon">⟲</span> Reset
+          </button>
+          <span class="small-muted" id="frameInfoLabel">
+            Frame 1 / 8 · Mode: Minute-by-minute
+          </span>
+        </div>
 
-                document.getElementById("status").innerText = "Connected ✔";
+        <!-- TIMELINE -->
+        <div class="timeline">
+          <div class="timeline-bars">
+            <div>
+              <div class="timeline-row-label">
+                <span>Home win %</span>
+                <span id="tlHomeLabel">52%</span>
+              </div>
+              <div class="timeline-bar-track">
+                <div class="timeline-bar-fill-home" id="tlHomeBar" style="width:52%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="timeline-row-label">
+                <span>Draw %</span>
+                <span id="tlDrawLabel">27%</span>
+              </div>
+              <div class="timeline-bar-track">
+                <div class="timeline-bar-fill-draw" id="tlDrawBar" style="width:27%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="timeline-row-label">
+                <span>Away win %</span>
+                <span id="tlAwayLabel">21%</span>
+              </div>
+              <div class="timeline-bar-track">
+                <div class="timeline-bar-fill-away" id="tlAwayBar" style="width:21%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-axis">
+            <span>0'</span>
+            <span id="axisMidLabel">Key moment: 72'</span>
+            <span>90'</span>
+          </div>
+        </div>
 
-                const game = json.results[0];
+        <!-- STATUS -->
+        <div class="status-row">
+          <span>
+            Mode:
+            <span class="status-highlight" id="statusModeText">Minute-by-minute · smooth flow</span>
+          </span>
+          <span>
+            Simulation:
+            <span class="status-highlight" id="statusSimText">Idle · waiting to start</span>
+          </span>
+        </div>
+      </section>
 
-                document.getElementById("match-info").innerHTML =
-                    `<strong>${game.home.name}</strong> vs <strong>${game.away.name}</strong><br>
-                     Minute: ${game.time}`;
+      <!-- RIGHT COLUMN: EMOTION / EVENT / META -->
+      <aside class="card">
+        <div class="card-header-row">
+          <div>
+            <div class="card-title">Emotion & Event Lens</div>
+            <div class="card-subtitle">
+              One glance view of momentum, event type and desk narrative at the current frame.
+            </div>
+          </div>
+        </div>
 
-                // xG placeholders (your ML model later connects here)
-                document.getElementById("xg-home").innerText = (Math.random() * 1).toFixed(2);
-                document.getElementById("xg-away").innerText = (Math.random() * 1).toFixed(2);
+        <div>
+          <div class="section-label">Current event</div>
+          <div id="eventTagBox">
+            <span class="event-tag">
+              <span class="event-icon">➖</span>
+              <span id="eventLabel">No major event in this frame</span>
+            </span>
+          </div>
 
-                // Emotion, Momentum placeholders
-                document.getElementById("emotion-score").innerText = (40 + Math.random() * 60).toFixed(0);
-                document.getElementById("momentum").innerText = ["Home", "Balanced", "Away"][Math.floor(Math.random() * 3)];
+          <div class="metrics-grid" style="margin-top:10px">
+            <div class="metric-box">
+              <div class="metric-label">Emotion Index (H · A)</div>
+              <div class="metric-value" id="emotionPair">0.71 · 0.29</div>
+              <div class="metric-sub" id="emotionMomentumLabel">Momentum: home</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">Desk stance</div>
+              <div class="metric-value metric-value-green" id="deskStance">Comfortable, monitor comeback</div>
+              <div class="metric-sub" id="deskNote">Risk: equaliser & late chaos only.</div>
+            </div>
+          </div>
 
-                // Odds
-                document.getElementById("odds-home").innerText = game.odds?.full?.home || "–";
-                document.getElementById("odds-draw").innerText = game.odds?.full?.draw || "–";
-                document.getElementById("odds-away").innerText = game.odds?.full?.away || "–";
+          <div class="section-label" style="margin-top:10px">Narrative snapshot</div>
+          <div class="note-box" id="narrativeBox">
+            <strong>Quick read:</strong>
+            Home side converts sustained pressure into a controlled edge. Market accepts the new regime; draw and away tails are still alive but fading.
+          </div>
 
-            } catch (err) {
-                document.getElementById("status").innerText = "Error loading data.";
-            }
+          <div class="section-label" style="margin-top:10px">Execution hints (demo)</div>
+          <ul class="list" id="execList">
+            <li>Use small step-ins rather than full all-in exposure.</li>
+            <li>Avoid first 30 seconds after big events; let spreads cool.</li>
+            <li>Scale exits where Emotion Index cools but odds barely move.</li>
+          </ul>
+
+          <div class="chip-row">
+            <span class="chip" id="chip1">Regime break</span>
+            <span class="chip" id="chip2">Home momentum</span>
+            <span class="chip" id="chip3">Retail chase</span>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="label-inline">Simulation frame:</div>
+            <span class="value-inline" id="frameMetaLabel">Demo · internal only</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      BetSense Live Match Desk – simulation environment. All numbers, probabilities and narratives
+      are illustrative only and do not constitute betting advice or an offer. In production, this
+      view runs directly on your live feed and APIs.
+    </footer>
+  </div>
+
+  <script>
+    // ------------------------------
+    // Demo frames for a single match
+    // ------------------------------
+    // eventType: "none" | "goal_home" | "goal_away" | "big_chance_home" | "big_chance_away" | "card_home" | "card_away"
+    const ALL_FRAMES = [
+      {
+        minute: 55,
+        score: "0–0",
+        eventType: "big_chance_home",
+        matchLabel: "Chelsea vs Arsenal",
+        comp: "EPL · Demo fixture",
+        stats: {
+          xg_home: 0.9,
+          xg_away: 0.6,
+          shots_home: 5,
+          shots_away: 4,
+          danger_home: 18,
+          danger_away: 12,
+          corners_home: 3,
+          corners_away: 2
+        },
+        odds: { home: 2.10, draw: 3.10, away: 3.80 },
+        emotion: { home: 0.60, away: 0.40, momentum: "home" },
+        narrative_quick:
+          "Home side is leaning on the door — pressure building with xG tilting their way but no breakthrough yet.",
+        narrative_exec: [
+          "Treat home side as value-lean but not locked favourite.",
+          "Avoid overcommitting before a clear regime break.",
+          "Monitor next 5–10 minutes for a decisive event."
+        ],
+        chips: ["Pressure build", "xG tilt", "Pre-break regime"],
+        desk_stance: "Cautious home lean",
+        desk_note: "Edge is emerging, but the market still respects all three outcomes."
+      },
+      {
+        minute: 62,
+        score: "0–0",
+        eventType: "card_away",
+        matchLabel: "Chelsea vs Arsenal",
+        comp: "EPL · Demo fixture",
+        stats: {
+          xg_home: 1.1,
+          xg_away: 0.6,
+          shots_home: 6,
+          shots_away: 4,
+          danger_home: 20,
+          danger_away: 13,
+          corners_home: 4,
+          corners_away: 2
+        },
+        odds: { home: 1.95, draw: 3.15, away: 4.10 },
+        emotion: { home: 0.64, away: 0.36, momentum: "home" },
+        narrative_quick:
+          "Away yellow card adds a small structural edge to the home side, especially if already leaning on territory.",
+        narrative_exec: [
+          "Slightly upgrade home fair odds after card.",
+          "Consider small scale-in if flows confirm.",
+          "Do not overprice card impact in isolation."
+        ],
+        chips: ["Card shift", "Territory edge", "Subtle repricing"],
+        desk_stance: "Upgrade home edge",
+        desk_note: "Card plus prior pressure justifies small additional risk."
+      },
+      {
+        minute: 72,
+        score: "1–0",
+        eventType: "goal_home",
+        matchLabel: "Chelsea vs Arsenal",
+        comp: "EPL · Demo fixture",
+        stats: {
+          xg_home: 1.8,
+          xg_away: 0.8,
+          shots_home: 9,
+          shots_away: 5,
+          danger_home: 28,
+          danger_away: 15,
+          corners_home: 5,
+          corners_away: 3
+        },
+        odds: { home: 1.55, draw: 3.60, away: 6.20 },
+        emotion: { home: 0.78, away: 0.22, momentum: "home" },
+        narrative_quick:
+          "The goal is the visible trigger; the real story is that it confirms a long-running edge for the home side.",
+        narrative_exec: [
+          "This is a regime break moment; home becomes sticky favourite.",
+          "Best execution is scaling exits as market chases the move.",
+          "Avoid getting caught fading pure emotion in the next 60–90 seconds."
+        ],
+        chips: ["Regime break", "Stickiness", "Momentum lock"],
+        desk_stance: "Comfortable, monitor comeback",
+        desk_note: "Core edge is realised; focus shifts from entry to exit quality."
+      },
+      {
+        minute: 78,
+        score: "1–0",
+        eventType: "big_chance_away",
+        matchLabel: "Chelsea vs Arsenal",
+        comp: "EPL · Demo fixture",
+        stats: {
+          xg_home: 1.8,
+          xg_away: 1.1,
+          shots_home: 9,
+          shots_away: 7,
+          danger_home: 29,
+          danger_away: 19,
+          corners_home: 5,
+          corners_away: 4
+        },
+        odds: { home: 1.70, draw: 3.35, away: 5.20 },
+        emotion: { home: 0.68, away: 0.32, momentum: "home" },
+        narrative_quick:
+          "Away side shows a live threat with a big chance — not enough to flip the regime, but a reminder that tails are alive.",
+        narrative_exec: [
+          "Resist the temptation to over-hedge on one big chance.",
+          "Re-evaluate if away xG continues to climb in next few minutes.",
+          "Communicate that risk exists but is contained within scenario planning."
+        ],
+        chips: ["Tail risk", "Away threat", "Containment"],
+        desk_stance: "Alert, not stressed",
+        desk_note: "A single big chance raises eyebrows, not alarm bells."
+      },
+      {
+        minute: 84,
+        score: "1–0",
+        eventType: "none",
+        matchLabel: "Chelsea vs Arsenal",
+        comp: "EPL · Demo fixture",
+        stats: {
+          xg_home: 1.9,
+          xg_away: 1.1,
+          shots_home: 10,
+          shots_away: 7,
+          danger_home: 31,
+          danger_away: 20,
+          corners_home: 6,
+          corners_away: 4
+        },
+        odds: { home: 1.45, draw: 4.00, away: 7.00 },
+        emotion: { home: 0.80, away: 0.20, momentum: "home" },
+        narrative_quick:
+          "Home side manages the game; the shape of the match now matches the market — low drama, high control.",
+        narrative_exec: [
+          "This is capital preservation time, not fresh risk-taking.",
+          "Lock in realised edge and keep exposure stable.",
+          "Only adjust if a shock event (penalty, red card) appears."
+        ],
+        chips: ["Game management", "Edge realised", "Capital preservation"],
+        desk_stance: "Lock-in phase",
+        desk_note: "Edge is mostly harvested; avoid chasing marginal extra value."
+      },
+      {
+        minute: 88,
+        score: "1–0",
+        eventType: "card_home",
+        matchLabel: "Chelsea vs Arsenal",
+        comp: "EPL · Demo fixture",
+        stats: {
+          xg_home: 1.9,
+          xg_away: 1.2,
+          shots_home: 10,
+          shots_away: 8,
+          danger_home: 31,
+          danger_away: 22,
+          corners_home: 6,
+          corners_away: 4
+        },
+        odds: { home: 1.52, draw: 3.80, away: 6.80 },
+        emotion: { home: 0.74, away: 0.26, momentum: "home" },
+        narrative_quick:
+          "Late home card nudges risk slightly but does not fully reset the regime — time is the most powerful ally now.",
+        narrative_exec: [
+          "Model small uptick in away tails but keep core stance.",
+          "Use card as a communication point, not a panic trigger.",
+          "Reassure stakeholders that late volatility is within planned bands."
+        ],
+        chips: ["Late card", "Time ally", "Contained volatility"],
+        desk_stance: "Watchful, still positive",
+        desk_note: "Card is noise relative to clock and game state."
+      },
+      {
+        minute: 92,
+        score: "1–0",
+        eventType: "none",
+        matchLabel: "Chelsea vs Arsenal",
+        comp: "EPL · Demo fixture",
+        stats: {
+          xg_home: 1.9,
+          xg_away: 1.2,
+          shots_home: 10,
+          shots_away: 8,
+          danger_home: 32,
+          danger_away: 22,
+          corners_home: 6,
+          corners_away: 4
+        },
+        odds: { home: 1.18, draw: 7.50, away: 15.00 },
+        emotion: { home: 0.86, away: 0.14, momentum: "home" },
+        narrative_quick:
+          "Market and model both treat the home win as almost locked; only extreme tail events change the outcome now.",
+        narrative_exec: [
+          "All that matters is clean execution of exits.",
+          "Final messaging: edge captured, plan executed as expected.",
+          "Use this match later as a case study in regime shift and game management."
+        ],
+        chips: ["Almost locked", "Tail only", "Case study"],
+        desk_stance: "Edge captured",
+        desk_note: "Focus on post-match reporting and learnings."
+      }
+    ];
+
+    // ------------------------------
+    // Simulation state
+    // ------------------------------
+    let currentMode = "minute"; // "minute" | "event" | "hybrid"
+    let currentFrameIndex = 0;
+    let playing = false;
+    let playTimer = null;
+
+    function getActiveFrames() {
+      if (currentMode === "event") {
+        return ALL_FRAMES.filter((f) => f.eventType !== "none");
+      }
+      // minute + hybrid use full timeline
+      return ALL_FRAMES;
+    }
+
+    function oddsToProbabilities(odds) {
+      if (!odds) return { home: 0.52, draw: 0.27, away: 0.21 };
+      const invHome = odds.home ? 1 / odds.home : 0;
+      const invDraw = odds.draw ? 1 / odds.draw : 0;
+      const invAway = odds.away ? 1 / odds.away : 0;
+      const sum = invHome + invDraw + invAway || 1;
+      return {
+        home: invHome / sum,
+        draw: invDraw / sum,
+        away: invAway / sum
+      };
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      currentFrameIndex = 0;
+      stopPlay();
+
+      document.getElementById("btnModeMinute").classList.toggle(
+        "active",
+        mode === "minute"
+      );
+      document.getElementById("btnModeEvent").classList.toggle(
+        "active",
+        mode === "event"
+      );
+      document.getElementById("btnModeHybrid").classList.toggle(
+        "active",
+        mode === "hybrid"
+      );
+
+      let modeText = "";
+      if (mode === "minute") {
+        modeText = "Minute-by-minute · smooth flow";
+      } else if (mode === "event") {
+        modeText = "Event-by-event · jump through key moments";
+      } else {
+        modeText = "Hybrid · full flow with highlighted events";
+      }
+      document.getElementById("statusModeText").textContent = modeText;
+
+      renderCurrentFrame();
+    }
+
+    function renderCurrentFrame() {
+      const frames = getActiveFrames();
+      if (!frames.length) {
+        return;
+      }
+
+      const frame = frames[currentFrameIndex];
+
+      // Basic labels
+      document.getElementById("matchTeams").textContent = frame.matchLabel;
+      document.getElementById("matchComp").textContent = frame.comp;
+      document.getElementById("matchMinuteLabel").textContent =
+        "Minute " + frame.minute;
+      document.getElementById("matchScoreLabel").textContent = frame.score;
+
+      // Stats
+      const s = frame.stats || {};
+      document.getElementById("metricXgPair").textContent =
+        (s.xg_home ?? "–") + " · " + (s.xg_away ?? "–");
+      document.getElementById("metricShotsPair").textContent =
+        (s.shots_home ?? "–") + " · " + (s.shots_away ?? "–");
+      document.getElementById("metricDangerPair").textContent =
+        (s.danger_home ?? "–") + " · " + (s.danger_away ?? "–");
+      document.getElementById("metricCornersPair").textContent =
+        (s.corners_home ?? "–") + " · " + (s.corners_away ?? "–");
+
+      // Odds + probabilities
+      const o = frame.odds || {};
+      const oddsLabel =
+        (o.home ?? "–").toFixed ? o.home.toFixed(2) : o.home ?? "–";
+      const drawLabel =
+        (o.draw ?? "–").toFixed ? o.draw.toFixed(2) : o.draw ?? "–";
+      const awayLabel =
+        (o.away ?? "–").toFixed ? o.away.toFixed(2) : o.away ?? "–";
+
+      document.getElementById("metricOdds").textContent =
+        oddsLabel + " · " + drawLabel + " · " + awayLabel;
+
+      const probs = oddsToProbabilities(o);
+      const pHome = Math.round((probs.home || 0) * 100);
+      const pDraw = Math.round((probs.draw || 0) * 100);
+      const pAway = Math.round((probs.away || 0) * 100);
+
+      document.getElementById("metricProbs").textContent =
+        pHome + "% · " + pDraw + "% · " + pAway + "%";
+
+      // Timeline bars
+      document.getElementById("tlHomeBar").style.width = pHome + "%";
+      document.getElementById("tlDrawBar").style.width = pDraw + "%";
+      document.getElementById("tlAwayBar").style.width = pAway + "%";
+      document.getElementById("tlHomeLabel").textContent = pHome + "%";
+      document.getElementById("tlDrawLabel").textContent = pDraw + "%";
+      document.getElementById("tlAwayLabel").textContent = pAway + "%";
+
+      // Axis mid label
+      document.getElementById("axisMidLabel").textContent =
+        "Key moment: " + frame.minute + "'";
+
+      // Frame info
+      const totalFrames = frames.length;
+      document.getElementById("frameInfoLabel").textContent =
+        "Frame " +
+        (currentFrameIndex + 1) +
+        " / " +
+        totalFrames +
+        " · Mode: " +
+        (currentMode === "minute"
+          ? "Minute-by-minute"
+          : currentMode === "event"
+          ? "Event-by-event"
+          : "Hybrid");
+
+      // Event label
+      const eventLabelEl = document.getElementById("eventLabel");
+      let eventText = "No major event in this frame";
+      let eventIcon = "➖";
+
+      switch (frame.eventType) {
+        case "goal_home":
+          eventText = "Goal – home side scores.";
+          eventIcon = "⚽";
+          break;
+        case "goal_away":
+          eventText = "Goal – away side scores.";
+          eventIcon = "⚽";
+          break;
+        case "big_chance_home":
+          eventText = "Big chance – home side goes close.";
+          eventIcon = "🔥";
+          break;
+        case "big_chance_away":
+          eventText = "Big chance – away side threatens.";
+          eventIcon = "🔥";
+          break;
+        case "card_home":
+          eventText = "Card – home side booked.";
+          eventIcon = "🟨";
+          break;
+        case "card_away":
+          eventText = "Card – away side booked.";
+          eventIcon = "🟨";
+          break;
+      }
+
+      eventLabelEl.textContent = eventText;
+      const tagBox = document.getElementById("eventTagBox");
+      tagBox.innerHTML =
+        '<span class="event-tag">' +
+        '<span class="event-icon">' +
+        eventIcon +
+        "</span>" +
+        "<span>" +
+        eventText +
+        "</span>" +
+        "</span>";
+
+      // Emotion
+      const e = frame.emotion || {};
+      const eHome = e.home ?? e.index_home ?? 0.71;
+      const eAway = e.away ?? e.index_away ?? 0.29;
+      document.getElementById("emotionPair").textContent =
+        eHome.toFixed(2) + " · " + eAway.toFixed(2);
+
+      const momentumLabel =
+        "Momentum: " + (e.momentum ? e.momentum : eHome >= eAway ? "home" : "away");
+      document.getElementById("emotionMomentumLabel").textContent =
+        momentumLabel;
+
+      // Desk stance & narrative
+      document.getElementById("deskStance").textContent =
+        frame.desk_stance || "Desk stance unavailable (demo).";
+      document.getElementById("deskNote").textContent =
+        frame.desk_note || "Execution note unavailable (demo).";
+      document.getElementById("narrativeBox").innerHTML =
+        "<strong>Quick read:</strong> " +
+        (frame.narrative_quick ||
+          "Demo narrative. In production this is driven directly by Emotion Engine output.");
+
+      // Exec list
+      const execList = document.getElementById("execList");
+      execList.innerHTML = "";
+      (frame.narrative_exec || []).forEach((line) => {
+        const li = document.createElement("li");
+        li.textContent = line;
+        execList.appendChild(li);
+      });
+
+      // Chips
+      document.getElementById("chip1").textContent = frame.chips?.[0] || "Edge";
+      document.getElementById("chip2").textContent = frame.chips?.[1] || "Momentum";
+      document.getElementById("chip3").textContent = frame.chips?.[2] || "Execution";
+
+      // Frame meta
+      document.getElementById("frameMetaLabel").textContent =
+        "Minute " +
+        frame.minute +
+        " · Score " +
+        frame.score +
+        " · " +
+        (frame.eventType === "none" ? "No major event" : eventText);
+
+      // Feed status
+      document.getElementById("feedStatusLabel").textContent =
+        "Simulation feed · " +
+        (currentMode === "minute"
+          ? "minute-by-minute mode"
+          : currentMode === "event"
+          ? "event-by-event mode"
+          : "hybrid mode");
+
+      if (!playing) {
+        document.getElementById("statusSimText").textContent =
+          "Idle · ready to move to next step";
+      }
+    }
+
+    function nextFrame() {
+      const frames = getActiveFrames();
+      if (!frames.length) return;
+      if (currentFrameIndex < frames.length - 1) {
+        currentFrameIndex += 1;
+        renderCurrentFrame();
+      } else {
+        // reached the end
+        stopPlay();
+        document.getElementById("statusSimText").textContent =
+          "Simulation finished · reached final frame";
+      }
+    }
+
+    function resetSimulation() {
+      stopPlay();
+      currentFrameIndex = 0;
+      document.getElementById("statusSimText").textContent =
+        "Reset · back to first frame";
+      renderCurrentFrame();
+    }
+
+    function stopPlay() {
+      playing = false;
+      if (playTimer) {
+        clearInterval(playTimer);
+        playTimer = null;
+      }
+      document.getElementById("iconPlayPause").textContent = "▶";
+      document.getElementById("labelPlayPause").textContent = "Play simulation";
+    }
+
+    function togglePlay() {
+      if (playing) {
+        stopPlay();
+        document.getElementById("statusSimText").textContent =
+          "Paused · manual step mode";
+        return;
+      }
+      const frames = getActiveFrames();
+      if (!frames.length) return;
+
+      playing = true;
+      document.getElementById("iconPlayPause").textContent = "⏸";
+      document.getElementById("labelPlayPause").textContent = "Pause simulation";
+      document.getElementById("statusSimText").textContent =
+        "Playing · stepping through frames automatically";
+
+      // choose speed based on mode
+      let interval = 1800;
+      if (currentMode === "minute") interval = 1400;
+      if (currentMode === "event") interval = 2200;
+      if (currentMode === "hybrid") interval = 1200;
+
+      playTimer = setInterval(() => {
+        const framesNow = getActiveFrames();
+        if (currentFrameIndex >= framesNow.length - 1) {
+          stopPlay();
+          document.getElementById("statusSimText").textContent =
+            "Simulation finished · reached final frame";
+          return;
         }
+        currentFrameIndex += 1;
+        renderCurrentFrame();
+      }, interval);
+    }
 
-        setInterval(loadFeed, 5000);
-        loadFeed();
-    </script>
+    // Event listeners
+    document.getElementById("btnModeMinute").addEventListener("click", () =>
+      setMode("minute")
+    );
+    document.getElementById("btnModeEvent").addEventListener("click", () =>
+      setMode("event")
+    );
+    document.getElementById("btnModeHybrid").addEventListener("click", () =>
+      setMode("hybrid")
+    );
+
+    document
+      .getElementById("btnPlayPause")
+      .addEventListener("click", togglePlay);
+    document
+      .getElementById("btnNextFrame")
+      .addEventListener("click", () => {
+        stopPlay();
+        nextFrame();
+      });
+    document
+      .getElementById("btnReset")
+      .addEventListener("click", resetSimulation);
+
+    // Initial render
+    renderCurrentFrame();
+  </script>
 </body>
 </html>
