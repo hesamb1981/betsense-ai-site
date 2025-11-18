@@ -2,183 +2,852 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BetSense Live Match Desk</title>
-
+  <title>BetSense Live Console – Quantum + Emotion Stack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       --bg: #020617;
-      --card: #0f172a;
-      --border: #1e293b;
-      --accent1: #38bdf8;
+      --bg-soft: #02091a;
+      --card: #020617;
+      --border: #1f2937;
+      --border-soft: #111827;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --accent: #38bdf8;
       --accent2: #a855f7;
-      --accent3: #34d399;
-      --text: #e2e8f0;
+      --accent3: #22c55e;
+      --danger: #fb7185;
+      --amber: #fbbf24;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 60px rgba(15, 23, 42, 0.9);
+      --shadow-subtle: 0 10px 40px rgba(15, 23, 42, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      font-family: "Inter", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0b1220 0, #020617 55%, #000 100%);
       color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
     }
 
-    .container {
+    .page {
+      min-height: 100vh;
       max-width: 1200px;
-      margin: auto;
-      padding: 20px;
+      margin: 0 auto;
+      padding: 24px 12px 40px;
     }
 
-    h1 {
-      font-size: 32px;
+    @media (min-width: 768px) {
+      .page {
+        padding: 32px 18px 48px;
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0% 0%, #4ade80, #22d3ee, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4),
+        0 16px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-logo span {
+      font-weight: 800;
+      font-size: 20px;
+      color: #0b1120;
+    }
+
+    .brand-text-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .status-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.65);
+      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.16), #020617);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #bbf7d0;
+      box-shadow: var(--shadow-subtle);
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    .back-link {
+      font-size: 12px;
+      color: var(--text-soft);
+      text-decoration: none;
+    }
+
+    .back-link span {
+      opacity: 0.7;
+      margin-right: 4px;
+    }
+
+    /* layout */
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, #020617, #020617 60%, #020617);
+      padding: 14px 12px 12px;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 6px;
     }
 
-    h2 {
-      margin-top: 22px;
-      font-size: 22px;
-      color: var(--accent1);
-    }
-
-    .section {
-      background: var(--card);
-      padding: 18px;
-      border-radius: 14px;
-      margin-top: 18px;
-      border: 1px solid var(--border);
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 12px;
-    }
-
-    .value-box {
-      background: rgba(255,255,255,0.06);
-      padding: 14px;
-      border-radius: 12px;
-      flex: 1;
-      margin-right: 12px;
-    }
-
-    .value-box:last-child {
-      margin-right: 0;
-    }
-
-    .label {
-      font-size: 14px;
-      opacity: 0.7;
-    }
-
-    .num {
-      font-size: 26px;
+    .card-title {
+      font-size: 15px;
       font-weight: 700;
     }
 
-    .engine-tag {
-      display: inline-block;
-      padding: 6px 12px;
-      background: var(--accent2);
-      border-radius: 6px;
-      color: white;
-      font-size: 13px;
-      margin-right: 6px;
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
     }
 
-    .pulse {
-      width: 100%;
+    .badge {
+      border-radius: 999px;
+      padding: 4px 9px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      font-size: 10px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .badge-dot-green,
+    .badge-dot-purple,
+    .badge-dot-blue,
+    .badge-dot-amber {
+      width: 6px;
       height: 6px;
-      background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
-      margin-top: 12px;
-      border-radius: 6px;
-      animation: pulsing 3s infinite linear;
+      border-radius: 999px;
     }
 
-    @keyframes pulsing {
-      0% { filter: brightness(0.6); }
-      50% { filter: brightness(1.4); }
-      100% { filter: brightness(0.6); }
+    .badge-dot-green { background: #22c55e; }
+    .badge-dot-purple { background: #a855f7; }
+    .badge-dot-blue   { background: #38bdf8; }
+    .badge-dot-amber  { background: #fbbf24; }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .pill {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pill-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .metric-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .metric-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .metric-box {
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, #020617, #020617);
+      padding: 7px 8px;
+      font-size: 10px;
+    }
+
+    .metric-label {
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .metric-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .metric-small {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 1px;
+    }
+
+    .metric-green { color: #4ade80; }
+    .metric-red   { color: #fb7185; }
+    .metric-amber { color: #fbbf24; }
+
+    .muted {
+      color: var(--text-soft);
+      font-size: 10px;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 4px 10px;
+      background: #020617;
+      color: var(--text-soft);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(148, 163, 184, 0.9);
+      color: var(--text);
+    }
+
+    .btn-ghost span.icon {
+      font-size: 13px;
+    }
+
+    .match-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .match-pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+
+    .match-pill.active {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #020617;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    .scoreline {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .scoreline span.minute {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-soft);
+      margin-left: 6px;
+    }
+
+    .teams {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-soft);
+    }
+
+    .timeline {
+      margin-top: 4px;
+    }
+
+    .timeline-axis {
+      height: 6px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid #1f2937;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #38bdf8, #a855f7);
+      width: 20%;
+    }
+
+    .timeline-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--text-soft);
+      margin-top: 3px;
+    }
+
+    .prob-bars {
+      margin-top: 8px;
+      display: grid;
+      gap: 4px;
+      font-size: 10px;
+    }
+
+    .prob-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1px;
+    }
+
+    .prob-track {
+      height: 6px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid #1f2937;
+      overflow: hidden;
+    }
+
+    .prob-fill-home {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+      width: 50%;
+    }
+
+    .prob-fill-draw {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+      width: 25%;
+    }
+
+    .prob-fill-away {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #fb923c, #f97316);
+      width: 25%;
+    }
+
+    .log-list {
+      margin-top: 6px;
+      max-height: 210px;
+      overflow-y: auto;
+      font-size: 10px;
+      padding-right: 4px;
+    }
+
+    .log-item {
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .log-time {
+      color: var(--text-soft);
+      margin-right: 4px;
+    }
+
+    .log-tag {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-left: 4px;
+    }
+
+    .log-tag-emotion { color: #f9a8d4; border-color: rgba(236, 72, 153, 0.5); }
+    .log-tag-quantum { color: #a5b4fc; border-color: rgba(79, 70, 229, 0.6); }
+    .log-tag-risk    { color: #fbbf24; border-color: rgba(251, 191, 36, 0.7); }
+
+    .micro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .micro-card {
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      background: #020617;
+      padding: 6px 7px;
+      font-size: 9px;
+    }
+
+    .micro-label {
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .micro-value {
+      font-size: 12px;
+      font-weight: 600;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-
-    <h1>Live Match – Real-Time Engine Desk</h1>
-    <div>
-      <span class="engine-tag">Emotion Engine</span>
-      <span class="engine-tag">Ultra-Edge Layer</span>
-      <span class="engine-tag">xG Pulse Engine</span>
-    </div>
-
-    <div class="pulse"></div>
-
-    <!-- ====================== MATCH HEADER ====================== -->
-    <div class="section">
-      <h2>Match</h2>
-      <div class="row">
-        <div class="value-box">
-          <div class="label">Teams</div>
-          <div class="num" id="teams">Chelsea vs Arsenal</div>
-        </div>
-
-        <div class="value-box">
-          <div class="label">Minute</div>
-          <div class="num" id="minute">72'</div>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo"><span>B</span></div>
+        <div>
+          <div class="brand-text-title">BetSense Live Console</div>
+          <div class="brand-text-sub">Quantum + Emotion stack · mock live demo</div>
         </div>
       </div>
-    </div>
-
-    <!-- ====================== ULTRA EDGE ====================== -->
-    <div class="section">
-      <h2>Ultra-Edge Momentum</h2>
-      <div class="row">
-        <div class="value-box">
-          <div class="label">Home Edge</div>
-          <div class="num" id="edgeHome">64%</div>
-        </div>
-        <div class="value-box">
-          <div class="label">Away Edge</div>
-          <div class="num" id="edgeAway">36%</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <a href="index.html" class="back-link"><span>←</span>Back to main site</a>
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span>Mock engine running</span>
         </div>
       </div>
-    </div>
+    </header>
 
-    <!-- ====================== EMOTION ENGINE ====================== -->
-    <div class="section">
-      <h2>Emotion Engine</h2>
-      <div class="row">
-        <div class="value-box">
-          <div class="label">Market Emotion</div>
-          <div class="num" id="marketEmotion">Confident ↑</div>
+    <div class="layout">
+    <main class="page">
+      <!-- TOP STRIP: match + feed status -->
+      <section class="strip">
+        <div class="strip-left">
+          <div class="strip-label">Live console · demo</div>
+          <div class="strip-title">BetSense Quantum + Emotion Stack</div>
+          <div class="strip-sub">
+            Demo view wired to a mock engine. In production this page connects directly to your live odds, stats and sentiment feeds.
+          </div>
+        </div>
+        <div class="strip-right">
+          <div class="pill pill-green">
+            <span class="dot"></span>
+            <span id="engineStatus">Mock engine · running</span>
+          </div>
+          <div class="pill pill-soft">
+            <span>Feed mode:</span>
+            <select id="feedModeSelect">
+              <option value="prematch">Pre-match warm-up</option>
+              <option value="inplay-balanced">In-play · balanced</option>
+              <option value="inplay-pressure">In-play · home pressure</option>
+              <option value="late-chaos">Late-game chaos</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- MATCH HEADER -->
+      <section class="card match-header">
+        <div class="match-main">
+          <div class="match-meta">
+            <span class="tag">EPL · demo fixture</span>
+            <span class="tag" id="matchPhaseTag">72'</span>
+          </div>
+          <div class="match-title-row">
+            <div class="team team-home">
+              <div class="team-name" id="homeName">Chelsea</div>
+              <div class="team-score" id="homeScore">2</div>
+            </div>
+            <div class="vs">vs</div>
+            <div class="team team-away">
+              <div class="team-name" id="awayName">Arsenal</div>
+              <div class="team-score" id="awayScore">1</div>
+            </div>
+          </div>
+          <div class="match-sub">
+            <span id="matchClock">72:14</span> ·
+            <span id="matchStateLabel">Home pressing after goal</span>
+          </div>
+        </div>
+        <div class="match-side">
+          <div class="side-label">Desk preset</div>
+          <select id="deskPresetSelect" class="desk-select">
+            <option value="trader">Trading desk view</option>
+            <option value="risk">Risk / exposure view</option>
+            <option value="board">Board / exec snapshot</option>
+            <option value="partner">Partner / white-label demo</option>
+          </select>
+          <button class="btn-primary" id="btnSpinOnce">
+            ⚡ Spin engine once
+          </button>
+          <button class="btn-ghost" id="btnAutoMode">
+            ▶ Auto mode (off)
+          </button>
+        </div>
+      </section>
+
+      <!-- TOP METRICS GRID -->
+      <section class="grid grid-3" aria-label="Top metrics">
+        <div class="card metric">
+          <div class="metric-label">Emotion heat</div>
+          <div class="metric-value" id="emotionHeat">0.66</div>
+          <div class="metric-small" id="emotionHeatComment">High but not chaotic</div>
+        </div>
+        <div class="card metric">
+          <div class="metric-label">Market volatility</div>
+          <div class="metric-value" id="marketVol">0.45</div>
+          <div class="metric-small" id="marketVolComment">Controlled repricing</div>
+        </div>
+        <div class="card metric">
+          <div class="metric-label">BetSense edge vs market</div>
+          <div class="metric-value metric-green" id="modelEdge">+2.8%</div>
+          <div class="metric-small" id="modelEdgeComment">Structurally favourable</div>
+        </div>
+      </section>
+
+      <!-- SECOND ROW: EMOTION + PROBABILITIES -->
+      <section class="grid grid-2" aria-label="Emotion and probabilities">
+        <!-- Emotion twin -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Emotion Twin – live lens</div>
+              <div class="card-subtitle">
+                Crowd, sentiment and in-stadium momentum fused into one execution layer.
+              5/div>
+            </div>
+            <span class="badge">
+              <span class="dot dot-blue"></span>
+              Emotion Index
+            </span>
+          </div>
+
+          <div class="emotion-grid">
+            <div class="emotion-col">
+              <div class="metric-small-label">Crowd pulse</div>
+              <div class="emotion-bar">
+                <div class="emotion-fill" id="crowdPulseFill"></div>
+              </div>
+              <div class="metric-small" id="crowdPulse">0.61</div>
+              <div class="metric-small" id="crowdComment">Stadium backing home run</div>
+            </div>
+            <div class="emotion-col">
+              <div class="metric-small-label">Trust &amp; panic balance</div>
+              <div class="emotion-bar">
+                <div class="emotion-fill amber" id="trustPanicFill"></div>
+              </div>
+              <div class="metric-small" id="trustPanic">Trust &gt; panic</div>
+              <div class="metric-small" id="trustPanicComment">Retail excited, pros calm</div>
+            </div>
+            <div class="emotion-col">
+              <div class="metric-small-label">Bias / drift</div>
+              <div class="emotion-bar">
+                <div class="emotion-fill purple" id="biasDriftFill"></div>
+              </div>
+              <div class="metric-small" id="biasDrift">Mild home bias</div>
+              <div class="metric-small" id="biasDriftComment">Within desk limits</div>
+            </div>
+          </div>
+
+          <div class="emotion-note" id="emotionNarrative">
+            Desk read: Emotion heat is elevated but aligned with match state; no evidence of panic or unjustified euphoria.
+          </div>
         </div>
 
-        <div class="value-box">
-          <div class="label">Pressure Gauge</div>
-          <div class="num" id="pressure">78%</div>
-        </div>
-      </div>
-    </div>
+        <!-- Win probabilities -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Win probabilities – live stack</div>
+              <div class="card-subtitle">
+                Model vs blended market, normalised to 100%. Designed to sit on top of your live odds feed.
+              </div>
+            </div>
+            <button class="btn-ghost small" id="btnRecalcProbs">↻ Recalc</button>
+          </div>
 
-    <!-- ====================== xG PULSE ====================== -->
-    <div class="section">
-      <h2>xG Pulse (Live)</h2>
-      <div class="row">
-        <div class="value-box">
-          <div class="label">xG Home</div>
-          <div class="num" id="xgHome">1.42</div>
+          <div class="prob-grid">
+            <div class="prob-box">
+              <div class="metric-small-label">Home win</div>
+              <div class="prob-value" id="wpHome">63%</div>
+              <div class="prob-bar">
+                <div class="prob-fill home" id="wpHomeFill"></div>
+              </div>
+              <div class="metric-small" id="wpHomeComment">Sticky favourite</div>
+            </div>
+            <div class="prob-box">
+              <div class="metric-small-label">Draw</div>
+              <div class="prob-value" id="wpDraw">23%</div>
+              <div class="prob-bar">
+                <div class="prob-fill draw" id="wpDrawFill"></div>
+              </div>
+              <div class="metric-small" id="wpDrawComment">Still live</div>
+            </div>
+            <div class="prob-box">
+              <div class="metric-small-label">Away win</div>
+              <div class="prob-value" id="wpAway">14%</div>
+              <div class="prob-bar">
+                <div class="prob-fill away" id="wpAwayFill"></div>
+              </div>
+              <div class="metric-small" id="wpAwayComment">Needs big swing</div>
+            </div>
+          </div>
+
+          <div class="prob-footnote" id="probFootnote">
+            Sum: 100% · Demo probabilities (mock engine). In production this card runs on your live prices.
+          </div>
+        </div>
+      </section>
+
+      <!-- THIRD ROW: RISK & EVENT LOG -->
+      <section class="grid grid-2" aria-label="Risk and event log">
+        <!-- Risk & exposure -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Risk Sentinel – exposure snapshot</div>
+              <div class="card-subtitle">
+                Heat-based controls and simple yes/no flags for traders and risk teams.
+              </div>
+            </div>
+            <span class="badge">
+              <span class="dot dot-amber"></span>
+              Demo only
+            </span>
+          </div>
+
+          <div class="risk-grid">
+            <div class="risk-box">
+              <div class="metric-small-label">Stake heat</div>
+              <div class="risk-meter">
+                <div class="risk-fill" id="stakeHeatFill"></div>
+              </div>
+              <div class="metric-small" id="stakeHeatLabel">Elevated but within band</div>
+            </div>
+            <div class="risk-box">
+              <div class="metric-small-label">Volatility window</div>
+              <div class="risk-meter">
+                <div class="risk-fill purple" id="volWindowFill"></div>
+              </div>
+              <div class="metric-small" id="volWindowLabel">Short-lived repricing</div>
+            </div>
+            <div class="risk-box">
+              <div class="metric-small-label">Sentinel flags</div>
+              <ul class="flag-list" id="sentinelFlags">
+                <li>✔ No hard stop breach</li>
+                <li>✔ Liquidity inside expected range</li>
+                <li>⚠ Watch late equaliser paths</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <div class="value-box">
-          <div class="label">xG Away</div>
-          <div class="num" id="xgAway">0.88</div>
-        </div>
-      </div>
-    </div>
+        <!-- Event & engine log -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Engine event log</div>
+              <div class="card-subtitle">
+                Recent key moments and how the BetSense stack interpreted them.
+              </div>
+            </div>
+            <button class="btn-ghost small" id="btnClearLog">✕ Clear</button>
+          </div>
 
-  </div>
-</body>
-</html>
+          <div class="log-window" id="eventLog">
+            <!-- log lines injected here -->
+          </div>
+
+          <div class="log-footer">
+            <span class="metric-small">Mode: <span id="logModeLabel">Manual spins</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOTTOM: SNAPSHOT TEXT -->
+      <section class="card snapshot-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Snapshot for traders / boards</div>
+            <div class="card-subtitle">
+              One paragraph summary you can drop straight into an email, Slack update or board pack.
+            </div>
+          </div>
+        </div>
+        <p class="snapshot-text" id="snapshotText">
+          After a sustained spell of home pressure, the mock engine reads a clean break in the probability trend: home now trades as a sticky favourite with elevated but controlled emotion heat. Risk Sentinel keeps exposure inside band, with only a soft warning on late equaliser paths.
+        </p>
+      </section>
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+    // -----------------------------
+      // SIMPLE MOCK ENGINE
+      // -----------------------------
+      let autoMode = false;
+      let autoTimer = null;
+
+      function logEvent(text) {
+        const log = document.getElementById("eventLog");
+        const line = document.createElement("div");
+        line.className = "log-line";
+        line.textContent = text;
+        log.prepend(line);
+      }
+
+      function randomFloat(min, max) {
+        return (Math.random() * (max - min) + min).toFixed(2);
+      }
+
+      function spinEngine() {
+        // top metrics
+        const heat = randomFloat(0.40, 0.90);
+        const vol = randomFloat(0.20, 0.75);
+        const edge = (Math.random() * 6 - 2).toFixed(1); // -2% to +4%
+
+        document.getElementById("emotionHeat").textContent = heat;
+        document.getElementById("marketVol").textContent = vol;
+        document.getElementById("modelEdge").textContent =
+          (edge > 0 ? "+" : "") + edge + "%";
+
+        // fill bars
+        document.getElementById("crowdPulseFill").style.width =
+          (heat * 100) + "%";
+        document.getElementById("trustPanicFill").style.width =
+          (vol * 100) + "%";
+        document.getElementById("biasDriftFill").style.width =
+          (Math.abs(edge) * 25) + "%";
+
+        // win probabilities
+        let home = 50 + edge * 6;
+        let draw = 100 - home - (15 + Math.random() * 10);
+        let away = 100 - home - draw;
+
+        if (draw < 5) draw = 5;
+        if (away < 5) away = 5;
+
+        document.getElementById("wpHome").textContent = Math.round(home) + "%";
+        document.getElementById("wpDraw").textContent = Math.round(draw) + "%";
+        document.getElementById("wpAway").textContent = Math.round(away) + "%";
+
+        document.getElementById("wpHomeFill").style.width = home + "%";
+        document.getElementById("wpDrawFill").style.width = draw + "%";
+        document.getElementById("wpAwayFill").style.width = away + "%";
+
+        logEvent("Engine spin → heat " + heat + ", volatility " + vol);
+      }
+
+      document.getElementById("btnSpinOnce").onclick = spinEngine;
+
+      document.getElementById("btnAutoMode").onclick = () => {
+        autoMode = !autoMode;
+        const btn = document.getElementById("btnAutoMode");
+        if (autoMode) {
+          btn.textContent = "⏸ Auto mode (on)";
+          autoTimer = setInterval(spinEngine, 2000);
+          logEvent("Auto mode enabled");
+          document.getElementById("logModeLabel").textContent = "Auto mode";
+        } else {
+          btn.textContent = "▶ Auto mode (off)";
+          clearInterval(autoTimer);
+          logEvent("Auto mode disabled");
+          document.getElementById("logModeLabel").textContent = "Manual spins";
+        }
+      };
+
+      document.getElementById("btnRecalcProbs").onclick = () => {
+        spinEngine();
+        logEvent("Probabilities recalculated");
+      };
+
+      document.getElementById("btnClearLog").onclick = () => {
+        document.getElementById("eventLog").innerHTML = "";
+      };
+
+      // Feed mode change
+      document.getElementById("feedModeSelect").onchange = (e) => {
+        logEvent("Feed preset: " + e.target.value);
+      };
+    </script>
+
+  </body>
+</html>  
