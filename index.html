@@ -1389,5 +1389,37 @@ X-API-Key: YOUR_KEY_HERE
       setDemoMode("static");
     });
   </script>
+  <script>
+// sync "Live engine wired to mock feed" button to live.html
+document.addEventListener('DOMContentLoaded', function () {
+  var candidates = Array.from(document.querySelectorAll('a, button'))
+    .filter(function (el) {
+      var t = (el.textContent || '').trim().toLowerCase();
+      return t.includes('live engine wired') && t.includes('mock feed');
+    });
+
+  if (!candidates.length) return;
+
+  var target = candidates[0];
+
+  // اگر خودِ المان لینک باشد
+  if (target.tagName.toLowerCase() === 'a') {
+    target.href = 'live.html';
+    target.rel = 'noopener noreferrer';
+  } else {
+    // اگر دکمه یا چیز دیگری باشد، دورش یک <a> می‌پیچیم
+    var wrapper = document.createElement('a');
+    wrapper.href = 'live.html';
+    wrapper.rel = 'noopener noreferrer';
+    wrapper.style.textDecoration = 'none';
+
+    var parent = target.parentNode;
+    if (!parent) return;
+
+    parent.insertBefore(wrapper, target);
+    wrapper.appendChild(target);
+  }
+});
+</script>
 </body>
 </html>
