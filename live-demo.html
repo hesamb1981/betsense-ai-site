@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense AI · Live Console — Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-panel: #020617;
+      --bg-panel-soft: #02091b;
+      --bg-chip: #0b1220;
+      --border-soft: #1f2937;
+      --text-primary: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-red: #fb7185;
+      --accent-amber: #facc15;
+      --accent-pill: #0f172a;
+      --pill-radius: 999px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 20px 60px rgba(15, 23, 42, 0.9);
+      --shadow-chip: 0 8px 30px rgba(15, 23, 42, 0.95);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #1d283a 0, #020617 50%, #000 100%);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      padding: 20px 12px 40px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1120px;
+      background: radial-gradient(circle at top left, #111827 0%, #020617 55%);
+      border-radius: 26px;
+      box-shadow: var(--shadow-soft);
+      padding: 18px 16px 22px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .title-block .sub {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: var(--pill-radius);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-green);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+    }
+
+    .pill-demo {
+      border-color: rgba(56, 189, 248, 0.8);
+      color: var(--accent-blue);
+      background: radial-gradient(circle at top, #0b1120 0, #020617 70%);
+    }
+
+    .pill-demo .pill-dot {
+      background: var(--accent-amber);
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .demo-label {
+      font-size: 11px;
+      color: var(--accent-amber);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button {
+      border: none;
+      border-radius: var(--pill-radius);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0b1120;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-chip);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    button span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-green);
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border-style: dashed;
+    }
+
+    button.stop {
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, #020617 0%, #020617 55%);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 16px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .panel + .panel {
+      margin-top: 12px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .chip {
+      padding: 3px 9px;
+      border-radius: var(--pill-radius);
+      background: var(--bg-chip);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .primary-row {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: 14px;
+    }
+
+    .fixture-meta h3 {
+      margin: 0 0 2px;
+      font-size: 15px;
+    }
+
+    .fixture-meta .league {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .fixture-meta .teams {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 8px;
+    }
+
+    .scoreline {
+      font-size: 24px;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .xg-line {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: var(--pill-radius);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .tag.live {
+      border-color: rgba(56, 189, 248, 0.9);
+      color: var(--accent-blue);
+    }
+
+    .tag.minute {
+      border-color: rgba(52, 211, 153, 0.9);
+      color: var(--accent-green);
+    }
+
+    .prob-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .prob-card {
+      padding: 8px 9px 9px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #020617 0, #020617 70%, #020617 100%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .prob-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .prob-value {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    .prob-bar {
+      height: 4px;
+      border-radius: 999px;
+      background: #020617;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .prob-bar span {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+      transform-origin: left;
+      transform: scaleX(0.6);
+    }
+
+    .prob-card.draw .prob-bar span {
+      background: linear-gradient(90deg, #f97316, #fb7185);
+    }
+
+    .prob-card.away .prob-bar span {
+      background: linear-gradient(90deg, #38bdf8, #6366f1);
+    }
+
+    .momentum-bar {
+      margin-top: 10px;
+      border-radius: var(--pill-radius);
+      padding: 8px 10px 10px;
+      background: radial-gradient(circle at left, #22c55e22 0, #020617 60%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .momentum-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .momentum-track {
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        #22c55e22,
+        #f9731622,
+        #ef444422,
+        #38bdf822
+      );
+      overflow: hidden;
+      position: relative;
+    }
+
+    .momentum-thumb {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 16%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.8);
+      transition: transform 0.4s ease-out;
+      transform: translateX(40%);
+    }
+
+    /* Right column */
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric-card {
+      padding: 8px 9px 9px;
+      border-radius: var(--radius-md);
+      background: radial-gradient(circle at top left, #020617 0, #020617 70%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    .metric-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Live signal queue */
+
+    .signal-list {
+      margin-top: 4px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 8px 10px 10px;
+      background: radial-gradient(circle at top left, #020617 0, #020617 60%);
+      max-height: 260px;
+      overflow: hidden;
+    }
+
+    .signal-row {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) 56px;
+      gap: 10px;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(31, 41, 55, 0.7);
+      font-size: 11px;
+    }
+
+    .signal-row:last-child {
+      border-bottom: none;
+    }
+
+    .signal-minute {
+      color: var(--text-muted);
+    }
+
+    .signal-pill {
+      border-radius: var(--pill-radius);
+      padding: 3px 9px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 96px;
+    }
+
+    .signal-pill.xg {
+      border-color: rgba(34, 197, 94, 0.9);
+      color: #bbf7d0;
+    }
+
+    .signal-pill.order {
+      border-color: rgba(56, 189, 248, 0.9);
+      color: #bae6fd;
+    }
+
+    .signal-pill.shock {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+    }
+
+    .signal-pill.momo {
+      border-color: rgba(250, 204, 21, 0.9);
+      color: #fef3c7;
+    }
+
+    .signal-desc {
+      color: var(--text-muted);
+    }
+
+    .signal-edge {
+      text-align: right;
+      font-size: 11px;
+      color: var(--accent-green);
+    }
+
+    /* Multi-match radar */
+
+    .radar-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .radar-table th,
+    .radar-table td {
+      padding: 6px 4px;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .radar-table th {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-align: left;
+      font-size: 10px;
+    }
+
+    .radar-table td.edge-pos {
+      color: var(--accent-green);
+    }
+
+    .radar-table td.edge-neg {
+      color: var(--accent-red);
+    }
+
+    .risk-chip {
+      border-radius: var(--pill-radius);
+      padding: 3px 7px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 56px;
+    }
+
+    .risk-low {
+      border-color: rgba(34, 197, 94, 0.9);
+      color: #bbf7d0;
+    }
+
+    .risk-med {
+      border-color: rgba(250, 204, 21, 0.9);
+      color: #fef3c7;
+    }
+
+    .risk-high {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+    }
+
+    .signal-chip {
+      border-radius: var(--pill-radius);
+      padding: 3px 7px;
+      border: 1px solid rgba(56, 189, 248, 0.9);
+      color: #e0f2fe;
+      font-size: 10px;
+      min-width: 76px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-metrics {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      justify-content: space-between;
+    }
+
+    .footer-pill {
+      border-radius: var(--pill-radius);
+      padding: 5px 10px;
+      background: #020617;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .footer-pill strong {
+      margin-right: 6px;
+      color: var(--text-primary);
+    }
+
+    .disclaimer {
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 880px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .primary-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .controls {
+        width: 100%;
+        align-items: flex-start;
+      }
+
+      .btn-row {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="title-block">
+        <div class="sub">BETSENSE AI · LIVE STACK</div>
+        <h1>Live Console — Ultra Pro · Demo</h1>
+        <div class="pill-row">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            FEED · IN-PLAY ONLY
+          </div>
+          <div class="pill pill-demo">
+            <span class="pill-dot"></span>
+            DEMO MODE · FAKE DATA ONLY
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="demo-label">Real-time simulation</div>
+        <div class="btn-row">
+          <button id="startDemo">
+            <span class="dot"></span>
+            Start demo
+          </button>
+          <button id="stopDemo" class="secondary stop">
+            Stop demo
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT COLUMN -->
+      <section>
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Primary fixture · Live stack</h2>
+            <div class="chip" id="modeChip">Emotion + Orderbook + Quantum</div>
+          </div>
+
+          <div class="primary-row">
+            <div class="fixture-meta">
+              <h3 id="fixtureTitle">Chelsea vs Arsenal</h3>
+              <div class="league" id="fixtureLeague">Premier League</div>
+              <div class="teams" id="fixtureTeams">
+                <span>Chelsea · Home</span>
+                <span>Arsenal · Away</span>
+              </div>
+              <div class="scoreline" id="fixtureScore">1 — 1</div>
+              <div class="xg-line" id="fixtureXg">xG 1.11 — 0.81</div>
+              <div class="tag-row">
+                <div class="tag live" id="fixtureHalf">LIVE · 2nd half</div>
+                <div class="tag minute" id="fixtureMinute">75'</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="prob-grid">
+                <div class="prob-card home">
+                  <div class="prob-label">Home win probability</div>
+                  <div class="prob-value" id="homeProb">60%</div>
+                  <div class="prob-bar">
+                    <span id="homeProbBar"></span>
+                  </div>
+                </div>
+                <div class="prob-card draw">
+                  <div class="prob-label">Draw outcome</div>
+                  <div class="prob-value" id="drawProb">8%</div>
+                  <div class="prob-bar">
+                    <span id="drawProbBar"></span>
+                  </div>
+                </div>
+                <div class="prob-card away">
+                  <div class="prob-label">Away win probability</div>
+                  <div class="prob-value" id="awayProb">32%</div>
+                  <div class="prob-bar">
+                    <span id="awayProbBar"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="momentum-bar">
+                <div class="momentum-bar-header">
+                  <span id="momentumLabel">Live game momentum · Balanced pressure</span>
+                  <span id="windowLabel">Last 6 minutes</span>
+                </div>
+                <div class="momentum-track">
+                  <div class="momentum-thumb" id="momentumThumb"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Session edge engine</h2>
+            <div class="chip">Mode · Trading</div>
+          </div>
+
+          <div class="metric-grid" style="margin-bottom: 10px">
+            <div class="metric-card">
+              <div class="metric-label">Session edge</div>
+              <div class="metric-value" id="edgeValue">+4.1%</div>
+              <div class="metric-sub" id="edgeText">
+                Current live edge vs pre-match prices: favouring home side.
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Session risk</div>
+              <div class="metric-value" id="riskMode">Dynamic · Auto-throttled</div>
+              <div class="metric-sub" id="riskText">
+                Derived from Emotion Index swings + volatility.
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-header" style="margin-top: 4px">
+            <h2>Live signal queue</h2>
+            <div class="chip">Last 90 seconds</div>
+          </div>
+          <div class="signal-list" id="signalList">
+            <!-- rows injected by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN -->
+      <section>
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Risk envelope</h2>
+            <div class="chip">Auto-throttle</div>
+          </div>
+
+          <div class="metric-grid">
+            <div class="metric-card">
+              <div class="metric-label">Stake usage</div>
+              <div class="metric-value" id="stakeUsage">63%</div>
+              <div class="metric-sub">Of pre-set max per fixture.</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Volatility</div>
+              <div class="metric-value" id="volatilityLabel">Medium</div>
+              <div class="metric-sub">Odds velocity + xG spikes.</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Drawdown</div>
+              <div class="metric-value" id="drawdownValue">-0.7%</div>
+              <div class="metric-sub">From session high watermark.</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Shock risk</div>
+              <div class="metric-value" id="shockRiskLabel">Medium</div>
+              <div class="metric-sub">Derived from Emotion Index swings.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Multi-match radar</h2>
+            <div class="chip">Watchlist · 6 fixtures</div>
+          </div>
+
+          <table class="radar-table" id="radarTable">
+            <thead>
+              <tr>
+                <th>Fixture</th>
+                <th>Time</th>
+                <th>Edge</th>
+                <th>Shock risk</th>
+                <th>Signal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+
+          <div class="footer-metrics">
+            <div class="footer-pill" id="signalsFired">
+              <strong>Signals fired</strong> 0
+            </div>
+            <div class="footer-pill" id="latencyPill">
+              <strong>Live latency</strong> 520ms
+            </div>
+            <div class="footer-pill" id="stackHealth">
+              <strong>Stack health</strong> Stable
+            </div>
+            <div class="footer-pill" id="riskMeter">
+              <strong>Risk meter</strong> Medium
+            </div>
+          </div>
+
+          <div class="disclaimer">
+            Demo values are simulated for presentation purposes only.  
+            Production feed connects to your trading stack via JSON API / WebSocket.
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // -------------------------
+    // DEMO DATA + UTILITIES
+    // -------------------------
+    const fixtures = [
+      {
+        title: "Chelsea vs Arsenal",
+        league: "Premier League",
+        teams: ["Chelsea · Home", "Arsenal · Away"],
+      },
+      {
+        title: "Milan vs Napoli",
+        league: "Serie A",
+        teams: ["Milan · Home", "Napoli · Away"],
+      },
+      {
+        title: "Leipzig vs Dortmund",
+        league: "Bundesliga",
+        teams: ["Leipzig · Home", "Dortmund · Away"],
+      },
+      {
+        title: "Porto vs Benfica",
+        league: "Liga Portugal",
+        teams: ["Porto · Home", "Benfica · Away"],
+      },
+      {
+        title: "PSG vs Marseille",
+        league: "Ligue 1",
+        teams: ["PSG · Home", "Marseille · Away"],
+      },
+      {
+        title: "Real Madrid vs Barcelona",
+        league: "LaLiga",
+        teams: ["Real Madrid · Home", "Barcelona · Away"],
+      },
+    ];
+
+    const signals = [
+      {
+        type: "XG SPIKE",
+        cls: "xg",
+        text: "Triple corner sequence · pressure building on home side.",
+      },
+      {
+        type: "ORDERBOOK",
+        cls: "order",
+        text: "Liquidity wall detected on away price ladder.",
+      },
+      {
+        type: "SHOCKWAVE",
+        cls: "shock",
+        text: "Crowd noise + odds snapback after disallowed goal.",
+      },
+      {
+        type: "MOMENTUM FLIP",
+        cls: "momo",
+        text: "Territory flips 70-30 towards home side for 3 minutes.",
+      },
+    ];
+
+    const riskOptions = ["Low", "Medium", "High"];
+    const signalTags = ["xG momentum", "Orderbook", "Calm period", "Shockwave"];
+
+    let demoTimer = null;
+    let clockMinute = 72;
+    let signalsFired = 0;
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function randInt(min, max) {
+      return Math.floor(rand(min, max + 1));
+    }
+
+    // -------------------------
+    // PRIMARY FIXTURE + EDGE
+    // -------------------------
+    function updatePrimaryFixture() {
+      const fixture = fixtures[randInt(0, fixtures.length - 1)];
+      clockMinute = Math.min(89, clockMinute + randInt(1, 3));
+
+      const homeGoals = randInt(0, 3);
+      const awayGoals = randInt(0, 3);
+
+      const homeXg = (homeGoals + rand(0.2, 1.2)).toFixed(2);
+      const awayXg = (awayGoals + rand(0.1, 1.0)).toFixed(2);
+
+      // basic win probs that roughly match score
+      let homeProb = 40 + (homeGoals - awayGoals) * 12 + rand(-4, 4);
+      let awayProb = 40 + (awayGoals - homeGoals) * 12 + rand(-4, 4);
+      let drawProb = 100 - (homeProb + awayProb);
+
+      // keep within 3..90
+      const clamp = (v) => Math.max(3, Math.min(90, v));
+      homeProb = clamp(homeProb);
+      awayProb = clamp(awayProb);
+      drawProb = clamp(drawProb);
+
+      const total = homeProb + awayProb + drawProb;
+      homeProb = ((homeProb / total) * 100).toFixed(0);
+      awayProb = ((awayProb / total) * 100).toFixed(0);
+      drawProb = ((drawProb / total) * 100).toFixed(0);
+
+      document.getElementById("fixtureTitle").textContent = fixture.title;
+      document.getElementById("fixtureLeague").textContent = fixture.league;
+      document.getElementById(
+        "fixtureTeams"
+      ).innerHTML = `<span>${fixture.teams[0]}</span><span>${fixture.teams[1]}</span>`;
+      document.getElementById(
+        "fixtureScore"
+      ).textContent = `${homeGoals} — ${awayGoals}`;
+      document.getElementById(
+        "fixtureXg"
+      ).textContent = `xG ${homeXg} — ${awayXg}`;
+      document.getElementById("fixtureMinute").textContent = clockMinute + "'";
+
+      document.getElementById("homeProb").textContent = homeProb + "%";
+      document.getElementById("drawProb").textContent = drawProb + "%";
+      document.getElementById("awayProb").textContent = awayProb + "%";
+
+      document.getElementById("homeProbBar").style.transform =
+        "scaleX(" + homeProb / 100 + ")";
+      document.getElementById("drawProbBar").style.transform =
+        "scaleX(" + drawProb / 100 + ")";
+      document.getElementById("awayProbBar").style.transform =
+        "scaleX(" + awayProb / 100 + ")";
+
+      // momentum thumb: 0 = home, 100 = away
+      const pressure = rand(15, 85);
+      const thumb = document.getElementById("momentumThumb");
+      thumb.style.transform = "translateX(" + pressure + "%)";
+
+      const label = document.getElementById("momentumLabel");
+      if (pressure < 35) {
+        label.textContent = "Live game momentum · Home pressure building";
+      } else if (pressure > 65) {
+        label.textContent = "Live game momentum · Away pressure building";
+      } else {
+        label.textContent = "Live game momentum · Balanced pressure";
+      }
+
+      // edge value
+      const edge = rand(-3.5, 6.0);
+      const edgeEl = document.getElementById("edgeValue");
+      const edgeText = document.getElementById("edgeText");
+      const sign = edge >= 0 ? "+" : "";
+      edgeEl.textContent = sign + edge.toFixed(1) + "%";
+
+      if (edge > 1) {
+        edgeText.textContent =
+          "Live edge vs pre-match prices: favouring home side.";
+      } else if (edge < -1) {
+        edgeText.textContent =
+          "Live edge vs pre-match prices: favouring away side.";
+      } else {
+        edgeText.textContent = "Live edge roughly aligned with pre-match.";
+      }
+    }
+
+    // -------------------------
+    // SIGNAL QUEUE
+    // -------------------------
+    function pushSignal() {
+      const signalList = document.getElementById("signalList");
+      const s = signals[randInt(0, signals.length - 1)];
+      const minuteAgo = randInt(0, 90);
+
+      const edgeChange = rand(-1.8, 2.4);
+      const edgeText = (edgeChange >= 0 ? "+" : "") + edgeChange.toFixed(1) + "%";
+
+      const row = document.createElement("div");
+      row.className = "signal-row";
+      row.innerHTML = `
+        <div class="signal-minute">${minuteAgo}'</div>
+        <div>
+          <div class="signal-pill ${s.cls}">${s.type}</div>
+          <div class="signal-desc">${s.text}</div>
+        </div>
+        <div class="signal-edge">${edgeText}</div>
+      `;
+
+      signalList.prepend(row); // new at top
+
+      // keep max 6–7 rows
+      while (signalList.children.length > 7) {
+        signalList.removeChild(signalList.lastChild);
+      }
+
+      signalsFired += 1;
+      document.getElementById(
+        "signalsFired"
+      ).innerHTML = "<strong>Signals fired</strong> " + signalsFired;
+    }
+
+    // -------------------------
+    // MULTI-MATCH RADAR
+    // -------------------------
+    function updateRadar() {
+      const tbody = document.querySelector("#radarTable tbody");
+      tbody.innerHTML = "";
+
+      for (let i = 0; i < 6; i++) {
+        const f = fixtures[i];
+        const minute = randInt(15, 88);
+        const edge = rand(-3, 3);
+        const risk = riskOptions[randInt(0, riskOptions.length - 1)];
+        const sig = signalTags[randInt(0, signalTags.length - 1)];
+
+        const edgeClass = edge >= 0 ? "edge-pos" : "edge-neg";
+        const riskClass =
+          risk === "Low" ? "risk-low" : risk === "High" ? "risk-high" : "risk-med";
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>
+            <div>${f.title}</div>
+            <div style="color: var(--text-muted); font-size:10px;">${f.league}</div>
+          </td>
+          <td>${minute}'</td>
+          <td class="${edgeClass}">${edge >= 0 ? "+" : ""}${edge.toFixed(1)}%</td>
+          <td><span class="risk-chip ${riskClass}">${risk}</span></td>
+          <td><span class="signal-chip">${sig}</span></td>
+        `;
+        tbody.appendChild(row);
+      }
+    }
+
+    // -------------------------
+    // RISK ENVELOPE + METRICS
+    // -------------------------
+    function updateRiskEnvelope() {
+      document.getElementById("stakeUsage").textContent =
+        randInt(40, 85).toString() + "%";
+
+      const volLevels = ["Low", "Medium", "High"];
+      const vol = volLevels[randInt(0, volLevels.length - 1)];
+      document.getElementById("volatilityLabel").textContent = vol;
+
+      const dd = rand(-4, 2);
+      document.getElementById("drawdownValue").textContent =
+        (dd >= 0 ? "+" : "") + dd.toFixed(1) + "%";
+
+      const shock = vol === "High" ? "High" : vol === "Low" ? "Low" : "Medium";
+      document.getElementById("shockRiskLabel").textContent = shock;
+
+      // latency + risk meter
+      const latency = randInt(380, 820);
+      document.getElementById(
+        "latencyPill"
+      ).innerHTML = `<strong>Live latency</strong> ${latency}ms`;
+
+      document.getElementById("stackHealth").innerHTML =
+        "<strong>Stack health</strong> Stable";
+
+      document.getElementById(
+        "riskMeter"
+      ).innerHTML = `<strong>Risk meter</strong> ${shock}`;
+    }
+
+    // -------------------------
+    // DEMO CONTROL
+    // -------------------------
+    function tick() {
+      updatePrimaryFixture();
+      pushSignal();
+      updateRadar();
+      updateRiskEnvelope();
+    }
+
+    function startDemo() {
+      if (demoTimer) return;
+      tick(); // immediate
+      demoTimer = setInterval(tick, 3500); // every ~3.5 sec
+      document.getElementById("startDemo").disabled = true;
+      document.getElementById("startDemo").style.opacity = "0.7";
+    }
+
+    function stopDemo() {
+      if (demoTimer) {
+        clearInterval(demoTimer);
+        demoTimer = null;
+        document.getElementById("startDemo").disabled = false;
+        document.getElementById("startDemo").style.opacity = "1";
+      }
+    }
+
+    document.getElementById("startDemo").addEventListener("click", startDemo);
+    document.getElementById("stopDemo").addEventListener("click", stopDemo);
+
+    // optional: small initial static view
+    updatePrimaryFixture();
+    updateRadar();
+    updateRiskEnvelope();
+  </script>
+</body>
+</html>
