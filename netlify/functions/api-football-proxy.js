@@ -1,86 +1,39 @@
-// netlify/functions/api-football-proxy.js
+// File: netlify/functions/api-football-proxy.js
+// Runs automatically on Netlify serverless functions
 
-// این فانکشن روی نتلیفای اجرا می‌شود و نقش واسط بین فرانت‌اند و API-FOOTBALL را دارد.
-exports.handler = async (event, context) => {
+export default async function handler(req, context) {
   try {
-    const apiKey = process.env.API_FOOTBALL_KEY;
+    const API_KEY = process.env.API_FOOTBALL_KEY;
 
-    if (!apiKey) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: 'API_FOOTBALL_KEY is not set in Netlify environment variables.',
-        }),
-      };
+    if (!API_KEY) {
+      return new Response(JSON.stringify({ error: "Missing API Key" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
     }
 
-    // مشخص می‌کنیم past یا live
-    const params = event.queryStringParameters || {};
-    const mode = (params.mode || 'past').toLowerCase();
-
-    // تنظیمات مشترک
-    const baseUrl = 'https://v3.football.api-sports.io/fixtures';
-    const leagueId = 39;   // Premier League
-    const season = 2024;   // اگر لازم شد بعداً تغییرش می‌دهیم
-
-    let url;
-
-    if (mode === 'live') {
-      // حداکثر ۵ بازی زنده
-      url = `${baseUrl}?league=${leagueId}&season=${season}&live=all`;
-    } else {
-      // آخرین ۱۰ بازی تمام‌شده
-      url = `${baseUrl}?league=${leagueId}&season=${season}&last=10`;
-    }
+    const url = req.url.replace(
+      `${req.url.split("/.netlify/functions/")[0]}/.netlify/functions/api-football-proxy`,
+      "https://v3.football.api-sports.io"
+    );
 
     const response = await fetch(url, {
-      method: 'GET',
       headers: {
-        'x-apisports-key': apiKey,
-        'x-rapidapi-host': 'v3.football.api-sports.io',
-      },
+        "x-apisports-key": API_KEY
+      }
     });
-
-    if (!response.ok) {
-      const text = await response.text();
-      return {
-        statusCode: response.status,
-        body: JSON.stringify({
-          error: 'API request failed',
-          status: response.status,
-          details: text,
-        }),
-      };
-    }
 
     const data = await response.json();
 
-    // اگر مود live بود، فقط ۵ بازی اول را نگه می‌داریم
-    if (mode === 'live' && Array.isArray(data.response)) {
-      data.response = data.response.slice(0, 5);
-    }
+    return new Response(JSON.stringify(data), {
+      status: response.status,
+      headers: { "Content-Type": "application/json" }
+    });
 
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        // برای اینکه از فرانت‌اند مستقیم صداش بزنی:
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({
-        mode,
-        league: leagueId,
-        season,
-        raw: data,
-      }),
-    };
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: 'Unexpected server error',
-        details: err.message,
-      }),
-    };
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
-};
+}
