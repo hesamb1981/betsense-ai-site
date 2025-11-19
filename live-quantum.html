@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense AI · Quantum Live Board</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      background: radial-gradient(circle at top, #151b3a 0, #050712 45%, #020307 100%);
+      color: #f5f7ff;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    a { color: #9f7bff; text-decoration: none; }
+
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #3fd0ff;
+    }
+    header p {
+      font-size: 0.85rem;
+      color: #b2b8dd;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.7fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: linear-gradient(135deg, #13162a 0%, #090b18 60%, #060713 100%);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+      border: 1px solid rgba(160, 144, 255, 0.12);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #9f7bff;
+    }
+    .badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(63, 208, 255, 0.15);
+      color: #9ae6ff;
+      border: 1px solid rgba(92, 219, 255, 0.5);
+    }
+
+    /* Fixtures list */
+    #fixturesList {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 420px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .fixture-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: rgba(10, 14, 32, 0.85);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s, border 0.15s, transform 0.1s;
+      font-size: 0.8rem;
+    }
+    .fixture-row:hover {
+      background: rgba(27, 34, 76, 0.95);
+      transform: translateY(-1px);
+    }
+    .fixture-row.active {
+      border-color: #3fd0ff;
+      background: radial-gradient(circle at top left, #2b7cff33, #0a0c1c 60%);
+    }
+    .fixture-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .fixture-main span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fixture-league {
+      font-size: 0.7rem;
+      color: #7b84b0;
+    }
+    .fixture-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: #cfd4ff;
+    }
+    .pill-minute {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(15, 230, 150, 0.14);
+      color: #7fffd4;
+      font-size: 0.7rem;
+    }
+    .pill-kickoff {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(130, 130, 255, 0.12);
+      color: #c8ccff;
+      font-size: 0.7rem;
+    }
+    .fixture-edge {
+      font-size: 0.75rem;
+      color: #8cf3ff;
+      text-align: right;
+    }
+
+    /* Primary match panel */
+    .primary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .primary-league {
+      font-size: 0.75rem;
+      color: #8b93c9;
+    }
+    .primary-minute {
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 192, 105, 0.15);
+      color: #ffd79a;
+    }
+
+    .scoreline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 0;
+    }
+    .team-block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .team-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .team-label {
+      font-size: 0.7rem;
+      color: #8b93c9;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+    .score {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-align: center;
+    }
+
+    /* Edge bar */
+    .edge-bar-wrap {
+      margin-top: 8px;
+    }
+    .edge-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #a9b1ff;
+      margin-bottom: 4px;
+    }
+    .edge-bar {
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #101325;
+      box-shadow: inset 0 0 0 1px rgba(120, 130, 210, 0.5);
+    }
+    .edge-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, #31e4ff 0%, #6bffb5 50%, #ffc857 100%);
+      width: 50%;
+      transition: width 0.3s ease-out;
+    }
+
+    /* Stats */
+    #stats {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+      gap: 8px;
+      font-size: 0.78rem;
+    }
+    .stat-card {
+      background: rgba(8, 10, 25, 0.9);
+      border-radius: 12px;
+      padding: 8px 9px;
+      border: 1px solid rgba(138, 148, 255, 0.22);
+    }
+    .stat-label {
+      color: #9199d9;
+      margin-bottom: 4px;
+      font-size: 0.75rem;
+    }
+    .stat-values {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 4px;
+      font-weight: 500;
+    }
+
+    .empty {
+      font-size: 0.8rem;
+      color: #8b93c9;
+      padding: 8px 0 2px;
+    }
+
+    .footer-note {
+      margin-top: 4px;
+      font-size: 0.7rem;
+      color: #6b739e;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <h1>Quantum Sports Suite · Live Board</h1>
+      <p>
+        Real-time fixtures and in-play stats via BetSense API proxy.
+        Tap a match on the left to load the full Quantum view.
+      </p>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: Live fixtures list -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">Live fixtures</div>
+          <button id="reloadBtn" class="badge" type="button">
+            Refresh now
+          </button>
+        </div>
+        <div id="fixturesList">
+          <div class="empty">Loading live fixtures…</div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Primary match -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Quantum primary fixture</div>
+            <div id="primaryLeague" class="primary-league"></div>
+          </div>
+          <div id="primaryMinute" class="primary-minute" style="display:none;"></div>
+        </div>
+
+        <div id="primaryBlock">
+          <div class="empty">
+            Select a live match from the left to open the Quantum console.
+          </div>
+        </div>
+
+        <div id="stats"></div>
+
+        <div class="footer-note">
+          Data via API-Football · Rendered by BetSense Quantum Sports Suite.
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const PROXY_BASE = '/.netlify/functions/api-football-proxy';
+    const fixturesListEl = document.getElementById('fixturesList');
+    const primaryBlockEl = document.getElementById('primaryBlock');
+    const statsEl = document.getElementById('stats');
+    const primaryLeagueEl = document.getElementById('primaryLeague');
+    const primaryMinuteEl = document.getElementById('primaryMinute');
+    const reloadBtn = document.getElementById('reloadBtn');
+
+    let liveFixtures = [];
+    let activeFixtureId = null;
+    let refreshTimer = null;
+
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }
+
+    function msToLocalHM(utcTimestamp) {
+      if (!utcTimestamp) return '';
+      const d = new Date(utcTimestamp);
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderFixtures() {
+      fixturesListEl.innerHTML = '';
+      if (!liveFixtures.length) {
+        fixturesListEl.innerHTML =
+          '<div class="empty">No live fixtures right now. Try again later.</div>';
+        return;
+      }
+
+      liveFixtures.forEach(fx => {
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = 'fixture-row';
+        row.dataset.id = fx.fixture.id;
+
+        if (String(fx.fixture.id) === String(activeFixtureId)) {
+          row.classList.add('active');
+        }
+
+        const main = document.createElement('div');
+        main.className = 'fixture-main';
+        const league = document.createElement('span');
+        league.className = 'fixture-league';
+        league.textContent = fx.league.name;
+        const names = document.createElement('span');
+        names.textContent = fx.teams.home.name + ' vs ' + fx.teams.away.name;
+
+        main.appendChild(names);
+        main.appendChild(league);
+
+        const meta = document.createElement('div');
+        meta.className = 'fixture-meta';
+
+        const status = fx.fixture.status;
+        const statusLong = status.long || '';
+        const elapsed = status.elapsed;
+
+        const minutePill = document.createElement('span');
+        if (statusLong === 'Match Finished') {
+          minutePill.className = 'pill-kickoff';
+          minutePill.textContent = 'FT';
+        } else if (elapsed != null) {
+          minutePill.className = 'pill-minute';
+          minutePill.textContent = elapsed + "′ live";
+        } else {
+          minutePill.className = 'pill-kickoff';
+          minutePill.textContent = msToLocalHM(fx.fixture.date);
+        }
+
+        const score = document.createElement('span');
+        const g = fx.goals || {};
+        const hs = g.home != null ? g.home : '-';
+        const as = g.away != null ? g.away : '-';
+        score.textContent = hs + ' – ' + as;
+
+        meta.appendChild(minutePill);
+        meta.appendChild(score);
+
+        const edge = document.createElement('div');
+        edge.className = 'fixture-edge';
+        edge.textContent = 'Edge: –';
+
+        row.appendChild(main);
+        row.appendChild(meta);
+        row.appendChild(edge);
+
+        row.addEventListener('click', () => {
+          activeFixtureId = fx.fixture.id;
+          renderFixtures();
+          loadPrimaryFixture(fx.fixture.id);
+        });
+
+        fixturesListEl.appendChild(row);
+      });
+    }
+
+    async function loadLiveFixtures() {
+      fixturesListEl.innerHTML = '<div class="empty">Loading live fixtures…</div>';
+      try {
+        const data = await fetchJSON(PROXY_BASE + '?mode=live');
+        liveFixtures = (data && data.response) || [];
+        renderFixtures();
+        if (!activeFixtureId && liveFixtures.length) {
+          activeFixtureId = liveFixtures[0].fixture.id;
+          renderFixtures();
+          loadPrimaryFixture(activeFixtureId);
+        }
+      } catch (err) {
+        fixturesListEl.innerHTML =
+          '<div class="empty">Error loading fixtures: ' + err.message + '</div>';
+      }
+    }
+
+    function simpleEdgeFromStats(stats) {
+      // Very simple placeholder: more shots on goal + possession = higher edge for home.
+      if (!stats || stats.length < 2) return 50;
+
+      const home = stats[0];
+      const away = stats[1];
+
+      function get(teamStats, label) {
+        const item = teamStats.statistics.find(s => s.type === label);
+        return item && item.value != null ? parseInt(item.value, 10) || 0 : 0;
+      }
+
+      const hShots = get(home, 'Shots on Goal');
+      const aShots = get(away, 'Shots on Goal');
+      const hPoss = get(home, 'Ball Possession');
+      const aPoss = get(away, 'Ball Possession');
+
+      const hScore = hShots * 4 + hPoss;
+      const aScore = aShots * 4 + aPoss;
+      if (hScore + aScore === 0) return 50;
+      return Math.round((hScore / (hScore + aScore)) * 100);
+    }
+
+    function renderPrimary(fixture, statsData) {
+      if (!fixture) {
+        primaryBlockEl.innerHTML =
+          '<div class="empty">Select a live match from the left.</div>';
+        statsEl.innerHTML = '';
+        primaryLeagueEl.textContent = '';
+        primaryMinuteEl.style.display = 'none';
+        return;
+      }
+
+      const { league, teams, goals, fixture: fx } = fixture;
+      primaryLeagueEl.textContent =
+        league.name + ' · ' + (league.country || '');
+
+      const status = fx.status || {};
+      if (status.elapsed != null) {
+        primaryMinuteEl.style.display = 'inline-flex';
+        primaryMinuteEl.textContent = status.elapsed + "′ · " + (status.long || '');
+      } else {
+        primaryMinuteEl.style.display = 'inline-flex';
+        primaryMinuteEl.textContent = status.long || 'Pre-match';
+      }
+
+      const homeScore = goals.home != null ? goals.home : '-';
+      const awayScore = goals.away != null ? goals.away : '-';
+
+      const edgeHome = simpleEdgeFromStats(statsData);
+      const edgeWidth = Math.min(100, Math.max(0, edgeHome));
+
+      primaryBlockEl.innerHTML = `
+        <div class="scoreline">
+          <div class="team-block">
+            <div class="team-label">Home</div>
+            <div class="team-name">${teams.home.name}</div>
+          </div>
+          <div class="score">${homeScore} – ${awayScore}</div>
+          <div class="team-block" style="text-align:right;">
+            <div class="team-label">Away</div>
+            <div class="team-name">${teams.away.name}</div>
+          </div>
+        </div>
+        <div class="edge-bar-wrap">
+          <div class="edge-label-row">
+            <span>BetSense Edge (home)</span>
+            <span>${edgeHome}%</span>
+          </div>
+          <div class="edge-bar">
+            <div class="edge-bar-inner" style="width:${edgeWidth}%;"></div>
+          </div>
+        </div>
+      `;
+
+      // Stats cards
+      statsEl.innerHTML = '';
+      if (!statsData || statsData.length < 2) {
+        statsEl.innerHTML = '<div class="empty">No detailed stats available yet.</div>';
+        return;
+      }
+
+      const homeStats = statsData[0];
+      const awayStats = statsData[1];
+
+      function addStat(label) {
+        const h = homeStats.statistics.find(s => s.type === label);
+        const a = awayStats.statistics.find(s => s.type === label);
+        const hVal = h && h.value != null ? h.value : '–';
+        const aVal = a && a.value != null ? a.value : '–';
+        const card = document.createElement('div');
+        card.className = 'stat-card';
+        card.innerHTML = `
+          <div class="stat-label">${label}</div>
+          <div class="stat-values">
+            <span>${hVal}</span>
+            <span>${aVal}</span>
+          </div>
+        `;
+        statsEl.appendChild(card);
+      }
+
+      [
+        'Shots on Goal',
+        'Total Shots',
+        'Ball Possession',
+        'Corner Kicks',
+        'Yellow Cards',
+        'Red Cards',
+        'Offsides'
+      ].forEach(addStat);
+    }
+
+    async function loadPrimaryFixture(fixtureId) {
+      if (!fixtureId) return;
+      primaryBlockEl.innerHTML = '<div class="empty">Loading match data…</div>';
+      statsEl.innerHTML = '';
+
+      try {
+        const [fixtureData, statsData] = await Promise.all([
+          fetchJSON(PROXY_BASE + '?mode=fixture&fixtureId=' + fixtureId),
+          fetchJSON(PROXY_BASE + '?mode=stats&fixtureId=' + fixtureId)
+        ]);
+
+        const fx = fixtureData.response && fixtureData.response[0];
+        const st = statsData.response || [];
+        renderPrimary(fx, st);
+
+        // Auto refresh every 30 seconds
+        if (refreshTimer) clearInterval(refreshTimer);
+        refreshTimer = setInterval(() => {
+          if (activeFixtureId) {
+            loadPrimaryFixture(activeFixtureId);
+          }
+        }, 30000);
+      } catch (err) {
+        primaryBlockEl.innerHTML =
+          '<div class="empty">Error loading match: ' + err.message + '</div>';
+      }
+    }
+
+    // Event listeners
+    reloadBtn.addEventListener('click', () => {
+      loadLiveFixtures();
+    });
+
+    // Initial load
+    loadLiveFixtures();
+  </script>
+</body>
+</html>
