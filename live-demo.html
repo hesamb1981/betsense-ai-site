@@ -1098,5 +1098,55 @@
     updateRadar();
     updateRiskEnvelope();
   </script>
+  // optional: small initial state setup
+updatePrimaryFixture();
+updateRadar();
+updateRiskEnvelope();
+</script>
+
+<!-- QSS LIVE API TEST HARNESS -->
+<script>
+(async function runLiveApiTest() {
+  const endpoint = '/.netlify/functions/api-football-proxy?endpoint=fixtures&live=all';
+
+  try {
+    const res = await fetch(endpoint);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    const payload = await res.json();
+
+    // لاگ کلی برای این که مطمئن بشیم دیتا میاد
+    console.log('QSS · LIVE SNAPSHOT', payload);
+
+    // یک نمونه ساده: فقط اولین بازی رو لاگ می‌کنیم
+    if (payload.response && payload.response.length > 0) {
+      const fx = payload.response[0];
+
+      const summary = {
+        id: fx.fixture.id,
+        league: fx.league.name,
+        country: fx.league.country,
+        home: fx.teams.home.name,
+        away: fx.teams.away.name,
+        goals: {
+          home: fx.goals.home,
+          away: fx.goals.away
+        },
+        status: fx.fixture.status.long,
+        elapsed: fx.fixture.status.elapsed
+      };
+
+      console.log('QSS · PRIMARY FIXTURE SAMPLE', summary);
+      // بعداً همین‌جا می‌تونیم وصلش کنیم به UI اصلی کنسول
+      window.QSS_LIVE_SAMPLE = summary;
+    }
+  } catch (err) {
+    console.error('QSS · LIVE API ERROR', err);
+  }
+})();
+</script>
+
+</body>
+</html>
 </body>
 </html>
