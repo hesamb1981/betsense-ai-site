@@ -1,9 +1,10 @@
-name: Daily site backup
+name: Daily backup
 
 on:
   schedule:
-    # هر روز ساعت ۲ صبح به وقت UTC
+    # هر روز ساعت 02:00 بامداد به وقت UTC
     - cron: "0 2 * * *"
+  # برای این که خودت هم هر وقت خواستی دستی اجراش کنی
   workflow_dispatch:
 
 jobs:
@@ -14,26 +15,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create backup folder
-        run: mkdir -p backup
-
-      - name: Create ZIP backup
+      - name: Create backup zip
         run: |
-          TS="$(date +'%Y-%m-%d-%H-%M')"
-          ZIP_NAME="backup/betsense-site-${TS}.zip"
-          echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
-          zip -r "$ZIP_NAME" .
-
-      - name: Commit backup ZIP
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add backup/*.zip
-          git commit -m "Automated backup ${ZIP_NAME}" || echo "No changes to commit"
-          git push
+          mkdir -p backup
+          zip -r backup/betsense-site-$(date +'%Y-%m-%d_%H-%M-%S').zip .
 
       - name: Upload backup artifact
         uses: actions/upload-artifact@v4
         with:
-          name: site-backup
-          path: ${{ env.ZIP_NAME }}
+          name: betsense-daily-backup
+          path: backup/
