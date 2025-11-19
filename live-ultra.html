@@ -1,431 +1,1156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BetSense AI – Ultra Pro Live Console</title>
+  <meta charset="UTF-8" />
+  <title>BetSense AI – Live Console Ultra Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<style>
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-panel: #020a1d;
+      --bg-panel-soft: #030c25;
+      --accent-blue: #22d3ee;
+      --accent-blue-soft: rgba(34, 211, 238, 0.1);
+      --accent-green: #22c55e;
+      --accent-red: #fb7185;
+      --accent-amber: #fbbf24;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border-soft: #1f2937;
+      --chip-bg: rgba(15, 23, 42, 0.8);
+      --chip-border: #1e293b;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+    }
 
-/* ===========================
-   GLOBAL STYLE – ULTRA PRO
-   =========================== */
+    body.theme-light {
+      --bg-main: #f3f4f6;
+      --bg-panel: #ffffff;
+      --bg-panel-soft: #f9fafb;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --border-soft: #e5e7eb;
+      --chip-bg: #f3f4f6;
+      --chip-border: #e5e7eb;
+      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
 
-body {
-    margin: 0;
-    padding: 0;
-    background: #030b17;
-    color: #e5e7eb;
-    font-family: Arial, sans-serif;
-}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.container {
-    width: 96%;
-    margin: auto;
-    padding-top: 20px;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 20px 12px 32px;
+    }
 
-/* SECTION TITLES */
-.section-title {
-    font-size: 22px;
-    font-weight: bold;
-    color: #5cc8ff;
-    margin-bottom: 12px;
-}
+    .page {
+      width: 100%;
+      max-width: 1120px;
+    }
 
-/* BOXES */
-.box {
-    background: linear-gradient(145deg, #0a1a2f, #07111f);
-    border: 1px solid #0f223d;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 18px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.35);
-}
+    .shell {
+      background: radial-gradient(circle at top left, #0b1120 0, var(--bg-main) 55%);
+      border-radius: 24px;
+      border: 1px solid #1f2937;
+      box-shadow: var(--shadow-soft);
+      padding: 18px 16px 22px;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* TAGS */
-.tag {
-    padding: 5px 10px;
-    border-radius: 8px;
-    margin-right: 8px;
-    font-size: 13px;
-    display: inline-block;
-    font-weight: bold;
-}
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(94, 234, 212, 0.1), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
 
-.tag-green { background: #0b5; color: #fff; }
-.tag-blue  { background: #09f; color: #fff; }
-.tag-red   { background: #e44; color: #fff; }
-.tag-orange { background: #f90; color: #fff; }
-.tag-yellow { background: #ffdb4d; color: #000; }
+    .shell-inner {
+      position: relative;
+      z-index: 1;
+    }
 
-/* GRID */
-.grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
+    /* Header */
 
-/* EDGE DISPLAY */
-.edge-box {
-    background: #0d1f33;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #123455;
-    text-align: center;
-}
-.edge-value {
-    font-size: 32px;
-    font-weight: bold;
-    color: #5cc8ff;
-}
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
 
-/* SIGNAL QUEUE */
-.signal-item {
-    background: #0d1b29;
-    border-left: 5px solid #5cc8ff;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 12px;
-}
-.signal-type {
-    font-weight: bold;
-    font-size: 16px;
-}
-.signal-effect {
-    float: right;
-    color: #5cc8ff;
-    font-weight: bold;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-/* TABLE */
-.match-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-.match-table th, .match-table td {
-    padding: 8px;
-    border-bottom: 1px solid #123455;
-}
+    .logo-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 28%;
+      background: conic-gradient(
+        from 210deg,
+        #22d3ee,
+        #38bdf8,
+        #6366f1,
+        #22c55e,
+        #22d3ee
+      );
+      box-shadow: 0 0 30px rgba(34, 211, 238, 0.7);
+      position: relative;
+    }
 
-/* FOOT STATS */
-.stats-box {
-    background: #06101c;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #0f223d;
-    text-align: center;
-    margin-bottom: 12px;
-}
+    .logo-dot::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 25% 25%, #f9fafb, #0f172a);
+      mix-blend-mode: screen;
+      opacity: 0.85;
+    }
 
-</style>
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .brand-main {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.75);
+      color: var(--text-soft);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn-small {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.7rem;
+      border: 1px solid var(--border-soft);
+      background: var(--chip-bg);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .btn-small span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22d3ee;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.9);
+    }
+
+    .btn-main {
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.75rem;
+      border: none;
+      background: linear-gradient(130deg, #22d3ee, #6366f1);
+      color: #0b1120;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-main span.dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #0b1120;
+    }
+
+    .mode-toggle {
+      border-radius: 999px;
+      padding: 4px;
+      border: 1px solid var(--border-soft);
+      background: var(--chip-bg);
+      display: inline-flex;
+      gap: 2px;
+      font-size: 0.7rem;
+    }
+
+    .mode-toggle button {
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-soft);
+      cursor: pointer;
+      font-size: inherit;
+    }
+
+    .mode-toggle button.active {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(56, 189, 248, 0.3));
+      color: #f9fafb;
+    }
+
+    .theme-switch {
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: var(--chip-bg);
+      border: 1px solid var(--border-soft);
+      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .theme-switch span.icon {
+      font-size: 0.85rem;
+    }
+
+    /* Layout */
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.05fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 880px) {
+      .shell {
+        padding: 16px 12px 18px;
+      }
+      .grid-main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .top-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .top-right {
+        justify-content: flex-start;
+      }
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 13px;
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.85);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.theme-light .card {
+      background: linear-gradient(145deg, #ffffff, #f9fafb);
+      border-color: #e5e7eb;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--chip-border);
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      background: var(--chip-bg);
+    }
+
+    .chip-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .grid-primary {
+      display: grid;
+      grid-template-columns: 1.4fr 1.1fr;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 720px) {
+      .grid-primary {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .primary-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .fixture-label {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .fixture-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .fixture-teams {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .fixture-league {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .fixture-names {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .fixture-time {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-align: right;
+    }
+
+    .score-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .score-main {
+      font-size: 1.6rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+
+    .score-xg {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .pill-mini {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 3px 7px;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .primary-bars {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .stat-block {
+      padding: 8px 8px 9px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, #020617, var(--bg-panel));
+      border: 1px solid rgba(30, 64, 175, 0.7);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .stat-bar-shell {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22d3ee, #6366f1);
+      transform-origin: left;
+      transition: transform 0.3s ease-out;
+    }
+
+    .stat-value-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.7rem;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .stat-tag {
+      font-size: 0.65rem;
+      color: var(--text-soft);
+    }
+
+    /* Edge / Risk */
+
+    .edge-number {
+      font-size: 1.6rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .edge-sub {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .edge-highlight {
+      color: var(--accent-green);
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .risk-item {
+      padding: 8px 8px 9px;
+      border-radius: 12px;
+      background: var(--bg-panel-soft);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .risk-label {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .risk-bar-shell {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+
+    .risk-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22d3ee, #22c55e);
+      transform-origin: left;
+      transition: transform 0.3s ease-out;
+    }
+
+    .risk-value {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .risk-value span.bold {
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--text-main);
+    }
+
+    /* Live signal queue */
+
+    .signals-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .signals-title {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .signals-window {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+    }
+
+    .signals-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .signal-row {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1.2fr) auto;
+      gap: 6px;
+      align-items: center;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      background: radial-gradient(circle at left, rgba(15, 23, 42, 0.9), #020617);
+      font-size: 0.72rem;
+    }
+
+    @media (max-width: 520px) {
+      .signal-row {
+        grid-template-columns: 28px minmax(0, 1fr);
+        grid-template-rows: auto auto;
+      }
+      .signal-impact {
+        justify-self: flex-end;
+        margin-top: 3px;
+      }
+    }
+
+    .signal-minute {
+      color: var(--text-soft);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .signal-tag {
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid rgba(37, 99, 235, 0.7);
+    }
+
+    .signal-tag.green {
+      border-color: rgba(34, 197, 94, 0.7);
+      color: var(--accent-green);
+    }
+
+    .signal-tag.blue {
+      border-color: rgba(59, 130, 246, 0.8);
+      color: #38bdf8;
+    }
+
+    .signal-tag.red {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: var(--accent-red);
+    }
+
+    .signal-desc {
+      color: var(--text-soft);
+      font-size: 0.72rem;
+    }
+
+    .signal-impact {
+      font-size: 0.7rem;
+      justify-self: flex-end;
+    }
+
+    .signal-impact.positive {
+      color: var(--accent-green);
+    }
+
+    .signal-impact.risk {
+      color: var(--accent-red);
+    }
+
+    /* Multi match radar */
+
+    .radar-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 0.72rem;
+    }
+
+    .radar-table thead {
+      color: var(--text-soft);
+    }
+
+    .radar-table th,
+    .radar-table td {
+      padding: 5px 4px;
+      text-align: left;
+      border-bottom: 1px solid rgba(30, 64, 175, 0.45);
+    }
+
+    .radar-table th:last-child,
+    .radar-table td:last-child {
+      text-align: right;
+    }
+
+    .radar-fixture {
+      font-weight: 500;
+    }
+
+    .radar-league {
+      font-size: 0.68rem;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .badge-low {
+      color: var(--accent-green);
+      border-color: rgba(34, 197, 94, 0.5);
+    }
+
+    .badge-medium {
+      color: var(--accent-amber);
+      border-color: rgba(245, 158, 11, 0.6);
+    }
+
+    .badge-high {
+      color: var(--accent-red);
+      border-color: rgba(248, 113, 113, 0.7);
+    }
+
+    .badge-signal {
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.8);
+    }
+
+    .footer-strip {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(30, 64, 175, 0.6);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+    }
+
+    .footer-counters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .footer-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      padding: 3px 8px;
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    /* Progress pulse */
+
+    @keyframes fadePulse {
+      0% {
+        opacity: 0.45;
+        transform: scaleX(0.98);
+      }
+      50% {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+      100% {
+        opacity: 0.45;
+        transform: scaleX(0.98);
+      }
+    }
+
+    .pulse-bar .stat-bar-fill,
+    .pulse-bar .risk-bar-fill {
+      animation: fadePulse 2.4s ease-in-out infinite;
+    }
+  </style>
 </head>
-<body>
 
-<div class="container">
-  <!-- HEADER -->
-    <div class="box" style="margin-bottom: 22px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <div>
-                <div style="font-size:12px; letter-spacing:2px; color:#7b93b8; text-transform:uppercase;">
-                    BetSense AI · Live Stack
-                </div>
-                <div style="font-size:24px; font-weight:bold; margin-top:4px;">
-                    Live Console — Ultra Pro
-                </div>
-                <div style="font-size:13px; color:#9fb3d9; margin-top:4px;">
-                    In-play trading view · multi–match radar · session edge engine
-                </div>
+<body class="theme-dark">
+  <div class="page">
+    <div class="shell">
+      <div class="shell-inner">
+        <!-- Top bar -->
+        <header class="top-row">
+          <div class="brand">
+            <div class="logo-dot"></div>
+            <div class="brand-text">
+              <div class="brand-title">BetSense AI · Live Stack</div>
+              <div class="brand-main">Live Console — Ultra Pro</div>
+              <div class="pill">
+                <span class="pill-dot"></span>
+                <span>Feed · In-play only</span>
+              </div>
             </div>
-            <div style="text-align:right;">
-                <div class="tag tag-green">Streaming · In-play only</div>
-                <div class="tag tag-blue">Stack mode · Emotion + Quantum</div>
-                <div class="tag tag-orange">Session risk · Dynamic · Auto-throttled</div>
-            </div>
-        </div>
-    </div>
+          </div>
 
-    <!-- PRIMARY FIXTURE PANEL -->
-    <div class="box">
-        <div class="section-title">Primary fixture</div>
-        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; align-items:flex-end;">
-            <div>
-                <div style="font-size:14px; color:#9fb3d9;">
-                    Chelsea vs Arsenal · Premier League · Live stack
-                </div>
-                <div style="display:flex; align-items:baseline; gap:18px; margin-top:8px;">
-                    <div>
-                        <div style="font-size:12px; color:#7b93b8;">Home</div>
-                        <div style="font-size:19px; font-weight:bold;">Chelsea</div>
-                    </div>
-                    <div style="font-size:30px; font-weight:bold;">1 — 1</div>
-                    <div>
-                        <div style="font-size:12px; color:#7b93b8;">Away</div>
-                        <div style="font-size:19px; font-weight:bold;">Arsenal</div>
-                    </div>
-                </div>
-                <div style="font-size:12px; color:#9fb3d9; margin-top:6px;">
-                    75' · 2nd half · xG 1.11 — 0.81
-                </div>
-                <div style="margin-top:8px; font-size:12px;">
-                    <span class="tag tag-blue">In-play model · Emotion + Orderbook</span>
-                    <span class="tag tag-yellow">Shock filter · Medium</span>
-                    <span class="tag tag-green">Latency · 501ms</span>
-                </div>
+          <div class="top-right">
+            <div class="mode-toggle" id="viewModeToggle">
+              <button type="button" data-mode="trading" class="active">
+                Trading view
+              </button>
+              <button type="button" data-mode="risk">
+                Risk view
+              </button>
             </div>
 
-            <!-- EDGE & PROBABILITIES -->
-            <div style="min-width:210px;">
-                <div style="display:flex; gap:8px; justify-content:space-between;">
-                    <div style="flex:1; text-align:center;">
-                        <div style="font-size:11px; text-transform:uppercase; color:#7b93b8;">Home win</div>
-                        <div style="font-size:20px; font-weight:bold; color:#5cc8ff;">59%</div>
-                    </div>
-                    <div style="flex:1; text-align:center;">
-                        <div style="font-size:11px; text-transform:uppercase; color:#7b93b8;">Draw</div>
-                        <div style="font-size:20px; font-weight:bold; color:#ffdb4d;">21%</div>
-                    </div>
-                    <div style="flex:1; text-align:center;">
-                        <div style="font-size:11px; text-transform:uppercase; color:#7b93b8;">Away win</div>
-                        <div style="font-size:20px; font-weight:bold; color:#ff7b7b;">20%</div>
-                    </div>
-                </div>
-                <div style="margin-top:10px; font-size:11px; color:#9fb3d9;">
-                    Live game momentum · <strong>Balanced pressure</strong> · last 6 minutes
-                </div>
-                <div style="margin-top:6px; height:10px; border-radius:999px; background:linear-gradient(to right,#0ae,#0f5,#444,#a11); overflow:hidden;">
-                    <div style="width:48%; height:100%; background:transparent; border-right:2px solid rgba(255,255,255,0.7);"></div>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:11px; color:#7b93b8; margin-top:4px;">
-                    <span>Home pressure</span>
-                    <span>Neutral</span>
-                    <span>Away pressure</span>
-                </div>
-            </div>
-        </div>
-    </div>
+            <button class="theme-switch" id="themeSwitch" type="button">
+              <span class="icon">🌙</span>
+              <span class="label">Dark mode</span>
+            </button>
 
-    <!-- SESSION EDGE ENGINE + RISK ENVELOPE -->
-    <div class="grid-2">
-        <!-- EDGE ENGINE -->
-        <div class="box">
-            <div class="section-title">Session edge engine</div>
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+            <button class="btn-main" type="button" onclick="window.location.href='index.html'">
+              <span class="dot"></span>
+              <span>Back to suite</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Main grid -->
+        <main class="grid-main">
+          <!-- Left column -->
+          <section class="card">
+            <div class="card-title-row">
+              <div class="card-title">Primary fixture</div>
+              <div class="chip">
+                <span>LIVE · 75'</span>
+                <span class="chip-pill">Premier League</span>
+              </div>
+            </div>
+
+            <div class="grid-primary">
+              <div class="primary-meta">
+                <div class="fixture-label">Chelsea vs Arsenal</div>
+
+                <div class="fixture-main">
+                  <div class="fixture-teams">
+                    <div class="fixture-league">Chelsea · Home</div>
+                    <div class="fixture-league">Arsenal · Away</div>
+                  </div>
+                  <div class="fixture-time">
+                    <div>2nd half · 75'</div>
+                    <div class="pill-mini">Emotion + Orderbook</div>
+                  </div>
+                </div>
+
+                <div class="score-row">
+                  <div class="score-main" id="scoreLine">1 — 1</div>
+                  <div class="score-xg">xG 1.11 — 0.81</div>
+                </div>
+
+                <div class="primary-bars">
+                  <div class="stat-block pulse-bar">
+                    <div class="stat-label">Home win probability</div>
+                    <div class="stat-bar-shell">
+                      <div class="stat-bar-fill" style="transform:scaleX(0.60);"></div>
+                    </div>
+                    <div class="stat-value-row">
+                      <div class="stat-value">60%</div>
+                      <div class="stat-tag">Edge focus</div>
+                    </div>
+                  </div>
+
+                  <div class="stat-block">
+                    <div class="stat-label">Draw outcome</div>
+                    <div class="stat-bar-shell">
+                      <div class="stat-bar-fill" style="transform:scaleX(0.08);"></div>
+                    </div>
+                    <div class="stat-value-row">
+                      <div class="stat-value">8%</div>
+                      <div class="stat-tag">Reversion</div>
+                    </div>
+                  </div>
+
+                  <div class="stat-block">
+                    <div class="stat-label">Away win probability</div>
+                    <div class="stat-bar-shell">
+                      <div class="stat-bar-fill" style="transform:scaleX(0.32);"></div>
+                    </div>
+                    <div class="stat-value-row">
+                      <div class="stat-value">32%</div>
+                      <div class="stat-tag">Price drift</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 11px;">
+                  <div class="stat-label">Live game momentum · Balanced pressure</div>
+                  <div class="stat-bar-shell">
+                    <div class="stat-bar-fill" style="
+                        transform-origin: center;
+                        transform: scaleX(0.55);
+                        background: linear-gradient(90deg, #22c55e, #f97316, #ef4444);
+                      "></div>
+                  </div>
+                  <div class="stat-value-row">
+                    <div class="stat-tag">Home pressure</div>
+                    <div class="stat-tag">Last 6 minutes</div>
+                    <div class="stat-tag">Away pressure</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Edge / risk column -->
+              <div>
+                <div class="card-title-row" style="margin-bottom: 6px;">
+                  <div class="card-title">Session edge engine</div>
+                  <div class="chip">
+                    <span id="modeChipLabel">Mode · Trading</span>
+                  </div>
+                </div>
+
                 <div>
-                    <div style="font-size:34px; font-weight:bold; color:#5cc8ff;">+5.5%</div>
-                    <div style="font-size:13px; color:#9fb3d9; margin-top:4px;">
-                        Current live edge against pre-match prices:<br>
-                        <span style="color:#7cf18c; font-weight:bold;">favouring home side.</span>
-                    </div>
-                    <div style="margin-top:10px; font-size:12px; color:#7b93b8;">
-                        Mode: <strong>Trading</strong> · feed quality: <strong>High</strong>
-                    </div>
+                  <div class="edge-number pulse-bar">
+                    <span id="edgeValue">+4.1%</span>
+                  </div>
+                  <div class="edge-sub">
+                    Current live edge against pre-match prices:
+                    <span class="edge-highlight">favouring home side.</span>
+                  </div>
                 </div>
-                <div class="edge-box" style="max-width:170px;">
-                    <div style="font-size:11px; text-transform:uppercase; color:#7b93b8; margin-bottom:4px;">
-                        Edge dial
+
+                <div class="risk-grid" style="margin-top: 14px;">
+                  <div class="risk-item pulse-bar">
+                    <div class="risk-label">Stake usage</div>
+                    <div class="risk-bar-shell">
+                      <div class="risk-bar-fill" style="transform:scaleX(0.63);"></div>
                     </div>
-                    <div class="edge-value">+5.5%</div>
-                    <div style="font-size:11px; margin-top:4px;">
-                        Above target band ·<br> exposure allowed.
+                    <div class="risk-value">
+                      <span class="bold">63%</span>
+                      <span>Of pre-set max per fixture.</span>
                     </div>
+                  </div>
+
+                  <div class="risk-item">
+                    <div class="risk-label">Volatility</div>
+                    <div class="risk-bar-shell">
+                      <div class="risk-bar-fill" style="transform:scaleX(0.55);"></div>
+                    </div>
+                    <div class="risk-value">
+                      <span class="bold">Medium</span>
+                      <span>Odds velocity + xG spikes.</span>
+                    </div>
+                  </div>
+
+                  <div class="risk-item">
+                    <div class="risk-label">Drawdown</div>
+                    <div class="risk-bar-shell">
+                      <div class="risk-bar-fill" style="
+                          transform:scaleX(0.30);
+                          background: linear-gradient(90deg, #f97316, #ef4444);
+                        "></div>
+                    </div>
+                    <div class="risk-value">
+                      <span class="bold">-0.7%</span>
+                      <span>From session high watermark.</span>
+                    </div>
+                  </div>
+
+                  <div class="risk-item">
+                    <div class="risk-label">Shock risk</div>
+                    <div class="risk-bar-shell">
+                      <div class="risk-bar-fill" style="
+                          transform:scaleX(0.55);
+                          background: linear-gradient(90deg, #f59e0b, #f97316);
+                        "></div>
+                    </div>
+                    <div class="risk-value">
+                      <span class="bold">Medium</span>
+                      <span>Emotion Index swings.</span>
+                    </div>
+                  </div>
                 </div>
+
+                <div style="margin-top: 11px;">
+                  <div class="chip">
+                    <span>Session risk</span>
+                    <span class="chip-pill">Dynamic · Auto-throttled</span>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
+          </section>
 
-        <!-- RISK ENVELOPE -->
-        <div class="box">
-            <div class="section-title">Risk envelope</div>
-            <div class="grid-2">
-                <div class="edge-box">
-                    <div style="font-size:11px; text-transform:uppercase; color:#7b93b8;">Stake</div>
-                    <div style="font-size:20px; font-weight:bold; margin-top:4px;">63%</div>
-                    <div style="font-size:11px; margin-top:4px; color:#9fb3d9;">
-                        Of pre-set max per fixture.
-                    </div>
-                </div>
-                <div class="edge-box">
-                    <div style="font-size:11px; text-transform:uppercase; color:#7b93b8;">Volatility</div>
-                    <div style="font-size:14px; font-weight:bold; margin-top:4px; color:#ffdb4d;">Medium</div>
-                    <div style="font-size:11px; margin-top:4px; color:#9fb3d9;">
-                        Based on odds velocity + xG spikes.
-                    </div>
-                </div>
-                <div class="edge-box">
-                    <div style="font-size:11px; text-transform:uppercase; color:#7b93b8;">Drawdown</div>
-                    <div style="font-size:20px; font-weight:bold; margin-top:4px; color:#ff7b7b;">-0.7%</div>
-                    <div style="font-size:11px; margin-top:4px; color:#9fb3d9;">
-                        From session high watermark.
-                    </div>
-                </div>
-                <div class="edge-box">
-                    <div style="font-size:11px; text-transform:uppercase; color:#7b93b8;">Shock risk</div>
-                    <div style="font-size:14px; font-weight:bold; margin-top:4px; color:#ff9c5c;">Medium</div>
-                    <div style="font-size:11px; margin-top:4px; color:#9fb3d9;">
-                        Derived from Emotion Index swings.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LIVE SIGNAL QUEUE -->
-    <div class="box">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <div class="section-title" style="margin-bottom:0;">Live signal queue</div>
-            <div style="font-size:12px; color:#9fb3d9;">Last 90 seconds</div>
-        </div>
-
-        <div class="signal-item">
+          <!-- Right column -->
+          <section class="card">
+            <!-- Live signal queue -->
             <div>
-                <span style="font-size:13px; color:#7b93b8;">65'</span>
-                <span class="signal-type" style="margin-left:6px; color:#7cf18c;">xG spike</span>
-                <span class="signal-effect">+0.6%</span>
-            </div>
-            <div style="font-size:13px; color:#c3d1e6; margin-top:4px;">
-                Triple corner sequence · pressure building on home side.
-            </div>
-        </div>
+              <div class="signals-header">
+                <div class="signals-title">Live signal queue</div>
+                <div class="signals-window">Last 90 seconds</div>
+              </div>
 
-        <div class="signal-item" style="border-left-color:#5cc8ff;">
-            <div>
-                <span style="font-size:13px; color:#7b93b8;">64'</span>
-                <span class="signal-type" style="margin-left:6px; color:#5cc8ff;">Orderbook</span>
-                <span class="signal-effect">+0.3%</span>
-            </div>
-            <div style="font-size:13px; color:#c3d1e6; margin-top:4px;">
-                Liquidity wall detected on away price ladder.
-            </div>
-        </div>
+              <ul class="signals-list">
+                <li class="signal-row">
+                  <div class="signal-minute">65'</div>
+                  <div>
+                    <div class="signal-tag green">xG spike</div>
+                    <div class="signal-desc">
+                      Triple corner sequence · pressure building on home side.
+                    </div>
+                  </div>
+                  <div class="signal-impact positive">+0.6%</div>
+                </li>
 
-        <div class="signal-item" style="border-left-color:#ff7b7b;">
-            <div>
-                <span style="font-size:13px; color:#7b93b8;">63'</span>
-                <span class="signal-type" style="margin-left:6px; color:#ff9c5c;">Shockwave</span>
-                <span class="signal-effect" style="color:#ff7b7b;">Risk</span>
-            </div>
-            <div style="font-size:13px; color:#c3d1e6; margin-top:4px;">
-                Crowd noise + odds snapback after disallowed goal.
-            </div>
-        </div>
+                <li class="signal-row">
+                  <div class="signal-minute">64'</div>
+                  <div>
+                    <div class="signal-tag blue">Orderbook</div>
+                    <div class="signal-desc">
+                      Liquidity wall detected on away price ladder.
+                    </div>
+                  </div>
+                  <div class="signal-impact positive">+0.3%</div>
+                </li>
 
-        <div class="signal-item" style="border-left-color:#7cf18c;">
-            <div>
-                <span style="font-size:13px; color:#7b93b8;">61'</span>
-                <span class="signal-type" style="margin-left:6px; color:#7cf18c;">Momentum flip</span>
-                <span class="signal-effect">+0.4%</span>
-            </div>
-            <div style="font-size:13px; color:#c3d1e6; margin-top:4px;">
-                Territory shifted 70-30 towards home for 3 minutes.
-            </div>
-        </div>
-    </div>
+                <li class="signal-row">
+                  <div class="signal-minute">63'</div>
+                  <div>
+                    <div class="signal-tag red">Shockwave</div>
+                    <div class="signal-desc">
+                      Crowd noise + odds snapback after disallowed goal.
+                    </div>
+                  </div>
+                  <div class="signal-impact risk">Risk</div>
+                </li>
 
-    <!-- MULTI-MATCH RADAR -->
-    <div class="box">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <div class="section-title" style="margin-bottom:0;">Multi-match radar</div>
-            <div style="font-size:12px; color:#9fb3d9;">Watchlist · 6 fixtures</div>
-        </div>
+                <li class="signal-row">
+                  <div class="signal-minute">61'</div>
+                  <div>
+                    <div class="signal-tag green">Momentum flip</div>
+                    <div class="signal-desc">
+                      Territory flipped 70-30 towards home for 3 minutes.
+                    </div>
+                  </div>
+                  <div class="signal-impact positive">+0.4%</div>
+                </li>
+              </ul>
+            </div>
 
-        <table class="match-table">
-            <thead>
-                <tr style="font-size:11px; text-transform:uppercase; color:#7b93b8;">
-                    <th style="text-align:left;">Fixture</th>
+            <!-- Multi-match radar -->
+            <div style="margin-top: 16px;">
+              <div class="signals-header">
+                <div class="signals-title">Multi-match radar</div>
+                <div class="signals-window">Watchlist · 6 fixtures</div>
+              </div>
+
+              <table class="radar-table">
+                <thead>
+                  <tr>
+                    <th>Fixture</th>
                     <th>Time</th>
                     <th>Edge</th>
                     <th>Shock risk</th>
                     <th>Signal</th>
-                </tr>
-            </thead>
-            <tbody style="font-size:13px;">
-                <tr>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
                     <td>
-                        Chelsea vs Arsenal<br>
-                        <span style="font-size:11px; color:#7b93b8;">Premier League</span>
+                      <div class="radar-fixture">Chelsea vs Arsenal</div>
+                      <div class="radar-league">Premier League</div>
                     </td>
-                    <td style="text-align:center;">75'</td>
-                    <td style="color:#7cf18c; text-align:center;">+2.2%</td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-green" style="padding:2px 8px; font-size:11px;">Low</span>
-                    </td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-blue" style="padding:2px 8px; font-size:11px;">xG · Momentum</span>
-                    </td>
-                </tr>
-                <tr>
+                    <td>75'</td>
+                    <td class="edge-highlight">+2.2%</td>
+                    <td><span class="badge badge-low">Low</span></td>
+                    <td><span class="badge badge-signal">xG · Momentum</span></td>
+                  </tr>
+                  <tr>
                     <td>
-                        Milan vs Napoli<br>
-                        <span style="font-size:11px; color:#7b93b8;">Serie A</span>
+                      <div class="radar-fixture">Milan vs Napoli</div>
+                      <div class="radar-league">Serie A</div>
                     </td>
-                    <td style="text-align:center;">62'</td>
-                    <td style="color:#7cf18c; text-align:center;">+0.9%</td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-yellow" style="padding:2px 8px; font-size:11px;">Medium</span>
-                    </td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-blue" style="padding:2px 8px; font-size:11px;">Orderbook</span>
-                    </td>
-                </tr>
-                <tr>
+                    <td>62'</td>
+                    <td>+0.9%</td>
+                    <td><span class="badge badge-medium">Medium</span></td>
+                    <td><span class="badge badge-signal">Orderbook</span></td>
+                  </tr>
+                  <tr>
                     <td>
-                        Leipzig vs Dortmund<br>
-                        <span style="font-size:11px; color:#7b93b8;">Bundesliga</span>
+                      <div class="radar-fixture">Leipzig vs Dortmund</div>
+                      <div class="radar-league">Bundesliga</div>
                     </td>
-                    <td style="text-align:center;">41'</td>
-                    <td style="color:#ff7b7b; text-align:center;">-1.3%</td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-red" style="padding:2px 8px; font-size:11px;">High</span>
-                    </td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-red" style="padding:2px 8px; font-size:11px;">Shockwave</span>
-                    </td>
-                </tr>
-                <tr>
+                    <td>41'</td>
+                    <td style="color: var(--accent-red);">-1.3%</td>
+                    <td><span class="badge badge-high">High</span></td>
+                    <td><span class="badge badge-signal">Shockwave</span></td>
+                  </tr>
+                  <tr>
                     <td>
-                        Porto vs Benfica<br>
-                        <span style="font-size:11px; color:#7b93b8;">Liga Portugal</span>
+                      <div class="radar-fixture">Porto vs Benfica</div>
+                      <div class="radar-league">Liga Portugal</div>
                     </td>
-                    <td style="text-align:center;">19'</td>
-                    <td style="color:#7cf18c; text-align:center;">+0.4%</td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-green" style="padding:2px 8px; font-size:11px;">Low</span>
-                    </td>
-                    <td style="text-align:center;">
-                        <span class="tag tag-blue" style="padding:2px 8px; font-size:11px;">Calm period</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    <td>19'</td>
+                    <td>+0.4%</td>
+                    <td><span class="badge badge-low">Low</span></td>
+                    <td><span class="badge badge-signal">Calm period</span></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="footer-strip">
+                <div class="footer-counters">
+                  <div class="footer-pill">Signals fired: <strong>26</strong></div>
+                  <div class="footer-pill">Live latency: <strong>518ms</strong></div>
+                  <div class="footer-pill">Stack health: <span style="color: var(--accent-green);">Stable</span></div>
+                  <div class="footer-pill">Risk meter: <span style="color: var(--accent-amber);">Medium</span></div>
+                </div>
+                <div>
+                  Refresh every 3-5 seconds · Production feeds via JSON API / WebSocket.
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
+  </div>
 
-    <!-- SESSION SNAPSHOT -->
-    <div class="grid-2">
-        <div class="stats-box">
-            <div style="font-size:13px; text-transform:uppercase; color:#7b93b8;">Signals fired</div>
-            <div style="font-size:22px; font-weight:bold; margin-top:4px;">24</div>
-        </div>
-        <div class="stats-box">
-            <div style="font-size:13px; text-transform:uppercase; color:#7b93b8;">Live latency</div>
-            <div style="font-size:22px; font-weight:bold; margin-top:4px;">483ms</div>
-        </div>
-        <div class="stats-box">
-            <div style="font-size:13px; text-transform:uppercase; color:#7b93b8;">Stack health</div>
-            <div style="font-size:22px; font-weight:bold; margin-top:4px; color:#7cf18c;">Stable</div>
-        </div>
-        <div class="stats-box">
-            <div style="font-size:13px; text-transform:uppercase; color:#7b93b8;">Risk meter</div>
-            <div style="font-size:22px; font-weight:bold; margin-top:4px; color:#ff9c5c;">Medium</div>
-        </div>
-    </div>
+  <script>
+    // --- Theme toggle (light / dark) ---
+    (function () {
+      const body = document.body;
+      const switchBtn = document.getElementById("themeSwitch");
+      const label = switchBtn.querySelector(".label");
+      const icon = switchBtn.querySelector(".icon");
+      const STORAGE_KEY = "betsense-theme";
 
-    <div style="font-size:11px; color:#6f84a8; margin:18px 4px 40px;">
-        Values are illustrative. Production feeds plug into your trading stack via API or WebSocket.
-        Refresh every 3–5 seconds · configurable in settings.
-    </div>
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === "light") {
+        body.classList.remove("theme-dark");
+        body.classList.add("theme-light");
+        label.textContent = "Light mode";
+        icon.textContent = "☀️";
+      }
 
-</div> <!-- /container -->
+      switchBtn.addEventListener("click", () => {
+        const isDark = body.classList.contains("theme-dark");
+        if (isDark) {
+          body.classList.remove("theme-dark");
+          body.classList.add("theme-light");
+          label.textContent = "Light mode";
+          icon.textContent = "☀️";
+          localStorage.setItem(STORAGE_KEY, "light");
+        } else {
+          body.classList.remove("theme-light");
+          body.classList.add("theme-dark");
+          label.textContent = "Dark mode";
+          icon.textContent = "🌙";
+          localStorage.setItem(STORAGE_KEY, "dark");
+        }
+      });
+    })();
 
+    // --- View mode switch (Trading / Risk) ---
+    (function () {
+      const toggle = document.getElementById("viewModeToggle");
+      const buttons = toggle.querySelectorAll("button");
+      const modeChip = document.getElementById("modeChipLabel");
+      const edgeValue = document.getElementById("edgeValue");
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          buttons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const mode = btn.getAttribute("data-mode");
+          if (mode === "trading") {
+            modeChip.textContent = "Mode · Trading";
+            edgeValue.textContent = "+4.1%";
+          } else {
+            modeChip.textContent = "Mode · Risk";
+            edgeValue.textContent = "+2.5%";
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
