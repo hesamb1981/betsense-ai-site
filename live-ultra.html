@@ -2,39 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BetSense AI – Live Console Ultra Pro</title>
+  <title>BetSense AI · Live Console — Ultra Pro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <style>
     :root {
-      --bg-main: #020617;
-      --bg-panel: #020a1d;
-      --bg-panel-soft: #030c25;
-      --accent-blue: #22d3ee;
-      --accent-blue-soft: rgba(34, 211, 238, 0.1);
-      --accent-green: #22c55e;
-      --accent-red: #fb7185;
-      --accent-amber: #fbbf24;
-      --text-main: #e5e7eb;
-      --text-soft: #9ca3af;
-      --border-soft: #1f2937;
-      --chip-bg: rgba(15, 23, 42, 0.8);
-      --chip-border: #1e293b;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
-      --radius-lg: 18px;
-      --radius-pill: 999px;
+      --bg-dark: #030814;
+      --bg-dark-soft: #050b18;
+      --bg-light: #f4f6fb;
+      --bg-light-soft: #ffffff;
+      --accent-blue: #42e8ff;
+      --accent-green: #5bff8c;
+      --accent-red: #ff5c7a;
+      --accent-amber: #ffc857;
+      --accent-purple: #a88cff;
+      --text-main: #f8fbff;
+      --text-soft: #a5b2cf;
+      --text-muted: #6f7a96;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --card-bg: rgba(9, 18, 40, 0.96);
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.45);
+      --radius-xl: 22px;
+      --transition-fast: 0.16s ease-out;
+      --transition-med: 0.25s ease-out;
     }
 
-    body.theme-light {
-      --bg-main: #f3f4f6;
-      --bg-panel: #ffffff;
-      --bg-panel-soft: #f9fafb;
-      --text-main: #0f172a;
-      --text-soft: #6b7280;
-      --border-soft: #e5e7eb;
-      --chip-bg: #f3f4f6;
-      --chip-border: #e5e7eb;
-      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+    /* LIGHT MODE OVERRIDES */
+    body.light {
+      --bg-dark: #f4f6fb;
+      --bg-dark-soft: #e7ebf7;
+      --bg-light: #f4f6fb;
+      --bg-light-soft: #ffffff;
+      --card-bg: #ffffff;
+      --text-main: #020819;
+      --text-soft: #4b5670;
+      --text-muted: #838ca3;
+      --border-subtle: rgba(5, 16, 47, 0.06);
+      --shadow-soft: 0 18px 45px rgba(14, 30, 66, 0.20);
     }
 
     * {
@@ -47,37 +50,51 @@
       min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+      background: radial-gradient(circle at 0% 0%, #0b1b3a 0, #030814 50%, #01030a 100%);
       color: var(--text-main);
       display: flex;
+      align-items: center;
       justify-content: center;
-      padding: 20px 12px 32px;
+      padding: 16px;
+      transition: background var(--transition-med), color var(--transition-med);
     }
 
-    .page {
-      width: 100%;
-      max-width: 1120px;
+    body.light {
+      background: radial-gradient(circle at 0% 0%, #e4ebff 0, #f4f6fb 45%, #dde4f6 100%);
     }
 
     .shell {
-      background: radial-gradient(circle at top left, #0b1120 0, var(--bg-main) 55%);
-      border-radius: 24px;
-      border: 1px solid #1f2937;
+      width: 100%;
+      max-width: 1120px;
+      background: linear-gradient(145deg, rgba(18, 26, 56, 0.98), rgba(5, 10, 30, 0.98));
+      border-radius: 32px;
+      border: 1px solid rgba(173, 211, 255, 0.12);
       box-shadow: var(--shadow-soft);
-      padding: 18px 16px 22px;
+      padding: 20px 20px 18px;
       position: relative;
       overflow: hidden;
+    }
+
+    body.light .shell {
+      background: linear-gradient(145deg, #ffffff, #f4f6fb);
+      border-color: rgba(50, 72, 122, 0.08);
     }
 
     .shell::before {
       content: "";
       position: absolute;
-      inset: -120px;
+      inset: -40%;
       background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(94, 234, 212, 0.1), transparent 55%);
-      opacity: 0.9;
+        radial-gradient(circle at 10% 0%, rgba(87, 204, 255, 0.15) 0, transparent 55%),
+        radial-gradient(circle at 90% 0%, rgba(172, 120, 255, 0.18) 0, transparent 55%);
+      opacity: 0.85;
       pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    body.light .shell::before {
+      opacity: 0.45;
+      mix-blend-mode: normal;
     }
 
     .shell-inner {
@@ -85,942 +102,1233 @@
       z-index: 1;
     }
 
-    /* Header */
-
+    /* HEADER */
     .top-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 14px;
       margin-bottom: 16px;
     }
 
-    .brand {
+    .badge-stack {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
       display: flex;
       align-items: center;
+      gap: 8px;
+    }
+
+    .badge-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-soft);
+      background: radial-gradient(circle at 0 0, rgba(151, 246, 255, 0.16), transparent 55%);
+    }
+
+    body.light .badge-pill {
+      border-color: rgba(24, 33, 76, 0.12);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .title-block {
+      margin-top: 4px;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    .title-block .subtitle {
+      margin-top: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+    }
+
+    .view-switch {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
       gap: 10px;
     }
 
-    .logo-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 28%;
-      background: conic-gradient(
-        from 210deg,
-        #22d3ee,
-        #38bdf8,
-        #6366f1,
-        #22c55e,
-        #22d3ee
-      );
-      box-shadow: 0 0 30px rgba(34, 211, 238, 0.7);
-      position: relative;
-    }
-
-    .logo-dot::after {
-      content: "";
-      position: absolute;
-      inset: 5px;
-      border-radius: inherit;
-      background: radial-gradient(circle at 25% 25%, #f9fafb, #0f172a);
-      mix-blend-mode: screen;
-      opacity: 0.85;
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-title {
-      font-size: 0.9rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-    }
-
-    .brand-main {
-      font-size: 1.05rem;
-      font-weight: 600;
-    }
-
-    .pill {
+    .segmented {
       display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 10px;
       border-radius: 999px;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      border: 1px solid var(--border-soft);
-      background: rgba(15, 23, 42, 0.75);
-      color: var(--text-soft);
-    }
-
-    .pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
-    }
-
-    .top-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .btn-small {
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 0.7rem;
-      border: 1px solid var(--border-soft);
-      background: var(--chip-bg);
-      color: var(--text-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      outline: none;
-    }
-
-    .btn-small span.dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22d3ee;
-      box-shadow: 0 0 10px rgba(34, 211, 238, 0.9);
-    }
-
-    .btn-main {
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 0.75rem;
-      border: none;
-      background: linear-gradient(130deg, #22d3ee, #6366f1);
-      color: #0b1120;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.5);
-    }
-
-    .btn-main span.dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #0b1120;
-    }
-
-    .mode-toggle {
-      border-radius: 999px;
-      padding: 4px;
-      border: 1px solid var(--border-soft);
-      background: var(--chip-bg);
-      display: inline-flex;
-      gap: 2px;
-      font-size: 0.7rem;
-    }
-
-    .mode-toggle button {
-      border-radius: 999px;
-      padding: 4px 10px;
-      border: none;
-      background: transparent;
-      color: var(--text-soft);
-      cursor: pointer;
-      font-size: inherit;
-    }
-
-    .mode-toggle button.active {
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(56, 189, 248, 0.3));
-      color: #f9fafb;
-    }
-
-    .theme-switch {
-      border-radius: 999px;
-      padding: 4px 10px;
-      background: var(--chip-bg);
-      border: 1px solid var(--border-soft);
-      font-size: 0.7rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-
-    .theme-switch span.icon {
-      font-size: 0.85rem;
-    }
-
-    /* Layout */
-
-    .grid-main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.05fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 880px) {
-      .shell {
-        padding: 16px 12px 18px;
-      }
-      .grid-main {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .top-row {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-      .top-right {
-        justify-content: flex-start;
-      }
-    }
-
-    .card {
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
-      border-radius: var(--radius-lg);
-      padding: 14px 14px 13px;
-      border: 1px solid rgba(51, 65, 85, 0.85);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.85);
+      padding: 3px;
+      background: rgba(2, 8, 28, 0.85);
+      border: 1px solid rgba(153, 190, 255, 0.35);
+      box-shadow: 0 0 0 1px rgba(2, 10, 40, 0.75);
       position: relative;
       overflow: hidden;
     }
 
-    body.theme-light .card {
-      background: linear-gradient(145deg, #ffffff, #f9fafb);
-      border-color: #e5e7eb;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    body.light .segmented {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(92, 115, 170, 0.35);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
     }
 
-    .card-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      gap: 10px;
-    }
-
-    .card-title {
-      font-size: 0.8rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+    .segmented button {
+      position: relative;
+      border: none;
+      background: none;
       color: var(--text-soft);
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      z-index: 1;
+      transition: color var(--transition-fast), transform var(--transition-fast);
     }
 
-    .chip {
+    .segmented button.active {
+      color: #020817;
+      font-weight: 600;
+      transform: translateY(-0.5px);
+    }
+
+    .segmented-highlight {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      width: 50%;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      transition: transform var(--transition-med);
+      z-index: 0;
+    }
+
+    .mode-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--chip-border);
-      padding: 4px 10px;
-      font-size: 0.7rem;
-      color: var(--text-soft);
-      background: var(--chip-bg);
-    }
-
-    .chip-pill {
-      padding: 2px 7px;
+      padding: 5px 11px;
       border-radius: 999px;
-      font-size: 0.7rem;
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: linear-gradient(135deg, rgba(23, 28, 60, 0.9), rgba(10, 15, 36, 0.9));
+      cursor: pointer;
+      color: var(--text-soft);
+      transition: background var(--transition-med), border-color var(--transition-med),
+        color var(--transition-med), transform var(--transition-fast);
     }
 
-    .grid-primary {
+    body.light .mode-pill {
+      background: linear-gradient(135deg, #fdfdff, #f2f4fb);
+      border-color: rgba(52, 73, 129, 0.16);
+    }
+
+    .mode-pill-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #fff, var(--accent-blue));
+      box-shadow: 0 0 0 3px rgba(66, 232, 255, 0.22);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    body.light .mode-pill-dot {
+      box-shadow: 0 0 0 3px rgba(11, 120, 255, 0.18);
+    }
+
+    .mode-pill-label {
+      font-weight: 500;
+    }
+
+    .mode-pill span:last-child {
+      color: var(--text-muted);
+    }
+
+    body.light .mode-pill span:last-child {
+      color: var(--text-muted);
+    }
+
+    .mode-pill.active {
+      color: #020617;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-0.5px);
+    }
+
+    .mode-pill.active .mode-pill-dot {
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.35);
+      transform: scale(1.02);
+    }
+
+    /* GRID LAYOUT */
+
+    .main-grid {
       display: grid;
-      grid-template-columns: 1.4fr 1.1fr;
-      gap: 10px;
-      align-items: stretch;
+      grid-template-columns: 1.65fr 1.1fr;
+      gap: 18px;
+      margin-top: 12px;
     }
 
-    @media (max-width: 720px) {
-      .grid-primary {
-        grid-template-columns: minmax(0, 1fr);
+    @media (max-width: 960px) {
+      .shell {
+        padding: 16px 14px 16px;
+        border-radius: 26px;
+      }
+
+      .top-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .view-switch {
+        align-items: flex-start;
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
       }
     }
 
-    .primary-meta {
+    @media (max-width: 600px) {
+      .title-block h1 {
+        font-size: 20px;
+      }
+
+      .main-grid {
+        gap: 14px;
+      }
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 14px 14px 12px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      transform-origin: top center;
+      animation: fadeInUp 0.6s ease-out both;
+    }
+
+    body.light .panel {
+      box-shadow: 0 8px 22px rgba(16, 35, 74, 0.18);
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: -22%;
+      background:
+        radial-gradient(circle at 0 0, rgba(148, 238, 255, 0.12), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(120, 120, 255, 0.08), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    body.light .panel::before {
+      opacity: 0.45;
+    }
+
+    .panel-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* PRIMARY FIXTURE */
+
+    .fixture-header {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
       gap: 8px;
+      margin-bottom: 8px;
     }
 
     .fixture-label {
-      font-size: 0.75rem;
-      color: var(--text-soft);
-      letter-spacing: 0.16em;
+      font-size: 11px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .fixture-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .fixture-chip {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(3, 10, 32, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    body.light .fixture-chip {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(19, 28, 62, 0.12);
+    }
+
+    .fixture-chip span:first-child {
+      font-weight: 500;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    .fixture-chip span:last-child {
+      color: var(--text-soft);
     }
 
     .fixture-main {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 18px;
+      margin-bottom: 10px;
     }
 
-    .fixture-teams {
+    @media (max-width: 800px) {
+      .fixture-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .teams {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .teams h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .teams-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .scoreline {
+      margin-top: 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .scoreline span.score {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+    }
+
+    .scoreline span.xg {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 199, 0.4);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    body.light .pill {
+      background: rgba(255, 255, 255, 0.92);
+      border-color: rgba(87, 105, 144, 0.35);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-purple);
+    }
+
+    .pill-tag {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .meta-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .meta-card {
+      padding: 8px 9px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 199, 0.28);
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .fixture-league {
-      font-size: 0.75rem;
-      color: var(--text-soft);
+    body.light .meta-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(90, 109, 154, 0.32);
     }
 
-    .fixture-names {
-      font-size: 0.95rem;
-      font-weight: 600;
+    .meta-label {
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
-    .fixture-time {
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      text-align: right;
-    }
-
-    .score-row {
+    .meta-value-row {
       display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .score-main {
-      font-size: 1.6rem;
-      font-variant-numeric: tabular-nums;
-      font-weight: 600;
-    }
-
-    .score-xg {
-      font-size: 0.75rem;
-      color: var(--text-soft);
-    }
-
-    .pill-mini {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      padding: 3px 7px;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-soft);
-    }
-
-    .primary-bars {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .stat-block {
-      padding: 8px 8px 9px;
-      border-radius: 12px;
-      background: radial-gradient(circle at top, #020617, var(--bg-panel));
-      border: 1px solid rgba(30, 64, 175, 0.7);
-    }
-
-    .stat-label {
-      font-size: 0.7rem;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    .stat-bar-shell {
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      overflow: hidden;
-      margin-bottom: 4px;
-    }
-
-    .stat-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #22d3ee, #6366f1);
-      transform-origin: left;
-      transition: transform 0.3s ease-out;
-    }
-
-    .stat-value-row {
-      display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: baseline;
-      font-size: 0.7rem;
+      gap: 6px;
     }
 
-    .stat-value {
+    .meta-value {
+      font-size: 18px;
       font-weight: 600;
-      font-size: 0.8rem;
     }
 
-    .stat-tag {
-      font-size: 0.65rem;
+    .meta-caption {
+      font-size: 10px;
       color: var(--text-soft);
     }
 
-    /* Edge / Risk */
-
-    .edge-number {
-      font-size: 1.6rem;
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .edge-sub {
-      font-size: 0.78rem;
-      color: var(--text-soft);
+    .bar {
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
       margin-top: 4px;
     }
 
-    .edge-highlight {
+    body.light .bar {
+      background: rgba(216, 223, 241, 0.85);
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+      width: 60%;
+    }
+
+    .bar-fill.red {
+      background: linear-gradient(90deg, #ff5c7a, #ffb199);
+    }
+
+    .bar-fill.purple {
+      background: linear-gradient(90deg, #a88cff, #42e8ff);
+    }
+
+    /* MOMENTUM BAR */
+
+    .momentum-block {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(148, 163, 199, 0.4);
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 720px) {
+      .momentum-block {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+      }
+    }
+
+    .momentum-label {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .momentum-main {
+      margin-top: 4px;
+      background: radial-gradient(circle at 50% 120%, rgba(66, 232, 255, 0.24), rgba(3, 7, 18, 0.95));
+      border-radius: 999px;
+      padding: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.light .momentum-main {
+      background: radial-gradient(circle at 50% 120%, rgba(66, 122, 255, 0.24), rgba(238, 242, 255, 0.95));
+    }
+
+    .momentum-rail {
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #1e293b, #020617, #1e293b);
+      overflow: hidden;
+      position: relative;
+    }
+
+    body.light .momentum-rail {
+      background: linear-gradient(90deg, #d0d7ea, #fff, #d0d7ea);
+    }
+
+    .momentum-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #38bdf8, #22c55e, #f97316, #f97316);
+      transform-origin: left center;
+      transform: scaleX(0.52);
+      opacity: 0.95;
+      transition: transform 0.8s ease-out;
+    }
+
+    .momentum-mark {
+      position: absolute;
+      top: -2px;
+      width: 2px;
+      bottom: -2px;
+      background: rgba(248, 250, 252, 0.5);
+      left: 52%;
+    }
+
+    .momentum-labels {
+      margin-top: 3px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .momentum-side-info {
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .momentum-side-info span strong {
       color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    /* SESSION EDGE + RISK */
+
+    .sidebar-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .edge-panel {
+      padding: 10px 10px 9px;
+      border-radius: 19px;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(4, 13, 33, 0.96));
+      border: 1px solid rgba(148, 163, 199, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.light .edge-panel {
+      background: linear-gradient(145deg, #ffffff, #eef2ff);
+      border-color: rgba(94, 110, 157, 0.6);
+    }
+
+    .edge-panel::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background:
+        radial-gradient(circle at 0 0, rgba(74, 222, 128, 0.36), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(59, 130, 246, 0.36), transparent 55%);
+      opacity: 0.88;
+      mix-blend-mode: screen;
+    }
+
+    body.light .edge-panel::before {
+      opacity: 0.55;
+    }
+
+    .edge-panel-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .edge-main-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(226, 232, 240, 0.9);
+    }
+
+    .edge-main-row {
+      margin-top: 4px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .edge-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: #e5fffb;
+      text-shadow: 0 0 14px rgba(16, 185, 129, 0.75);
+      animation: statPulse 2.4s ease-in-out infinite;
+    }
+
+    .edge-caption {
+      font-size: 11px;
+      color: rgba(226, 232, 240, 0.98);
+    }
+
+    .edge-mode-pill {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.25);
+      background: rgba(15, 23, 42, 0.85);
+      color: rgba(226, 232, 240, 0.9);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    body.light .edge-mode-pill {
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5edff;
     }
 
     .risk-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
-      margin-top: 12px;
     }
 
-    .risk-item {
-      padding: 8px 8px 9px;
-      border-radius: 12px;
-      background: var(--bg-panel-soft);
-      border: 1px solid rgba(55, 65, 81, 0.9);
+    .risk-card {
+      padding: 7px 8px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 199, 0.38);
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    body.light .risk-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(90, 109, 154, 0.32);
     }
 
     .risk-label {
-      font-size: 0.7rem;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    .risk-bar-shell {
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      overflow: hidden;
-      margin-bottom: 4px;
-    }
-
-    .risk-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #22d3ee, #22c55e);
-      transform-origin: left;
-      transition: transform 0.3s ease-out;
+      color: var(--text-muted);
     }
 
     .risk-value {
-      font-size: 0.72rem;
-      color: var(--text-soft);
+      margin-top: 2px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 6px;
     }
 
-    .risk-value span.bold {
+    .risk-text-strong {
       font-weight: 600;
-      font-size: 0.8rem;
-      color: var(--text-main);
     }
 
-    /* Live signal queue */
+    .risk-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid rgba(148, 163, 199, 0.4);
+    }
 
-    .signals-header {
+    .risk-pill.orange {
+      border-color: rgba(251, 191, 36, 0.7);
+      color: var(--accent-amber);
+    }
+
+    .risk-pill.green {
+      border-color: rgba(34, 197, 94, 0.8);
+      color: var(--accent-green);
+    }
+
+    .risk-pill.red {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fb7185;
+    }
+
+    /* LIVE SIGNAL QUEUE */
+
+    .queue-block {
+      margin-top: 8px;
+    }
+
+    .queue-header-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 8px;
       gap: 8px;
+      margin-bottom: 4px;
     }
 
-    .signals-title {
-      font-size: 0.8rem;
+    .queue-label {
+      font-size: 11px;
+      color: var(--text-muted);
       letter-spacing: 0.18em;
       text-transform: uppercase;
+    }
+
+    .queue-window {
+      font-size: 10px;
       color: var(--text-soft);
     }
 
-    .signals-window {
-      font-size: 0.72rem;
-      color: var(--text-soft);
-    }
-
-    .signals-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
+    .queue-list {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      margin-top: 3px;
     }
 
-    .signal-row {
-      display: grid;
-      grid-template-columns: 32px minmax(0, 1.2fr) auto;
-      gap: 6px;
+    .queue-item {
+      border-radius: 999px;
+      padding: 5px 9px;
+      display: flex;
       align-items: center;
-      padding: 7px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(51, 65, 85, 0.85);
-      background: radial-gradient(circle at left, rgba(15, 23, 42, 0.9), #020617);
-      font-size: 0.72rem;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 199, 0.45);
+      font-size: 11px;
     }
 
-    @media (max-width: 520px) {
-      .signal-row {
-        grid-template-columns: 28px minmax(0, 1fr);
-        grid-template-rows: auto auto;
-      }
-      .signal-impact {
-        justify-self: flex-end;
-        margin-top: 3px;
-      }
+    body.light .queue-item {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(92, 113, 160, 0.35);
     }
 
-    .signal-minute {
-      color: var(--text-soft);
+    .queue-time {
       font-variant-numeric: tabular-nums;
+      color: var(--text-muted);
     }
 
-    .signal-tag {
-      border-radius: 999px;
-      padding: 3px 9px;
-      font-size: 0.7rem;
+    .queue-type {
       font-weight: 600;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      border: 1px solid rgba(37, 99, 235, 0.7);
+      font-size: 10px;
     }
 
-    .signal-tag.green {
-      border-color: rgba(34, 197, 94, 0.7);
+    .queue-type.green {
       color: var(--accent-green);
     }
 
-    .signal-tag.blue {
-      border-color: rgba(59, 130, 246, 0.8);
-      color: #38bdf8;
+    .queue-type.blue {
+      color: var(--accent-blue);
     }
 
-    .signal-tag.red {
-      border-color: rgba(248, 113, 113, 0.9);
+    .queue-type.red {
       color: var(--accent-red);
     }
 
-    .signal-desc {
+    .queue-desc {
+      flex: 1;
       color: var(--text-soft);
-      font-size: 0.72rem;
     }
 
-    .signal-impact {
-      font-size: 0.7rem;
-      justify-self: flex-end;
+    .queue-edge {
+      font-weight: 600;
+      font-size: 11px;
     }
 
-    .signal-impact.positive {
+    .queue-edge.positive {
       color: var(--accent-green);
     }
 
-    .signal-impact.risk {
+    .queue-edge.negative {
       color: var(--accent-red);
     }
 
-    /* Multi match radar */
+    /* MULTI MATCH RADAR */
+
+    .radar-block {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(148, 163, 199, 0.6);
+    }
+
+    .radar-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .radar-title {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .radar-meta {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
 
     .radar-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 6px;
-      font-size: 0.72rem;
+      font-size: 11px;
+      color: var(--text-soft);
     }
 
     .radar-table thead {
-      color: var(--text-soft);
+      color: var(--text-muted);
     }
 
     .radar-table th,
     .radar-table td {
-      padding: 5px 4px;
-      text-align: left;
-      border-bottom: 1px solid rgba(30, 64, 175, 0.45);
+      padding: 4px 2px;
     }
 
-    .radar-table th:last-child,
-    .radar-table td:last-child {
-      text-align: right;
+    .radar-table th:first-child,
+    .radar-table td:first-child {
+      padding-left: 0;
     }
 
-    .radar-fixture {
+    .radar-table td:first-child {
       font-weight: 500;
+      color: var(--text-main);
     }
 
-    .radar-league {
-      font-size: 0.68rem;
-      color: var(--text-soft);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px 9px;
+    .radar-tag {
+      padding: 2px 7px;
       border-radius: 999px;
-      font-size: 0.68rem;
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148, 163, 199, 0.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
     }
 
-    .badge-low {
+    .radar-tag.green {
+      border-color: rgba(34, 197, 94, 0.85);
       color: var(--accent-green);
-      border-color: rgba(34, 197, 94, 0.5);
     }
 
-    .badge-medium {
+    .radar-tag.yellow {
+      border-color: rgba(251, 191, 36, 0.85);
       color: var(--accent-amber);
-      border-color: rgba(245, 158, 11, 0.6);
     }
 
-    .badge-high {
+    .radar-tag.red {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fb7185;
+    }
+
+    .radar-tag.blue {
+      border-color: rgba(56, 189, 248, 0.9);
+      color: var(--accent-blue);
+    }
+
+    .radar-edge-positive {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .radar-edge-negative {
       color: var(--accent-red);
-      border-color: rgba(248, 113, 113, 0.7);
+      font-weight: 600;
     }
 
-    .badge-signal {
-      color: #38bdf8;
-      border-color: rgba(56, 189, 248, 0.8);
+    .radar-foot {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 10px;
+      color: var(--text-muted);
     }
 
-    .footer-strip {
-      margin-top: 12px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(30, 64, 175, 0.6);
+    .radar-foot strong {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .radar-stats {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      color: var(--text-soft);
     }
 
-    .footer-counters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .footer-pill {
+    .radar-stat-pill {
+      padding: 3px 9px;
       border-radius: 999px;
-      border: 1px solid rgba(51, 65, 85, 0.9);
-      padding: 3px 8px;
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 199, 0.45);
     }
 
-    /* Progress pulse */
+    body.light .radar-stat-pill {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(96, 116, 166, 0.35);
+    }
 
-    @keyframes fadePulse {
-      0% {
-        opacity: 0.45;
-        transform: scaleX(0.98);
+    /* FOOTER NOTE */
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer-note a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    /* ANIMATIONS */
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.985);
       }
-      50% {
+      to {
         opacity: 1;
-        transform: scaleX(1);
-      }
-      100% {
-        opacity: 0.45;
-        transform: scaleX(0.98);
+        transform: translateY(0) scale(1);
       }
     }
 
-    .pulse-bar .stat-bar-fill,
-    .pulse-bar .risk-bar-fill {
-      animation: fadePulse 2.4s ease-in-out infinite;
+    @keyframes statPulse {
+      0%,
+      60%,
+      100% {
+        text-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+        transform: scale(1);
+      }
+      30% {
+        text-shadow: 0 0 20px rgba(34, 197, 94, 1);
+        transform: scale(1.03);
+      }
     }
   </style>
 </head>
-
-<body class="theme-dark">
-  <div class="page">
-    <div class="shell">
-      <div class="shell-inner">
-        <!-- Top bar -->
-        <header class="top-row">
-          <div class="brand">
-            <div class="logo-dot"></div>
-            <div class="brand-text">
-              <div class="brand-title">BetSense AI · Live Stack</div>
-              <div class="brand-main">Live Console — Ultra Pro</div>
-              <div class="pill">
-                <span class="pill-dot"></span>
-                <span>Feed · In-play only</span>
-              </div>
+<body class="dark">
+  <div class="shell">
+    <div class="shell-inner">
+      <!-- HEADER -->
+      <div class="top-row">
+        <div>
+          <div class="badge-stack">
+            <span>BET SENSE AI</span>
+            <span class="badge-pill">LIVE STACK · ULTRA PRO</span>
+          </div>
+          <div class="title-block">
+            <h1>Live Console — Ultra Pro</h1>
+            <div class="subtitle" id="modeSubtitle">
+              IN-PLAY TRADING VIEW · MULTI-MATCH RADAR
             </div>
           </div>
+        </div>
 
-          <div class="top-right">
-            <div class="mode-toggle" id="viewModeToggle">
-              <button type="button" data-mode="trading" class="active">
-                Trading view
-              </button>
-              <button type="button" data-mode="risk">
-                Risk view
-              </button>
-            </div>
-
-            <button class="theme-switch" id="themeSwitch" type="button">
-              <span class="icon">🌙</span>
-              <span class="label">Dark mode</span>
+        <div class="view-switch">
+          <!-- Trading / Risk segmented -->
+          <div class="segmented" id="modeSwitch">
+            <div class="segmented-highlight" id="segmentedHighlight"></div>
+            <button type="button" data-mode="trading" class="active">
+              Trading view
             </button>
-
-            <button class="btn-main" type="button" onclick="window.location.href='index.html'">
-              <span class="dot"></span>
-              <span>Back to suite</span>
+            <button type="button" data-mode="risk">
+              Risk view
             </button>
           </div>
-        </header>
 
-        <!-- Main grid -->
-        <main class="grid-main">
-          <!-- Left column -->
-          <section class="card">
-            <div class="card-title-row">
-              <div class="card-title">Primary fixture</div>
-              <div class="chip">
-                <span>LIVE · 75'</span>
-                <span class="chip-pill">Premier League</span>
-              </div>
-            </div>
+          <!-- Dark / Light pill -->
+          <button type="button" class="mode-pill" id="themeToggle">
+            <span class="mode-pill-dot"></span>
+            <span class="mode-pill-label">Dark mode</span>
+            <span>Tap to toggle</span>
+          </button>
+        </div>
+      </div>
 
-            <div class="grid-primary">
-              <div class="primary-meta">
-                <div class="fixture-label">Chelsea vs Arsenal</div>
-
-                <div class="fixture-main">
-                  <div class="fixture-teams">
-                    <div class="fixture-league">Chelsea · Home</div>
-                    <div class="fixture-league">Arsenal · Away</div>
-                  </div>
-                  <div class="fixture-time">
-                    <div>2nd half · 75'</div>
-                    <div class="pill-mini">Emotion + Orderbook</div>
-                  </div>
-                </div>
-
-                <div class="score-row">
-                  <div class="score-main" id="scoreLine">1 — 1</div>
-                  <div class="score-xg">xG 1.11 — 0.81</div>
-                </div>
-
-                <div class="primary-bars">
-                  <div class="stat-block pulse-bar">
-                    <div class="stat-label">Home win probability</div>
-                    <div class="stat-bar-shell">
-                      <div class="stat-bar-fill" style="transform:scaleX(0.60);"></div>
-                    </div>
-                    <div class="stat-value-row">
-                      <div class="stat-value">60%</div>
-                      <div class="stat-tag">Edge focus</div>
-                    </div>
-                  </div>
-
-                  <div class="stat-block">
-                    <div class="stat-label">Draw outcome</div>
-                    <div class="stat-bar-shell">
-                      <div class="stat-bar-fill" style="transform:scaleX(0.08);"></div>
-                    </div>
-                    <div class="stat-value-row">
-                      <div class="stat-value">8%</div>
-                      <div class="stat-tag">Reversion</div>
-                    </div>
-                  </div>
-
-                  <div class="stat-block">
-                    <div class="stat-label">Away win probability</div>
-                    <div class="stat-bar-shell">
-                      <div class="stat-bar-fill" style="transform:scaleX(0.32);"></div>
-                    </div>
-                    <div class="stat-value-row">
-                      <div class="stat-value">32%</div>
-                      <div class="stat-tag">Price drift</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div style="margin-top: 11px;">
-                  <div class="stat-label">Live game momentum · Balanced pressure</div>
-                  <div class="stat-bar-shell">
-                    <div class="stat-bar-fill" style="
-                        transform-origin: center;
-                        transform: scaleX(0.55);
-                        background: linear-gradient(90deg, #22c55e, #f97316, #ef4444);
-                      "></div>
-                  </div>
-                  <div class="stat-value-row">
-                    <div class="stat-tag">Home pressure</div>
-                    <div class="stat-tag">Last 6 minutes</div>
-                    <div class="stat-tag">Away pressure</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Edge / risk column -->
+      <!-- MAIN GRID -->
+      <div class="main-grid">
+        <!-- LEFT: PRIMARY FIXTURE -->
+        <section class="panel">
+          <div class="panel-inner">
+            <div class="fixture-header">
               <div>
-                <div class="card-title-row" style="margin-bottom: 6px;">
-                  <div class="card-title">Session edge engine</div>
-                  <div class="chip">
-                    <span id="modeChipLabel">Mode · Trading</span>
+                <div class="fixture-label">PRIMARY FIXTURE · LIVE STACK</div>
+                <div class="fixture-meta">
+                  <span>Chelsea vs Arsenal · Premier League</span>
+                </div>
+              </div>
+              <div class="fixture-meta">
+                <div class="fixture-chip">
+                  <span>LIVE · 75'</span>
+                  <span>2nd half · Emotion + Orderbook</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fixture-main">
+              <!-- left column: teams, score, xG -->
+              <div class="teams">
+                <h2>Chelsea vs Arsenal</h2>
+                <div class="teams-row">
+                  <span>Chelsea · Home</span>
+                  <span>Arsenal · Away</span>
+                </div>
+                <div class="scoreline">
+                  <span class="score">1 — 1</span>
+                  <span class="xg">xG 1.11 — 0.81</span>
+                </div>
+                <div class="pill-row">
+                  <div class="pill">
+                    <span class="pill-dot"></span>
+                    <span>In-play model: Emotion + Orderbook</span>
+                  </div>
+                  <div class="pill">
+                    <span class="pill-tag">Shock filter</span>
+                    <span>Medium</span>
+                  </div>
+                  <div class="pill">
+                    <span class="pill-tag">Latency</span>
+                    <span>520 ms</span>
                   </div>
                 </div>
+              </div>
 
+              <!-- right column: probabilities -->
+              <div>
+                <div class="meta-grid">
+                  <div class="meta-card">
+                    <div class="meta-label">HOME · Edge focus</div>
+                    <div class="meta-value-row">
+                      <span class="meta-value">60%</span>
+                      <span class="meta-caption">Home win probability</span>
+                    </div>
+                    <div class="bar">
+                      <div class="bar-fill"></div>
+                    </div>
+                  </div>
+                  <div class="meta-card">
+                    <div class="meta-label">DRAW · Mean reversion</div>
+                    <div class="meta-value-row">
+                      <span class="meta-value">8%</span>
+                      <span class="meta-caption">Consolidation outcome</span>
+                    </div>
+                    <div class="bar">
+                      <div class="bar-fill purple" style="width: 18%"></div>
+                    </div>
+                  </div>
+                  <div class="meta-card">
+                    <div class="meta-label">AWAY · Price drift</div>
+                    <div class="meta-value-row">
+                      <span class="meta-value">32%</span>
+                      <span class="meta-caption">Away win probability</span>
+                    </div>
+                    <div class="bar">
+                      <div class="bar-fill red" style="width: 36%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MOMENTUM -->
+            <div class="momentum-block">
+              <div>
+                <div class="momentum-label">
+                  Live game momentum · Balanced pressure
+                </div>
+                <div class="momentum-main">
+                  <div class="momentum-rail">
+                    <div class="momentum-fill" id="momentumFill"></div>
+                    <div class="momentum-mark"></div>
+                  </div>
+                  <div class="momentum-labels">
+                    <span>Home pressure</span>
+                    <span>Last 6 minutes</span>
+                    <span>Away pressure</span>
+                  </div>
+                </div>
+              </div>
+              <div class="momentum-side-info">
+                <span>Home momentum: <strong>52%</strong> (sustained attacks)</span>
+                <span>Away counter-threat: <strong>Moderate</strong></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT: EDGE / RISK / QUEUE / RADAR MINI -->
+        <aside class="panel">
+          <div class="panel-inner sidebar-block">
+            <!-- EDGE -->
+            <div class="edge-panel">
+              <div class="edge-panel-inner">
                 <div>
-                  <div class="edge-number pulse-bar">
-                    <span id="edgeValue">+4.1%</span>
-                  </div>
-                  <div class="edge-sub">
-                    Current live edge against pre-match prices:
-                    <span class="edge-highlight">favouring home side.</span>
-                  </div>
-                </div>
-
-                <div class="risk-grid" style="margin-top: 14px;">
-                  <div class="risk-item pulse-bar">
-                    <div class="risk-label">Stake usage</div>
-                    <div class="risk-bar-shell">
-                      <div class="risk-bar-fill" style="transform:scaleX(0.63);"></div>
-                    </div>
-                    <div class="risk-value">
-                      <span class="bold">63%</span>
-                      <span>Of pre-set max per fixture.</span>
-                    </div>
-                  </div>
-
-                  <div class="risk-item">
-                    <div class="risk-label">Volatility</div>
-                    <div class="risk-bar-shell">
-                      <div class="risk-bar-fill" style="transform:scaleX(0.55);"></div>
-                    </div>
-                    <div class="risk-value">
-                      <span class="bold">Medium</span>
-                      <span>Odds velocity + xG spikes.</span>
-                    </div>
-                  </div>
-
-                  <div class="risk-item">
-                    <div class="risk-label">Drawdown</div>
-                    <div class="risk-bar-shell">
-                      <div class="risk-bar-fill" style="
-                          transform:scaleX(0.30);
-                          background: linear-gradient(90deg, #f97316, #ef4444);
-                        "></div>
-                    </div>
-                    <div class="risk-value">
-                      <span class="bold">-0.7%</span>
-                      <span>From session high watermark.</span>
-                    </div>
-                  </div>
-
-                  <div class="risk-item">
-                    <div class="risk-label">Shock risk</div>
-                    <div class="risk-bar-shell">
-                      <div class="risk-bar-fill" style="
-                          transform:scaleX(0.55);
-                          background: linear-gradient(90deg, #f59e0b, #f97316);
-                        "></div>
-                    </div>
-                    <div class="risk-value">
-                      <span class="bold">Medium</span>
-                      <span>Emotion Index swings.</span>
+                  <div class="edge-main-label">SESSION EDGE ENGINE</div>
+                  <div class="edge-main-row">
+                    <div class="edge-value">+4.1%</div>
+                    <div class="edge-caption">
+                      Current live edge vs pre-match prices:<br />
+                      <strong>favouring home side</strong>.
                     </div>
                   </div>
                 </div>
-
-                <div style="margin-top: 11px;">
-                  <div class="chip">
-                    <span>Session risk</span>
-                    <span class="chip-pill">Dynamic · Auto-throttled</span>
-                  </div>
+                <div>
+                  <div class="edge-mode-pill">MODE · TRADING</div>
                 </div>
               </div>
             </div>
-          </section>
 
-          <!-- Right column -->
-          <section class="card">
-            <!-- Live signal queue -->
-            <div>
-              <div class="signals-header">
-                <div class="signals-title">Live signal queue</div>
-                <div class="signals-window">Last 90 seconds</div>
+            <!-- RISK ENVELOPE -->
+            <div class="risk-grid">
+              <div class="risk-card">
+                <div class="risk-label">Stake usage</div>
+                <div class="risk-value">
+                  <span class="risk-text-strong">63%</span>
+                  <span class="risk-pill green">AUTOTHROTTLE</span>
+                </div>
+                <div class="bar">
+                  <div class="bar-fill" style="width: 63%"></div>
+                </div>
+                <div style="margin-top: 2px; font-size: 10px">
+                  Of pre-set max per fixture.
+                </div>
               </div>
-
-              <ul class="signals-list">
-                <li class="signal-row">
-                  <div class="signal-minute">65'</div>
-                  <div>
-                    <div class="signal-tag green">xG spike</div>
-                    <div class="signal-desc">
-                      Triple corner sequence · pressure building on home side.
-                    </div>
-                  </div>
-                  <div class="signal-impact positive">+0.6%</div>
-                </li>
-
-                <li class="signal-row">
-                  <div class="signal-minute">64'</div>
-                  <div>
-                    <div class="signal-tag blue">Orderbook</div>
-                    <div class="signal-desc">
-                      Liquidity wall detected on away price ladder.
-                    </div>
-                  </div>
-                  <div class="signal-impact positive">+0.3%</div>
-                </li>
-
-                <li class="signal-row">
-                  <div class="signal-minute">63'</div>
-                  <div>
-                    <div class="signal-tag red">Shockwave</div>
-                    <div class="signal-desc">
-                      Crowd noise + odds snapback after disallowed goal.
-                    </div>
-                  </div>
-                  <div class="signal-impact risk">Risk</div>
-                </li>
-
-                <li class="signal-row">
-                  <div class="signal-minute">61'</div>
-                  <div>
-                    <div class="signal-tag green">Momentum flip</div>
-                    <div class="signal-desc">
-                      Territory flipped 70-30 towards home for 3 minutes.
-                    </div>
-                  </div>
-                  <div class="signal-impact positive">+0.4%</div>
-                </li>
-              </ul>
+              <div class="risk-card">
+                <div class="risk-label">Volatility</div>
+                <div class="risk-value">
+                  <span class="risk-text-strong">Medium</span>
+                  <span class="risk-pill orange">xG + ODDS</span>
+                </div>
+                <div class="bar">
+                  <div class="bar-fill purple" style="width: 55%"></div>
+                </div>
+                <div style="margin-top: 2px; font-size: 10px">
+                  Based on odds velocity + xG spikes.
+                </div>
+              </div>
+              <div class="risk-card">
+                <div class="risk-label">Drawdown</div>
+                <div class="risk-value">
+                  <span class="risk-text-strong">-0.7%</span>
+                  <span class="risk-pill red">FROM PEAK</span>
+                </div>
+                <div class="bar">
+                  <div class="bar-fill red" style="width: 28%"></div>
+                </div>
+                <div style="margin-top: 2px; font-size: 10px">
+                  From session high watermark.
+                </div>
+              </div>
+              <div class="risk-card">
+                <div class="risk-label">Shock risk</div>
+                <div class="risk-value">
+                  <span class="risk-text-strong">Medium</span>
+                  <span class="risk-pill orange">EMOTION INDEX</span>
+                </div>
+                <div class="bar">
+                  <div class="bar-fill" style="width: 48%"></div>
+                </div>
+                <div style="margin-top: 2px; font-size: 10px">
+                  Derived from Emotion Index swings.
+                </div>
+              </div>
             </div>
 
-            <!-- Multi-match radar -->
-            <div style="margin-top: 16px;">
-              <div class="signals-header">
-                <div class="signals-title">Multi-match radar</div>
-                <div class="signals-window">Watchlist · 6 fixtures</div>
+            <!-- LIVE SIGNAL QUEUE -->
+            <div class="queue-block">
+              <div class="queue-header-row">
+                <div class="queue-label">LIVE SIGNAL QUEUE</div>
+                <div class="queue-window">Last 90 seconds</div>
               </div>
+              <div class="queue-list">
+                <div class="queue-item">
+                  <span class="queue-time">65'</span>
+                  <span class="queue-type green">xG SPIKE</span>
+                  <span class="queue-desc">
+                    Triple corner sequence · pressure building on home side.
+                  </span>
+                  <span class="queue-edge positive">+0.6%</span>
+                </div>
+                <div class="queue-item">
+                  <span class="queue-time">64'</span>
+                  <span class="queue-type blue">ORDERBOOK</span>
+                  <span class="queue-desc">
+                    Liquidity wall detected on away price ladder.
+                  </span>
+                  <span class="queue-edge positive">+0.3%</span>
+                </div>
+                <div class="queue-item">
+                  <span class="queue-time">63'</span>
+                  <span class="queue-type red">SHOCKWAVE</span>
+                  <span class="queue-desc">
+                    Crowd noise + odds snapback after disallowed goal.
+                  </span>
+                  <span class="queue-edge negative">Risk</span>
+                </div>
+              </div>
+            </div>
 
+            <!-- MULTI MATCH RADAR MINI -->
+            <div class="radar-block">
+              <div class="radar-head">
+                <div class="radar-title">MULTI-MATCH RADAR</div>
+                <div class="radar-meta">Watchlist · 6 fixtures</div>
+              </div>
               <table class="radar-table">
                 <thead>
                   <tr>
@@ -1033,124 +1341,134 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
-                      <div class="radar-fixture">Chelsea vs Arsenal</div>
-                      <div class="radar-league">Premier League</div>
-                    </td>
+                    <td>Chelsea vs Arsenal</td>
                     <td>75'</td>
-                    <td class="edge-highlight">+2.2%</td>
-                    <td><span class="badge badge-low">Low</span></td>
-                    <td><span class="badge badge-signal">xG · Momentum</span></td>
+                    <td class="radar-edge-positive">+2.2%</td>
+                    <td>
+                      <span class="radar-tag green">Low</span>
+                    </td>
+                    <td>
+                      <span class="radar-tag blue">xG · Momentum</span>
+                    </td>
                   </tr>
                   <tr>
-                    <td>
-                      <div class="radar-fixture">Milan vs Napoli</div>
-                      <div class="radar-league">Serie A</div>
-                    </td>
+                    <td>Milan vs Napoli</td>
                     <td>62'</td>
-                    <td>+0.9%</td>
-                    <td><span class="badge badge-medium">Medium</span></td>
-                    <td><span class="badge badge-signal">Orderbook</span></td>
+                    <td class="radar-edge-positive">+0.9%</td>
+                    <td>
+                      <span class="radar-tag yellow">Medium</span>
+                    </td>
+                    <td>
+                      <span class="radar-tag blue">Orderbook</span>
+                    </td>
                   </tr>
                   <tr>
-                    <td>
-                      <div class="radar-fixture">Leipzig vs Dortmund</div>
-                      <div class="radar-league">Bundesliga</div>
-                    </td>
+                    <td>Leipzig vs Dortmund</td>
                     <td>41'</td>
-                    <td style="color: var(--accent-red);">-1.3%</td>
-                    <td><span class="badge badge-high">High</span></td>
-                    <td><span class="badge badge-signal">Shockwave</span></td>
+                    <td class="radar-edge-negative">-1.3%</td>
+                    <td>
+                      <span class="radar-tag red">High</span>
+                    </td>
+                    <td>
+                      <span class="radar-tag red">Shockwave</span>
+                    </td>
                   </tr>
                   <tr>
-                    <td>
-                      <div class="radar-fixture">Porto vs Benfica</div>
-                      <div class="radar-league">Liga Portugal</div>
-                    </td>
+                    <td>Porto vs Benfica</td>
                     <td>19'</td>
-                    <td>+0.4%</td>
-                    <td><span class="badge badge-low">Low</span></td>
-                    <td><span class="badge badge-signal">Calm period</span></td>
+                    <td class="radar-edge-positive">+0.4%</td>
+                    <td>
+                      <span class="radar-tag green">Low</span>
+                    </td>
+                    <td>
+                      <span class="radar-tag blue">Calm period</span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
 
-              <div class="footer-strip">
-                <div class="footer-counters">
-                  <div class="footer-pill">Signals fired: <strong>26</strong></div>
-                  <div class="footer-pill">Live latency: <strong>518ms</strong></div>
-                  <div class="footer-pill">Stack health: <span style="color: var(--accent-green);">Stable</span></div>
-                  <div class="footer-pill">Risk meter: <span style="color: var(--accent-amber);">Medium</span></div>
-                </div>
+              <div class="radar-foot">
                 <div>
-                  Refresh every 3-5 seconds · Production feeds via JSON API / WebSocket.
+                  <span>Signals fired: <strong>26</strong></span>
+                  &nbsp;·&nbsp;
+                  <span>Live latency: <strong>518 ms</strong></span>
+                </div>
+                <div class="radar-stats">
+                  <span class="radar-stat-pill">Stack health: Stable</span>
+                  <span class="radar-stat-pill">Risk meter: Medium</span>
                 </div>
               </div>
             </div>
-          </section>
-        </main>
+
+            <!-- FOOTER -->
+            <div class="footer-note">
+              <span>
+                Values are illustrative only. Production feed connects to your trading
+                stack via JSON API / WebSocket and refreshes every 3-5 seconds.
+              </span>
+              <span>
+                Ultra Pro view: <strong>/live-ultra.html</strong>
+              </span>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   </div>
 
   <script>
-    // --- Theme toggle (light / dark) ---
-    (function () {
-      const body = document.body;
-      const switchBtn = document.getElementById("themeSwitch");
-      const label = switchBtn.querySelector(".label");
-      const icon = switchBtn.querySelector(".icon");
-      const STORAGE_KEY = "betsense-theme";
+    // THEME TOGGLE
+    const body = document.body;
+    const themeToggle = document.getElementById("themeToggle");
+    const modeLabel = themeToggle.querySelector(".mode-pill-label");
 
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "light") {
-        body.classList.remove("theme-dark");
-        body.classList.add("theme-light");
-        label.textContent = "Light mode";
-        icon.textContent = "☀️";
+    function setTheme(mode) {
+      if (mode === "light") {
+        body.classList.add("light");
+        modeLabel.textContent = "Light mode";
+      } else {
+        body.classList.remove("light");
+        modeLabel.textContent = "Dark mode";
       }
+    }
 
-      switchBtn.addEventListener("click", () => {
-        const isDark = body.classList.contains("theme-dark");
-        if (isDark) {
-          body.classList.remove("theme-dark");
-          body.classList.add("theme-light");
-          label.textContent = "Light mode";
-          icon.textContent = "☀️";
-          localStorage.setItem(STORAGE_KEY, "light");
-        } else {
-          body.classList.remove("theme-light");
-          body.classList.add("theme-dark");
-          label.textContent = "Dark mode";
-          icon.textContent = "🌙";
-          localStorage.setItem(STORAGE_KEY, "dark");
+    themeToggle.addEventListener("click", () => {
+      const isLight = body.classList.toggle("light");
+      setTheme(isLight ? "light" : "dark");
+    });
+
+    // INITIAL
+    setTheme("dark");
+
+    // MODE SWITCH (Trading / Risk)
+    const modeSwitch = document.getElementById("modeSwitch");
+    const highlight = document.getElementById("segmentedHighlight");
+    const subtitle = document.getElementById("modeSubtitle");
+    const buttons = Array.from(modeSwitch.querySelectorAll("button"));
+
+    function updateMode(mode) {
+      buttons.forEach((btn, index) => {
+        const isActive = btn.dataset.mode === mode;
+        btn.classList.toggle("active", isActive);
+        if (isActive) {
+          const percent = index === 0 ? 0 : 1;
+          highlight.style.transform = `translateX(${percent * 100}%)`;
         }
       });
-    })();
 
-    // --- View mode switch (Trading / Risk) ---
-    (function () {
-      const toggle = document.getElementById("viewModeToggle");
-      const buttons = toggle.querySelectorAll("button");
-      const modeChip = document.getElementById("modeChipLabel");
-      const edgeValue = document.getElementById("edgeValue");
+      if (mode === "trading") {
+        subtitle.textContent = "IN-PLAY TRADING VIEW · MULTI-MATCH RADAR";
+      } else {
+        subtitle.textContent =
+          "RISK ENVELOPE · STAKE USAGE · SHOCK RISK CONTROL";
+      }
+    }
 
-      buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          buttons.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => updateMode(btn.dataset.mode));
+    });
 
-          const mode = btn.getAttribute("data-mode");
-          if (mode === "trading") {
-            modeChip.textContent = "Mode · Trading";
-            edgeValue.textContent = "+4.1%";
-          } else {
-            modeChip.textContent = "Mode · Risk";
-            edgeValue.textContent = "+2.5%";
-          }
-        });
-      });
-    })();
+    updateMode("trading");
   </script>
 </body>
 </html>
