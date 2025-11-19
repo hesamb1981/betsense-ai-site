@@ -1,10 +1,10 @@
-name: Daily repository backup
+name: Daily site backup
 
 on:
   schedule:
-    # هر روز ساعت ۰۰:۰۰ به وقت UTC (حدوداً ۱:۳۰ صبح به وقت ایران / ۱:۰۰ به وقت بریتانیا تو زمستون)
-    - cron: "0 0 * * *"
-  workflow_dispatch: {}
+    # هر روز ساعت ۲ صبح به وقت UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
 
 jobs:
   backup:
@@ -13,18 +13,27 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Create zip archive
+      - name: Create backup folder
+        run: mkdir -p backup
+
+      - name: Create ZIP backup
         run: |
-          repo_name=${GITHUB_REPOSITORY#*/}
-          ts=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
-          mkdir -p backup
-          zip -r "backup/${repo_name}-${ts}.zip" .
+          TS="$(date +'%Y-%m-%d-%H-%M')"
+          ZIP_NAME="backup/betsense-site-${TS}.zip"
+          echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
+          zip -r "$ZIP_NAME" .
+
+      - name: Commit backup ZIP
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add backup/*.zip
+          git commit -m "Automated backup ${ZIP_NAME}" || echo "No changes to commit"
+          git push
 
       - name: Upload backup artifact
         uses: actions/upload-artifact@v4
         with:
-          name: daily-backup
-          path: backup/
+          name: site-backup
+          path: ${{ env.ZIP_NAME }}
