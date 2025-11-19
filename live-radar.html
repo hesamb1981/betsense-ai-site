@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense Quantum Sports Suite – Global Live Radar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #02091a;
+      --card: #020617;
+      --border: #1f2937;
+      --border-soft: #111827;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --accent: #38bdf8;
+      --accent2: #a855f7;
+      --accent3: #22c55e;
+      --danger: #fb7185;
+      --pill: #020617;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 60px rgba(15, 23, 42, 0.9);
+      --shadow-subtle: 0 10px 40px rgba(15, 23, 42, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0b1220 0, #020617 55%, #000 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 28px 14px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 32px 24px 56px;
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0% 0%, #4ade80, #22d3ee, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4),
+        0 16px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-logo span {
+      font-weight: 800;
+      font-size: 22px;
+      color: #0b1120;
+    }
+
+    .brand-text-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .status-pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.2), #020617);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #e0f2fe;
+      box-shadow: var(--shadow-subtle);
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 0 5px rgba(56, 189, 248, 0.35);
+    }
+
+    /* Top heading bar */
+
+    .top-intro {
+      margin-bottom: 18px;
+    }
+
+    .top-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 0.015em;
+      margin-bottom: 6px;
+    }
+
+    .top-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      max-width: 720px;
+    }
+
+    .top-subtitle span.highlight {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: 600;
+    }
+
+    /* View tabs row (A + C mix) */
+
+    .view-tabs-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .view-tabs {
+      border-radius: 999px;
+      padding: 4px;
+      background: radial-gradient(
+        circle at 0 0,
+        rgba(56, 189, 248, 0.14),
+        #020617
+      );
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .view-tabs button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 13px;
+      font-size: 12px;
+      color: var(--text-soft);
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .view-tabs button.active {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #020617;
+      font-weight: 600;
+    }
+
+    .view-kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .view-kpi-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .view-kpi-dot-green {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .view-kpi-dot-amber {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #fbbf24;
+    }
+
+    .view-kpi-dot-sky {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    /* Two-column layout */
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 960px) {
+      .layout-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, #020617, #020617 60%, #020617);
+      padding: 14px 14px 14px;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 5px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .badge-dot-blue {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .badge-dot-purple {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #a855f7;
+    }
+
+    .badge-dot-green {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .badge-dot-amber {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #fbbf24;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 6px 11px;
+      background: #020617;
+      color: var(--text-soft);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(148, 163, 184, 0.8);
+      color: var(--text);
+    }
+
+    .btn-ghost .icon {
+      font-size: 13px;
+    }
+
+    /* LEFT MAIN: global radar + matches */
+
+    .global-radar-header {
+      margin-bottom: 10px;
+    }
+
+    .global-radar-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .global-radar-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .global-radar-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .filter-pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: var(--text-soft);
+      cursor: default;
+    }
+
+    .filter-pill.active {
+      border-color: rgba(56, 189, 248, 0.9);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), #020617);
+      color: #e0f2fe;
+    }
+
+    .filter-pill span.dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      margin-right: 4px;
+    }
+
+    .match-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 840px) {
+      .match-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .match-card {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), #020617);
+      padding: 10px 10px 9px;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 150px;
+    }
+
+    .match-card:nth-child(2) {
+      background: radial-gradient(circle at top left, rgba(251, 146, 60, 0.14), #020617);
+    }
+
+    .match-card:nth-child(3) {
+      background: radial-gradient(circle at top left, rgba(168, 85, 247, 0.16), #020617);
+    }
+
+    .match-league {
+      color: var(--text-soft);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .match-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .match-teams {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .match-score {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .match-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .match-minute {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .emotion-pill {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(52, 211, 153, 0.8);
+      background: rgba(6, 95, 70, 0.4);
+      color: #bbf7d0;
+    }
+
+    .emotion-pill.orange {
+      border-color: rgba(249, 115, 22, 0.9);
+      background: rgba(124, 45, 18, 0.55);
+      color: #fed7aa;
+    }
+
+    .emotion-pill.purple {
+      border-color: rgba(168, 85, 247, 0.9);
+      background: rgba(76, 29, 149, 0.6);
+      color: #e9d5ff;
+    }
+
+    .mini-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .mini-metric-box {
+      border-radius: 10px;
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.85);
+      padding: 5px 6px;
+    }
+
+    .mini-label {
+      color: var(--text-soft);
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+
+    .mini-value {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .mini-value-green {
+      color: #4ade80;
+    }
+
+    .mini-value-amber {
+      color: #fbbf24;
+    }
+
+    .mini-value-red {
+      color: #fb7185;
+    }
+
+    .mini-edge {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .mini-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .mini-tag {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-soft);
+    }
+
+    /* LEFT secondary: bottom narrative card */
+
+    .narrative-card {
+      margin-top: 12px;
+    }
+
+    .scenario-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .headline {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .scenario-body {
+      margin-top: 5px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .bullet-list {
+      margin-top: 4px;
+      padding-left: 16px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: var(--text-soft);
+    }
+
+    /* RIGHT COLUMN: exec stack summary (C-style) */
+
+    .exec-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .metric-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .metric-box {
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, #020617, #020617);
+      padding: 9px 9px;
+      font-size: 11px;
+    }
+
+    .metric-label {
+      color: var(--text-soft);
+      margin-bottom: 3px;
+    }
+
+    .metric-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .metric-value-green {
+      color: #4ade80;
+    }
+
+    .metric-value-amber {
+      color: #fbbf24;
+    }
+
+    .metric-value-sky {
+      color: #38bdf8;
+    }
+
+    .muted {
+      color: var(--text-soft);
+    }
+
+    .timeline {
+      margin-top: 8px;
+    }
+
+    .timeline-bars {
+      margin-top: 8px;
+      display: grid;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .timeline-row-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+
+    .timeline-bar-track {
+      height: 6px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid #1f2937;
+      overflow: hidden;
+    }
+
+    .timeline-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+    }
+
+    .timeline-bar-fill-draw {
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    }
+
+    .timeline-bar-fill-away {
+      background: linear-gradient(90deg, #fb923c, #f97316);
+    }
+
+    .timeline-axis {
+      font-size: 10px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .exec-footnote {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    footer {
+      margin-top: 22px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      padding: 12px 14px 12px;
+      background: radial-gradient(circle at top, #020617, #020617);
+      box-shadow: var(--shadow-subtle);
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    footer a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo"><span>B</span></div>
+        <div>
+          <div class="brand-text-title">BetSense Quantum Sports Suite</div>
+          <div class="brand-text-sub">
+            Global Live Radar · Emotion + Edge · Built for desks and boards
+          </div>
+        </div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>Global radar – demo mode · sample fixtures only</span>
+      </div>
+    </header>
+
+    <div class="top-intro">
+      <div class="top-title">Global Live Radar – Multi-Match Console</div>
+      <p class="top-subtitle">
+        One pane for <span class="highlight">every live match you care about</span> — xG, momentum, emotion and structural edge in a single view.
+        Built so risk, trading and executives can all see the same picture without digging through raw feeds.
+      </p>
+    </div>
+
+    <!-- View tabs (A + C combined) -->
+    <div class="view-tabs-row">
+      <div class="view-tabs">
+        <button class="active" id="tabGlobal">Global live radar</button>
+        <button id="tabLeague">League / region focus</button>
+        <button id="tabExec">Executive snapshot</button>
+      </div>
+      <div class="view-kpi-row">
+        <div class="view-kpi-pill">
+          <span class="view-kpi-dot-green"></span> Live matches: <strong id="kpiMatches">3 demo</strong>
+        </div>
+        <div class="view-kpi-pill">
+          <span class="view-kpi-dot-sky"></span> Coverage: Top-tier European leagues
+        </div>
+        <div class="view-kpi-pill">
+          <span class="view-kpi-dot-amber"></span> Mode: Demo · static sample payload
+        </div>
+      </div>
+    </div>
+
+    <main class="layout-grid">
+      <!-- LEFT SIDE – MAIN LIVE GRID + NARRATIVE -->
+      <section>
+        <div class="card">
+          <div class="global-radar-header">
+            <div class="global-radar-title-row">
+              <div>
+                <div class="global-radar-title">Live match radar – 3 fixtures in focus</div>
+                <div class="global-radar-sub">
+                  In production, this surface tracks dozens of matches at once, filtered by risk, liquidity or business priority.
+                </div>
+              </div>
+              <button class="btn-ghost" id="btnRefreshDemo">
+                <span class="icon">↻</span> Shuffle demo data
+              </button>
+            </div>
+
+            <div class="filter-row">
+              <div class="filter-pill active">
+                <span class="dot"></span> High-signal matches (xG + emotion)
+              </div>
+              <div class="filter-pill">Tier-1 leagues only</div>
+              <div class="filter-pill">Edge &gt; 2% vs market</div>
+              <div class="filter-pill">Tension index &gt; 70</div>
+            </div>
+          </div>
+
+          <!-- 3 live match cards -->
+          <div class="match-grid" id="matchGrid">
+            <!-- Filled / updated by JS but with initial content for no-JS fallback -->
+            <article class="match-card" data-slot="0">
+              <div class="match-league">EPL · England</div>
+              <div class="match-header-row">
+                <div class="match-teams">Chelsea vs Arsenal</div>
+                <div class="match-score">1 – 0</div>
+              </div>
+              <div class="match-meta-row">
+                <div class="match-minute">72' · Live</div>
+                <div class="emotion-pill">Home control · 74% win</div>
+              </div>
+
+              <div class="mini-metrics-row">
+                <div class="mini-metric-box">
+                  <div class="mini-label">xG (H – A)</div>
+                  <div class="mini-value mini-value-green">2.1 – 0.9</div>
+                </div>
+                <div class="mini-metric-box">
+                  <div class="mini-label">Shots on target</div>
+                  <div class="mini-value mini-value-amber">7 – 3</div>
+                </div>
+                <div class="mini-metric-box">
+                  <div class="mini-label">Dangerous attacks</div>
+                  <div class="mini-value mini-value-green">38 – 19</div>
+                </div>
+              </div>
+
+              <div class="mini-edge">
+                Edge vs market: <strong>+3.0%</strong> on home side · Emotion index: <strong>76</strong>
+              </div>
+
+              <div class="mini-tags-row">
+                <span class="mini-tag">Pressure converted</span>
+                <span class="mini-tag">Comfortable favourite</span>
+                <span class="mini-tag">Low upset risk</span>
+              </div>
+            </article>
+
+            <article class="match-card" data-slot="1">
+              <div class="match-league">LaLiga · Spain</div>
+              <div class="match-header-row">
+                <div class="match-teams">Barcelona vs Valencia</div>
+                <div class="match-score">2 – 2</div>
+              </div>
+              <div class="match-meta-row">
+                <div class="match-minute">81' · Live</div>
+                <div class="emotion-pill orange">High tension · 41% draw</div>
+              </div>
+
+              <div class="mini-metrics-row">
+                <div class="mini-metric-box">
+                  <div class="mini-label">xG (H – A)</div>
+                  <div class="mini-value mini-value-amber">1.8 – 1.5</div>
+                </div>
+                <div class="mini-metric-box">
+                  <div class="mini-label">Shots on target</div>
+                  <div class="mini-value mini-value-amber">5 – 5</div>
+                </div>
+                <div class="mini-metric-box">
+                  <div class="mini-label">Dangerous attacks</div>
+                  <div class="mini-value mini-value-amber">29 – 27</div>
+                </div>
+              </div>
+
+              <div class="mini-edge">
+                Edge vs market: <strong>+1.2%</strong> on late away counter · Emotion index: <strong>89</strong>
+              </div>
+
+              <div class="mini-tags-row">
+                <span class="mini-tag">Derby tension</span>
+                <span class="mini-tag">Both sides live</span>
+                <span class="mini-tag">Volatile closing minutes</span>
+              </div>
+            </article>
+
+            <article class="match-card" data-slot="2">
+              <div class="match-league">Serie A · Italy</div>
+              <div class="match-header-row">
+                <div class="match-teams">Milan vs Napoli</div>
+                <div class="match-score">0 – 1</div>
+              </div>
+              <div class="match-meta-row">
+                <div class="match-minute">64' · Live</div>
+                <div class="emotion-pill purple">Away surge · 61% win</div>
+              </div>
+
+              <div class="mini-metrics-row">
+                <div class="mini-metric-box">
+                  <div class="mini-label">xG (H – A)</div>
+                  <div class="mini-value mini-value-red">0.7 – 1.4</div>
+                </div>
+                <div class="mini-metric-box">
+                  <div class="mini-label">Shots on target</div>
+                  <div class="mini-value mini-value-red">2 – 6</div>
+                </div>
+                <div class="mini-metric-box">
+                  <div class="mini-label">Dangerous attacks</div>
+                  <div class="mini-value mini-value-red">14 – 32</div>
+                </div>
+              </div>
+
+              <div class="mini-edge">
+                Edge vs market: <strong>+2.6%</strong> on away side · Emotion index: <strong>71</strong>
+              </div>
+
+              <div class="mini-tags-row">
+                <span class="mini-tag">Away dominance</span>
+                <span class="mini-tag">Home crowd anxious</span>
+                <span class="mini-tag">Upset risk realised</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Narrative / desk-ready story -->
+        <div class="card narrative-card">
+          <div class="card-header-row">
+            <div>
+              <div class="card-title">Desk narrative – what matters across all matches</div>
+              <div class="card-subtitle">
+                A simple, shareable story of the whole board, not just one fixture. Built so you can brief executives in 30 seconds.
+              </div>
+            </div>
+            <button class="btn-ghost" id="btnRotateNarrative">
+              <span class="icon">🎯</span> Next narrative
+            </button>
+          </div>
+
+          <div id="narrativeContainer">
+            <div class="scenario-label">Global picture</div>
+            <p class="headline">One controlled favourite, one chaos match, one live upset risk.</p>
+            <p class="scenario-body">
+              Across the three spotlight fixtures, BetSense flags a clean split: one match where the favourite is finally in control, one where tension
+              stays high into the last ten minutes, and one where the underdog has turned pressure into a probable away win.
+            </p>
+
+            <ul class="bullet-list">
+              <li>Risk palette is diversified: you are not long the same narrative everywhere.</li>
+              <li>Emotion Engine confirms that market mood broadly matches model output — no major dislocations.</li>
+              <li>Ultra Edge layer still sees two structural edges &gt; 2% vs blended market across the board.</li>
+            </ul>
+
+            <p class="headline">Desk cue</p>
+            <p class="scenario-body">
+              Stay sized in the controlled favourite, manage volatility in the draw-heavy derby, and lean into the away-side edge while liquidity is still
+              healthy. One screenshot, three clear actions.
+            </p>
+
+            <div class="chip-row">
+              <span class="chip">Global snapshot</span>
+              <span class="chip">Three-match story</span>
+              <span class="chip">Executives &amp; risk in sync</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDE – EXEC & TREND VIEW -->
+      <aside class="exec-section">
+        <div class="card">
+          <div class="card-header-row">
+            <div>
+              <div class="card-title">Executive snapshot – suite-level view</div>
+              <div class="card-subtitle">
+                How the Quantum Sports Suite is reading the whole evening, not just one match. Ideal for board packs and investor updates.
+              </div>
+            </div>
+            <span class="badge">
+              <span class="badge-dot-purple"></span>
+              Quantum Sports Suite · demo
+            </span>
+          </div>
+
+          <div class="metric-grid-3">
+            <div class="metric-box">
+              <div class="metric-label">Live fixtures monitored</div>
+              <div class="metric-value metric-value-sky" id="metricExecMatches">3</div>
+              <div class="muted" style="font-size:10px">Demo subset · scalable to dozens</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">Avg model edge vs market</div>
+              <div class="metric-value metric-value-green" id="metricExecEdge">+2.3%</div>
+              <div class="muted" style="font-size:10px">Across priority matches</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">High-tension fixtures</div>
+              <div class="metric-value metric-value-amber" id="metricExecTension">1</div>
+              <div class="muted" style="font-size:10px">Emotion index &gt; 80</div>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <div class="scenario-label" style="margin-bottom:2px">Evening regime – probability drift</div>
+            <p class="scenario-body" style="font-size:11px">
+              From kick-off to late minutes, the suite tracks how aggregate home/draw/away probabilities drift across your full slate.
+            </p>
+
+            <div class="timeline-bars">
+              <div>
+                <div class="timeline-row-label">
+                  <span>Home win probability (aggregate)</span><span id="tlHomeLabel">+6 pts vs open</span>
+                </div>
+                <div class="timeline-bar-track">
+                  <div class="timeline-bar-fill" id="tlHomeBar" style="width:64%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="timeline-row-label">
+                  <span>Draw probability (aggregate)</span><span id="tlDrawLabel">-3 pts vs open</span>
+                </div>
+                <div class="timeline-bar-track">
+                  <div class="timeline-bar-fill-draw" id="tlDrawBar" style="width:22%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="timeline-row-label">
+                  <span>Away win probability (aggregate)</span><span id="tlAwayLabel">-3 pts vs open</span>
+                </div>
+                <div class="timeline-bar-track">
+                  <div class="timeline-bar-fill-away" id="tlAwayBar" style="width:14%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-axis">
+              <span>0'</span><span>Halftime</span><span>Final whistle</span>
+            </div>
+
+            <p class="exec-footnote">
+              In production, this panel runs on your own fixtures and prices — using the same engines that power the single-match consoles on
+              <a href="/">betsense.casino</a>.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <div>
+              <div class="card-title">How desks actually use this board</div>
+              <div class="card-subtitle">
+                Quantum Sports Suite is designed as a working console, not just a pretty dashboard. These are the three most common workflows.
+              </div>
+            </div>
+            <span class="badge">
+              <span class="badge-dot-green"></span>
+              Workflow guide
+            </span>
+          </div>
+
+          <div class="scenario-label">1 · Risk &amp; exposure sweep</div>
+          <p class="scenario-body">
+            Risk teams scan the live grid for clusters of similar exposure — for example, several heavy home favourites or a pocket of away-side upsets.
+            The console highlights where model edge and market exposure are pointing in the same direction (comfortable) or in opposite directions
+            (requires attention).
+          </p>
+
+          <div class="scenario-label" style="margin-top:10px">2 · Trading hot-list</div>
+          <p class="scenario-body">
+            Traders sort by live edge, tension and liquidity to build a short list of trades to watch over the next 5–10 minutes. One click takes them
+            into the deeper single-match consoles (Emotion Engine, Ultra Edge, live timeline) for execution-ready decisions.
+          </p>
+
+          <div class="scenario-label" style="margin-top:10px">3 · Executive overview</div>
+          <p class="scenario-body">
+            Executives get an instant narrative: how many matches, where your real risks sit, and whether the evening is behaving as expected. No need to
+            read raw logs, spreadsheets or chat logs — the console turns them into a single story you can screenshot into a board pack.
+          </p>
+
+          <div class="chip-row">
+            <span class="chip">Risk sweep</span>
+            <span class="chip">Trading short-list</span>
+            <span class="chip">Board-level narrative</span>
+            <span class="chip">Built for desks, not hobby users</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      BetSense Quantum Sports Suite – Global Live Radar demo. All fixtures and numbers on this page are sample data for illustration only and do not
+      constitute betting advice or an offer. In production, this view runs directly on your own fixtures, queues and price feeds via a single API
+      layer shared with the rest of the suite.
+    </footer>
+  </div>
+
+  <script>
+    // Simple demo shuffler for the three match cards + exec KPIs + timeline.
+    // This does NOT call any real API – only for visual movement in the demo.
+
+    const demoMatches = [
+      {
+        league: "EPL · England",
+        teams: "Chelsea vs Arsenal",
+        score: "1 – 0",
+        minute: "72' · Live",
+        emotionClass: "",
+        emotionText: "Home control · 74% win",
+        xg: "2.1 – 0.9",
+        shots: "7 – 3",
+        danger: "38 – 19",
+        xgClass: "mini-value-green",
+        shotsClass: "mini-value-amber",
+        dangerClass: "mini-value-green",
+        edge: "+3.0%",
+        emotionIdx: "76",
+        tags: ["Pressure converted", "Comfortable favourite", "Low upset risk"]
+      },
+      {
+        league: "LaLiga · Spain",
+        teams: "Barcelona vs Valencia",
+        score: "2 – 2",
+        minute: "81' · Live",
+        emotionClass: "orange",
+        emotionText: "High tension · 41% draw",
+        xg: "1.8 – 1.5",
+        shots: "5 – 5",
+        danger: "29 – 27",
+        xgClass: "mini-value-amber",
+        shotsClass: "mini-value-amber",
+        dangerClass: "mini-value-amber",
+        edge: "+1.2%",
+        emotionIdx: "89",
+        tags: ["Derby tension", "Both sides live", "Volatile closing minutes"]
+      },
+      {
+        league: "Serie A · Italy",
+        teams: "Milan vs Napoli",
+        score: "0 – 1",
+        minute: "64' · Live",
+        emotionClass: "purple",
+        emotionText: "Away surge · 61% win",
+        xg: "0.7 – 1.4",
+        shots: "2 – 6",
+        danger: "14 – 32",
+        xgClass: "mini-value-red",
+        shotsClass: "mini-value-red",
+        dangerClass: "mini-value-red",
+        edge: "+2.6%",
+        emotionIdx: "71",
+        tags: ["Away dominance", "Home crowd anxious", "Upset risk realised"]
+      },
+      {
+        league: "Bundesliga · Germany",
+        teams: "Dortmund vs Leipzig",
+        score: "1 – 1",
+        minute: "55' · Live",
+        emotionClass: "orange",
+        emotionText: "Momentum swing · 52% home",
+        xg: "1.4 – 1.0",
+        shots: "4 – 4",
+        danger: "25 – 23",
+        xgClass: "mini-value-green",
+        shotsClass: "mini-value-amber",
+        dangerClass: "mini-value-amber",
+        edge: "+1.9%",
+        emotionIdx: "82",
+        tags: ["Momentum swing", "Crowd back in", "Late goal threat"]
+      },
+      {
+        league: "Ligue 1 · France",
+        teams: "PSG vs Lyon",
+        score: "3 – 1",
+        minute: "68' · Live",
+        emotionClass: "",
+        emotionText: "Favourable regime · 82% home",
+        xg: "2.6 – 0.8",
+        shots: "8 – 2",
+        danger: "36 – 14",
+        xgClass: "mini-value-green",
+        shotsClass: "mini-value-green",
+        dangerClass: "mini-value-green",
+        edge: "+2.1%",
+        emotionIdx: "79",
+        tags: ["Star dominance", "Comfortable exposure", "Low volatility"]
+      }
+    ];
+
+    const narratives = [
+      {
+        title: "One controlled favourite, one chaos match, one live upset risk.",
+        body: "Across the three spotlight fixtures, BetSense flags a clean split: one match where the favourite is finally in control, one where tension stays high into the last ten minutes, and one where the underdog has turned pressure into a probable away win.",
+        bullets: [
+          "Risk palette is diversified: you are not long the same narrative everywhere.",
+          "Emotion Engine confirms that market mood broadly matches model output — no major dislocations.",
+          "Ultra Edge layer still sees two structural edges > 2% vs blended market across the board."
+        ],
+        cue: "Stay sized in the controlled favourite, manage volatility in the draw-heavy derby, and lean into the away-side edge while liquidity is still healthy. One screenshot, three clear actions.",
+        tags: ["Global snapshot", "Three-match story", "Executives & risk in sync"]
+      },
+      {
+        title: "Evening skewed to home strength, but underdogs still live.",
+        body: "Most of tonight’s edge sits on home favourites who have already converted early pressure. However, one away side remains live with both xG and Emotion Index supporting the possibility of a second upset.",
+        bullets: [
+          "Aggregate home probability has drifted higher across the slate.",
+          "Only one fixture shows a meaningful live away-side edge.",
+          "Draws remain moderately priced but are not the core risk driver."
+        ],
+        cue: "Maintain disciplined exposure to the home slate while giving traders explicit permission to lean into the single live away opportunity.",
+        tags: ["Home-side skew", "Single away outlier", "Disciplined aggression"]
+      },
+      {
+        title: "Tension concentrated in two fixtures – the rest is routine.",
+        body: "Emotion and volatility are concentrated in a small part of the card. Elsewhere, matches are drifting towards expected outcomes with modest swings.",
+        bullets: [
+          "Two matches carry the bulk of live Emotion Index and volatility.",
+          "Remaining fixtures behave close to pre-match expectations.",
+          "Edge is present but not extreme outside the high-tension set."
+        ],
+        cue: "Tell desks to focus human attention on the true high-tension zone and let the stack quietly manage the rest.",
+        tags: ["Focus attention", "Volatility pocket", "Calm elsewhere"]
+      }
+    ];
+
+    let narrativeIndex = 0;
+
+    function renderMatches() {
+      const slots = document.querySelectorAll('[data-slot]');
+      if (!slots.length) return;
+
+      // shuffle demoMatches and take first 3
+      const pool = demoMatches.slice();
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      const chosen = pool.slice(0, 3);
+
+      chosen.forEach((m, idx) => {
+        const card = document.querySelector('[data-slot="' + idx + '"]');
+        if (!card) return;
+
+        card.querySelector('.match-league').textContent = m.league;
+        card.querySelector('.match-teams').textContent = m.teams;
+        card.querySelector('.match-score').textContent = m.score;
+        card.querySelector('.match-minute').textContent = m.minute;
+
+        const emotionPill = card.querySelector('.emotion-pill');
+        emotionPill.textContent = m.emotionText;
+        emotionPill.classList.remove('orange', 'purple');
+        if (m.emotionClass) {
+          emotionPill.classList.add(m.emotionClass);
+        }
+
+        const miniValues = card.querySelectorAll('.mini-value');
+        if (miniValues[0]) {
+          miniValues[0].textContent = m.xg;
+          miniValues[0].className = 'mini-value ' + m.xgClass;
+        }
+        if (miniValues[1]) {
+          miniValues[1].textContent = m.shots;
+          miniValues[1].className = 'mini-value ' + m.shotsClass;
+        }
+        if (miniValues[2]) {
+          miniValues[2].textContent = m.danger;
+          miniValues[2].className = 'mini-value ' + m.dangerClass;
+        }
+
+        const edgeEl = card.querySelector('.mini-edge');
+        if (edgeEl) {
+          edgeEl.innerHTML =
+            'Edge vs market: <strong>' +
+            m.edge +
+            '</strong> on dominant side · Emotion index: <strong>' +
+            m.emotionIdx +
+            '</strong>';
+        }
+
+        const tagsRow = card.querySelector('.mini-tags-row');
+        if (tagsRow) {
+          tagsRow.innerHTML = '';
+          m.tags.forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'mini-tag';
+            span.textContent = t;
+            tagsRow.appendChild(span);
+          });
+        }
+      });
+
+      // update top KPI count
+      const kpi = document.getElementById('kpiMatches');
+      const execMatches = document.getElementById('metricExecMatches');
+      if (kpi) kpi.textContent = chosen.length + ' demo';
+      if (execMatches) execMatches.textContent = String(chosen.length);
+
+      // tweak average edge for fun
+      const avgEdge = document.getElementById('metricExecEdge');
+      if (avgEdge) {
+        const val = (2 + Math.random() * 1.5).toFixed(1);
+        avgEdge.textContent = '+' + val + '%';
+      }
+
+      const tensionCount = document.getElementById('metricExecTension');
+      if (tensionCount) {
+        const count = chosen.filter((m) => parseInt(m.emotionIdx, 10) >= 80).length;
+        tensionCount.textContent = String(count);
+      }
+
+      // adjust timeline bars a bit
+      const tlHomeBar = document.getElementById('tlHomeBar');
+      const tlDrawBar = document.getElementById('tlDrawBar');
+      const tlAwayBar = document.getElementById('tlAwayBar');
+      const tlHomeLabel = document.getElementById('tlHomeLabel');
+      const tlDrawLabel = document.getElementById('tlDrawLabel');
+      const tlAwayLabel = document.getElementById('tlAwayLabel');
+
+      let baseHome = 60 + Math.random() * 8; // 60–68
+      let baseDraw = 20 + Math.random() * 6; // 20–26
+      let baseAway = 100 - baseHome - baseDraw;
+      if (baseAway < 8) {
+        baseAway = 8;
+        baseHome = 100 - baseDraw - baseAway;
+      }
+
+      if (tlHomeBar) tlHomeBar.style.width = baseHome.toFixed(0) + '%';
+      if (tlDrawBar) tlDrawBar.style.width = baseDraw.toFixed(0) + '%';
+      if (tlAwayBar) tlAwayBar.style.width = baseAway.toFixed(0) + '%';
+
+      if (tlHomeLabel)
+        tlHomeLabel.textContent = '+' + (baseHome - 58).toFixed(0) + ' pts vs open';
+      if (tlDrawLabel)
+        tlDrawLabel.textContent = (baseDraw - 24 >= 0 ? '+' : '') + (baseDraw - 24).toFixed(0) + ' pts vs open';
+      if (tlAwayLabel)
+        tlAwayLabel.textContent = (baseAway - 18 >= 0 ? '+' : '') + (baseAway - 18).toFixed(0) + ' pts vs open';
+    }
+
+    function renderNarrative() {
+      const n = narratives[narrativeIndex];
+      const container = document.getElementById('narrativeContainer');
+      if (!container || !n) return;
+
+      const bulletsHtml = n.bullets.map((b) => '<li>' + b + '</li>').join('');
+      const tagsHtml = n.tags.map((t) => '<span class="chip">' + t + '</span>').join('');
+
+      container.innerHTML = `
+        <div class="scenario-label">Global picture</div>
+        <p class="headline">${n.title}</p>
+        <p class="scenario-body">
+          ${n.body}
+        </p>
+        <ul class="bullet-list">
+          ${bulletsHtml}
+        </ul>
+        <p class="headline">Desk cue</p>
+        <p class="scenario-body">
+          ${n.cue}
+        </p>
+        <div class="chip-row">
+          ${tagsHtml}
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // initial render
+      renderMatches();
+      renderNarrative();
+
+      const btnRefresh = document.getElementById('btnRefreshDemo');
+      if (btnRefresh) {
+        btnRefresh.addEventListener('click', function () {
+          renderMatches();
+        });
+      }
+
+      const btnNarrative = document.getElementById('btnRotateNarrative');
+      if (btnNarrative) {
+        btnNarrative.addEventListener('click', function () {
+          narrativeIndex = (narrativeIndex + 1) % narratives.length;
+          renderNarrative();
+        });
+      }
+
+      // Tabs – visual only, no heavy logic needed for demo
+      const tabGlobal = document.getElementById('tabGlobal');
+      const tabLeague = document.getElementById('tabLeague');
+      const tabExec = document.getElementById('tabExec');
+
+      function setActiveTab(tab) {
+        [tabGlobal, tabLeague, tabExec].forEach((btn) => {
+          if (!btn) return;
+          btn.classList.toggle('active', btn === tab);
+        });
+      }
+
+      if (tabGlobal) {
+        tabGlobal.addEventListener('click', function () {
+          setActiveTab(tabGlobal);
+        });
+      }
+      if (tabLeague) {
+        tabLeague.addEventListener('click', function () {
+          setActiveTab(tabLeague);
+        });
+      }
+      if (tabExec) {
+        tabExec.addEventListener('click', function () {
+          setActiveTab(tabExec);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
