@@ -1,39 +1,35 @@
-// File: netlify/functions/api-football-proxy.js
-// Runs automatically on Netlify serverless functions
-
-export default async function handler(req, context) {
+exports.handler = async function (event, context) {
   try {
     const API_KEY = process.env.API_FOOTBALL_KEY;
 
     if (!API_KEY) {
-      return new Response(JSON.stringify({ error: "Missing API Key" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      });
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "API key not found in environment variables" }),
+      };
     }
 
-    const url = req.url.replace(
-      `${req.url.split("/.netlify/functions/")[0]}/.netlify/functions/api-football-proxy`,
-      "https://v3.football.api-sports.io"
-    );
+    const url = "https://v3.football.api-sports.io/fixtures?live=all";
 
     const response = await fetch(url, {
+      method: "GET",
       headers: {
-        "x-apisports-key": API_KEY
-      }
+        "x-apisports-key": API_KEY,
+        "Accept": "application/json",
+      },
     });
 
     const data = await response.json();
 
-    return new Response(JSON.stringify(data), {
-      status: response.status,
-      headers: { "Content-Type": "application/json" }
-    });
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data),
+    };
 
-  } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
   }
-}
+};
