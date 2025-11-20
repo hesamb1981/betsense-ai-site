@@ -1,91 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Quantum Emotional Engine — Live Board</title>
+  <meta charset="UTF-8" />
+  <title>Quantum Emotional Engine – Live Emotional Board</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
+  <style>
+    :root {
+      --bg-main: #050814;
+      --bg-panel: #0c1020;
+      --bg-chip: #111729;
+      --accent-green: #22ff66;
+      --accent-red: #ff4b6a;
+      --accent-amber: #ffc857;
+      --text-main: #f7f9ff;
+      --text-muted: #9aa4c6;
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.7);
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", Roboto, sans-serif;
+    }
+
     body {
-        margin:0;
-        padding:0;
-        font-family: Arial, sans-serif;
-        background:#050505;
-        color:white;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #11182e 0%, #050814 55%, #02030a 100%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
     }
 
-    .header {
-        padding:22px;
-        text-align:center;
-        font-size:32px;
-        font-weight:800;
-        background:#0e0e0e;
-        border-bottom:2px solid #222;
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      background: linear-gradient(145deg, #050814 0%, #070c1b 40%, #040614 100%);
+      border-radius: 28px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      padding: 24px 20px 28px;
     }
 
-    .emobox {
-        width:90%;
-        margin:30px auto;
-        background:#111;
-        padding:25px;
-        border-radius:15px;
-        border:1px solid #333;
+    .header-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0, 255, 153, 0.07);
+      border: 1px solid rgba(0, 255, 153, 0.3);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-green);
+      margin-bottom: 10px;
     }
 
-    .title {
-        font-size:24px;
-        font-weight:700;
-        margin-bottom:15px;
-        color:#39FF14;
+    .header-tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22ff66;
+      box-shadow: 0 0 12px rgba(34, 255, 102, 0.85);
     }
 
-    .label { font-size:18px; margin-top:10px; }
-
-    .valueBox {
-        width:100%;
-        background:#000;
-        padding:15px;
-        border-radius:10px;
-        margin-top:8px;
-        font-size:20px;
-        border:1px solid #222;
+    h1 {
+      font-size: 24px;
+      line-height: 1.25;
+      margin-bottom: 4px;
     }
-</style>
 
-<script src="https://betsense.casino/engine/emotional-engine.js"></script>
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
 
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-soft);
+    }
+
+    .meta-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22ff66;
+    }
+
+    .main-panel {
+      background: radial-gradient(circle at top left, #151d3b 0%, #050814 46%);
+      border-radius: var(--radius-xl);
+      padding: 18px 16px 18px;
+      border: 1px solid var(--border-soft);
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        border-radius: 18px;
+        padding: 18px 14px 20px;
+      }
+
+      h1 {
+        font-size: 19px;
+      }
+
+      .main-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-green);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .metrics-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .metric-card {
+      background: radial-gradient(circle at top left, #161f3e 0%, #050814 50%);
+      border-radius: 18px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .metric-chip {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .metric-value-soft {
+      font-size: 20px;
+    }
+
+    .metric-foot {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .value-green {
+      color: var(--accent-green);
+    }
+
+    .value-red {
+      color: var(--accent-red);
+    }
+
+    .value-amber {
+      color: var(--accent-amber);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+    }
+
+    .pill-primary {
+      border-color: rgba(34, 255, 102, 0.7);
+      color: var(--accent-green);
+      background: rgba(34, 255, 102, 0.07);
+    }
+
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stream-status {
+      background: linear-gradient(135deg, #0f172a 0%, #050814 60%);
+      border-radius: 18px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .stream-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stream-label {
+      color: var(--text-muted);
+    }
+
+    .stream-value {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .dot-live {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-green);
+      box-shadow: 0 0 12px rgba(34, 255, 102, 0.9);
+      margin-right: 5px;
+      display: inline-block;
+    }
+
+    .refresh-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .footer-row span strong {
+      color: var(--accent-green);
+      font-weight: 500;
+    }
+
+    .status-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .status-pill.ok {
+      border-color: rgba(34, 255, 102, 0.8);
+      color: var(--accent-green);
+    }
+
+    .status-pill.down {
+      border-color: rgba(255, 75, 106, 0.8);
+      color: var(--accent-red);
+    }
+
+    .sparkline {
+      margin-top: 8px;
+      height: 44px;
+      border-radius: 12px;
+      background: radial-gradient(circle at left, rgba(34, 255, 102, 0.24) 0%, transparent 55%),
+        radial-gradient(circle at right, rgba(255, 75, 106, 0.18) 0%, transparent 55%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sparkline-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(34, 255, 102, 0.8), rgba(255, 200, 87, 0.9));
+      transition: width 0.5s ease-out;
+      box-shadow: 0 0 16px rgba(34, 255, 102, 0.65);
+    }
+
+    .sparkline-label {
+      position: absolute;
+      right: 8px;
+      bottom: 6px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(3px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
+  <main class="shell">
+    <div class="header-tag">
+      <span class="header-tag-dot"></span>
+      LIVE EMOTION · QUANTUM STACK
+    </div>
 
-<div class="header">
-    Quantum Emotional Engine – Live Emotional Board
-</div>
+    <h1>Quantum Emotional Engine – Live Emotional Board</h1>
+    <p class="subtitle">
+      Stream view of real-time emotional power, crowd reaction pulse and quantum risk score
+      for your current primary fixture.
+    </p>
 
-<div class="emobox">
-    <div class="title">Live Match Emotional Stream</div>
+    <div class="meta-row">
+      <div class="meta-pill">
+        <span class="meta-pill-dot"></span>
+        Emotion feed: <strong>&nbsp;Active demo stream</strong>
+      </div>
+      <div class="meta-pill">Latency target: &lt; 1.2s</div>
+      <div class="meta-pill">Refresh: 3s auto-update</div>
+    </div>
 
-    <div class="label">Team Emotional Power:</div>
-    <div id="emoPower" class="valueBox">Loading…</div>
+    <section class="main-panel fade-in">
+      <!-- LEFT SIDE – METRICS -->
+      <div class="left-column">
+        <div>
+          <div class="section-title">Live match emotional stream</div>
+          <div class="section-sub">
+            Powered by Quantum Emotion Engine · fused sentiment + momentum layer
+          </div>
+        </div>
 
-    <div class="label">Crowd Reaction Pulse:</div>
-    <div id="crowdPulse" class="valueBox">Loading…</div>
+        <div class="metrics-grid">
+          <!-- Team Emotional Power -->
+          <article class="metric-card">
+            <div class="metric-label-row">
+              <span class="metric-label">Team Emotional Power</span>
+              <span class="metric-chip" id="teamModeChip">Loading…</span>
+            </div>
+            <div class="metric-value value-green" id="teamPowerValue">–</div>
+            <div class="metric-foot" id="teamPowerFoot">
+              Waiting for first packet from engine…
+            </div>
+          </article>
 
-    <div class="label">Quantum Risk Score:</div>
-    <div id="riskScore" class="valueBox">Loading…</div>
-</div>
+          <!-- Crowd Reaction Pulse -->
+          <article class="metric-card">
+            <div class="metric-label-row">
+              <span class="metric-label">Crowd Reaction Pulse</span>
+              <span class="metric-chip" id="crowdModeChip">Loading…</span>
+            </div>
+            <div class="metric-value metric-value-soft value-amber" id="crowdPulseValue">–</div>
+            <div class="metric-foot" id="crowdPulseFoot">
+              Live noise &amp; tension index, normalised to 0-100.
+            </div>
+          </article>
 
-<script>
-async function updateEngine() {
-    const data = await EmotionalEngine.run();
+          <!-- Quantum Risk Score -->
+          <article class="metric-card">
+            <div class="metric-label-row">
+              <span class="metric-label">Quantum Risk Score</span>
+              <span class="metric-chip" id="riskModeChip">Loading…</span>
+            </div>
+            <div class="metric-value value-red" id="riskScoreValue">–</div>
+            <div class="metric-foot" id="riskScoreFoot">
+              Composite risk read from emotion swings &amp; structural pressure.
+            </div>
+          </article>
+        </div>
 
-    document.getElementById("emoPower").innerHTML = data.teamEmotion;
-    document.getElementById("crowdPulse").innerHTML = data.crowdPulse;
-    document.getElementById("riskScore").innerHTML = data.riskScore;
-}
+        <div class="pill-row">
+          <div class="pill pill-primary" id="headlinePill">Waiting for live state…</div>
+          <div class="pill">Emotion stack ready</div>
+          <div class="pill">Demo fixture feed</div>
+        </div>
+      </div>
 
-setInterval(updateEngine, 3000);
-updateEngine();
-</script>
+      <!-- RIGHT SIDE – STATUS / STREAM INFO -->
+      <div class="right-column">
+        <div class="stream-status">
+          <div class="stream-row">
+            <span class="stream-label">Stream status</span>
+            <span class="stream-value status-pill ok" id="statusPill">
+              <span class="dot-live"></span> Engine live
+            </span>
+          </div>
 
+          <div class="stream-row">
+            <span class="stream-label">Last update</span>
+            <span class="stream-value" id="lastUpdateLabel">No packets yet</span>
+          </div>
+
+          <div class="stream-row">
+            <span class="stream-label">Current regime</span>
+            <span class="stream-value" id="regimeLabel">–</span>
+          </div>
+
+          <p class="refresh-hint">
+            This board reads directly from your Quantum Emotion Engine API endpoint and refreshes every few seconds.
+          </p>
+
+          <div class="sparkline">
+            <div class="sparkline-bar" id="sparklineBar"></div>
+            <span class="sparkline-label" id="sparklineLabel">Emotion load: –</span>
+          </div>
+
+          <div class="footer-row">
+            <span>API: <strong id="apiHealthLabel">OK</strong> · Bound to engine endpoint</span>
+            <span id="sampleModeLabel">Demo sample values only – plug real feed for production.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // === CONFIG ===
+    const EMOTION_API_URL = "https://betsense-engine.onrender.com/emotion";
+    const REFRESH_MS = 3000;
+
+    const els = {
+      teamPowerValue: document.getElementById("teamPowerValue"),
+      teamPowerFoot: document.getElementById("teamPowerFoot"),
+      teamModeChip: document.getElementById("teamModeChip"),
+      crowdPulseValue: document.getElementById("crowdPulseValue"),
+      crowdPulseFoot: document.getElementById("crowdPulseFoot"),
+      crowdModeChip: document.getElementById("crowdModeChip"),
+      riskScoreValue: document.getElementById("riskScoreValue"),
+      riskScoreFoot: document.getElementById("riskScoreFoot"),
+      riskModeChip: document.getElementById("riskModeChip"),
+      headlinePill: document.getElementById("headlinePill"),
+      statusPill: document.getElementById("statusPill"),
+      lastUpdateLabel: document.getElementById("lastUpdateLabel"),
+      regimeLabel: document.getElementById("regimeLabel"),
+      apiHealthLabel: document.getElementById("apiHealthLabel"),
+      sampleModeLabel: document.getElementById("sampleModeLabel"),
+      sparklineBar: document.getElementById("sparklineBar"),
+      sparklineLabel: document.getElementById("sparklineLabel"),
+    };
+
+    function formatRegime(teamPower, riskScore, crowdPulse) {
+      if (riskScore >= 80) return "High-risk emotional spike";
+      if (crowdPulse >= 70 && teamPower >= 60) return "Home surge – crowd lifting side";
+      if (teamPower <= 35 && riskScore >= 60) return "Fragile mood – downside risk";
+      if (crowdPulse < 35 && riskScore < 40) return "Calm regime – low emotional stress";
+      return "Balanced regime – watch for next swing";
+    }
+
+    function updateFromPacket(packet) {
+      const teamPower = Number(packet.teamEmotionalPower ?? 0);
+      const crowdPulse = Number(packet.crowdReactionPulse ?? 0);
+      const riskScore = Number(packet.quantumRiskScore ?? 0);
+      const now = new Date();
+
+      els.teamPowerValue.textContent = `${teamPower}`;
+      els.crowdPulseValue.textContent = `${crowdPulse}`;
+      els.riskScoreValue.textContent = `${riskScore}`;
+
+      els.teamModeChip.textContent =
+        teamPower >= 70 ? "Surge" : teamPower >= 40 ? "Stable" : "Under pressure";
+      els.crowdModeChip.textContent =
+        crowdPulse >= 70 ? "Hostile / electric" : crowdPulse >= 45 ? "Alive" : "Flat";
+      els.riskModeChip.textContent =
+        riskScore >= 75 ? "Elevated risk" : riskScore >= 45 ? "Watchlist" : "Comfort";
+
+      els.teamPowerFoot.textContent =
+        teamPower >= 70
+          ? "Side playing with high emotional intensity – expect aggressive phases."
+          : teamPower >= 40
+          ? "Emotional power is steady – no major mood dislocation."
+          : "Emotional power is suppressed – watch for tilt after key events.";
+
+      els.crowdPulseFoot.textContent =
+        crowdPulse >= 75
+          ? "Crowd is fully engaged – noise spikes on every attack."
+          : crowdPulse >= 45
+          ? "Healthy in-stadium pulse – reactions track match state."
+          : "Crowd read is flat – atmosphere is not driving price action.";
+
+      els.riskScoreFoot.textContent =
+        riskScore >= 80
+          ? "Quantum risk stack is flagging critical regime – protect downside."
+          : riskScore >= 55
+          ? "Risk envelope widening – size positions carefully."
+          : "Risk score contained – environment suitable for normal sizing.";
+
+      const regime = formatRegime(teamPower, riskScore, crowdPulse);
+      els.regimeLabel.textContent = regime;
+
+      els.headlinePill.textContent = regime;
+      els.headlinePill.classList.add("pill-primary");
+
+      els.statusPill.textContent = "";
+      els.statusPill.classList.remove("down");
+      els.statusPill.classList.add("ok");
+      els.statusPill.innerHTML =
+        '<span class="dot-live"></span> Engine live · packet received';
+
+      els.lastUpdateLabel.textContent = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+
+      els.apiHealthLabel.textContent = "OK";
+      els.sampleModeLabel.textContent =
+        "Demo JSON feed from Quantum Emotion Engine endpoint.";
+
+      const load = Math.max(0, Math.min(100, Math.round((teamPower + crowdPulse + riskScore) / 3)));
+      els.sparklineBar.style.width = load + "%";
+      els.sparklineLabel.textContent = `Emotion load: ${load}%`;
+    }
+
+    function markErrorState(err) {
+      console.error("Emotion board error:", err);
+
+      els.statusPill.classList.remove("ok");
+      els.statusPill.classList.add("down");
+      els.statusPill.textContent = "Engine offline or unreachable";
+
+      els.headlinePill.textContent = "No connection to engine – retrying…";
+      els.apiHealthLabel.textContent = "Error";
+
+      els.sparklineBar.style.width = "0%";
+      els.sparklineLabel.textContent = "Emotion load: unavailable";
+    }
+
+    async function pollEmotion() {
+      try {
+        const res = await fetch(EMOTION_API_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        updateFromPacket(data);
+      } catch (err) {
+        markErrorState(err);
+      }
+    }
+
+    pollEmotion();
+    setInterval(pollEmotion, REFRESH_MS);
+  </script>
 </body>
 </html>
