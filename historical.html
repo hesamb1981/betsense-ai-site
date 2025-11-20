@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense Quantum Emotion – Historical Archive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #02091a;
+      --card: #020617;
+      --border: #1f2937;
+      --border-soft: #111827;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --accent: #38bdf8;
+      --accent2: #a855f7;
+      --accent3: #22c55e;
+      --danger: #fb7185;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 60px rgba(15, 23, 42, 0.9);
+      --shadow-subtle: 0 10px 40px rgba(15, 23, 42, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0b1220 0, #020617 55%, #000 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 28px 14px 48px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 36px 20px 64px;
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0% 0%, #4ade80, #22d3ee, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4),
+        0 16px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-logo span {
+      font-weight: 800;
+      font-size: 22px;
+      color: #0b1120;
+    }
+
+    .brand-text-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .status-pill {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.2), #020617);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #e0f2fe;
+      box-shadow: var(--shadow-subtle);
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    /* hero */
+
+    .hero {
+      border-radius: 28px;
+      padding: 18px 16px 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 55%),
+        radial-gradient(circle at top right, rgba(168, 85, 247, 0.18), transparent 55%),
+        linear-gradient(135deg, #020617 0%, #020617 45%, #020617 100%);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 900px) {
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+        gap: 20px;
+        align-items: stretch;
+      }
+    }
+
+    .hero-main-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      margin-bottom: 6px;
+    }
+
+    .hero-main-title span {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-main-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .hero-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .hero-note {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .hero-note span {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-right-card {
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.35), #020617);
+      padding: 12px 12px 10px;
+      font-size: 11px;
+    }
+
+    .hero-right-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .hero-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .hero-kpi {
+      border-radius: 14px;
+      border: 1px solid #111827;
+      padding: 8px;
+      background: #020617;
+    }
+
+    .hero-kpi-label {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .hero-kpi-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .hero-kpi-value.green {
+      color: #4ade80;
+    }
+
+    .hero-kpi-value.amber {
+      color: #fbbf24;
+    }
+
+    .hero-kpi-caption {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 1px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 5px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-dot-blue {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, #020617, #020617 60%, #020617);
+      padding: 14px 12px 12px;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    /* filters + table */
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .filter-chip {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      font-size: 11px;
+      padding: 5px 10px;
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+
+    .filter-chip.active {
+      border-color: var(--accent);
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.2), #020617);
+      color: #e5f3ff;
+    }
+
+    .search-input {
+      width: 100%;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--text);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-soft);
+    }
+
+    .table-wrapper {
+      border-radius: 16px;
+      border: 1px solid #111827;
+      background: #020617;
+      max-height: 320px;
+      overflow: hidden;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      background: #020617;
+      z-index: 2;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid #0b1220;
+      white-space: nowrap;
+    }
+
+    th {
+      font-weight: 600;
+      color: var(--text-soft);
+      font-size: 11px;
+    }
+
+    tbody tr {
+      cursor: pointer;
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    tbody tr.selected {
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.15), #020617);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 10px;
+      padding: 2px 7px;
+      color: var(--text-soft);
+      gap: 4px;
+    }
+
+    .tag-dot-green {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .tag-dot-red {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: #fb7185;
+    }
+
+    .tag-dot-amber {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: #fbbf24;
+    }
+
+    /* detail side */
+
+    .scenario-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .headline {
+      margin-top: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .scenario-body {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .bullet-list {
+      margin-top: 4px;
+      padding-left: 16px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: #020617;
+      color: var(--text-soft);
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .metric-box {
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, #020617, #020617);
+      padding: 8px;
+      font-size: 11px;
+    }
+
+    .metric-label {
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .metric-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .metric-value.green {
+      color: #4ade80;
+    }
+
+    .metric-value.red {
+      color: #fb7185;
+    }
+
+    .metric-value.amber {
+      color: #fbbf24;
+    }
+
+    .muted {
+      color: var(--text-soft);
+      font-size: 11px;
+    }
+
+    footer {
+      margin-top: 18px;
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      border-top: 1px solid #111827;
+      padding-top: 10px;
+    }
+
+    footer a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo"><span>B</span></div>
+        <div>
+          <div class="brand-text-title">BetSense Quantum Sports Suite</div>
+          <div class="brand-text-sub">
+            Historical Emotion Archive · Enterprise-only lens
+          </div>
+        </div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>Historical demo – static sample dataset</span>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-main-title">
+          <span>Historical Emotion Archive</span> for serious desks.
+        </div>
+        <p class="hero-main-sub">
+          One place where 5,000+ past matches turn into an Emotion-first layer:
+          regime breaks, comeback risk, fan panic and quiet control — compressed
+          into a searchable, export-ready archive for trading, product and
+          investor decks.
+        </p>
+
+        <div class="hero-pill-row">
+          <span class="pill"><span class="pill-dot"></span>Emotion Index snapshots · 0' → 90'</span>
+          <span class="pill"><span class="pill-dot"></span>Regime change detector · panic, capitulation, control</span>
+        </div>
+        <div class="hero-pill-row">
+          <span class="pill"><span class="pill-dot"></span>Built for boards, risk &amp; P&amp;L desks</span>
+          <span class="pill"><span class="pill-dot"></span>Export to PDF / slide packs in seconds (prod)</span>
+        </div>
+
+        <p class="hero-note" style="margin-top:6px">
+          In this demo you see a <span>small static slice</span> of the archive.
+          In production, the same layer scales across seasons and competitions with
+          full API access and export hooks.
+        </p>
+      </div>
+
+      <div class="hero-right-card">
+        <div class="card-header-row" style="margin-bottom:4px">
+          <div class="hero-right-title">Archive health – demo snapshot</div>
+          <span class="badge">
+            <span class="badge-dot-blue"></span>
+            Quantum Emotional Engine v1.2 · demo mode
+          </span>
+        </div>
+        <p class="card-subtitle">
+          High-level view of how often the model sees real emotional stress — and how
+          cleanly it separates noise from genuine regime breaks.
+        </p>
+
+        <div class="hero-kpi-grid">
+          <div class="hero-kpi">
+            <div class="hero-kpi-label">Matches in slice</div>
+            <div class="hero-kpi-value">32</div>
+            <div class="hero-kpi-caption">Demo subset · EPL &amp; UCL</div>
+          </div>
+          <div class="hero-kpi">
+            <div class="hero-kpi-label">Clear regime breaks</div>
+            <div class="hero-kpi-value green">81%</div>
+            <div class="hero-kpi-caption">Emotion Index vs price</div>
+          </div>
+          <div class="hero-kpi">
+            <div class="hero-kpi-label">Panic false-positives</div>
+            <div class="hero-kpi-value amber">4.3%</div>
+            <div class="hero-kpi-caption">Model overreaction rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN LAYOUT -->
+    <section class="layout">
+      <!-- LEFT: TABLE -->
+      <div class="card">
+        <div class="card-header-row">
+          <div>
+            <div class="card-title">Historical match library</div>
+            <div class="card-subtitle">
+              Search by competition, club, season or emotional pattern. Click any row to see the
+              Emotion-first read your desks would receive.
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <button class="filter-chip active" data-filter="all">All patterns</button>
+          <button class="filter-chip" data-filter="panic">Panic / capitulation</button>
+          <button class="filter-chip" data-filter="comeback">Comeback risk</button>
+          <button class="filter-chip" data-filter="control">Quiet control</button>
+          <button class="filter-chip" data-filter="derby">Derby / high emotion</button>
+        </div>
+
+        <input
+          id="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="Search club, competition or season… (e.g. 'Liverpool', 'UCL', '2024-25')"
+        />
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:26%">Match</th>
+                <th style="width:16%">Competition</th>
+                <th style="width:10%">Season</th>
+                <th style="width:10%">Pattern</th>
+                <th style="width:13%">Emotion regime</th>
+                <th style="width:8%">EI peak</th>
+                <th style="width:17%">Tag</th>
+              </tr>
+            </thead>
+            <tbody id="matchTableBody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: DETAIL -->
+      <div class="card">
+        <div class="card-header-row">
+          <div>
+            <div class="card-title">Emotion replay – desk-ready view</div>
+            <div class="card-subtitle" id="detailSubtitle">
+              Pick a match on the left to see the Emotion Index story your traders,
+              risk teams and execs would have seen live.
+            </div>
+          </div>
+        </div>
+
+        <div id="detailContent">
+          <!-- dynamic content -->
+        </div>
+
+        <div class="chip-row" id="detailTags" style="margin-top:10px"></div>
+
+        <div class="mini-grid" id="detailMiniGrid" style="margin-top:10px">
+          <!-- mini metrics -->
+        </div>
+
+        <p class="muted" style="margin-top:8px">
+          Demo only — numbers and narratives are illustrative. In production this view runs
+          directly from the same Quantum Emotional Engine that powers your live desk and
+          Quantum Liveboard.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <span>BetSense Quantum Sports Suite · Historical Emotion Archive · Demo slice</span>
+      <span>
+        Back to marketing page:
+        <a href="https://betsense.casino/" target="_blank" rel="noopener noreferrer">
+          betsense.casino
+        </a>
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    // ===== Demo dataset – tiny static slice =====
+    const demoMatches = [
+      {
+        id: "EPL-2025-001",
+        match: "Chelsea vs Arsenal",
+        competition: "EPL",
+        season: "2024-25",
+        pattern: "control",
+        regime: "Pressure → control",
+        emotionPeak: 78,
+        tagType: "control",
+        tagLabel: "Late conversion of dominance",
+        keyEventMinute: 72,
+        scenarioTitle: "Late goal finally converts quiet home dominance.",
+        scenarioIntro:
+          "For 65+ minutes the Emotion Index climbs without any scoreboard confirmation. When the home side scores, the regime break is clean: volatility drops, conviction rises and both price and emotion lock into a new baseline.",
+        bulletsTimeline: [
+          "0'–25': Balanced opener, Emotion Index oscillates in the 42–55 band.",
+          "25'–60': Home pressure builds quietly; xG tilts but sentiment stays short of full conviction.",
+          "60'–72': Emotion Index pushes into the 'almost there' band as crowd tension rises.",
+          "72'+: Goal snaps the regime; Emotion Index settles into confident control rather than euphoria."
+        ],
+        bulletsDesk: [
+          "Desk sees a clear regime shift instead of a noisy spike.",
+          "Risk posture moves from 'watchful' to 'comfortable long home'.",
+          "No evidence of panic or overextension in the Emotion Index trace."
+        ],
+        tags: [
+          "Quiet accumulation",
+          "Regime break without panic",
+          "Board-ready example"
+        ],
+        metrics: {
+          panicFalsePositive: 2.1,
+          comebackRiskWindow: "Low, 5–8 minutes",
+          convictionScore: 89
+        }
+      },
+      {
+        id: "EPL-2025-014",
+        match: "Liverpool vs Spurs",
+        competition: "EPL",
+        season: "2024-25",
+        pattern: "comeback",
+        regime: "Chaos → comeback risk",
+        emotionPeak: 91,
+        tagType: "comeback",
+        tagLabel: "Sustained away comeback risk",
+        keyEventMinute: 82,
+        scenarioTitle: "Home domination drifts into real comeback danger.",
+        scenarioIntro:
+          "The home side dominates for an hour, but repeated missed chances push Emotion Index from confident to anxious. When the away side finally scores, the model sees genuine comeback risk, not just scoreboard noise.",
+        bulletsTimeline: [
+          "0'–30': High-tempo home start, Emotion Index in the 60–70 band.",
+          "30'–65': Missed chances and VAR drama drag sentiment into frustration.",
+          "65'–82': Small probability pockets open for the away side; comeback band lights up.",
+          "82'+: Away goal triggers a genuine regime flip: market and emotion both price comeback risk seriously."
+        ],
+        bulletsDesk: [
+          "Desk warned to reduce 'home clean win' exposure 15 minutes before the goal.",
+          "Emotion Index separates normal frustration from real structural risk.",
+          "Post-goal, desk guidance is to avoid panic flipping the book."
+        ],
+        tags: [
+          "Comeback detector",
+          "Risk early-warning",
+          "High teaching-value case"
+        ],
+        metrics: {
+          panicFalsePositive: 3.9,
+          comebackRiskWindow: "Elevated, 12–15 minutes",
+          convictionScore: 84
+        }
+      },
+      {
+        id: "UCL-2025-021",
+        match: "Barcelona vs Bayern",
+        competition: "UCL",
+        season: "2024-25",
+        pattern: "panic",
+        regime: "Panic → capitulation",
+        emotionPeak: 96,
+        tagType: "panic",
+        tagLabel: "Full capitulation event",
+        keyEventMinute: 38,
+        scenarioTitle: "Double goal shock turns pressure into full capitulation.",
+        scenarioIntro:
+          "Back-to-back away goals in a high-profile tie generate a true panic spike: crowd, social and order-book all flip into stress. The Emotion Index flags this as a rare, high-intensity capitulation pattern.",
+        bulletsTimeline: [
+          "0'–25': Even, slightly positive home read; Emotion Index 52–60.",
+          "25'–35': First away goal creates classic 'punch in the face' spike.",
+          "35'–40': Second away goal arrives before home sentiment stabilises — panic band fully engaged.",
+          "40'+: Emotion Index stays in a stressed, disorganised state rather than clean comeback belief."
+        ],
+        bulletsDesk: [
+          "Risk decks label this match as a reference panic template.",
+          "Desks are advised to shrink size and widen spreads, not chase mispriced narratives.",
+          "Archive tag ensures this game shows up instantly when training new traders on panic regimes."
+        ],
+        tags: [
+          "Panic / capitulation template",
+          "Order-book stress",
+          "Training-library anchor"
+        ],
+        metrics: {
+          panicFalsePositive: 1.3,
+          comebackRiskWindow: "Short, 4–6 minutes",
+          convictionScore: 93
+        }
+      },
+      {
+        id: "EPL-2024-088",
+        match: "Newcastle vs Man City",
+        competition: "EPL",
+        season: "2023-24",
+        pattern: "derby",
+        regime: "High-volatility control",
+        emotionPeak: 88,
+        tagType: "derby",
+        tagLabel: "High-emotion, still model-controlled",
+        keyEventMinute: 67,
+        scenarioTitle: "High-emotion fixture without model panic.",
+        scenarioIntro:
+          "Derby-like volatility, VAR controversy and touchline drama — but the Emotion Index remains inside its controlled high band. Great example of the model refusing to follow TV noise.",
+        bulletsTimeline: [
+          "0'–20': Derby nerves, frequent direction changes in sentiment.",
+          "20'–55': Emotional spikes around half-chances and VAR checks.",
+          "55'–70': Model discounts pure spectacle; keeps conviction bands stable.",
+          "70'+: Noise cools; Emotion Index drifts back toward the dominant side."
+        ],
+        bulletsDesk: [
+          "Shows how the engine separates narrative from tradable regime shifts.",
+          "Desk notes mark this as a 'do not overtrade the TV show' template.",
+          "Ideal case for explaining Emotion Index discipline to senior execs."
+        ],
+        tags: [
+          "Derby noise filter",
+          "Exec education case",
+          "TV vs tradable"
+        ],
+        metrics: {
+          panicFalsePositive: 5.7,
+          comebackRiskWindow: "Moderate, scattered pockets",
+          convictionScore: 78
+        }
+      }
+    ];
+
+    let currentFilter = "all";
+    let currentSelectedId = null;
+
+    const tableBody = document.getElementById("matchTableBody");
+    const searchInput = document.getElementById("searchInput");
+    const detailContent = document.getElementById("detailContent");
+    const detailTags = document.getElementById("detailTags");
+    const detailMiniGrid = document.getElementById("detailMiniGrid");
+    const detailSubtitle = document.getElementById("detailSubtitle");
+
+    function renderTable() {
+      const query = (searchInput.value || "").trim().toLowerCase();
+      tableBody.innerHTML = "";
+
+      const filtered = demoMatches.filter((m) => {
+        if (currentFilter !== "all" && m.pattern !== currentFilter) return false;
+
+        if (!query) return true;
+        const haystack = (
+          m.match +
+          " " +
+          m.competition +
+          " " +
+          m.season +
+          " " +
+          m.regime
+        ).toLowerCase();
+        return haystack.includes(query);
+      });
+
+      filtered.forEach((m) => {
+        const tr = document.createElement("tr");
+        tr.dataset.id = m.id;
+
+        if (m.id === currentSelectedId) {
+          tr.classList.add("selected");
+        }
+
+        const tagClass =
+          m.tagType === "panic"
+            ? "tag-dot-red"
+            : m.tagType === "comeback"
+            ? "tag-dot-amber"
+            : m.tagType === "control"
+            ? "tag-dot-green"
+            : "tag-dot-amber";
+
+        tr.innerHTML = `
+          <td>${m.match}</td>
+          <td>${m.competition}</td>
+          <td>${m.season}</td>
+          <td>${m.pattern}</td>
+          <td>${m.regime}</td>
+          <td>${m.emotionPeak}</td>
+          <td>
+            <span class="tag">
+              <span class="${tagClass}"></span>
+              ${m.tagLabel}
+            </span>
+          </td>
+        `;
+
+        tr.addEventListener("click", () => {
+          currentSelectedId = m.id;
+          renderTable();
+          renderDetail(m.id);
+        });
+
+        tableBody.appendChild(tr);
+      });
+
+      if (!filtered.length) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="7" style="padding:10px;color:#9ca3af;font-size:11px;">No matches found for this filter / search.</td>`;
+        tableBody.appendChild(tr);
+      }
+    }
+
+    function renderDetail(id) {
+      const match = demoMatches.find((m) => m.id === id);
+      if (!match) {
+        detailContent.innerHTML = "";
+        detailTags.innerHTML = "";
+        detailMiniGrid.innerHTML = "";
+        detailSubtitle.textContent =
+          "Pick a match on the left to see the Emotion Index story your traders, risk teams and execs would have seen live.";
+        return;
+      }
+
+      detailSubtitle.textContent =
+        match.match +
+        " · " +
+        match.competition +
+        " · " +
+        match.season +
+        " · Emotion Index peak " +
+        match.emotionPeak +
+        "/100";
+
+      const bulletsTimelineHtml = match.bulletsTimeline
+        .map((b) => "<li>" + b + "</li>")
+        .join("");
+
+      const bulletsDeskHtml = match.bulletsDesk
+        .map((b) => "<li>" + b + "</li>")
+        .join("");
+
+      detailContent.innerHTML = `
+        <div class="scenario-label">Key emotion scenario</div>
+        <p class="headline">${match.scenarioTitle}</p>
+        <p class="scenario-body">${match.scenarioIntro}</p>
+
+        <div class="headline" style="margin-top:8px">Timeline – 0' → 90'</div>
+        <ul class="bullet-list">
+          ${bulletsTimelineHtml}
+        </ul>
+
+        <div class="headline" style="margin-top:8px">Desk read – what traders actually see</div>
+        <ul class="bullet-list">
+          ${bulletsDeskHtml}
+        </ul>
+      `;
+
+      detailTags.innerHTML = "";
+      (match.tags || []).forEach((t) => {
+        const span = document.createElement("span");
+        span.className = "chip";
+        span.textContent = t;
+        detailTags.appendChild(span);
+      });
+
+      const m = match.metrics || {};
+      detailMiniGrid.innerHTML = `
+        <div class="metric-box">
+          <div class="metric-label">Panic false-positives</div>
+          <div class="metric-value amber">${m.panicFalsePositive ?? "—"}%</div>
+          <div class="muted">How often the model mislabels panic in similar spots.</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Comeback-risk window</div>
+          <div class="metric-value">${m.comebackRiskWindow ?? "—"}</div>
+          <div class="muted">Minutes where the archive flags serious comeback potential.</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Conviction score</div>
+          <div class="metric-value green">${m.convictionScore ?? "—"}/100</div>
+          <div class="muted">How confident the engine is in its read of this match.</div>
+        </div>
+      `;
+    }
+
+    // filters
+    document.querySelectorAll(".filter-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document
+          .querySelectorAll(".filter-chip")
+          .forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        currentFilter = chip.dataset.filter || "all";
+        renderTable();
+        // don't reset detail: user might want to keep it
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        renderTable();
+      });
+    }
+
+    // initial render – select first match by default
+    if (demoMatches.length) {
+      currentSelectedId = demoMatches[0].id;
+    }
+    renderTable();
+    renderDetail(currentSelectedId);
+  </script>
+</body>
+</html>
