@@ -1,805 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>BetSense AI · Quantum Liveboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quantum Emotional Engine — Live Board</title>
 
-  <style>
-    :root {
-      --bg: #030712;
-      --bg-alt: #020617;
-      --panel: #020617;
-      --panel-alt: #02091f;
-      --border: #1f2937;
-      --text-main: #e5e7eb;
-      --text-soft: #9ca3af;
-      --accent-main: #22d3ee;
-      --accent-soft: #a855f7;
-      --danger: #f97373;
-      --success: #4ade80;
-      --warning: #facc15;
-      --chip-bg: #020617;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro",
-        "Segoe UI", sans-serif;
-    }
-
+<style>
     body {
-      background: radial-gradient(circle at top, #0b1220 0, #020617 55%, #000 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding: 24px 10px 32px;
+        margin:0;
+        padding:0;
+        font-family: Arial, sans-serif;
+        background:#050505;
+        color:white;
     }
 
-    .shell {
-      max-width: 1180px;
-      margin: 0 auto;
-      background: radial-gradient(circle at top left, #111827 0, #020617 55%);
-      border-radius: 20px;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
-      border: 1px solid #1f2937;
-      padding: 18px 16px 22px;
+    .header {
+        padding:22px;
+        text-align:center;
+        font-size:32px;
+        font-weight:800;
+        background:#0e0e0e;
+        border-bottom:2px solid #222;
     }
 
-    header {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 14px;
+    .emobox {
+        width:90%;
+        margin:30px auto;
+        background:#111;
+        padding:25px;
+        border-radius:15px;
+        border:1px solid #333;
     }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
+    .title {
+        font-size:24px;
+        font-weight:700;
+        margin-bottom:15px;
+        color:#39FF14;
     }
 
-    .badge {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      color: var(--text-soft);
-      background: radial-gradient(circle at top, #111827 0, #020617 75%);
-    }
+    .label { font-size:18px; margin-top:10px; }
 
-    .badge.quantum {
-      border-color: rgba(56, 189, 248, 0.6);
-      color: #67e8f9;
+    .valueBox {
+        width:100%;
+        background:#000;
+        padding:15px;
+        border-radius:10px;
+        margin-top:8px;
+        font-size:20px;
+        border:1px solid #222;
     }
+</style>
 
-    .title-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 8px;
-    }
+<script src="https://betsense.casino/engine/emotional-engine.js"></script>
 
-    h1 {
-      font-size: 22px;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      font-weight: 650;
-    }
-
-    h1 span {
-      color: var(--accent-main);
-    }
-
-    .subtitle {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-soft);
-    }
-
-    .subtitle span {
-      color: var(--accent-soft);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 1.1fr 1.4fr;
-      gap: 14px;
-    }
-
-    @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-      body {
-        padding-inline: 7px;
-      }
-    }
-
-    .panel {
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: radial-gradient(circle at top left, #020617 0, #020617 60%, #000 100%);
-      padding: 14px 13px 14px;
-    }
-
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .panel-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-soft);
-    }
-
-    .pill {
-      border-radius: 999px;
-      font-size: 11px;
-      padding: 4px 9px;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      color: var(--text-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(15, 23, 42, 0.7);
-    }
-
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent-main);
-      box-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
-    }
-
-    .list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 380px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-
-    .fixture-row {
-      border-radius: 14px;
-      padding: 9px 9px 8px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      background: linear-gradient(90deg, #020617 0, #020617 45%, #020617 100%);
-      display: grid;
-      grid-template-columns: 1.5fr auto;
-      gap: 6px;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.16s ease-out;
-    }
-
-    .fixture-row:hover {
-      border-color: rgba(56, 189, 248, 0.7);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.2);
-      transform: translateY(-1px);
-    }
-
-    .fixture-row.active {
-      border-color: rgba(168, 85, 247, 0.9);
-      box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.45);
-      background: radial-gradient(circle at left, #020617 0, #020617 40%, #000 100%);
-    }
-
-    .teams {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      font-size: 12px;
-    }
-
-    .teams span {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .teams .home {
-      color: var(--text-main);
-      font-weight: 550;
-    }
-
-    .teams .away {
-      color: var(--text-soft);
-    }
-
-    .score-badge {
-      border-radius: 999px;
-      padding: 4px 9px;
-      font-size: 11px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-      color: var(--text-main);
-    }
-
-    .score-core {
-      font-weight: 600;
-      font-feature-settings: "tnum" 1, "lnum" 1;
-    }
-
-    .mini-meta {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.17em;
-      color: var(--text-soft);
-    }
-
-    .chip-row {
-      margin-top: 6px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .chip {
-      font-size: 10px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(31, 41, 55, 0.85);
-      color: var(--text-soft);
-    }
-
-    .chip.edge {
-      border-color: rgba(34, 211, 238, 0.7);
-      color: #67e8f9;
-    }
-
-    .chip.risk-low {
-      border-color: rgba(74, 222, 128, 0.7);
-      color: #bbf7d0;
-    }
-
-    .chip.risk-high {
-      border-color: rgba(248, 113, 113, 0.8);
-      color: #fecaca;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1.1fr;
-      gap: 10px;
-    }
-
-    @media (max-width: 900px) {
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .block {
-      border-radius: 14px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      padding: 10px 10px 9px;
-      background: radial-gradient(circle at top left, #020617 0, #020617 60%, #000 100%);
-    }
-
-    .block-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-soft);
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .metric-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      margin-bottom: 3px;
-      color: var(--text-soft);
-    }
-
-    .metric-row span.value {
-      font-feature-settings: "tnum" 1, "lnum" 1;
-      color: var(--text-main);
-    }
-
-    .bar {
-      position: relative;
-      height: 6px;
-      border-radius: 999px;
-      background: #020617;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-
-    .bar-fill-home,
-    .bar-fill-away {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-    }
-
-    .bar-fill-home {
-      left: 0;
-      background: linear-gradient(90deg, #22c55e, #22d3ee);
-    }
-
-    .bar-fill-away {
-      right: 0;
-      background: linear-gradient(90deg, #f97373, #a855f7);
-    }
-
-    .status-text {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-top: 4px;
-    }
-
-    .status-text span {
-      color: var(--accent-main);
-    }
-
-    .empty-state {
-      font-size: 12px;
-      color: var(--text-soft);
-      padding: 10px 6px 4px;
-    }
-
-    .footer-note {
-      margin-top: 10px;
-      font-size: 10px;
-      color: var(--text-soft);
-      opacity: 0.8;
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tagline {
-      color: var(--accent-main);
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    .loading {
-      font-size: 11px;
-      color: var(--accent-main);
-    }
-
-    .error {
-      font-size: 11px;
-      color: var(--danger);
-    }
-
-    .click-hint {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-  </style>
 </head>
-
 <body>
-  <div class="shell">
-    <header>
-      <div class="badge-row">
-        <div class="badge quantum">Quantum Sports Suite · Live Stack</div>
-        <div class="badge">Prototype · Internal demo only</div>
-      </div>
-      <div class="title-row">
-        <div>
-          <h1><span>BetSense</span> · Quantum Liveboard</h1>
-          <div class="subtitle">Real-time fixtures · <span>Emotion+Orderbook+Stats</span></div>
-        </div>
-        <div class="pill">
-          <div class="pill-dot"></div>
-          Live feed via API-Football · Netlify Edge
-        </div>
-      </div>
-    </header>
 
-    <div class="layout">
-      <!-- LEFT: LIVE FIXTURE LIST -->
-      <section class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Live fixtures · global</div>
-          <div id="liveMeta" class="loading">Loading fixtures…</div>
-        </div>
+<div class="header">
+    Quantum Emotional Engine – Live Emotional Board
+</div>
 
-        <div class="click-hint">
-          Tap a fixture to load full Quantum view (scoreline + stats + BetSense edge stub).
-        </div>
+<div class="emobox">
+    <div class="title">Live Match Emotional Stream</div>
 
-        <div id="fixtureList" class="list"></div>
+    <div class="label">Team Emotional Power:</div>
+    <div id="emoPower" class="valueBox">Loading…</div>
 
-        <div id="listEmpty" class="empty-state" style="display:none;">
-          No live fixtures available at this moment.  
-          Try again closer to peak kick-off windows.
-        </div>
-      </section>
+    <div class="label">Crowd Reaction Pulse:</div>
+    <div id="crowdPulse" class="valueBox">Loading…</div>
 
-      <!-- RIGHT: DETAIL VIEW -->
-      <section class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Quantum view · selected fixture</div>
-          <div id="detailHeaderMeta" class="loading">Waiting for selection…</div>
-        </div>
+    <div class="label">Quantum Risk Score:</div>
+    <div id="riskScore" class="valueBox">Loading…</div>
+</div>
 
-        <div id="detailArea">
-          <div class="empty-state">
-            Select any live fixture on the left to see:
-            <ul style="margin-top:4px; padding-left:16px; line-height:1.5;">
-              <li>Scoreline &amp; match clock</li>
-              <li>xG proxy from shots + dangerous attacks</li>
-              <li>BetSense Edge (placeholder – wired later)</li>
-              <li>Key statistics (shots, possession, cards, etc.)</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-    </div>
+<script>
+async function updateEngine() {
+    const data = await EmotionalEngine.run();
 
-    <div class="footer-note">
-      <div class="tagline">Built for 7–8 figure trading desks · Quantum prototype channel</div>
-      <div>Values illustrative only · Data via API-Football → Netlify function proxy → BetSense Quantum layer.</div>
-    </div>
-  </div>
+    document.getElementById("emoPower").innerHTML = data.teamEmotion;
+    document.getElementById("crowdPulse").innerHTML = data.crowdPulse;
+    document.getElementById("riskScore").innerHTML = data.riskScore;
+}
 
-  <script>
-    // 🔹 Netlify function endpoint
-    const PROXY_BASE = "/.netlify/functions/api-football-proxy";
+setInterval(updateEngine, 3000);
+updateEngine();
+</script>
 
-    const fixtureListEl = document.getElementById("fixtureList");
-    const listEmptyEl = document.getElementById("listEmpty");
-    const liveMetaEl = document.getElementById("liveMeta");
-    const detailHeaderMetaEl = document.getElementById("detailHeaderMeta");
-    const detailAreaEl = document.getElementById("detailArea");
-
-    let LIVE_FIXTURES = [];
-    let CURRENT_FIXTURE_ID = null;
-
-    // ---------- HELPERS ----------
-
-    function safeGet(obj, path, fallback = null) {
-      try {
-        return path.split(".").reduce((acc, key) => acc && acc[key], obj) ?? fallback;
-      } catch {
-        return fallback;
-      }
-    }
-
-    function formatMinutes(fixture) {
-      const status = safeGet(fixture, "fixture.status.short", "");
-      const elapsed = safeGet(fixture, "fixture.status.elapsed", null);
-
-      if (status === "HT") return "HT";
-      if (status === "FT" || status === "AET" || status === "PEN") return "FT";
-      if (elapsed != null) return elapsed + "'";
-      return status || "—";
-    }
-
-    function estimateEdge(fx) {
-      // یک استاب ساده: فقط برای دمو
-      const goalsHome = safeGet(fx, "goals.home", 0) ?? 0;
-      const goalsAway = safeGet(fx, "goals.away", 0) ?? 0;
-      const cardsHome = safeGet(fx, "statistics.homeCards", 0) ?? 0;
-      const cardsAway = safeGet(fx, "statistics.awayCards", 0) ?? 0;
-
-      let raw = (goalsHome - goalsAway) * 18 - (cardsHome - cardsAway) * 4;
-      raw = Math.max(-25, Math.min(25, raw));
-
-      return raw; // منفی = به نفع تیم مهمان، مثبت = میزبان
-    }
-
-    function classifyRisk(fx) {
-      const status = safeGet(fx, "fixture.status.short", "");
-      const elapsed = safeGet(fx, "fixture.status.elapsed", 0) ?? 0;
-
-      if (status === "HT") return "medium";
-      if (elapsed > 80) return "high";
-      if (elapsed < 20) return "low";
-      return "medium";
-    }
-
-    // ---------- RENDER LIST ----------
-
-    function renderFixtureList() {
-      fixtureListEl.innerHTML = "";
-
-      if (!LIVE_FIXTURES.length) {
-        listEmptyEl.style.display = "block";
-        liveMetaEl.textContent = "0 live fixtures";
-        return;
-      }
-
-      listEmptyEl.style.display = "none";
-      liveMetaEl.textContent = LIVE_FIXTURES.length + " live fixture(s)";
-
-      LIVE_FIXTURES.forEach((fx) => {
-        const id = safeGet(fx, "fixture.id");
-        const league = safeGet(fx, "league.name", "League");
-        const country = safeGet(fx, "league.country", "");
-        const round = safeGet(fx, "league.round", "");
-        const home = safeGet(fx, "teams.home.name", "Home");
-        const away = safeGet(fx, "teams.away.name", "Away");
-        const gHome = safeGet(fx, "goals.home", 0) ?? 0;
-        const gAway = safeGet(fx, "goals.away", 0) ?? 0;
-
-        const minute = formatMinutes(fx);
-        const edge = estimateEdge(fx);
-        const risk = classifyRisk(fx);
-
-        const row = document.createElement("div");
-        row.className = "fixture-row" + (id === CURRENT_FIXTURE_ID ? " active" : "");
-        row.dataset.id = id;
-
-        row.innerHTML = `
-          <div class="teams">
-            <span class="home">
-              <span>${home}</span>
-              <span class="mini-meta">${league}</span>
-            </span>
-            <span class="away">
-              <span>${away}</span>
-              <span class="mini-meta">${country || ""}</span>
-            </span>
-            <div class="chip-row">
-              <span class="chip edge">Q-Edge: ${edge > 0 ? "+" : ""}${edge.toFixed(1)}</span>
-              <span class="chip ${risk === "low" ? "risk-low" : risk === "high" ? "risk-high" : ""}">
-                Risk · ${risk.toUpperCase()}
-              </span>
-            </div>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
-            <div class="score-badge">
-              <span class="score-core">${gHome} – ${gAway}</span>
-              <span class="mini-meta">${minute}</span>
-            </div>
-            <div class="mini-meta">${round || "Live fixture"}</div>
-          </div>
-        `;
-
-        row.addEventListener("click", () => {
-          CURRENT_FIXTURE_ID = id;
-          renderFixtureList();
-          loadFixtureDetail(id);
-        });
-
-        fixtureListEl.appendChild(row);
-      });
-    }
-
-    // ---------- DETAIL VIEW ----------
-
-    function renderDetailSkeleton() {
-      detailAreaEl.innerHTML = `
-        <div class="detail-grid">
-          <div class="block">
-            <div class="block-title">
-              Match state · Quantum Edge
-              <span class="mini-meta">Live sample · demo only</span>
-            </div>
-            <div id="qssMatchCore" class="status-text">Loading match snapshot…</div>
-            <div id="qssMomentumBars" style="margin-top:8px;"></div>
-          </div>
-
-          <div class="block">
-            <div class="block-title">
-              Key statistics
-              <span class="mini-meta">From /stats endpoint</span>
-            </div>
-            <div id="qssStatsList" class="status-text">Loading statistics…</div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderMatchCore(fixture, statsSummary) {
-      const home = safeGet(fixture, "teams.home.name", "Home");
-      const away = safeGet(fixture, "teams.away.name", "Away");
-      const gHome = safeGet(fixture, "goals.home", 0) ?? 0;
-      const gAway = safeGet(fixture, "goals.away", 0) ?? 0;
-      const league = safeGet(fixture, "league.name", "League");
-      const round = safeGet(fixture, "league.round", "");
-      const minute = formatMinutes(fixture);
-      const statusLong = safeGet(fixture, "fixture.status.long", "");
-
-      const edge = estimateEdge({
-        ...fixture,
-        statistics: {
-          homeCards: statsSummary.homeCards,
-          awayCards: statsSummary.awayCards
-        }
-      });
-
-      const qssMatchCore = document.getElementById("qssMatchCore");
-      const qssMomentumBars = document.getElementById("qssMomentumBars");
-
-      const homeMomentum = statsSummary.homeShots + statsSummary.homeDanger;
-      const awayMomentum = statsSummary.awayShots + statsSummary.awayDanger;
-      const totalMomentum = Math.max(homeMomentum + awayMomentum, 1);
-      const homePct = (homeMomentum / totalMomentum) * 100;
-      const awayPct = (awayMomentum / totalMomentum) * 100;
-
-      qssMatchCore.innerHTML = `
-        <div class="metric-row">
-          <span>${league} · ${round}</span>
-          <span class="value">${minute} · ${statusLong}</span>
-        </div>
-
-        <div class="metric-row" style="margin-top:4px;">
-          <span>${home}</span>
-          <span class="value">${gHome} – ${gAway}</span>
-          <span>${away}</span>
-        </div>
-
-        <div class="status-text" style="margin-top:6px;">
-          Quantum Edge (stub) · <span>${edge > 0 ? "Home +" + edge.toFixed(1) : edge < 0 ? "Away " + edge.toFixed(1) : "Balanced"}</span>
-          <br/>
-          Momentum: home ${homeMomentum} vs away ${awayMomentum}
-        </div>
-      `;
-
-      qssMomentumBars.innerHTML = `
-        <div class="metric-row" style="margin-top:4px;">
-          <span>Pressure split</span>
-          <span class="value">${homePct.toFixed(0)}% · ${awayPct.toFixed(0)}%</span>
-        </div>
-        <div class="bar">
-          <div class="bar-fill-home" style="width:${homePct.toFixed(1)}%;"></div>
-          <div class="bar-fill-away" style="width:${awayPct.toFixed(1)}%;"></div>
-        </div>
-      `;
-    }
-
-    function renderStats(statsRaw) {
-      const statsEl = document.getElementById("qssStatsList");
-      if (!statsRaw || !statsRaw.length) {
-        statsEl.textContent = "No statistics returned for this fixture.";
-        return;
-      }
-
-      const homeData = statsRaw[0];
-      const awayData = statsRaw[1];
-
-      function getStat(label) {
-        const h = homeData.statistics.find((s) => s.type === label);
-        const a = awayData.statistics.find((s) => s.type === label);
-        return {
-          home: h && h.value != null ? h.value : 0,
-          away: a && a.value != null ? a.value : 0
-        };
-      }
-
-      const shots = getStat("Shots on Goal");
-      const totalShots = getStat("Total Shots");
-      const possession = getStat("Ball Possession");
-      const corners = getStat("Corner Kicks");
-      const cardsYellow = getStat("Yellow Cards");
-      const cardsRed = getStat("Red Cards");
-
-      const buildRow = (label, stat) => `
-        <div class="metric-row">
-          <span>${label}</span>
-          <span class="value">${stat.home} · ${stat.away}</span>
-        </div>
-      `;
-
-      statsEl.innerHTML = `
-        ${buildRow("Shots on target", shots)}
-        ${buildRow("Total shots", totalShots)}
-        ${buildRow("Corners", corners)}
-        ${buildRow("Yellow cards", cardsYellow)}
-        ${buildRow("Red cards", cardsRed)}
-        ${buildRow("Possession %", possession)}
-      `;
-
-      return {
-        homeShots: Number(totalShots.home) || 0,
-        awayShots: Number(totalShots.away) || 0,
-        homeDanger: Number(corners.home) || 0,
-        awayDanger: Number(corners.away) || 0,
-        homeCards: Number(cardsYellow.home) + Number(cardsRed.home) || 0,
-        awayCards: Number(cardsYellow.away) + Number(cardsRed.away) || 0
-      };
-    }
-
-    // ---------- FETCHERS ----------
-
-    async function fetchJSON(url) {
-      const res = await fetch(url);
-      if (!res.ok) {
-        throw new Error("HTTP " + res.status);
-      }
-      return res.json();
-    }
-
-    async function loadLiveFixtures() {
-      liveMetaEl.textContent = "Loading fixtures…";
-
-      try {
-        const data = await fetchJSON(`${PROXY_BASE}?mode=live`);
-        LIVE_FIXTURES = data.response || [];
-        renderFixtureList();
-
-        if (!LIVE_FIXTURES.length) {
-          detailHeaderMetaEl.textContent = "No live fixture selected";
-        } else if (!CURRENT_FIXTURE_ID) {
-          // اولین بازی را پیش‌فرض انتخاب کن
-          CURRENT_FIXTURE_ID = LIVE_FIXTURES[0].fixture.id;
-          renderFixtureList();
-          loadFixtureDetail(CURRENT_FIXTURE_ID);
-        }
-      } catch (err) {
-        console.error("Live fetch error", err);
-        liveMetaEl.textContent = "Error loading live fixtures";
-      }
-    }
-
-    async function loadFixtureDetail(fixtureId) {
-      if (!fixtureId) return;
-
-      detailHeaderMetaEl.textContent = `Loading fixture #${fixtureId}…`;
-      renderDetailSkeleton();
-
-      try {
-        const [fixtureData, statsData] = await Promise.all([
-          fetchJSON(`${PROXY_BASE}?mode=fixture&fixtureId=${fixtureId}`),
-          fetchJSON(`${PROXY_BASE}?mode=stats&fixtureId=${fixtureId}`)
-        ]);
-
-        const fixture = (fixtureData.response && fixtureData.response[0]) || null;
-        const statsRaw = statsData.response || [];
-
-        if (!fixture) {
-          detailHeaderMetaEl.textContent = "Fixture not found";
-          return;
-        }
-
-        const statsSummary = renderStats(statsRaw);
-        renderMatchCore(fixture, statsSummary || {
-          homeShots: 0,
-          awayShots: 0,
-          homeDanger: 0,
-          awayDanger: 0,
-          homeCards: 0,
-          awayCards: 0
-        });
-
-        const home = safeGet(fixture, "teams.home.name", "Home");
-        const away = safeGet(fixture, "teams.away.name", "Away");
-        const minute = formatMinutes(fixture);
-
-        detailHeaderMetaEl.textContent = `${home} vs ${away} · ${minute}`;
-      } catch (err) {
-        console.error("Detail fetch error", err);
-        detailHeaderMetaEl.textContent = "Error loading fixture detail";
-        detailAreaEl.innerHTML = `<div class="error">Error loading fixture / stats from proxy.</div>`;
-      }
-    }
-
-    // ---------- BOOTSTRAP ----------
-
-    loadLiveFixtures();
-
-    // هر ۳۰ ثانیه آپدیت لایو
-    setInterval(loadLiveFixtures, 30000);
-  </script>
 </body>
 </html>
