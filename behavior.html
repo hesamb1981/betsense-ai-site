@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense Behavior Engine – Live Behavior Board</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="theme-dark">
+  <header class="site-header">
+    <div class="logo-lockup">
+      <a href="index.html" class="logo">BetSense AI</a>
+      <span class="tag">BEHAVIOR ENGINE · LIVE STACK</span>
+    </div>
+    <nav class="main-nav">
+      <a href="live.html">Ultra Pro</a>
+      <a href="live-radar.html">Live Radar</a>
+      <a href="live-quantum.html">Quantum</a>
+      <a href="behavior.html" class="active">Behavior</a>
+      <a href="historical.html">Historical</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <!-- HERO / SUMMARY -->
+    <section class="stack-hero">
+      <div class="stack-pill">LIVE BEHAVIOR · QUANTUM LAYERED</div>
+      <h1>Behavior Engine – Live Behavior Board</h1>
+      <p class="stack-lead">
+        Real-time read on team discipline, dark-arts, referee strictness and
+        crowd volatility – layered on top of xG, emotion and market micro-moves.
+      </p>
+      <div class="stack-meta">
+        <span>Feed: <strong id="behavior-feed-label">Live engine</strong></span>
+        <span>Latency target: &lt; 1.5s</span>
+        <span>Refresh: 3s auto-update</span>
+      </div>
+    </section>
+
+    <!-- PRIMARY FIXTURE BEHAVIOR SNAPSHOT -->
+    <section class="stack-panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-kicker">PRIMARY FIXTURE · BEHAVIOR STACK</div>
+          <h2 id="fixture-title">Chelsea vs Arsenal · Premier League</h2>
+          <p id="fixture-subtitle">2nd half · 75' · Behavior + Emotion + xG</p>
+        </div>
+        <div class="panel-mode-switch">
+          <button class="chip chip-active" data-mode="live">Live</button>
+          <button class="chip" data-mode="last15">Last 15'</button>
+          <button class="chip" data-mode="full">Full match</button>
+        </div>
+      </header>
+
+      <div class="panel-grid panel-grid-3">
+        <!-- Team Discipline / Chaos -->
+        <article class="metric-card">
+          <h3>Game Control Index</h3>
+          <p class="metric-caption">Order vs chaos on the pitch.</p>
+          <div class="metric-main">
+            <span class="metric-value" id="game-control-value">–</span>
+            <span class="metric-unit">/ 100</span>
+          </div>
+          <ul class="metric-tags" id="game-control-tags">
+            <!-- e.g. <li class="tag-positive">Composed</li> -->
+          </ul>
+          <p class="metric-footnote" id="game-control-note">
+            Waiting for first packet from behavior engine...
+          </p>
+        </article>
+
+        <!-- Dark arts / Time wasting -->
+        <article class="metric-card">
+          <h3>Dark Arts &amp; Time-Waste</h3>
+          <p class="metric-caption">Subtle fouls, time-kills, off-ball hits.</p>
+          <div class="metric-main">
+            <span class="metric-value" id="dark-arts-value">–</span>
+            <span class="metric-unit">/ 100</span>
+          </div>
+          <ul class="metric-tags" id="dark-arts-tags"></ul>
+          <p class="metric-footnote" id="dark-arts-note">
+            Derived from event + emotion anomalies.
+          </p>
+        </article>
+
+        <!-- Tilt / Meltdown Risk -->
+        <article class="metric-card">
+          <h3>Tilt / Meltdown Risk</h3>
+          <p class="metric-caption">
+            Probability of discipline collapse in next 10 minutes.
+          </p>
+          <div class="metric-main">
+            <span class="metric-value" id="tilt-risk-value">–</span>
+            <span class="metric-unit">%</span>
+          </div>
+          <ul class="metric-tags" id="tilt-risk-tags"></ul>
+          <p class="metric-footnote" id="tilt-risk-note">
+            Linked to emotion swings + referee profile.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- REFEREE + CROWD BEHAVIOR -->
+    <section class="stack-panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-kicker">REFEREE · CROWD</div>
+          <h2>Referee &amp; Crowd Behavior Profile</h2>
+        </div>
+      </header>
+
+      <div class="panel-grid panel-grid-2">
+        <article class="metric-card">
+          <h3>Referee Strictness Index</h3>
+          <p class="metric-caption">
+            Live profile vs long-term baseline (cards, fouls, advantage).
+          </p>
+          <div class="metric-main">
+            <span class="metric-value" id="ref-strictness-value">–</span>
+            <span class="metric-unit">/ 100</span>
+          </div>
+          <p class="metric-footnote" id="ref-strictness-note">
+            Uses referee historical library + live event rate.
+          </p>
+        </article>
+
+        <article class="metric-card">
+          <h3>Crowd Volatility Index</h3>
+          <p class="metric-caption">
+            How close the crowd is to snapping – whistles, boos, ironic cheers.
+          </p>
+          <div class="metric-main">
+            <span class="metric-value" id="crowd-volatility-value">–</span>
+            <span class="metric-unit">/ 100</span>
+          </div>
+          <p class="metric-footnote" id="crowd-volatility-note">
+            Fused from Emotion Engine noise + shock events.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- BEHAVIOR EVENT TIMELINE -->
+    <section class="stack-panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-kicker">LIVE BEHAVIOR FEED</div>
+          <h2>Behavior Event Timeline</h2>
+          <p class="panel-subtitle">
+            Structured feed of behavioral events – ready to plug into your risk
+            and trading rules.
+          </p>
+        </div>
+      </header>
+
+      <ul class="signal-list" id="behavior-event-list">
+        <!-- Filled by JS: minute · label · impact -->
+      </ul>
+    </section>
+
+    <!-- MULTI-MATCH BEHAVIOR RADAR (اسکلت برای بعد) -->
+    <section class="stack-panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-kicker">WATCHLIST · BEHAVIOR RADAR</div>
+          <h2>Multi-Match Behavior Radar</h2>
+        </div>
+      </header>
+
+      <table class="radar-table" id="behavior-radar-table">
+        <thead>
+          <tr>
+            <th>Fixture</th>
+            <th>Time</th>
+            <th>Behavior Edge</th>
+            <th>Tilt Risk</th>
+            <th>Ref Profile</th>
+            <th>Signal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows injected via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ENGINE STATUS -->
+    <section class="stack-panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-kicker">ENGINE STATUS</div>
+          <h2>Behavior Engine Stream</h2>
+        </div>
+      </header>
+
+      <div class="engine-status">
+        <div>
+          <strong>Stream status:</strong>
+          <span id="behavior-stream-status">Connecting…</span>
+        </div>
+        <div>
+          <strong>Last update:</strong>
+          <span id="behavior-last-update">–</span>
+        </div>
+        <div>
+          <strong>API:</strong>
+          <span id="behavior-api-status">Not checked</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="behavior.js"></script>
+</body>
+</html>
