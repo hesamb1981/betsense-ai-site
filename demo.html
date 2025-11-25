@@ -1,462 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>BetSense Quantum Sports Intelligence – Demo Deck</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BetSense AI – Suite Demo</title>
 
-  <style>
-    :root {
-      --bg: #050712;
-      --bg-soft: #0b0f1e;
-      --card: #101528;
-      --card-soft: #151b30;
-      --accent: #ffd75a;
-      --accent-soft: #ffb347;
-      --text-main: #f5f7ff;
-      --text-soft: #a6b0d8;
-      --border-soft: #222840;
-      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
-      --radius-lg: 18px;
-      --radius-xl: 26px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+<style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: radial-gradient(circle at top, #181f3b 0, #050712 52%, #02030a 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding: 32px 16px 48px;
-      display: flex;
-      justify-content: center;
+        margin: 0;
+        padding: 0;
+        background: #020b19;
+        font-family: "Inter", sans-serif;
+        color: #d7e2f2;
     }
-
-    .page {
-      width: 100%;
-      max-width: 1200px;
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
     }
-
-    /* Header / Hero */
-    .hero {
-      background: linear-gradient(135deg, #151b2f, #0b0f1e);
-      border-radius: var(--radius-xl);
-      padding: 28px 22px;
-      border: 1px solid rgba(255, 215, 90, 0.24);
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 28px;
+    .title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #e0ecff;
     }
-
-    .hero-top-label {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent-soft);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      opacity: 0.9;
+    .subtitle {
+        opacity: 0.8;
+        font-size: 18px;
+        margin-bottom: 25px;
     }
-
-    .hero-top-label span.dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #38f27b;
-      box-shadow: 0 0 8px rgba(56, 242, 123, 0.7);
-    }
-
-    .hero-title {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-
-    .hero-highlight {
-      color: var(--accent);
-    }
-
-    .hero-subtitle {
-      font-size: 13px;
-      color: var(--text-soft);
-      max-width: 700px;
-      line-height: 1.6;
-    }
-
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .hero-tag {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 215, 90, 0.35);
-      background: radial-gradient(circle at top left, #373049, #13172a);
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    /* Product grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 8px;
-    }
-
-    @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      body {
-        padding: 18px 10px 28px;
-      }
-      .hero {
-        padding: 20px 18px;
-      }
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .card {
-      background: radial-gradient(circle at top, #22263f, #101528);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-soft);
-      padding: 18px 16px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
+        background: rgba(255,255,255,0.04);
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255,255,255,0.06);
     }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -40px;
-      opacity: 0.08;
-      background: radial-gradient(circle at top right, #ffd75a, transparent 52%);
-      pointer-events: none;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
     .card-title {
-      font-size: 15px;
-      font-weight: 600;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #fff;
+    }
+    .btn {
+        display: inline-block;
+        padding: 12px 22px;
+        background: #0bc2ff;
+        border-radius: 10px;
+        color: #000;
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 15px;
+    }
+    .live-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 18px;
+        background: #00ff95;
+        color: #000;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
     }
 
-    .card-badge {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 215, 90, 0.55);
-      color: var(--accent);
-      background: rgba(8, 10, 20, 0.85);
-      white-space: nowrap;
+    footer {
+        margin-top: 40px;
+        text-align: center;
+        opacity: 0.5;
+        font-size: 14px;
     }
+</style>
 
-    .card-subtitle {
-      font-size: 11px;
-      color: var(--text-soft);
-      position: relative;
-      z-index: 1;
-      line-height: 1.5;
-    }
-
-    .card-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .metric-pill {
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(9, 12, 25, 0.9);
-      border: 1px solid #242a42;
-      color: var(--text-soft);
-    }
-
-    .card-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .btn-main,
-    .btn-ghost {
-      font-size: 11px;
-      border-radius: 999px;
-      padding: 7px 12px;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-
-    .btn-main {
-      background: linear-gradient(135deg, #ffd75a, #ffb347);
-      color: #131316;
-      font-weight: 600;
-      box-shadow: 0 8px 24px rgba(255, 183, 77, 0.45);
-    }
-
-    .btn-main span.icon {
-      font-size: 13px;
-    }
-
-    .btn-ghost {
-      background: rgba(8, 9, 18, 0.8);
-      color: var(--text-soft);
-      border: 1px solid #343a55;
-    }
-
-    /* Footer note */
-    .footer-note {
-      margin-top: 22px;
-      font-size: 11px;
-      color: var(--text-soft);
-      text-align: right;
-      opacity: 0.7;
-    }
-  </style>
 </head>
 <body>
-  <main class="page">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-top-label">
-        <span class="dot"></span>
-        BETSENSE QUANTUM SPORTS INTELLIGENCE
-      </div>
-      <div class="hero-title">
-        Enterprise Demo Deck –
-        <span class="hero-highlight">Golden Engine & IP Suite</span>
-      </div>
-      <p class="hero-subtitle">
-        This demo page showcases six ultra-intelligent engines as independent
-        products – each with its own dedicated page – while remaining fully
-        connectable into a single unified BetSense platform for enterprise buyers.
-      </p>
-      <div class="hero-tags">
-        <div class="hero-tag">Fusion Intelligence</div>
-        <div class="hero-tag">Behavior Deviation</div>
-        <div class="hero-tag">Emotional Analytics</div>
-        <div class="hero-tag">Ultra Match Narrative</div>
-        <div class="hero-tag">OrderBook Pressure</div>
-        <div class="hero-tag">Golden Engine Core</div>
-      </div>
-    </section>
 
-    <!-- GRID: 6 PRODUCTS -->
-    <section class="grid">
-      <!-- 1) Fusion Engine -->
-      <article class="card">
-        <div class="card-header">
-          <div class="card-title">Fusion Engine</div>
-          <div class="card-badge">IP #1</div>
-        </div>
-        <div class="card-subtitle">
-          Multi-layer fusion of live + historical match data into a single
-          decision-grade signal for elite football analytics.
-        </div>
-        <div class="card-metrics">
-          <span class="metric-pill">Live + Historical Fusion</span>
-          <span class="metric-pill">Multi-League Coverage</span>
-          <span class="metric-pill">Enterprise-ready API</span>
-        </div>
-        <div class="card-actions">
-          <!-- TODO: replace href with your real Fusion page URL -->
-          <a href="fusion.html" class="btn-main">
-            <span class="icon">▶</span>
-            Open Fusion Demo
-          </a>
-          <!-- Optional: link to Fusion IP PDF if you have it -->
-          <a href="#" class="btn-ghost">
-            View IP Document
-          </a>
-        </div>
-      </article>
+<div class="container">
 
-      <!-- 2) Behavior Deviation Scanner -->
-      <article class="card">
-        <div class="card-header">
-          <div class="card-title">Behavior Deviation Scanner</div>
-          <div class="card-badge">IP #2</div>
-        </div>
-        <div class="card-subtitle">
-          Detects micro-anomalies in team behavior, tempo shifts and structural
-          deviations that standard xG/xThreat models completely miss.
-        </div>
-        <div class="card-metrics">
-          <span class="metric-pill">Micro-Pattern Detection</span>
-          <span class="metric-pill">Risk Flags</span>
-          <span class="metric-pill">Pre-breakdown Alerts</span>
-        </div>
-        <div class="card-actions">
-          <!-- TODO: replace href with your real BDS page URL -->
-          <a href="behavior-deviation.html" class="btn-main">
-            <span class="icon">▶</span>
-            Open BDS Demo
-          </a>
-          <a href="#" class="btn-ghost">
-            View IP Document
-          </a>
-        </div>
-      </article>
+    <div class="title">BetSense AI Suite – Demo Hub</div>
+    <div class="subtitle">Unified demo for all 5 engines + live data connector</div>
 
-      <!-- 3) Emotion Fusion Engine -->
-      <article class="card">
-        <div class="card-header">
-          <div class="card-title">Emotion Fusion Engine</div>
-          <div class="card-badge">IP #3</div>
-        </div>
-        <div class="card-subtitle">
-          Fuses crowd sentiment, momentum swings and psychological volatility
-          into a structured index aligned with match events.
-        </div>
-        <div class="card-metrics">
-          <span class="metric-pill">Crowd Sentiment Index</span>
-          <span class="metric-pill">Volatility Mapping</span>
-          <span class="metric-pill">Pre-tilt Detection</span>
-        </div>
-        <div class="card-actions">
-          <!-- TODO: replace href with your real Emotion Fusion page URL -->
-          <a href="emotion-fusion.html" class="btn-main">
-            <span class="icon">▶</span>
-            Open Emotion Demo
-          </a>
-          <a href="#" class="btn-ghost">
-            View IP Document
-          </a>
-        </div>
-      </article>
-
-      <!-- 4) Ultra Match Narrative Engine -->
-      <article class="card">
-        <div class="card-header">
-          <div class="card-title">Ultra Match Narrative Engine</div>
-          <div class="card-badge">IP #4</div>
-        </div>
-        <div class="card-subtitle">
-          Builds an executive-level narrative of any match – before, during and
-          after – with structured storylines ready for boards & investors.
-        </div>
-        <div class="card-metrics">
-          <span class="metric-pill">Pre / In-Play / Post</span>
-          <span class="metric-pill">Executive Narratives</span>
-          <span class="metric-pill">PDF-ready Output</span>
-        </div>
-        <div class="card-actions">
-          <!-- TODO: replace href with your real Match Narrative page URL -->
-          <a href="match-narrative.html" class="btn-main">
-            <span class="icon">▶</span>
-            Open Narrative Demo
-          </a>
-          <a href="#" class="btn-ghost">
-            View IP Document
-          </a>
-        </div>
-      </article>
-
-      <!-- 5) OrderBook Pressure Index -->
-      <article class="card">
-        <div class="card-header">
-          <div class="card-title">OrderBook Pressure Index</div>
-          <div class="card-badge">IP #5</div>
-        </div>
-        <div class="card-subtitle">
-          Maps hidden market pressure and synthetic “smart money” flows around
-          football events and pricing movements.
-        </div>
-        <div class="card-metrics">
-          <span class="metric-pill">Market Micro-Structure</span>
-          <span class="metric-pill">Smart Money Signals</span>
-          <span class="metric-pill">Pressure Clusters</span>
-        </div>
-        <div class="card-actions">
-          <!-- TODO: replace href with your real OrderBook page URL -->
-          <a href="orderbook-pressure.html" class="btn-main">
-            <span class="icon">▶</span>
-            Open OBP Demo
-          </a>
-          <a href="#" class="btn-ghost">
-            View IP Document
-          </a>
-        </div>
-      </article>
-
-      <!-- 6) GOLDEN ENGINE -->
-      <article class="card">
-        <div class="card-header">
-          <div class="card-title">Golden Engine</div>
-          <div class="card-badge">CORE</div>
-        </div>
-        <div class="card-subtitle">
-          The unified core that can absorb Fusion, Behavior, Emotion, Narrative
-          and Market Pressure into one strategic enterprise brain.
-        </div>
-        <div class="card-metrics">
-          <span class="metric-pill">Unified Intelligence Core</span>
-          <span class="metric-pill">Multi-Engine Fusion</span>
-          <span class="metric-pill">Enterprise Golden Key</span>
-        </div>
-        <div class="card-actions">
-          <!-- TODO: replace href with your real Golden Engine HTML page URL -->
-          <a href="golden-engine.html" class="btn-main">
-            <span class="icon">▶</span>
-            Open Golden Engine Demo
-          </a>
-          <a href="#" class="btn-ghost">
-            View IP Document
-          </a>
-        </div>
-      </article>
-    </section>
-
-    <div class="footer-note">
-      Demo layout – all modules can be wired to live BetSense Engine (API) for
-      real-time enterprise presentations.
+    <!-- 1. Fusion Engine -->
+    <div class="card">
+        <div class="card-title">Fusion Engine</div>
+        <p>Multi-layer in-play engine combining xG, emotion, momentum, and quantum micro-signals.</p>
+        <a class="btn" href="/FusionEngine.html">Open Demo</a>
+        <a class="live-btn" href="#">Connect Live Data</a>
     </div>
-  </main>
+
+    <!-- 2. Behavior Deviation Scanner -->
+    <div class="card">
+        <div class="card-title">Behavior Deviation Scanner</div>
+        <p>Reads sudden deviation patterns between expected model flow and real-time market reactions.</p>
+        <a class="btn" href="/BehaviorScanner.html">Open Demo</a>
+        <a class="live-btn" href="#">Connect Live Data</a>
+    </div>
+
+    <!-- 3. Emotion Fusion Engine -->
+    <div class="card">
+        <div class="card-title">Emotion Fusion Engine</div>
+        <p>Emotion radar blending noise tension + crowd heat + quantum micro-reactions.</p>
+        <a class="btn" href="/EmotionFusion.html">Open Demo</a>
+        <a class="live-btn" href="#">Connect Live Data</a>
+    </div>
+
+    <!-- 4. Match Narrative Engine -->
+    <div class="card">
+        <div class="card-title">Match Narrative Engine</div>
+        <p>AI-driven timeline and storyline generator for full-match narrative snapshots.</p>
+        <a class="btn" href="/MatchNarrative.html">Open Demo</a>
+        <a class="live-btn" href="#">Connect Live Data</a>
+    </div>
+
+    <!-- 5. OrderBook Pressure Index -->
+    <div class="card">
+        <div class="card-title">OrderBook Pressure Index</div>
+        <p>Reads global orderbook pressure, liquidity walls, imbalance and risk asymmetry.</p>
+        <a class="btn" href="/OrderBookPressure.html">Open Demo</a>
+        <a class="live-btn" href="#">Connect Live Data</a>
+    </div>
+
+</div>
+
+<footer>© 2025 BetSense. All rights reserved.</footer>
+
 </body>
 </html>
