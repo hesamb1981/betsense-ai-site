@@ -2,58 +2,726 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Ultra Match Narrative Engine</title>
+  <title>BetSense · Ultra Match Narrative Engine</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="BetSense Ultra Match Narrative Engine – executive-ready story for every slate, built from live risk, emotion and edge signals."
+  />
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; background:#050816; color:#f5f5f5; }
-    header { padding: 16px 24px; border-bottom: 1px solid #222; }
-    .logo { font-weight:700; letter-spacing:0.08em; }
-    main { max-width: 900px; margin: 0 auto; padding: 24px 16px 48px; }
-    h1 { font-size: 32px; margin-bottom: 8px; }
-    h2 { margin-top: 32px; font-size: 20px; }
-    .pill { display:inline-block; padding:4px 10px; border-radius:999px; background:#111827; font-size:12px; opacity:.9; }
-    .card { border-radius:16px; border:1px solid #1f2933; padding:20px; margin-top:16px; background:#020617; }
-    ul { padding-left:18px; }
-    .cta { margin-top:28px; display:flex; gap:12px; flex-wrap:wrap; }
-    .btn { padding:10px 18px; border-radius:999px; border:none; cursor:pointer; font-weight:600; }
-    .btn-primary { background:#f97316; color:#0b1120; }
-    .btn-outline { background:transparent; border:1px solid #4b5563; color:#e5e7eb; }
-    a { color:inherit; text-decoration:none; }
-    footer { text-align:center; padding:16px; font-size:12px; color:#9ca3af; border-top:1px solid #111827; margin-top:32px; }
+    :root {
+      --bg: #020617;
+      --card: #020617;
+      --card-soft: #020617;
+      --border-strong: rgba(148, 163, 184, 0.5);
+      --border-soft: rgba(148, 163, 184, 0.25);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --accent-red: #f97373;
+      --chip-bg: rgba(15, 23, 42, 0.9);
+      --radius-lg: 26px;
+      --radius-md: 18px;
+      --shadow-soft: 0 22px 60px rgba(15, 23, 42, 0.85);
+      --shadow-chip: 0 12px 30px rgba(15, 23, 42, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #0ea5e9 0, transparent 55%),
+        radial-gradient(circle at top right, #a855f7 0, transparent 55%),
+        radial-gradient(circle at bottom, #22c55e 0, transparent 60%),
+        var(--bg);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      padding: 32px 16px 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1120px;
+    }
+
+    header {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 210deg,
+        #38bdf8,
+        #22c55e,
+        #a855f7,
+        #38bdf8
+      );
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.6);
+    }
+
+    .brand-icon-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 0, #0ea5e9, #020617 55%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .brand-text span:first-child {
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    .brand-text span:last-child {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .tagline-chip {
+      border-radius: 999px;
+      padding: 7px 14px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #cbd5f5;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-chip);
+    }
+
+    .tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    /* Layout */
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 960px) {
+      body {
+        padding-top: 20px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* Card base */
+
+    .card {
+      background: radial-gradient(circle at top, #020617 0, #020617 48%, #020617 100%);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      padding: 22px 20px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      border: 1px solid transparent;
+      background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.65),
+          rgba(139, 92, 246, 0.25),
+          rgba(34, 197, 94, 0.55)
+        )
+        border-box;
+      mask:
+        linear-gradient(#000 0 0) padding-box,
+        linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      align-items: flex-start;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #cbd5f5;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-green {
+      border-color: rgba(34, 197, 94, 0.8);
+      color: #bbf7d0;
+    }
+
+    .pill-blue {
+      border-color: rgba(56, 189, 248, 0.8);
+      color: #bae6fd;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .h1 {
+      font-size: 25px;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+
+    .h2 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .lead {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.55;
+      max-width: 520px;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .metric {
+      border-radius: var(--radius-md);
+      padding: 10px 11px 9px;
+      background: radial-gradient(circle at top, #020617 0, #020617 55%);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.17em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .metric-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    /* Narrative */
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .section-heading {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .section-body {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    .bullet-list {
+      margin-top: 10px;
+      padding-left: 18px;
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.55;
+    }
+
+    .bullet-list li {
+      margin-bottom: 6px;
+    }
+
+    .chip-row {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    /* Right column */
+
+    .right-card {
+      background: radial-gradient(circle at top, #020617 0, #020617 52%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 18px 18px 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .slate-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .slate-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+    }
+
+    .slate-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .table {
+      margin-top: 4px;
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top, #020617 0, #020617 100%);
+      overflow: hidden;
+    }
+
+    .table-header,
+    .table-row {
+      display: grid;
+      grid-template-columns: 1.2fr 0.7fr 0.5fr 0.8fr;
+      gap: 4px;
+      padding: 8px 12px;
+      align-items: center;
+    }
+
+    .table-header {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .table-row:nth-child(odd) {
+      background: rgba(15, 23, 42, 0.92);
+    }
+
+    .table-row:nth-child(even) {
+      background: rgba(15, 23, 42, 0.86);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+      justify-content: center;
+    }
+
+    .badge-green {
+      border-color: rgba(34, 197, 94, 0.8);
+      color: #bbf7d0;
+    }
+
+    .badge-amber {
+      border-color: rgba(245, 158, 11, 0.9);
+      color: #fed7aa;
+    }
+
+    .badge-red {
+      border-color: rgba(248, 113, 113, 0.95);
+      color: #fecaca;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .note-block {
+      margin-top: 14px;
+      padding: 10px 12px 11px;
+      border-radius: 18px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .footer-link-row {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .footer-link-row a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .footer-link-row a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">BETSENSE QUANTUM ENGINE</div>
-  </header>
-  <main>
-    <span class="pill">Story-driven data</span>
-    <h1>Ultra Match Narrative Engine</h1>
-    <p>Ultra Match Narrative Engine converts raw event data into human-readable narratives, ready for apps, websites, in-shop screens and commentary support tools.</p>
+  <main class="page">
+    <header>
+      <div class="brand-lockup">
+        <div class="brand-icon">
+          <div class="brand-icon-inner">B</div>
+        </div>
+        <div class="brand-text">
+          <span>BETSENSE QUANTUM SPORTS SUITE</span>
+          <span>Ultra Match Narrative Engine</span>
+        </div>
+      </div>
 
-    <div class="card">
-      <h2>Highlights</h2>
-      <ul>
-        <li>Generates instant summaries before, during and after each match.</li>
-        <li>Explains turning points, momentum and key tactical changes.</li>
-        <li>Supports multiple languages and tones of voice.</li>
-      </ul>
-    </div>
+      <div class="tagline-chip">
+        <span class="tag-dot"></span>
+        EXECUTIVE STORY · DESK-READY · MULTI-MATCH
+      </div>
+    </header>
 
-    <div class="card">
-      <h2>Distribution</h2>
-      <ul>
-        <li>JSON feed for developers.</li>
-        <li>In-shop “story ticker” for big screens.</li>
-        <li>Embeddable widgets for websites and mobile apps.</li>
-      </ul>
-    </div>
+    <section class="grid">
+      <!-- LEFT: Main narrative -->
+      <article class="card">
+        <div class="card-header-row">
+          <div>
+            <div class="pill-row">
+              <span class="pill pill-blue">
+                <span class="pill-dot"></span>
+                Narrative layer
+              </span>
+              <span class="pill pill-green">
+                <span class="pill-dot"></span>
+                Built on live engines
+              </span>
+            </div>
+            <h1 class="h1">Desk narrative – what matters across all matches</h1>
+            <p class="lead">
+              A single, shareable story of the whole slate – not just one
+              fixture. Ultra Match Narrative Engine reads every live feed your
+              stack exposes and compresses it into a 30-second update any
+              executive can act on.
+            </p>
+          </div>
+        </div>
 
-    <div class="cta">
-      <button class="btn btn-primary">See narrative samples</button>
-      <a href="/"><button class="btn btn-outline">Back to main site</button></a>
-    </div>
+        <div class="metric-strip">
+          <div class="metric">
+            <div class="metric-label">Fixtures tracked</div>
+            <div class="metric-value">32</div>
+            <div class="metric-sub">Demo subset · EPL &amp; UCL</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Model edge vs market</div>
+            <div class="metric-value">+3.1%</div>
+            <div class="metric-sub">Weighted across high-priority slate</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Narrative refresh</div>
+            <div class="metric-value">3 sec</div>
+            <div class="metric-sub">Live snapshot with every engine tick</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">GLOBAL PICTURE</div>
+          <div class="section-heading">
+            One controlled favourite, one chaos match, one live upset risk.
+          </div>
+          <p class="section-body">
+            Across the three spotlight fixtures, BetSense flags a clean split:
+            one match where the favourite is finally in control, one where
+            tension stays high into the last ten minutes, and one where the
+            underdog has turned pressure into a probable away win.
+          </p>
+          <ul class="bullet-list">
+            <li>
+              <strong>Risk palette diversified:</strong> desks are not long the
+              same narrative everywhere.
+            </li>
+            <li>
+              <strong>Emotion Fusion Engine</strong> confirms market mood is
+              directionally aligned with model output – no major dislocations.
+            </li>
+            <li>
+              <strong>Ultra Edge layer</strong> still sees two structural edges
+              &gt; 2% vs blended market across the board.
+            </li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <div class="section-title">DESK CUE</div>
+          <div class="section-heading">
+            One screenshot, three clear actions.
+          </div>
+          <p class="section-body">
+            Stay sized in the controlled favourite, manage volatility in the
+            draw-heavy derby, and lean into the away-side edge while liquidity
+            is still healthy. Every cue is written in plain English but backed
+            by the same engines that power your trading stack.
+          </p>
+
+          <div class="chip-row">
+            <span class="chip">
+              <span class="badge-dot" style="color:#22c55e"></span>
+              Comfortable favourite · hold size
+            </span>
+            <span class="chip">
+              <span class="badge-dot" style="color:#f97316"></span>
+              Derby tension · watch for regime break
+            </span>
+            <span class="chip">
+              <span class="badge-dot" style="color:#38bdf8"></span>
+              Away-side edge &gt; 2% · execution window open
+            </span>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">BOARD-READY COPY</div>
+          <p class="section-body">
+            Ultra Match Narrative Engine is designed so you can screenshot once
+            and drop the story straight into a board deck, investor note or
+            risk email. No log-scraping, no Slack scrollback – just one
+            narrative that already knows which matches matter, which engines
+            are driving the view, and where the real downside sits.
+          </p>
+        </div>
+      </article>
+
+      <!-- RIGHT: Slate + matches list -->
+      <aside class="right-card">
+        <div class="slate-header">
+          <div>
+            <div class="slate-title">Tonight’s spotlight slate</div>
+            <div class="slate-sub">
+              3 fixtures · high-liquidity window · demo payload
+            </div>
+          </div>
+          <span class="badge badge-green">
+            <span class="badge-dot"></span>
+            Engines in sync
+          </span>
+        </div>
+
+        <div class="table">
+          <div class="table-header">
+            <span>Fixture</span>
+            <span>Edge vs mkt</span>
+            <span>Shock risk</span>
+            <span>Desk cue</span>
+          </div>
+
+          <div class="table-row">
+            <span>Chelsea vs Arsenal</span>
+            <span>+3.0%</span>
+            <span>
+              <span class="badge badge-green">
+                <span class="badge-dot"></span>
+                Low
+              </span>
+            </span>
+            <span>
+              <span class="badge">
+                Comfortable favourite
+              </span>
+            </span>
+          </div>
+
+          <div class="table-row">
+            <span>Dortmund vs Leipzig</span>
+            <span>+1.9%</span>
+            <span>
+              <span class="badge badge-amber">
+                <span class="badge-dot"></span>
+                Medium
+              </span>
+            </span>
+            <span>
+              <span class="badge">
+                Momentum swing · monitor
+              </span>
+            </span>
+          </div>
+
+          <div class="table-row">
+            <span>PSG vs Lyon</span>
+            <span>+2.1%</span>
+            <span>
+              <span class="badge badge-green">
+                <span class="badge-dot"></span>
+                Low
+              </span>
+            </span>
+            <span>
+              <span class="badge">
+                Star dominance · edge locked in
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:16px;">
+          <div class="chip-label">Engines feeding this view</div>
+          <div class="chip-row">
+            <span class="chip">
+              Emotion Fusion Engine
+            </span>
+            <span class="chip">
+              OrderBook Pressure Index
+            </span>
+            <span class="chip">
+              Golden Edge Core
+            </span>
+          </div>
+        </div>
+
+        <div class="note-block">
+          Demo numbers shown here are illustrative only. In production this
+          surface reads directly from the same BetSense engines that power your
+          live console, historical archive and fusion layer. Refresh interval,
+          fixtures in focus and language of the narrative are all configurable
+          per client.
+        </div>
+
+        <div class="footer-link-row">
+          <span>BetSense Quantum Sports Suite · Ultra Match Narrative Engine</span>
+          <a href="index.html">Back to marketing page</a>
+        </div>
+      </aside>
+    </section>
   </main>
-  <footer>© 2025 BetSense. All rights reserved.</footer>
 </body>
 </html>
