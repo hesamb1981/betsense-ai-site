@@ -2,59 +2,697 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BetSense Fusion Engine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetSense – Fusion Engine IP</title>
+
+  <!-- Fonts & basic reset – فرض بر این است که دقیقا شبیه index.html باشد -->
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; background:#050816; color:#f5f5f5; }
-    header { padding: 16px 24px; border-bottom: 1px solid #222; }
-    .logo { font-weight:700; letter-spacing:0.08em; }
-    main { max-width: 900px; margin: 0 auto; padding: 24px 16px 48px; }
-    h1 { font-size: 32px; margin-bottom: 8px; }
-    h2 { margin-top: 32px; font-size: 20px; }
-    .pill { display:inline-block; padding:4px 10px; border-radius:999px; background:#111827; font-size:12px; opacity:.9; }
-    .card { border-radius:16px; border:1px solid #1f2933; padding:20px; margin-top:16px; background:#020617; }
-    ul { padding-left:18px; }
-    .cta { margin-top:28px; display:flex; gap:12px; flex-wrap:wrap; }
-    .btn { padding:10px 18px; border-radius:999px; border:none; cursor:pointer; font-weight:600; }
-    .btn-primary { background:#38bdf8; color:#0b1120; }
-    .btn-outline { background:transparent; border:1px solid #4b5563; color:#e5e7eb; }
-    a { color:inherit; text-decoration:none; }
-    footer { text-align:center; padding:16px; font-size:12px; color:#9ca3af; border-top:1px solid #111827; margin-top:32px; }
+    :root {
+      --bg-dark: #050510;
+      --bg-panel: #0b0b1c;
+      --accent: #ffb300;
+      --accent-soft: rgba(255, 179, 0, 0.1);
+      --text-main: #f5f5ff;
+      --text-muted: #a7a7c6;
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --pill-bg: rgba(255, 255, 255, 0.05);
+      --danger: #ff4b6a;
+      --success: #1ed760;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.65);
+      --radius-xl: 22px;
+      --radius-xxl: 28px;
+      --transition-fast: 0.18s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #141432 0, #050510 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ---------- TOP NAV (مثل صفحه اصلی) ---------- */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffe082, #ff8f00);
+      box-shadow: 0 0 18px rgba(255, 191, 0, 0.7);
+    }
+
+    .nav-title {
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .nav-title span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .nav-link:hover {
+      background: var(--pill-bg);
+      border-color: var(--border-soft);
+      transform: translateY(-1px);
+    }
+
+    .nav-link--primary {
+      background: linear-gradient(135deg, #ffb300, #ff6f00);
+      color: #050510;
+      font-weight: 600;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+    }
+
+    .nav-link--primary:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
+    }
+
+    /* ---------- LAYOUT ---------- */
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
+      gap: 22px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* ---------- LEFT: MAIN PANEL ---------- */
+    .panel-main {
+      background: radial-gradient(circle at top left, #1b1538 0, #090814 55%);
+      border-radius: var(--radius-xxl);
+      border: 1px solid var(--border-soft);
+      padding: 22px 22px 20px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-main::before {
+      content: "";
+      position: absolute;
+      top: -35%;
+      left: -20%;
+      width: 55%;
+      height: 55%;
+      background: radial-gradient(circle at center, rgba(255, 193, 7, 0.22), transparent 70%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(5, 5, 20, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(12px);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ffb300, #ff6f00);
+      box-shadow: 0 0 10px rgba(255, 179, 0, 0.7);
+    }
+
+    .pill-legal {
+      border-color: rgba(30, 215, 96, 0.4);
+      color: var(--success);
+    }
+
+    .hero-title {
+      position: relative;
+      z-index: 1;
+      font-size: 30px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #ffeb3b, #ff9800);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      position: relative;
+      z-index: 1;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 620px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .hero-metadata {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .meta-card {
+      padding: 10px 11px;
+      border-radius: 14px;
+      background: rgba(5, 5, 20, 0.75);
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 11px;
+    }
+
+    .meta-label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .meta-value {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .meta-value--accent {
+      color: var(--accent);
+    }
+
+    .meta-value--danger {
+      color: var(--danger);
+    }
+
+    /* ---------- IP BLOCK ---------- */
+    .ip-block {
+      margin-top: 6px;
+      position: relative;
+      z-index: 1;
+      padding: 14px 14px 13px;
+      border-radius: 18px;
+      background: rgba(6, 6, 20, 0.92);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.6fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .ip-block {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .ip-heading {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .ip-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .ip-tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .ip-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .ip-badge {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    .ip-badge--hot {
+      border-color: rgba(255, 179, 0, 0.6);
+      color: var(--accent);
+    }
+
+    .ip-column-right {
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      padding-left: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .ip-column-right {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-left: 0;
+        padding-top: 10px;
+      }
+    }
+
+    .ip-list {
+      list-style: none;
+      display: grid;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .ip-list li::before {
+      content: "•";
+      margin-right: 6px;
+      color: var(--accent);
+    }
+
+    /* ---------- CTA ROW ---------- */
+    .cta-row {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 13px;
+      border: 1px solid transparent;
+      background: var(--pill-bg);
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast),
+        box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .btn span.icon {
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ffb300, #ff6f00);
+      color: #050510;
+      font-weight: 600;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-ghost {
+      border-color: var(--border-soft);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-1px);
+    }
+
+    .cta-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ---------- RIGHT COLUMN: SNAPSHOT PANEL ---------- */
+    .panel-side {
+      background: radial-gradient(circle at top, #141532 0, #050510 55%);
+      border-radius: var(--radius-xxl);
+      border: 1px solid var(--border-soft);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-side::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(118, 255, 3, 0.18), transparent 60%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .side-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .side-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .side-chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(5, 5, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    .side-metrics {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .side-metric {
+      padding: 8px 9px;
+      border-radius: 14px;
+      background: rgba(5, 5, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: grid;
+      gap: 2px;
+    }
+
+    .metric-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .metric-value {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .metric-value--good {
+      color: var(--success);
+    }
+
+    .metric-value--risk {
+      color: var(--danger);
+    }
+
+    .side-body {
+      position: relative;
+      z-index: 1;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding-top: 4px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .side-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .side-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(5, 5, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--success);
+      box-shadow: 0 0 10px rgba(30, 215, 96, 0.9);
+    }
+
+    footer {
+      padding: 0 16px 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">BETSENSE QUANTUM ENGINE</div>
-  </header>
-  <main>
-    <span class="pill">Multi-signal predictions</span>
-    <h1>Fusion Engine</h1>
-    <p>Fusion Engine combines market odds, in-play data, historical stats and behavioural signals into a single probability layer for high-accuracy football predictions.</p>
+  <div class="page">
+    <!-- NAVBAR -->
+    <header class="nav">
+      <div class="nav-left">
+        <div class="logo-dot"></div>
+        <div class="nav-title">
+          BetSense <span>Quantum Engine</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a class="nav-link" href="index.html">Live Console</a>
+        <a class="nav-link" href="live-ultra.html">Ultra Engine</a>
+        <a class="nav-link" href="historical.html">Historical</a>
+        <a class="nav-link nav-link--primary" href="FusionEngine.html">IP: Fusion Engine</a>
+      </nav>
+    </header>
 
-    <div class="card">
-      <h2>Core features</h2>
-      <ul>
-        <li>Real-time fusion of multiple data sources.</li>
-        <li>Calibrated probability outputs for 1X2, totals and handicaps.</li>
-        <li>Configurable weighting per data stream.</li>
-        <li>JSON API designed for micro-service architectures.</li>
-      </ul>
-    </div>
+    <!-- MAIN LAYOUT -->
+    <main class="layout">
+      <!-- LEFT COLUMN -->
+      <section class="panel-main">
+        <div class="tag-row">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            Core IP Asset
+          </div>
+          <div class="pill pill-legal">
+            Registered for 1-year protection
+          </div>
+          <div class="pill">
+            Ref: Fusion Engine – Multi-Signal Fusion for Betting Odds
+          </div>
+        </div>
 
-    <div class="card">
-      <h2>Use cases</h2>
-      <ul>
-        <li>Corporate trading teams looking for a “second opinion” model.</li>
-        <li>Risk departments needing consistent fair-price baselines.</li>
-        <li>Product teams building predictive dashboards for VIP clients.</li>
-      </ul>
-    </div>
+        <h1 class="hero-title">
+          Fusion Engine<span> – multi-layer signal fusion for live odds, risk and narrative in one core.</span>
+        </h1>
 
-    <div class="cta">
-      <button class="btn btn-primary">Talk to BetSense about Fusion Engine</button>
-      <a href="/"><button class="btn btn-outline">Back to main site</button></a>
-    </div>
-  </main>
-  <footer>© 2025 BetSense. All rights reserved.</footer>
+        <p class="hero-subtitle">
+          Fusion Engine is the primary intellectual property behind BetSense.
+          It ingests raw odds, market moves, behavioral deviations, emotion scores,
+          and order-book pressure, then fuses them into a single, explainable
+          confidence surface for every match and every market.
+        </p>
+
+        <div class="hero-metadata">
+          <div class="meta-card">
+            <div class="meta-label">IP PRIORITY</div>
+            <div class="meta-value meta-value--accent">#1 of 5 strategic assets</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">COVERAGE</div>
+            <div class="meta-value">Pre-match & In-play • Multi-league</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">OUTPUTS</div>
+            <div class="meta-value meta-value--danger">
+              Edge indices, risk flags, AI narrative
+            </div>
+          </div>
+        </div>
+
+        <!-- IP BLOCK -->
+        <section class="ip-block">
+          <div>
+            <div class="ip-heading">Intellectual Property – Fusion Engine</div>
+            <div class="ip-title">Unified fusion layer for sports-betting intelligence.</div>
+            <p class="ip-tagline">
+              Designed as a neutral “brain” that other engines plug into:
+              Behavior Deviation, Emotion Fusion, Match Narrative and
+              OrderBook Pressure all feed this core.
+            </p>
+            <div class="ip-badges">
+              <span class="ip-badge ip-badge--hot">Multi-source data fusion</span>
+              <span class="ip-badge">Explainable edge scores</span>
+              <span class="ip-badge">Vendor-agnostic inputs</span>
+              <span class="ip-badge">API-first microservice</span>
+            </div>
+          </div>
+
+          <div class="ip-column-right">
+            <ul class="ip-list">
+              <li>Combines odds, liquidity, sentiment and pattern-breaks into one score per market.</li>
+              <li>Produces clean, normalised outputs for dashboards, PDFs and automated alerts.</li>
+              <li>Abstracts away noisy data vendors so trading teams see only stable, fused signals.</li>
+              <li>Built to be registered as a named “Fusion Engine” IP for 1+ year protection.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-row">
+          <a href="mailto:hello@betsense.ai?subject=Fusion%20Engine%20IP%20Enquiry" class="btn btn-primary">
+            <span class="icon">⚡</span>
+            Request Fusion Engine white-paper
+          </a>
+          <a href="GoldenEngine.html" class="btn btn-ghost">
+            <span class="icon">📄</span>
+            View Golden Engine demo PDF layout
+          </a>
+          <div class="cta-note">
+            This page describes the <strong>Fusion Engine</strong> as a stand-alone IP asset,
+            and can be attached to contracts, NDAs and registration forms.
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN -->
+      <aside class="panel-side">
+        <div class="side-header">
+          <div class="side-title">Fusion snapshot</div>
+          <div class="side-chip">Internal view · Not public pricing</div>
+        </div>
+
+        <div class="side-metrics">
+          <div class="side-metric">
+            <div class="metric-label">Primary role</div>
+            <div class="metric-value">Signal fusion & scoring</div>
+          </div>
+          <div class="side-metric">
+            <div class="metric-label">Consumption</div>
+            <div class="metric-value metric-value--good">API + internal UI</div>
+          </div>
+          <div class="side-metric">
+            <div class="metric-label">Risk impact</div>
+            <div class="metric-value metric-value--risk">High – drives limits & exposure</div>
+          </div>
+          <div class="side-metric">
+            <div class="metric-label">Downstream engines</div>
+            <div class="metric-value">Behaviour, Emotion, Narrative, OrderBook</div>
+          </div>
+        </div>
+
+        <div class="side-body">
+          Fusion Engine sits between raw data feeds and any trading or BI layer.
+          It handles mapping, normalisation and fusion of all signals into one coherent
+          language that the rest of BetSense understands. Because of that, it is the
+          <strong>first IP to be registered and protected</strong> in the family.
+        </div>
+
+        <div class="side-footer">
+          <div class="side-status">
+            <span class="status-dot"></span>
+            Ready for registration bundle
+          </div>
+          <div>Ref: BS-IP-FUSION-001</div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <footer>
+    © BetSense Quantum Engine – Fusion Engine IP description.  
+    For legal or registration use, this page can be exported as PDF.
+  </footer>
 </body>
 </html>
