@@ -1,524 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>BetSense Quantum Engine – OrderBook Pressure Index</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="OrderBook Pressure Index turns shop-level ticket flow and live price moves into a clean pressure score and risk indicators for trading desks."
-  />
-
-  <style>
-    :root {
-      --bg-main: #020617;
-      --bg-card: #020617;
-      --bg-elevated: #020617;
-      --border-subtle: #111827;
-      --border-strong: #1f2937;
-      --text-main: #e5e7eb;
-      --text-soft: #9ca3af;
-      --text-strong: #f9fafb;
-      --accent-blue: #38bdf8;
-      --accent-green: #22c55e;
-      --accent-amber: #fbbf24;
-      --accent-pink: #ec4899;
-      --pill-bg: #0b1220;
-      --pill-border: #1f2937;
-      --radius-xl: 22px;
-      --radius-pill: 999px;
-      --shadow-soft: 0 18px 60px rgba(15, 23, 42, 0.9);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
+<meta charset="UTF-8">
+<title>OrderBook Pressure Index – Enterprise</title>
+<style>
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "SF Pro Display", Segoe UI, sans-serif;
-      background: radial-gradient(circle at top left, #0b1120 0, #020617 55%, #000 100%);
-      color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
+        margin: 0;
+        font-family: 'Montserrat', Arial, sans-serif;
+        background: #0A0D14;
+        color: #ffffff;
     }
 
-    .page-shell {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 24px 16px 40px;
+    .header {
+        background: linear-gradient(90deg, #111827, #0f172a);
+        padding: 35px 40px;
+        text-align: center;
+        border-bottom: 1px solid #1f2937;
+    }
+    .header h1 {
+        color: #38bdf8;
+        font-size: 36px;
+        margin: 0;
+        font-weight: 700;
+    }
+    .header p {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #9ca3af;
     }
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
+    .container {
+        padding: 40px;
+        max-width: 1050px;
+        margin: auto;
     }
 
-    .brand-lockup {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .section {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 30px;
     }
 
-    .brand-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 12px;
-      background: conic-gradient(
-        from 210deg,
-        #22d3ee,
-        #4f46e5,
-        #ec4899,
-        #22c55e,
-        #22d3ee
-      );
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.8);
+    h2 {
+        margin: 0 0 15px 0;
+        color: #38bdf8;
+        font-size: 24px;
+        font-weight: 600;
     }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
+    p, li {
+        color: #d1d5db;
+        line-height: 1.65;
+        font-size: 15px;
     }
 
-    .brand-text span:first-child {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #64748b;
+    ul {
+        padding-left: 20px;
     }
 
-    .brand-text span:last-child {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-strong);
+    /* --- LIVE CONNECT BUTTON --- */
+    .live-btn {
+        display: inline-block;
+        padding: 14px 26px;
+        background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+        color: #000;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 700;
+        transition: 0.3s ease;
+        margin-top: 15px;
     }
 
-    .back-link {
-      font-size: 12px;
-      color: #9ca3af;
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: var(--radius-pill);
-      border: 1px solid #1f2937;
-      background: rgba(15, 23, 42, 0.7);
+    .live-btn:hover {
+        background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+        transform: translateY(-2px);
     }
 
-    .back-link:hover {
-      border-color: #38bdf8;
-      color: #e5f3ff;
-    }
-
-    .hero-card {
-      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
-      border-radius: 26px;
-      border: 1px solid var(--border-strong);
-      box-shadow: var(--shadow-soft);
-      padding: 24px 18px 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: -120px;
-      opacity: 0.25;
-      background:
-        radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 55%),
-        radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.16), transparent 55%);
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 11px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--pill-border);
-      background: var(--pill-bg);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #9ca3af;
-    }
-
-    .pill-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
-    }
-
-    .pill-label-strong {
-      color: var(--text-main);
-      font-weight: 500;
-    }
-
-    .hero-title {
-      font-size: 24px;
-      line-height: 1.25;
-      color: var(--text-strong);
-      letter-spacing: 0.02em;
-      margin: 0 0 8px;
-    }
-
-    .hero-kicker {
-      font-size: 13px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #818cf8;
-      margin-bottom: 6px;
-    }
-
-    .hero-subtitle {
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--text-soft);
-      max-width: 620px;
-      margin-bottom: 18px;
-    }
-
-    .hero-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .hero-meta-chip {
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: var(--radius-pill);
-      border: 1px solid #1f2937;
-      background: rgba(15, 23, 42, 0.8);
-      color: #c4d3ff;
-    }
-
-    .layout-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.1fr);
-      gap: 16px;
-      margin-top: 14px;
-    }
-
-    .panel {
-      border-radius: 20px;
-      border: 1px solid var(--border-strong);
-      background:
-        radial-gradient(circle at top left, rgba(30, 64, 175, 0.18), transparent 60%),
-        #020617;
-      padding: 16px 14px 14px;
-    }
-
-    .panel:nth-child(2) {
-      background:
-        radial-gradient(circle at top right, rgba(236, 72, 153, 0.20), transparent 60%),
-        #020617;
-    }
-
-    .panel-title {
-      font-size: 13px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #9ca3af;
-      margin: 0 0 10px;
-    }
-
-    .panel-title span {
-      color: #e5e7eb;
-    }
-
-    .panel ul {
-      margin: 0;
-      padding-left: 18px;
-      font-size: 13px;
-      line-height: 1.6;
-      color: var(--text-main);
-    }
-
-    .panel li + li {
-      margin-top: 4px;
-    }
-
-    .micro-label {
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #9ca3af;
-      margin-top: 12px;
-      margin-bottom: 4px;
-    }
-
-    .stat-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .stat-pill {
-      flex: 1 1 120px;
-      border-radius: 16px;
-      border: 1px solid #1f2937;
-      padding: 8px 10px 7px;
-      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 65%);
-    }
-
-    .stat-pill:nth-child(2) {
-      background: radial-gradient(circle at top left, rgba(234, 179, 8, 0.16), transparent 65%);
-    }
-
-    .stat-pill:nth-child(3) {
-      background: radial-gradient(circle at top left, rgba(236, 72, 153, 0.18), transparent 65%);
-    }
-
-    .stat-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #9ca3af;
-      margin-bottom: 4px;
-    }
-
-    .stat-value {
-      font-size: 13px;
-      font-weight: 600;
-      color: #f9fafb;
-    }
-
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn {
-      font-size: 13px;
-      border-radius: var(--radius-pill);
-      padding: 10px 18px;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 500;
-      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, background 0.12s ease-out;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #ec4899, #f97316);
-      color: #f9fafb;
-      box-shadow: 0 14px 40px rgba(248, 113, 113, 0.45);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 18px 55px rgba(248, 113, 113, 0.6);
-    }
-
-    .btn-secondary {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid #1f2937;
-      color: #e5e7eb;
-    }
-
-    .btn-secondary:hover {
-      border-color: #38bdf8;
-      color: #e0f2fe;
-    }
-
-    .btn-pill-label {
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 11px;
-    }
-
-    .foot-note {
-      margin-top: 18px;
-      font-size: 11px;
-      color: #6b7280;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 720px) {
-      .page-shell {
-        padding: 18px 14px 28px;
-      }
-
-      .hero-card {
-        border-radius: 22px;
-        padding: 20px 14px 18px;
-      }
-
-      .layout-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 12px;
-      }
-
-      .hero-title {
-        font-size: 20px;
-      }
-
-      .hero-subtitle {
-        font-size: 13px;
-      }
-
-      .cta-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      header {
-        margin-bottom: 18px;
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
-  <div class="page-shell">
-    <header>
-      <div class="brand-lockup">
-        <div class="brand-icon"></div>
-        <div class="brand-text">
-          <span>BetSense Quantum Engine</span>
-          <span>OrderBook · Emotion · Edge</span>
-        </div>
-      </div>
 
-      <a class="back-link" href="/">
-        Back to main site
-      </a>
-    </header>
+<div class="header">
+    <h1>OrderBook Pressure Index</h1>
+    <p>Enterprise-Grade Market Pressure & Momentum Detection Engine</p>
+</div>
 
-    <main class="hero-card">
-      <div class="hero-inner">
-        <div class="pill-row">
-          <div class="pill">
-            <span class="pill-dot"></span>
-            <span class="pill-label-strong">Orderbook &amp; market pressure</span>
-          </div>
-          <div class="pill">
-            <span>Enterprise desks</span>
-          </div>
-          <div class="pill">
-            <span>Football trading · risk</span>
-          </div>
-        </div>
+<div class="container">
 
-        <div class="hero-kicker">Quantum Engine · Signal Surface</div>
-        <h1 class="hero-title">OrderBook Pressure Index</h1>
-        <p class="hero-subtitle">
-          OrderBook Pressure Index measures buying and selling pressure across your entire
-          football book and turns it into a compact stack of risk indicators – so risk and
-          trading teams can see where exposure is quietly building before it shows up in P&amp;L.
+    <div class="section">
+        <h2>Overview</h2>
+        <p>
+            The OrderBook Pressure Index (OPX) is an enterprise analytic engine designed to detect hidden
+            liquidity flows, market pressure zones, betting-order momentum, and structural imbalances across
+            high-frequency betting markets and real-time sportsbook movements.
         </p>
+    </div>
 
-        <div class="hero-meta-row">
-          <div class="hero-meta-chip">Coverage: full football book</div>
-          <div class="hero-meta-chip">Granularity: market · fixture · region</div>
-          <div class="hero-meta-chip">Mode: live &amp; pre-match</div>
-        </div>
+    <div class="section">
+        <h2>Core Mechanisms</h2>
+        <ul>
+            <li>Real-time orderbook movement scanning</li>
+            <li>Pressure imbalance detection (micro + macro)</li>
+            <li>High-frequency edge mapping for sportsbooks</li>
+            <li>Directional liquidity prediction</li>
+            <li>Strategic market vulnerability detection</li>
+        </ul>
+    </div>
 
-        <div class="layout-grid">
-          <!-- Inputs -->
-          <section class="panel" aria-labelledby="inputs-title">
-            <h2 id="inputs-title" class="panel-title">
-              Inputs <span>feeding the index</span>
-            </h2>
-            <ul>
-              <li>Ticket flow and stake size per selection – shop, region and digital.</li>
-              <li>Live price movements from primary feeds and internal odds moves.</li>
-              <li>Shop-level and region-level exposure vs liability thresholds.</li>
-            </ul>
+    <div class="section">
+        <h2>Enterprise Value</h2>
+        <p>
+            OPX provides elite-level insights used by institutional bookmakers, data-intelligence companies,
+            and multi-market betting exchanges to detect early-stage moves before public market shifts occur.
+        </p>
+    </div>
 
-            <div class="micro-label">Typical data cadence</div>
-            <div class="stat-row">
-              <div class="stat-pill">
-                <div class="stat-label">Live polling</div>
-                <div class="stat-value">Every 3-10 seconds</div>
-              </div>
-              <div class="stat-pill">
-                <div class="stat-label">Backfill depth</div>
-                <div class="stat-value">Last 24–72 hours</div>
-              </div>
-              <div class="stat-pill">
-                <div class="stat-label">Regions</div>
-                <div class="stat-value">Multi-shop · multi-country</div>
-              </div>
-            </div>
-          </section>
+    <!-- LIVE CONNECT BUTTON -->
+    <div class="section">
+        <h2>Connect Your Live Data</h2>
+        <p>Enterprise clients may plug in their own real-time sportsbook or market-feed via secure API.</p>
 
-          <!-- Outputs -->
-          <section class="panel" aria-labelledby="outputs-title">
-            <h2 id="outputs-title" class="panel-title">
-              Outputs <span>surfaced to desks</span>
-            </h2>
-            <ul>
-              <li>
-                Pressure score per <strong>market</strong>, <strong>fixture</strong> and
-                <strong>region</strong> – normalised so teams can rank risk in seconds.
-              </li>
-              <li>
-                Suggested odds moves and limit changes when pressure crosses configured bands.
-              </li>
-              <li>
-                Heat-maps for traders, risk leads and management – showing where flows and
-                exposure are no longer in balance.
-              </li>
-            </ul>
+        <a href="#" class="live-btn">CONNECT LIVE DATA</a>
+    </div>
 
-            <div class="micro-label">Where desks actually use it</div>
-            <ul>
-              <li>Early-warning layer for in-play and pre-match risk sweeps.</li>
-              <li>Board and management packs: shop pressure vs digital exposure.</li>
-              <li>Audit trail of “what we knew when” on busy trading nights.</li>
-            </ul>
-          </section>
-        </div>
+</div>
 
-        <div class="cta-row">
-          <a
-            class="btn btn-primary"
-            href="mailto:hello@betsense.casino?subject=OrderBook%20Pressure%20Index%20demo&body=Please%20send%20me%20details%20for%20the%20OrderBook%20Pressure%20Index%20demo."
-          >
-            <span class="btn-pill-label">Request demo</span>
-          </a>
-
-          <a class="btn btn-secondary" href="/">
-            <span class="btn-pill-label">Back to main site</span>
-          </a>
-        </div>
-
-        <div class="foot-note">
-          Demo configurations typically run on a static slice of your football book.
-          Production deployments plug directly into your internal risk, odds and shop systems
-          via API or message bus.
-        </div>
-      </div>
-    </main>
-  </div>
 </body>
 </html>
