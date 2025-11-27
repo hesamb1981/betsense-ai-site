@@ -2,239 +2,522 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Emotion Engine · BetSense AI</title>
+  <title>BetSense · Emotion Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    body {
+    :root {
+      --bg-main: radial-gradient(circle at 0% 0%, #102345 0, #020617 55%, #010412 100%);
+      --card-bg: radial-gradient(circle at 0% 0%, #0f213f 0, #020b1a 60%, #020617 100%);
+      --card-border: rgba(118, 188, 255, 0.26);
+      --accent-emerald: #22c55e;
+      --accent-emerald-soft: rgba(34, 197, 94, 0.14);
+      --accent-pink-orange-from: #ff7a3a;
+      --accent-pink-orange-to: #ff4fa0;
+      --accent-soft-outline: rgba(148, 163, 184, 0.45);
+      --text-main: #e5edff;
+      --text-soft: #9ca3c9;
+      --pill-bg: rgba(15, 23, 42, 0.95);
+      --pill-border: rgba(148, 163, 184, 0.4);
+      --input-bg: rgba(15, 23, 42, 0.9);
+      --input-border: rgba(148, 163, 184, 0.45);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.65);
+      --radius-xl: 24px;
+      --radius-2xl: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: #06131f;
-      font-family: Arial, sans-serif;
-      color: white;
     }
 
-    .container {
-      width: 90%;
-      margin: auto;
-      padding-top: 30px;
-      padding-bottom: 40px;
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Roboto", sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
     }
 
-    .section-title {
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 10px;
+    .page-shell {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 20px 18px 32px;
+    }
+
+    header {
+      margin-bottom: 18px;
+    }
+
+    .stack-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .stack-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0 0, #22c55e 45%, #052e16 100%);
+      box-shadow: 0 0 0 5px var(--accent-emerald-soft);
+    }
+
+    h1 {
+      margin-top: 14px;
+      font-size: 30px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
 
     .subtitle {
-      font-size: 15px;
-      opacity: 0.8;
-      line-height: 1.6;
-    }
-
-    .badge-row {
       margin-top: 10px;
-      margin-bottom: 25px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-soft);
+      max-width: 34rem;
     }
 
-    .badge {
-      display: inline-block;
-      background: #0e2336;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      margin-right: 8px;
-      border: 1px solid #1e3a5a;
-    }
-
-    .section-card {
-      background: #0a1b2b;
-      border-radius: 14px;
-      padding: 20px;
-      margin-top: 25px;
-      border: 1px solid #15304a;
-    }
-
-    .field-label {
-      font-size: 13px;
-      opacity: 0.8;
-      margin-bottom: 4px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #244663;
-      background: #0f2438;
-      color: white;
-      font-size: 15px;
-      margin-bottom: 15px;
-    }
-
-    .row-3 {
+    .mode-pill-row {
+      margin-top: 16px;
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
     }
 
-    .row-3 > div {
-      flex: 1;
+    .mode-pill {
+      border-radius: 999px;
+      padding: 7px 16px;
+      border: 1px solid var(--accent-soft-outline);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .panel {
+      margin-top: 22px;
+      padding: 18px 16px 20px;
+      border-radius: var(--radius-2xl);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(22px);
+    }
+
+    .panel-title {
+      font-size: 15px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .panel-stack-label {
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #7dd3fc;
+      margin-bottom: 10px;
+    }
+
+    .panel-description {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
+      margin: 14px 0 16px;
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .field-row-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .field-row-inline .input {
+      flex: 1 1 0;
+    }
+
+    .input {
+      width: 100%;
+      border-radius: 999px;
+      padding: 10px 14px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .input::placeholder {
+      color: rgba(148, 163, 184, 0.6);
+    }
+
+    .input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .metrics-help {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .button-group {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        background 0.12s ease, border-color 0.12s ease;
+      white-space: nowrap;
     }
 
     .btn-primary {
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(90deg, #37ff6b, #1ecb4f);
-      border: none;
-      border-radius: 40px;
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 10px;
-      color: #05101a;
+      background: linear-gradient(
+        135deg,
+        var(--accent-pink-orange-from),
+        var(--accent-pink-orange-to)
+      );
+      color: #0f172a;
+      box-shadow: 0 18px 40px rgba(248, 113, 113, 0.6);
     }
 
-    .btn-secondary {
-      width: 100%;
-      padding: 14px;
+    .btn-primary:active {
+      transform: translateY(1px) scale(0.985);
+      box-shadow: 0 10px 24px rgba(248, 113, 113, 0.6);
+    }
+
+    .btn-outline {
       background: transparent;
-      border: 2px solid #1ecb4f;
-      border-radius: 40px;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-      margin-top: 12px;
+      border-color: rgba(148, 163, 184, 0.7);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-outline-ghost {
+      background: transparent;
+      border-color: rgba(30, 64, 175, 0.7);
+      color: #93c5fd;
+    }
+
+    .btn-outline-ghost:hover {
+      background: rgba(15, 23, 42, 0.96);
+    }
+
+    .status-bar {
+      margin-top: 16px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-soft);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      background: rgba(22, 163, 74, 0.1);
+      margin-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #bbf7d0;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0 0, #22c55e 45%, #052e16 100%);
+    }
+
+    .status-output {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      margin-top: 4px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    @media (min-width: 640px) {
+      .page-shell {
+        padding-top: 28px;
+        padding-bottom: 40px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
     }
   </style>
-
-  <script>
-    const EMOTION_API_BASE = "https://betsense-backend.onrender.com";
-
-    async function runEmotion() {
-      const fixture = document.getElementById("fixture").value;
-      const home = document.getElementById("home").value;
-      const away = document.getElementById("away").value;
-      const crowdHeat = document.getElementById("crowdHeat").value;
-      const pressureSwing = document.getElementById("pressureSwing").value;
-      const shockRisk = document.getElementById("shockRisk").value;
-
-      const params = new URLSearchParams();
-
-      if (fixture.trim()) params.append("fixtureId", fixture.trim());
-      if (home.trim()) params.append("homeTeam", home.trim());
-      if (away.trim()) params.append("awayTeam", away.trim());
-      if (crowdHeat.trim()) params.append("crowdHeat", crowdHeat.trim());
-      if (pressureSwing.trim())
-        params.append("pressureSwing", pressureSwing.trim());
-      if (shockRisk.trim()) params.append("shockRisk", shockRisk.trim());
-
-      const url =
-        EMOTION_API_BASE +
-        "/api/emotion/analyze" +
-        (params.toString() ? "?" + params.toString() : "");
-
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        alert(JSON.stringify(data, null, 2));
-      } catch (error) {
-        alert("Error connecting to Emotion Engine backend");
-      }
-    }
-
-    async function checkEmotionHealth() {
-      try {
-        const res = await fetch(EMOTION_API_BASE + "/api/emotion/health");
-        const data = await res.json();
-        alert(JSON.stringify(data, null, 2));
-      } catch (e) {
-        alert("Emotion health check failed");
-      }
-    }
-
-    function openLiveData() {
-      window.location.href = "/LiveDataConnect.html";
-    }
-
-    function goBackGenius() {
-      window.location.href = "/GeniusEngine.html";
-    }
-  </script>
 </head>
 <body>
-
-  <div class="container">
-
-    <!-- Top badge -->
-    <div class="badge-row">
-      <span class="badge">BETSENSE AI STACK · EMOTION LAYER</span>
-    </div>
-
-    <!-- Page title -->
-    <div class="section-title">EMOTION ENGINE</div>
-
-    <!-- Subtitle (با اشاره به LiveData Connect) -->
-    <div class="subtitle">
-      Real-time emotion and pressure index per match – combining crowd heat,
-      pressure swings and shock risk into a single actionable band. Enterprise
-      clients can plug their own licensed feeds into this layer via
-      <strong>LiveData Connect</strong>.
-    </div>
-
-    <!-- Second badge -->
-    <div class="badge-row">
-      <span class="badge">FEED · LIVE SESSION RISK</span>
-    </div>
-
-    <!-- Main card -->
-    <div class="section-card">
-
-      <div class="section-title" style="font-size:22px;">EMOTION SNAPSHOT</div>
-      <div class="subtitle" style="margin-bottom:16px;">
-        Send a single-fixture snapshot to Emotion Engine and preview the demo
-        index band. All metrics use 0–100 scales in this sandbox.
+  <main class="page-shell">
+    <header>
+      <div class="stack-pill">
+        <span class="stack-pill-dot"></span>
+        <span>BetSense AI Stack · Emotion Layer</span>
       </div>
+      <h1>Emotion Engine</h1>
+      <p class="subtitle">
+        Real-time emotion and pressure index per match – combining crowd
+        heat, pressure swings and shock risk into a single actionable band.
+        This console is a lightweight surface to test the backend API and
+        LiveData Connect pipeline.
+      </p>
 
-      <div class="field-label">Fixture ID (optional)</div>
-      <input id="fixture" placeholder="Example: 123456" />
+      <div class="mode-pill-row">
+        <div class="mode-pill">Feed · Live Session Risk</div>
+      </div>
+    </header>
 
-      <div class="field-label">Home team (optional)</div>
-      <input id="home" placeholder="Example: Arsenal" />
+    <section class="panel" aria-label="Emotion snapshot form">
+      <div class="panel-title">Emotion Snapshot</div>
+      <div class="panel-stack-label">Stack · Emotion</div>
+      <p class="panel-description">
+        Send a single snapshot into the Emotion Engine and preview mock
+        indices. Production flows will usually be wired from your own feeds
+        via <strong>LiveData Connect</strong>.
+      </p>
 
-      <div class="field-label">Away team (optional)</div>
-      <input id="away" placeholder="Example: Spurs" />
+      <hr class="divider" />
 
-      <div class="field-label">Emotion metrics · 0–100</div>
-      <div class="row-3">
-        <div>
-          <input id="crowdHeat" placeholder="Crowd heat · e.g. 70" />
+      <form id="emotionForm">
+        <div class="field-group">
+          <label class="field-label" for="fixtureId">Fixture ID (optional)</label>
+          <input
+            id="fixtureId"
+            name="fixtureId"
+            class="input"
+            type="text"
+            placeholder="Example: 123456"
+          />
         </div>
-        <div>
-          <input id="pressureSwing" placeholder="Pressure swings · e.g. 55" />
+
+        <div class="field-group">
+          <label class="field-label">Teams (optional)</label>
+          <input
+            class="input"
+            type="text"
+            id="homeTeam"
+            name="homeTeam"
+            placeholder="Home – Example: Arsenal"
+            style="margin-bottom: 8px"
+          />
+          <input
+            class="input"
+            type="text"
+            id="awayTeam"
+            name="awayTeam"
+            placeholder="Away – Example: Spurs"
+          />
         </div>
-        <div>
-          <input id="shockRisk" placeholder="Shock risk · e.g. 80" />
+
+        <div class="field-group">
+          <div class="field-label">Emotion metrics · 0–100</div>
+          <p class="metrics-help">
+            Try small test values. In production these are streamed automatically from your feeds.
+          </p>
+          <div class="field-row-inline">
+            <input
+              class="input"
+              type="number"
+              id="crowdHeat"
+              name="crowdHeat"
+              placeholder="Crowd heat"
+              min="0"
+              max="100"
+            />
+            <input
+              class="input"
+              type="number"
+              id="pressureSwings"
+              name="pressureSwings"
+              placeholder="Pressure swings"
+              min="0"
+              max="100"
+            />
+            <input
+              class="input"
+              type="number"
+              id="shockRisk"
+              name="shockRisk"
+              placeholder="Shock risk"
+              min="0"
+              max="100"
+            />
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn btn-primary">
+            Run Emotion Analyze
+          </button>
+
+          <button
+            type="button"
+            id="healthButton"
+            class="btn btn-outline"
+          >
+            Check Emotion health
+          </button>
+
+          <a href="/LiveDataConnect.html" class="btn btn-outline-ghost">
+            LiveData Connect
+          </a>
+
+          <a href="/GeniusEngine.html" class="btn btn-outline">
+            Back to Genius Engine
+          </a>
+        </div>
+      </form>
+
+      <div class="status-bar" aria-live="polite">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span id="statusLabel">Status · Idle</span>
+        </div>
+        <div id="statusOutput" class="status-output">
+          Ready to send a test snapshot into the Emotion Engine.
         </div>
       </div>
+    </section>
+  </main>
 
-      <button class="btn-primary" onclick="runEmotion()">
-        Run Emotion Analyze
-      </button>
+  <script>
+    const form = document.getElementById("emotionForm");
+    const statusLabel = document.getElementById("statusLabel");
+    const statusOutput = document.getElementById("statusOutput");
+    const healthButton = document.getElementById("healthButton");
 
-      <button class="btn-secondary" onclick="checkEmotionHealth()">
-        Check Emotion health
-      </button>
+    const BASE_URL = "https://betsense-backend.onrender.com";
 
-      <button class="btn-secondary" onclick="openLiveData()">
-        LiveData Connect
-      </button>
+    function setStatus(label, message) {
+      statusLabel.textContent = label;
+      statusOutput.textContent = message;
+    }
 
-      <button class="btn-secondary" onclick="goBackGenius()">
-        Back to Genius Engine
-      </button>
-    </div>
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-  </div>
+      const payload = {
+        fixtureId: document.getElementById("fixtureId").value || undefined,
+        homeTeam: document.getElementById("homeTeam").value || undefined,
+        awayTeam: document.getElementById("awayTeam").value || undefined,
+        metrics: {
+          crowdHeat: document.getElementById("crowdHeat").value || undefined,
+          pressureSwings:
+            document.getElementById("pressureSwings").value || undefined,
+          shockRisk: document.getElementById("shockRisk").value || undefined,
+        },
+      };
 
+      setStatus("Status · Sending", "Sending snapshot to Emotion Engine...");
+
+      try {
+        const response = await fetch(`${BASE_URL}/api/emotion/analyze`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Request failed");
+        }
+
+        setStatus(
+          "Status · Mock response",
+          JSON.stringify(data, null, 2)
+        );
+      } catch (error) {
+        console.error(error);
+        setStatus(
+          "Status · Error",
+          `Unable to reach Emotion Engine.\n\n${error.message}`
+        );
+      }
+    });
+
+    healthButton.addEventListener("click", async () => {
+      setStatus("Status · Pinging", "Checking Emotion Engine health...");
+
+      try {
+        const response = await fetch(`${BASE_URL}/api/emotion/health`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Health check failed");
+        }
+
+        setStatus(
+          "Status · Healthy",
+          JSON.stringify(data, null, 2)
+        );
+      } catch (error) {
+        console.error(error);
+        setStatus(
+          "Status · Error",
+          `Health check failed.\n\n${error.message}`
+        );
+      }
+    });
+  </script>
 </body>
 </html>
