@@ -1,21 +1,190 @@
-<!-- LiveData Connect Button -->
-<div style="
-    margin-top: 10px;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-">
-    <button onclick="alert('LiveData Connect: This feature allows enterprise clients to plug in their own licensed live data feeds into BetSense Engines.')"
-        style="
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            border: none;
-            padding: 12px 22px;
-            border-radius: 25px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        ">
-        LiveData Connect
-    </button>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genius Engine · BetSense AI</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #06131f;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+      padding-top: 30px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    .badge-row {
+      margin-top: 10px;
+      margin-bottom: 25px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #0e2336;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-right: 8px;
+      border: 1px solid #1e3a5a;
+    }
+
+    .section-card {
+      background: #0a1b2b;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 25px;
+      border: 1px solid #15304a;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #244663;
+      background: #0f2438;
+      color: white;
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(90deg, #37ff6b, #1ecb4f);
+      border: none;
+      border-radius: 40px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      border: 2px solid #1ecb4f;
+      border-radius: 40px;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+  </style>
+
+  <script>
+    async function runGenius() {
+      const fixture = document.getElementById("fixture").value;
+      const home = document.getElementById("home").value;
+      const away = document.getElementById("away").value;
+      const oddsHome = document.getElementById("oddsHome").value;
+      const oddsDraw = document.getElementById("oddsDraw").value;
+      const oddsAway = document.getElementById("oddsAway").value;
+
+      const payload = {
+        fixture_id: fixture,
+        home_team: home,
+        away_team: away,
+        odds_home: oddsHome,
+        odds_draw: oddsDraw,
+        odds_away: oddsAway
+      };
+
+      try {
+        const response = await fetch("https://betsense-backend.onrender.com/api/genius/run", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        alert(JSON.stringify(data, null, 2));
+
+      } catch (error) {
+        alert("Error connecting to Genius Engine backend");
+      }
+    }
+
+    async function checkHealth() {
+      try {
+        const response = await fetch("https://betsense-backend.onrender.com/api/genius/health");
+        const data = await response.text();
+        alert(data);
+      } catch (e) {
+        alert("Health check failed");
+      }
+    }
+
+    function openLiveData() {
+      window.location.href = "/LiveDataConnect.html";
+    }
+  </script>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="badge-row">
+      <span class="badge">BETSENSE AI STACK · GENIUS LAYER</span>
+    </div>
+
+    <div class="section-title">GENIUS ENGINE</div>
+
+    <div class="subtitle">
+      Smart signal layer on top of your existing
+      Emotion · xG · Orderbook · Quantum stack.<br>
+      This page is a lightweight console to test the backend API.
+    </div>
+
+    <div class="badge-row">
+      <span class="badge">FEED · PRE-TRADE & IN-PLAY</span>
+    </div>
+
+    <div class="section-card">
+
+      <div class="section-title" style="font-size:22px;">SIGNAL REQUEST</div>
+      <div class="subtitle">STACK · GENIUS</div>
+
+      <input id="fixture" placeholder="Example: 123456">
+      <input id="home" placeholder="Example: Arsenal">
+      <input id="away" placeholder="Example: Spurs">
+
+      <div style="display:flex; gap:10px;">
+        <input id="oddsHome" placeholder="1.85">
+        <input id="oddsDraw" placeholder="3.60">
+        <input id="oddsAway" placeholder="4.20">
+      </div>
+
+      <button class="btn-primary" onclick="runGenius()">Run Genius Analyze</button>
+      <button class="btn-secondary" onclick="checkHealth()">Check Genius health</button>
+
+      <!-- NEW BUTTON (LIVE DATA CONNECT) -->
+      <button class="btn-secondary" onclick="openLiveData()">LiveData Connect</button>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
