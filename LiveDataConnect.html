@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BetSense – LiveData Connect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="LiveData Connect lets licensed data providers plug their own live feeds into BetSense Engines."
+    />
+
+    <style>
+      :root {
+        --bg-deep: #020617;
+        --bg-card: rgba(15, 23, 42, 0.96);
+        --border-soft: rgba(148, 163, 184, 0.45);
+        --accent-blue: #38bdf8;
+        --accent-green: #22c55e;
+        --accent-purple: #a855f7;
+        --text-main: #e5e7eb;
+        --text-muted: #9ca3af;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: radial-gradient(
+            circle at top,
+            rgba(56, 189, 248, 0.28),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at bottom,
+            rgba(168, 85, 247, 0.18),
+            transparent 55%
+          ),
+          var(--bg-deep);
+        color: var(--text-main);
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .page {
+        width: 100%;
+        max-width: 520px;
+        padding: 20px 16px 32px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+      }
+
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #22c55e, #15803d);
+      }
+
+      .title {
+        font-size: 1.4rem;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin: 0 0 6px;
+      }
+
+      .sub {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 18px;
+      }
+
+      .sub span {
+        color: var(--accent-blue);
+      }
+
+      .card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 18px 16px;
+        border: 1px solid var(--border-soft);
+        box-shadow: 0 22px 60px rgba(15, 23, 42, 0.9);
+      }
+
+      .card-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .card-tag {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-muted);
+        margin-bottom: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+      }
+
+      .pill span {
+        color: var(--accent-purple);
+      }
+
+      .section-text {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 14px;
+      }
+
+      .list {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .list li {
+        margin-bottom: 4px;
+      }
+
+      .divider {
+        height: 1px;
+        width: 100%;
+        background: linear-gradient(
+          to right,
+          transparent,
+          rgba(148, 163, 184, 0.6),
+          transparent
+        );
+        margin: 14px 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .info-block {
+        border-radius: 14px;
+        padding: 10px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      .info-title {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #e5e7eb;
+        margin-bottom: 4px;
+      }
+
+      .label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 3px;
+      }
+
+      .input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(55, 65, 81, 0.9);
+        background: rgba(2, 6, 23, 0.95);
+        color: var(--text-main);
+        font-size: 0.8rem;
+        outline: none;
+      }
+
+      .input::placeholder {
+        color: #6b7280;
+      }
+
+      .textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 8px 10px;
+        border-radius: 14px;
+        border: 1px solid rgba(55, 65, 81, 0.9);
+        background: rgba(2, 6, 23, 0.95);
+        color: var(--text-main);
+        font-size: 0.8rem;
+        outline: none;
+        resize: vertical;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 9px 12px;
+        border-radius: 999px;
+        border: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 8px;
+        background: linear-gradient(135deg, #22c55e, #a3e635);
+        color: #022c22;
+      }
+
+      .footnote {
+        margin-top: 10px;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      .link {
+        color: var(--accent-blue);
+        text-decoration: none;
+      }
+
+      .link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        BetSense Enterprise · LiveData Connect
+      </div>
+
+      <h1 class="title">LiveData Connect</h1>
+      <p class="sub">
+        Bring your own licensed <span>live sports feeds</span> and plug them
+        directly into BetSense Engines. You keep your coverage and rights – we
+        provide the multi-layered decision brain.
+      </p>
+
+      <div class="card">
+        <div class="card-title">How it works</div>
+        <div class="card-tag">Integration · Overview</div>
+
+        <div class="pill">
+          <span>BYO Feeds</span> · Emotion · xG · Orderbook · Quantum · Genius
+        </div>
+
+        <p class="section-text">
+          LiveData Connect is designed for operators and data providers who
+          already own or license live sports data across multiple competitions.
+          Instead of replacing your feeds, BetSense sits on top of them – adding
+          emotion, tempo, xG and orderbook intelligence in real time.
+        </p>
+
+        <ul class="list">
+          <li>You keep your existing data rights, coverage and providers.</li>
+          <li>BetSense Engines consume your feeds via API or WebSocket.</li>
+          <li>
+            Genius / Emotion / xG / Quantum layers return tradable signals and
+            risk flags.
+          </li>
+          <li>All outputs can be pushed into your internal tools or UIs.</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <div class="grid">
+          <div class="info-block">
+            <div class="info-title">Provider profile</div>
+            <div>
+              Typical LiveData Connect clients are licensed feed providers or
+              trading desks covering:
+            </div>
+            <ul class="list">
+              <li>Top-flight football and major tournaments.</li>
+              <li>High-liquidity in-play markets.</li>
+              <li>At least ~7,500 fixtures per month.</li>
+            </ul>
+          </div>
+
+          <div class="info-block">
+            <div class="info-title">What BetSense adds</div>
+            <ul class="list">
+              <li>Emotion + crowd pressure index per match.</li>
+              <li>Shot-by-shot xG layering on top of your event feed.</li>
+              <li>Orderbook & micro-quantum momentum for pre-trade edges.</li>
+              <li>Genius summary signals for quick session decisions.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section-text">
+          Share a short summary of your data stack and target use cases. The
+          BetSense team will respond with a proposed wiring diagram and latency
+          profile for your environment.
+        </div>
+
+        <div class="grid">
+          <div>
+            <div class="label">Company name</div>
+            <input
+              class="input"
+              type="text"
+              placeholder="Example: AlphaFeeds Group"
+            />
+          </div>
+          <div>
+            <div class="label">Data coverage</div>
+            <input
+              class="input"
+              type="text"
+              placeholder="Example: 12K football matches / month, global"
+            />
+          </div>
+          <div>
+            <div class="label">Contact email</div>
+            <input
+              class="input"
+              type="email"
+              placeholder="Example: trading@alphafeeds.com"
+            />
+          </div>
+          <div>
+            <div class="label">Current providers / stack</div>
+            <textarea
+              class="textarea"
+              placeholder="Example: Official league feeds, in-house odds model, OMS, risk tools..."
+            ></textarea>
+          </div>
+        </div>
+
+        <button
+          class="btn"
+          onclick="alert('LiveData Connect form is in demo mode. In production this will route to your enterprise contact flow.')"
+        >
+          Submit LiveData Connect profile
+        </button>
+
+        <div class="footnote">
+          This page is a demo surface only. For real integrations, wire
+          LiveData Connect into your enterprise flow or contact BetSense via
+          your usual channel. You can return to the Genius console via
+          <a class="link" href="/GeniusEngine.html">Genius Engine</a>.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
