@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emotion Engine · BetSense AI</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #06131f;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+      padding-top: 30px;
+      padding-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    .badge-row {
+      margin-top: 10px;
+      margin-bottom: 25px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #0e2336;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-right: 8px;
+      border: 1px solid #1e3a5a;
+    }
+
+    .section-card {
+      background: #0a1b2b;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 25px;
+      border: 1px solid #15304a;
+    }
+
+    .field-label {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #244663;
+      background: #0f2438;
+      color: white;
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .row-3 {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row-3 > div {
+      flex: 1;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(90deg, #f97316, #fb7185);
+      border: none;
+      border-radius: 40px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #0b1020;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      border: 2px solid #e5e7eb;
+      border-radius: 40px;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .status.ok {
+      color: #4ade80;
+    }
+
+    .status.error {
+      color: #fb7185;
+    }
+
+    .result-card {
+      margin-top: 18px;
+      background: #071019;
+      border-radius: 12px;
+      border: 1px solid #1e3a5a;
+      padding: 14px;
+      font-size: 14px;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .tag-row {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 11px;
+      background: #0e2336;
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid #1f3b57;
+      opacity: 0.9;
+    }
+
+    pre {
+      margin-top: 10px;
+      background: #020817;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 11px;
+      color: #e5e7eb;
+      overflow-x: auto;
+      max-height: 260px;
+    }
+  </style>
+
+  <script>
+    const EMOTION_API_BASE = "https://betsense-backend.onrender.com";
+
+    async function checkEmotionHealth() {
+      const statusEl = document.getElementById("status");
+      const rawJson = document.getElementById("rawJson");
+      const resultCard = document.getElementById("resultCard");
+      const bandEl = document.getElementById("bandText");
+      const labelEl = document.getElementById("labelText");
+      const indexEl = document.getElementById("indexText");
+      const notesBox = document.getElementById("notesBox");
+
+      statusEl.className = "status";
+      statusEl.textContent = "Checking Emotion Engine health…";
+      resultCard.style.display = "none";
+      notesBox.innerHTML = "";
+      rawJson.textContent = "";
+
+      try {
+        const res = await fetch(EMOTION_API_BASE + "/api/emotion/health");
+        const data = await res.json();
+
+        if (data.ok) {
+          statusEl.className = "status ok";
+          statusEl.textContent = "Emotion Engine is ONLINE";
+        } else {
+          statusEl.className = "status error";
+          statusEl.textContent = "Emotion Engine returned an error.";
+        }
+
+        bandEl.textContent = "-";
+        labelEl.textContent = "-";
+        indexEl.textContent = "-";
+        resultCard.style.display = "block";
+        rawJson.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        statusEl.className = "status error";
+        statusEl.textContent = "Error connecting to Emotion backend.";
+      }
+    }
+
+    async function runEmotionAnalyze() {
+      const fixture = document.getElementById("fixture").value;
+      const home = document.getElementById("home").value;
+      const away = document.getElementById("away").value;
+      const crowdHeat = document.getElementById("crowdHeat").value;
+      const pressureSwing = document.getElementById("pressureSwing").value;
+      const shockRisk = document.getElementById("shockRisk").value;
+
+      const statusEl = document.getElementById("status");
+      const rawJson = document.getElementById("rawJson");
+      const resultCard = document.getElementById("resultCard");
+      const bandEl = document.getElementById("bandText");
+      const labelEl = document.getElementById("labelText");
+      const indexEl = document.getElementById("indexText");
+      const notesBox = document.getElementById("notesBox");
+
+      statusEl.className = "status";
+      statusEl.textContent = "Running Emotion analyze…";
+      resultCard.style.display = "none";
+      notesBox.innerHTML = "";
+      rawJson.textContent = "";
+
+      try {
+        const params = new URLSearchParams();
+
+        if (fixture.trim()) params.append("fixtureId", fixture.trim());
+        if (home.trim()) params.append("homeTeam", home.trim());
+        if (away.trim()) params.append("awayTeam", away.trim());
+        if (crowdHeat.trim()) params.append("crowdHeat", crowdHeat.trim());
+        if (pressureSwing.trim())
+          params.append("pressureSwing", pressureSwing.trim());
+        if (shockRisk.trim()) params.append("shockRisk", shockRisk.trim());
+
+        const url =
+          EMOTION_API_BASE +
+          "/api/emotion/analyze" +
+          (params.toString() ? "?" + params.toString() : "");
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.ok) {
+          statusEl.className = "status ok";
+          statusEl.textContent = "Emotion analyze completed.";
+        } else {
+          statusEl.className = "status error";
+          statusEl.textContent = "Emotion analyze returned an error.";
+        }
+
+        if (data.data && data.data.result) {
+          const result = data.data.result;
+          bandEl.textContent = result.band || "-";
+          labelEl.textContent = result.label || "-";
+          if (typeof result.index === "number") {
+            indexEl.textContent =
+              Math.round(result.index * 100) + " / 100 · index";
+          } else {
+            indexEl.textContent = "-";
+          }
+
+          if (Array.isArray(result.notes)) {
+            result.notes.forEach((n) => {
+              const span = document.createElement("span");
+              span.className = "tag";
+              span.textContent = n;
+              notesBox.appendChild(span);
+            });
+          }
+        } else {
+          bandEl.textContent = "-";
+          labelEl.textContent = "-";
+          indexEl.textContent = "-";
+        }
+
+        resultCard.style.display = "block";
+        rawJson.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        statusEl.className = "status error";
+        statusEl.textContent = "Error running Emotion analyze.";
+      }
+    }
+
+    function openLiveData() {
+      window.location.href = "/LiveDataConnect.html";
+    }
+
+    function goBackGenius() {
+      window.location.href = "/GeniusEngine.html";
+    }
+  </script>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="badge-row">
+      <span class="badge">BETSENSE AI STACK · EMOTION LAYER</span>
+    </div>
+
+    <div class="section-title">EMOTION ENGINE</div>
+
+    <div class="subtitle">
+      Real-time emotion and pressure index per match – combining crowd heat,
+      pressure swings and shock risk into a single actionable band.
+    </div>
+
+    <div class="badge-row">
+      <span class="badge">FEED · LIVE SESSION RISK</span>
+    </div>
+
+    <div class="section-card">
+
+      <div class="section-title" style="font-size:22px;">EMOTION SNAPSHOT</div>
+      <div class="subtitle" style="margin-bottom:16px;">
+        Send a simple snapshot into the Emotion Engine. All values are 0–100
+        scales in this demo.
+      </div>
+
+      <div class="field-label">Fixture ID (optional)</div>
+      <input id="fixture" placeholder="Example: 123456" />
+
+      <div class="field-label">Teams (optional)</div>
+      <input id="home" placeholder="Home – Example: Arsenal" />
+      <input id="away" placeholder="Away – Example: Spurs" />
+
+      <div class="field-label">Emotion metrics · 0–100</div>
+      <div class="row-3">
+        <div>
+          <input id="crowdHeat" placeholder="Crowd heat · e.g. 70" />
+        </div>
+        <div>
+          <input id="pressureSwing" placeholder="Pressure swings · e.g. 55" />
+        </div>
+        <div>
+          <input id="shockRisk" placeholder="Shock risk · e.g. 80" />
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="runEmotionAnalyze()">
+        Run Emotion Analyze
+      </button>
+
+      <button class="btn-secondary" onclick="checkEmotionHealth()">
+        Check Emotion health
+      </button>
+
+      <button class="btn-secondary" onclick="openLiveData()">
+        LiveData Connect
+      </button>
+
+      <button class="btn-secondary" onclick="goBackGenius()">
+        Back to Genius Engine
+      </button>
+
+      <div id="status" class="status"></div>
+
+      <div id="resultCard" class="result-card" style="display:none;">
+        <div class="result-row">
+          <span>Band</span>
+          <span id="bandText">-</span>
+        </div>
+        <div class="result-row">
+          <span>Label</span>
+          <span id="labelText">-</span>
+        </div>
+        <div class="result-row">
+          <span>Index</span>
+          <span id="indexText">-</span>
+        </div>
+        <div class="tag-row" id="notesBox"></div>
+        <pre id="rawJson"></pre>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
