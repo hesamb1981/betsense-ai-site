@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense · NSI Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg-main: radial-gradient(circle at 0% 0%, #12284f 0, #020617 52%, #020617 100%);
+      --card-bg: radial-gradient(circle at 0% 0%, #102243 0, #020b1b 55%, #020617 100%);
+      --card-border: rgba(125, 211, 252, 0.30);
+      --accent-emerald: #22c55e;
+      --accent-emerald-soft: rgba(34, 197, 94, 0.14);
+      --accent-pill-border: rgba(148, 163, 184, 0.55);
+      --accent-pill-bg: rgba(15, 23, 42, 0.96);
+      --accent-pink-orange-from: #ff7a3a;
+      --accent-pink-orange-to: #ff4fa0;
+      --accent-soft-outline: rgba(148, 163, 184, 0.45);
+      --text-main: #e6f1ff;
+      --text-soft: #9ca3c9;
+      --pill-bg: rgba(15, 23, 42, 0.96);
+      --pill-border: rgba(148, 163, 184, 0.5);
+      --input-bg: rgba(15, 23, 42, 0.94);
+      --input-border: rgba(148, 163, 184, 0.6);
+      --shadow-soft: 0 28px 70px rgba(0, 0, 0, 0.75);
+      --radius-xl: 22px;
+      --radius-2xl: 26px;
+      --badge-blue: #7dd3fc;
+      --badge-bg-soft: rgba(15, 23, 42, 0.92);
+      --badge-border-soft: rgba(148, 163, 184, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Text", "Roboto", sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-shell {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 26px 18px 34px;
+    }
+
+    header {
+      margin-bottom: 18px;
+    }
+
+    .stack-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .stack-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0 0, #22c55e 45%, #052e16 100%);
+      box-shadow: 0 0 0 5px var(--accent-emerald-soft);
+    }
+
+    h1 {
+      margin-top: 14px;
+      font-size: 32px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      margin-top: 11px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-soft);
+      max-width: 34rem;
+    }
+
+    .mode-pill-row {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .mode-pill {
+      border-radius: 999px;
+      padding: 7px 18px;
+      border: 1px solid var(--accent-pill-border);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      background: var(--accent-pill-bg);
+    }
+
+    .panel {
+      margin-top: 26px;
+      padding: 20px 18px 22px;
+      border-radius: var(--radius-2xl);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(24px);
+    }
+
+    .panel-title {
+      font-size: 15px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .panel-stack-label {
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--badge-blue);
+      margin-bottom: 10px;
+    }
+
+    .panel-description {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
+      margin: 15px 0 18px;
+    }
+
+    .field-group {
+      margin-bottom: 15px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .field-row-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .field-row-inline .input {
+      flex: 1 1 0;
+    }
+
+    .input {
+      width: 100%;
+      border-radius: 999px;
+      padding: 11px 15px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease,
+        background 0.14s ease;
+    }
+
+    .input::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    .input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.7);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .checkbox-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .checkbox-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .checkbox-pill input {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+    }
+
+    .metrics-help {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .button-group {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        background 0.12s ease, border-color 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(
+        135deg,
+        var(--accent-pink-orange-from),
+        var(--accent-pink-orange-to)
+      );
+      color: #0f172a;
+      box-shadow: 0 20px 46px rgba(248, 113, 113, 0.65);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px) scale(0.985);
+      box-shadow: 0 12px 26px rgba(248, 113, 113, 0.65);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(148, 163, 184, 0.75);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-outline-ghost {
+      background: transparent;
+      border-color: rgba(37, 99, 235, 0.8);
+      color: #93c5fd;
+    }
+
+    .btn-outline-ghost:hover {
+      background: rgba(15, 23, 42, 0.97);
+    }
+
+    .status-bar {
+      margin-top: 18px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-soft);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      background: rgba(22, 163, 74, 0.14);
+      margin-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #bbf7d0;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0 0, #22c55e 45%, #052e16 100%);
+    }
+
+    .status-output {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      margin-top: 4px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    @media (min-width: 640px) {
+      .page-shell {
+        padding-top: 30px;
+        padding-bottom: 40px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <header>
+      <div class="stack-pill">
+        <span class="stack-pill-dot"></span>
+        <span>BetSense AI Stack · Neuro-Situational Layer</span>
+      </div>
+
+      <h1>NSI Engine</h1>
+
+      <p class="subtitle">
+        Neuro-Situational Identity Engine – a compact console to probe hidden
+        neuro states per team and fixture. Combine Emotion, xG, pressure and
+        shocks into a single NSI signature that sits above classic match data.
+      </p>
+
+      <div class="mode-pill-row">
+        <div class="mode-pill">Layer · Neuro-Situational Identity</div>
+      </div>
+    </header>
+
+    <section class="panel" aria-label="NSI snapshot form">
+      <div class="panel-title">NSI Snapshot</div>
+      <div class="panel-stack-label">Stack · NSI</div>
+
+      <p class="panel-description">
+        Send a single match context into the NSI Engine and preview the
+        neuro state, collapse risk and clutch potential. In production,
+        this layer is driven by your live feeds via <strong>LiveData Connect</strong>.
+      </p>
+
+      <hr class="divider" />
+
+      <form id="nsiForm">
+        <!-- Match core -->
+        <div class="field-group">
+          <label class="field-label" for="fixtureId">Fixture ID (optional)</label>
+          <input
+            id="fixtureId"
+            name="fixtureId"
+            class="input"
+            type="text"
+            placeholder="Example: 123456"
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Teams</label>
+          <input
+            class="input"
+            type="text"
+            id="team"
+            name="team"
+            placeholder="Team – Example: Arsenal"
+            style="margin-bottom: 8px"
+          />
+          <input
+            class="input"
+            type="text"
+            id="opponent"
+            name="opponent"
+            placeholder="Opponent – Example: Spurs"
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Match context</label>
+          <div class="field-row-inline" style="margin-bottom: 8px;">
+            <input
+              class="input"
+              type="number"
+              id="minute"
+              name="minute"
+              placeholder="Minute · 0–120"
+              min="0"
+              max="120"
+            />
+            <input
+              class="input"
+              type="number"
+              id="scoreDiff"
+              name="scoreDiff"
+              placeholder="Score diff · team - opp"
+            />
+          </div>
+          <div class="field-row-inline">
+            <select class="input" id="venue" name="venue">
+              <option value="">Venue (optional)</option>
+              <option value="HOME">HOME</option>
+              <option value="AWAY">AWAY</option>
+              <option value="NEUTRAL">NEUTRAL</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Flags -->
+        <div class="field-group">
+          <label class="field-label">High-stakes flags</label>
+          <div class="checkbox-row">
+            <label class="checkbox-pill">
+              <input type="checkbox" id="mustWin" />
+              <span>Must win</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" id="knockout" />
+              <span>Knockout</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" id="derby" />
+              <span>Derby</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Signals -->
+        <div class="field-group">
+          <div class="field-label">Stack signals · 0–100</div>
+          <p class="metrics-help">
+            Demo-only sliders for Emotion, xG momentum, market pressure and behavior
+            deviation. In production, these are streamed from engine layers.
+          </p>
+          <div class="field-row-inline">
+            <input
+              class="input"
+              type="number"
+              id="emotionIndex"
+              name="emotionIndex"
+              placeholder="Emotion index"
+              min="0"
+              max="100"
+            />
+            <input
+              class="input"
+              type="number"
+              id="xgMomentum"
+              name="xgMomentum"
+              placeholder="xG momentum"
+              min="0"
+              max="100"
+            />
+          </div>
+          <div class="field-row-inline" style="margin-top:8px;">
+            <input
+              class="input"
+              type="number"
+              id="pressureIndex"
+              name="pressureIndex"
+              placeholder="Pressure index"
+              min="0"
+              max="100"
+            />
+            <input
+              class="input"
+              type="number"
+              id="behaviorDeviation"
+              name="behaviorDeviation"
+              placeholder="Behavior deviation"
+              min="0"
+              max="100"
+            />
+          </div>
+        </div>
+
+        <!-- Triggers -->
+        <div class="field-group">
+          <div class="field-label">Shock triggers · minutes ago</div>
+          <p class="metrics-help">
+            How many minutes since the last goal, card or VAR shock for this team.
+          </p>
+          <div class="field-row-inline">
+            <input
+              class="input"
+              type="number"
+              id="lastGoalMinutesAgo"
+              name="lastGoalMinutesAgo"
+              placeholder="Last goal · minutes"
+              min="0"
+              max="130"
+            />
+            <input
+              class="input"
+              type="number"
+              id="lastCardMinutesAgo"
+              name="lastCardMinutesAgo"
+              placeholder="Last card · minutes"
+              min="0"
+              max="130"
+            />
+          </div>
+          <div class="field-row-inline" style="margin-top:8px;">
+            <input
+              class="input"
+              type="number"
+              id="lastVarMinutesAgo"
+              name="lastVarMinutesAgo"
+              placeholder="Last VAR · minutes"
+              min="0"
+              max="130"
+            />
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+          <button type="submit" class="btn btn-primary">
+            Run NSI Analysis
+          </button>
+
+          <button
+            type="button"
+            id="healthButton"
+            class="btn btn-outline"
+          >
+            Check NSI health
+          </button>
+
+          <a href="/LiveDataConnect.html" class="btn btn-outline-ghost">
+            LiveData Connect
+          </a>
+
+          <a href="/GeniusEngine.html" class="btn btn-outline">
+            Back to Genius Engine
+          </a>
+
+          <a href="/EmotionEngine.html" class="btn btn-outline">
+            Back to Emotion Engine
+          </a>
+        </div>
+      </form>
+
+      <div class="status-bar" aria-live="polite">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span id="statusLabel">Status · Idle</span>
+        </div>
+        <div id="statusOutput" class="status-output">
+          Ready to send a test snapshot into the NSI Engine.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const BASE_URL = "https://betsense-backend.onrender.com";
+
+    const form = document.getElementById("nsiForm");
+    const statusLabel = document.getElementById("statusLabel");
+    const statusOutput = document.getElementById("statusOutput");
+    const healthButton = document.getElementById("healthButton");
+
+    function setStatus(label, message) {
+      statusLabel.textContent = label;
+      statusOutput.textContent = message;
+    }
+
+    healthButton.addEventListener("click", async () => {
+      setStatus("Status · Pinging", "Checking NSI Engine health...");
+
+      try {
+        const response = await fetch(`${BASE_URL}/api/nsi/health`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Health check failed");
+        }
+
+        setStatus("Status · Healthy", JSON.stringify(data, null, 2));
+      } catch (error) {
+        console.error(error);
+        setStatus(
+          "Status · Error",
+          `NSI health check failed.\n\n${error.message}`
+        );
+      }
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const params = new URLSearchParams();
+
+      const fixtureId = document.getElementById("fixtureId").value;
+      const team = document.getElementById("team").value;
+      const opponent = document.getElementById("opponent").value;
+      const minute = document.getElementById("minute").value;
+      const scoreDiff = document.getElementById("scoreDiff").value;
+      const venue = document.getElementById("venue").value;
+
+      const mustWin = document.getElementById("mustWin").checked;
+      const knockout = document.getElementById("knockout").checked;
+      const derby = document.getElementById("derby").checked;
+
+      const emotionIndex = document.getElementById("emotionIndex").value;
+      const xgMomentum = document.getElementById("xgMomentum").value;
+      const pressureIndex = document.getElementById("pressureIndex").value;
+      const behaviorDeviation =
+        document.getElementById("behaviorDeviation").value;
+
+      const lastGoalMinutesAgo =
+        document.getElementById("lastGoalMinutesAgo").value;
+      const lastCardMinutesAgo =
+        document.getElementById("lastCardMinutesAgo").value;
+      const lastVarMinutesAgo =
+        document.getElementById("lastVarMinutesAgo").value;
+
+      if (fixtureId) params.append("fixtureId", fixtureId);
+      if (team) params.append("team", team);
+      if (opponent) params.append("opponent", opponent);
+      if (minute) params.append("minute", minute);
+      if (scoreDiff) params.append("scoreDiff", scoreDiff);
+      if (venue) params.append("venue", venue);
+
+      if (mustWin) params.append("mustWin", "true");
+      if (knockout) params.append("knockout", "true");
+      if (derby) params.append("derby", "true");
+
+      if (emotionIndex) params.append("emotionIndex", emotionIndex);
+      if (xgMomentum) params.append("xgMomentum", xgMomentum);
+      if (pressureIndex) params.append("pressureIndex", pressureIndex);
+      if (behaviorDeviation)
+        params.append("behaviorDeviation", behaviorDeviation);
+
+      if (lastGoalMinutesAgo)
+        params.append("lastGoalMinutesAgo", lastGoalMinutesAgo);
+      if (lastCardMinutesAgo)
+        params.append("lastCardMinutesAgo", lastCardMinutesAgo);
+      if (lastVarMinutesAgo)
+        params.append("lastVarMinutesAgo", lastVarMinutesAgo);
+
+      const url =
+        `${BASE_URL}/api/nsi/analyze` +
+        (params.toString() ? `?${params.toString()}` : "");
+
+      setStatus("Status · Sending", "Sending NSI snapshot to backend...");
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Request failed");
+        }
+
+        setStatus("Status · NSI signature", JSON.stringify(data, null, 2));
+      } catch (error) {
+        console.error(error);
+        setStatus(
+          "Status · Error",
+          `Unable to reach NSI Engine.\n\n${error.message}`
+        );
+      }
+    });
+  </script>
+</body>
+</html>
