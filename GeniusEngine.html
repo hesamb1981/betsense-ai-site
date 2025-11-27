@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BetSense – Genius Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #050816;
+        color: #f9fafb;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+      }
+
+      .page {
+        width: 100%;
+        max-width: 480px;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.95);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+      }
+
+      h1 {
+        font-size: 1.4rem;
+        margin: 0 0 4px;
+        color: #e5e7eb;
+      }
+
+      .subtitle {
+        font-size: 0.8rem;
+        color: #9ca3af;
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+        color: #d1d5db;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #374151;
+        background: #020617;
+        color: #e5e7eb;
+        font-size: 0.85rem;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+
+      input::placeholder {
+        color: #6b7280;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        border-radius: 999px;
+        border: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 4px;
+      }
+
+      .btn-main {
+        background: linear-gradient(135deg, #22c55e, #a3e635);
+        color: #022c22;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid #4b5563;
+        color: #e5e7eb;
+        margin-top: 8px;
+      }
+
+      .status {
+        margin-top: 12px;
+        font-size: 0.78rem;
+        color: #9ca3af;
+        min-height: 18px;
+      }
+
+      .status.ok {
+        color: #4ade80;
+      }
+
+      .status.error {
+        color: #f97373;
+      }
+
+      .result-card {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(15, 118, 110, 0.15);
+        border: 1px solid rgba(45, 212, 191, 0.4);
+        font-size: 0.8rem;
+      }
+
+      .result-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #a5f3fc;
+      }
+
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        margin-right: 4px;
+        margin-top: 2px;
+      }
+
+      pre {
+        margin-top: 10px;
+        max-height: 240px;
+        overflow: auto;
+        background: #020617;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 0.7rem;
+        color: #e5e7eb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="card">
+        <h1>Genius Engine</h1>
+        <div class="subtitle">
+          Real-time smart signal layer for BetSense. این صفحه فقط نسخه‌ی تست
+          اتصال به بک‌اند است.
+        </div>
+
+        <div>
+          <label for="fixtureId">Fixture ID (اختیاری)</label>
+          <input
+            id="fixtureId"
+            type="text"
+            placeholder="مثال: 123456"
+            autocomplete="off"
+          />
+
+          <label for="homeTeam">Home Team (اختیاری)</label>
+          <input
+            id="homeTeam"
+            type="text"
+            placeholder="مثال: Arsenal"
+            autocomplete="off"
+          />
+
+          <label for="awayTeam">Away Team (اختیاری)</label>
+          <input
+            id="awayTeam"
+            type="text"
+            placeholder="مثال: Spurs"
+            autocomplete="off"
+          />
+
+          <label for="oddsHome">Odds – Home / Draw / Away (اختیاری)</label>
+          <input
+            id="oddsHome"
+            type="number"
+            step="0.01"
+            placeholder="Home odds – مثال: 1.85"
+          />
+          <input
+            id="oddsDraw"
+            type="number"
+            step="0.01"
+            placeholder="Draw odds – مثال: 3.60"
+          />
+          <input
+            id="oddsAway"
+            type="number"
+            step="0.01"
+            placeholder="Away odds – مثال: 4.20"
+          />
+        </div>
+
+        <button class="btn-main" id="analyzeBtn">Run Genius Analyze</button>
+        <button class="btn-ghost" id="healthBtn">
+          Check Genius Health
+        </button>
+
+        <div id="status" class="status"></div>
+
+        <div id="resultBox" class="result-card" style="display: none">
+          <div class="result-title">Genius Result</div>
+          <div class="result-row">
+            <span>Recommendation:</span>
+            <span id="recText">–</span>
+          </div>
+          <div class="result-row">
+            <span>Confidence:</span>
+            <span id="confText">–</span>
+          </div>
+          <div id="notesBox"></div>
+          <pre id="rawJson"></pre>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE = "https://betsense-backend.onrender.com";
+
+      const fixtureIdInput = document.getElementById("fixtureId");
+      const homeTeamInput = document.getElementById("homeTeam");
+      const awayTeamInput = document.getElementById("awayTeam");
+      const oddsHomeInput = document.getElementById("oddsHome");
+      const oddsDrawInput = document.getElementById("oddsDraw");
+      const oddsAwayInput = document.getElementById("oddsAway");
+
+      const analyzeBtn = document.getElementById("analyzeBtn");
+      const healthBtn = document.getElementById("healthBtn");
+      const statusEl = document.getElementById("status");
+      const resultBox = document.getElementById("resultBox");
+      const recText = document.getElementById("recText");
+      const confText = document.getElementById("confText");
+      const notesBox = document.getElementById("notesBox");
+      const rawJson = document.getElementById("rawJson");
+
+      const setStatus = (msg, type = "") => {
+        statusEl.textContent = msg || "";
+        statusEl.className = "status " + type;
+      };
+
+      const showResult = (payload) => {
+        if (!payload || !payload.data) {
+          resultBox.style.display = "none";
+          return;
+        }
+
+        const { result } = payload.data;
+
+        resultBox.style.display = "block";
+
+        if (result && result.recommendation) {
+          recText.textContent = result.recommendation;
+        } else {
+          recText.textContent = "–";
+        }
+
+        if (result && typeof result.confidence === "number") {
+          confText.textContent = Math.round(result.confidence * 100) + "%";
+        } else {
+          confText.textContent = "–";
+        }
+
+        notesBox.innerHTML = "";
+        if (result && Array.isArray(result.notes)) {
+          result.notes.forEach((note) => {
+            const span = document.createElement("span");
+            span.className = "tag";
+            span.textContent = note;
+            notesBox.appendChild(span);
+          });
+        }
+
+        rawJson.textContent = JSON.stringify(payload, null, 2);
+      };
+
+      healthBtn.addEventListener("click", async () => {
+        try {
+          setStatus("Checking Genius health…");
+          resultBox.style.display = "none";
+
+          const res = await fetch(`${API_BASE}/api/genius/health`);
+          const data = await res.json();
+
+          if (data.ok) {
+            setStatus("Genius Engine is ONLINE ✔️", "ok");
+          } else {
+            setStatus("Genius Engine returned an error.", "error");
+          }
+
+          rawJson.textContent = JSON.stringify(data, null, 2);
+          resultBox.style.display = "block";
+        } catch (err) {
+          console.error(err);
+          setStatus("Error connecting to backend.", "error");
+        }
+      });
+
+      analyzeBtn.addEventListener("click", async () => {
+        try {
+          setStatus("Running Genius analyze…");
+          resultBox.style.display = "none";
+
+          const params = new URLSearchParams();
+
+          if (fixtureIdInput.value.trim()) {
+            params.append("fixtureId", fixtureIdInput.value.trim());
+          }
+          if (homeTeamInput.value.trim()) {
+            params.append("homeTeam", homeTeamInput.value.trim());
+          }
+          if (awayTeamInput.value.trim()) {
+            params.append("awayTeam", awayTeamInput.value.trim());
+          }
+          if (oddsHomeInput.value.trim()) {
+            params.append("oddsHome", oddsHomeInput.value.trim());
+          }
+          if (oddsDrawInput.value.trim()) {
+            params.append("oddsDraw", oddsDrawInput.value.trim());
+          }
+          if (oddsAwayInput.value.trim()) {
+            params.append("oddsAway", oddsAwayInput.value.trim());
+          }
+
+          const url = `${API_BASE}/api/genius/analyze?${
+            params.toString() || ""
+          }`;
+
+          const res = await fetch(url);
+          const data = await res.json();
+
+          if (data.ok) {
+            setStatus("Genius analyze completed ✔️", "ok");
+          } else {
+            setStatus("Genius analyze returned an error.", "error");
+          }
+
+          showResult(data);
+        } catch (err) {
+          console.error(err);
+          setStatus("Error running Genius analyze.", "error");
+        }
+      });
+    </script>
+  </body>
+</html>
