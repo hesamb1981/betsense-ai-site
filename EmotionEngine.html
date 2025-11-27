@@ -85,126 +85,32 @@
     .btn-primary {
       width: 100%;
       padding: 15px;
-      background: linear-gradient(90deg, #f97316, #fb7185);
+      background: linear-gradient(90deg, #37ff6b, #1ecb4f);
       border: none;
       border-radius: 40px;
       font-size: 18px;
       font-weight: bold;
       margin-top: 10px;
-      color: #0b1020;
+      color: #05101a;
     }
 
     .btn-secondary {
       width: 100%;
       padding: 14px;
       background: transparent;
-      border: 2px solid #e5e7eb;
+      border: 2px solid #1ecb4f;
       border-radius: 40px;
       color: white;
       font-size: 17px;
       font-weight: bold;
       margin-top: 12px;
     }
-
-    .status {
-      margin-top: 12px;
-      font-size: 14px;
-      opacity: 0.85;
-    }
-
-    .status.ok {
-      color: #4ade80;
-    }
-
-    .status.error {
-      color: #fb7185;
-    }
-
-    .result-card {
-      margin-top: 18px;
-      background: #071019;
-      border-radius: 12px;
-      border: 1px solid #1e3a5a;
-      padding: 14px;
-      font-size: 14px;
-    }
-
-    .result-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-
-    .tag-row {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .tag {
-      font-size: 11px;
-      background: #0e2336;
-      border-radius: 999px;
-      padding: 4px 10px;
-      border: 1px solid #1f3b57;
-      opacity: 0.9;
-    }
-
-    pre {
-      margin-top: 10px;
-      background: #020817;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 11px;
-      color: #e5e7eb;
-      overflow-x: auto;
-      max-height: 260px;
-    }
   </style>
 
   <script>
     const EMOTION_API_BASE = "https://betsense-backend.onrender.com";
 
-    async function checkEmotionHealth() {
-      const statusEl = document.getElementById("status");
-      const rawJson = document.getElementById("rawJson");
-      const resultCard = document.getElementById("resultCard");
-      const bandEl = document.getElementById("bandText");
-      const labelEl = document.getElementById("labelText");
-      const indexEl = document.getElementById("indexText");
-      const notesBox = document.getElementById("notesBox");
-
-      statusEl.className = "status";
-      statusEl.textContent = "Checking Emotion Engine health…";
-      resultCard.style.display = "none";
-      notesBox.innerHTML = "";
-      rawJson.textContent = "";
-
-      try {
-        const res = await fetch(EMOTION_API_BASE + "/api/emotion/health");
-        const data = await res.json();
-
-        if (data.ok) {
-          statusEl.className = "status ok";
-          statusEl.textContent = "Emotion Engine is ONLINE";
-        } else {
-          statusEl.className = "status error";
-          statusEl.textContent = "Emotion Engine returned an error.";
-        }
-
-        bandEl.textContent = "-";
-        labelEl.textContent = "-";
-        indexEl.textContent = "-";
-        resultCard.style.display = "block";
-        rawJson.textContent = JSON.stringify(data, null, 2);
-      } catch (e) {
-        statusEl.className = "status error";
-        statusEl.textContent = "Error connecting to Emotion backend.";
-      }
-    }
-
-    async function runEmotionAnalyze() {
+    async function runEmotion() {
       const fixture = document.getElementById("fixture").value;
       const home = document.getElementById("home").value;
       const away = document.getElementById("away").value;
@@ -212,77 +118,37 @@
       const pressureSwing = document.getElementById("pressureSwing").value;
       const shockRisk = document.getElementById("shockRisk").value;
 
-      const statusEl = document.getElementById("status");
-      const rawJson = document.getElementById("rawJson");
-      const resultCard = document.getElementById("resultCard");
-      const bandEl = document.getElementById("bandText");
-      const labelEl = document.getElementById("labelText");
-      const indexEl = document.getElementById("indexText");
-      const notesBox = document.getElementById("notesBox");
+      const params = new URLSearchParams();
 
-      statusEl.className = "status";
-      statusEl.textContent = "Running Emotion analyze…";
-      resultCard.style.display = "none";
-      notesBox.innerHTML = "";
-      rawJson.textContent = "";
+      if (fixture.trim()) params.append("fixtureId", fixture.trim());
+      if (home.trim()) params.append("homeTeam", home.trim());
+      if (away.trim()) params.append("awayTeam", away.trim());
+      if (crowdHeat.trim()) params.append("crowdHeat", crowdHeat.trim());
+      if (pressureSwing.trim())
+        params.append("pressureSwing", pressureSwing.trim());
+      if (shockRisk.trim()) params.append("shockRisk", shockRisk.trim());
+
+      const url =
+        EMOTION_API_BASE +
+        "/api/emotion/analyze" +
+        (params.toString() ? "?" + params.toString() : "");
 
       try {
-        const params = new URLSearchParams();
-
-        if (fixture.trim()) params.append("fixtureId", fixture.trim());
-        if (home.trim()) params.append("homeTeam", home.trim());
-        if (away.trim()) params.append("awayTeam", away.trim());
-        if (crowdHeat.trim()) params.append("crowdHeat", crowdHeat.trim());
-        if (pressureSwing.trim())
-          params.append("pressureSwing", pressureSwing.trim());
-        if (shockRisk.trim()) params.append("shockRisk", shockRisk.trim());
-
-        const url =
-          EMOTION_API_BASE +
-          "/api/emotion/analyze" +
-          (params.toString() ? "?" + params.toString() : "");
-
         const res = await fetch(url);
         const data = await res.json();
+        alert(JSON.stringify(data, null, 2));
+      } catch (error) {
+        alert("Error connecting to Emotion Engine backend");
+      }
+    }
 
-        if (data.ok) {
-          statusEl.className = "status ok";
-          statusEl.textContent = "Emotion analyze completed.";
-        } else {
-          statusEl.className = "status error";
-          statusEl.textContent = "Emotion analyze returned an error.";
-        }
-
-        if (data.data && data.data.result) {
-          const result = data.data.result;
-          bandEl.textContent = result.band || "-";
-          labelEl.textContent = result.label || "-";
-          if (typeof result.index === "number") {
-            indexEl.textContent =
-              Math.round(result.index * 100) + " / 100 · index";
-          } else {
-            indexEl.textContent = "-";
-          }
-
-          if (Array.isArray(result.notes)) {
-            result.notes.forEach((n) => {
-              const span = document.createElement("span");
-              span.className = "tag";
-              span.textContent = n;
-              notesBox.appendChild(span);
-            });
-          }
-        } else {
-          bandEl.textContent = "-";
-          labelEl.textContent = "-";
-          indexEl.textContent = "-";
-        }
-
-        resultCard.style.display = "block";
-        rawJson.textContent = JSON.stringify(data, null, 2);
+    async function checkEmotionHealth() {
+      try {
+        const res = await fetch(EMOTION_API_BASE + "/api/emotion/health");
+        const data = await res.json();
+        alert(JSON.stringify(data, null, 2));
       } catch (e) {
-        statusEl.className = "status error";
-        statusEl.textContent = "Error running Emotion analyze.";
+        alert("Emotion health check failed");
       }
     }
 
@@ -299,35 +165,44 @@
 
   <div class="container">
 
+    <!-- Top badge -->
     <div class="badge-row">
       <span class="badge">BETSENSE AI STACK · EMOTION LAYER</span>
     </div>
 
+    <!-- Page title -->
     <div class="section-title">EMOTION ENGINE</div>
 
+    <!-- Subtitle (با اشاره به LiveData Connect) -->
     <div class="subtitle">
       Real-time emotion and pressure index per match – combining crowd heat,
-      pressure swings and shock risk into a single actionable band.
+      pressure swings and shock risk into a single actionable band. Enterprise
+      clients can plug their own licensed feeds into this layer via
+      <strong>LiveData Connect</strong>.
     </div>
 
+    <!-- Second badge -->
     <div class="badge-row">
       <span class="badge">FEED · LIVE SESSION RISK</span>
     </div>
 
+    <!-- Main card -->
     <div class="section-card">
 
       <div class="section-title" style="font-size:22px;">EMOTION SNAPSHOT</div>
       <div class="subtitle" style="margin-bottom:16px;">
-        Send a simple snapshot into the Emotion Engine. All values are 0–100
-        scales in this demo.
+        Send a single-fixture snapshot to Emotion Engine and preview the demo
+        index band. All metrics use 0–100 scales in this sandbox.
       </div>
 
       <div class="field-label">Fixture ID (optional)</div>
       <input id="fixture" placeholder="Example: 123456" />
 
-      <div class="field-label">Teams (optional)</div>
-      <input id="home" placeholder="Home – Example: Arsenal" />
-      <input id="away" placeholder="Away – Example: Spurs" />
+      <div class="field-label">Home team (optional)</div>
+      <input id="home" placeholder="Example: Arsenal" />
+
+      <div class="field-label">Away team (optional)</div>
+      <input id="away" placeholder="Example: Spurs" />
 
       <div class="field-label">Emotion metrics · 0–100</div>
       <div class="row-3">
@@ -342,7 +217,7 @@
         </div>
       </div>
 
-      <button class="btn-primary" onclick="runEmotionAnalyze()">
+      <button class="btn-primary" onclick="runEmotion()">
         Run Emotion Analyze
       </button>
 
@@ -357,26 +232,6 @@
       <button class="btn-secondary" onclick="goBackGenius()">
         Back to Genius Engine
       </button>
-
-      <div id="status" class="status"></div>
-
-      <div id="resultCard" class="result-card" style="display:none;">
-        <div class="result-row">
-          <span>Band</span>
-          <span id="bandText">-</span>
-        </div>
-        <div class="result-row">
-          <span>Label</span>
-          <span id="labelText">-</span>
-        </div>
-        <div class="result-row">
-          <span>Index</span>
-          <span id="indexText">-</span>
-        </div>
-        <div class="tag-row" id="notesBox"></div>
-        <pre id="rawJson"></pre>
-      </div>
-
     </div>
 
   </div>
