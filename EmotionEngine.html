@@ -7,23 +7,26 @@
 
   <style>
     :root {
-      --bg-main: radial-gradient(circle at 0% 0%, #102345 0, #020617 55%, #010412 100%);
-      --card-bg: radial-gradient(circle at 0% 0%, #0f213f 0, #020b1a 60%, #020617 100%);
-      --card-border: rgba(118, 188, 255, 0.26);
+      /* Background + glass look close to main site */
+      --bg-main: radial-gradient(circle at 0% 0%, #12284f 0, #020617 52%, #020617 100%);
+      --card-bg: radial-gradient(circle at 0% 0%, #102243 0, #020b1b 55%, #020617 100%);
+      --card-border: rgba(125, 211, 252, 0.30);
       --accent-emerald: #22c55e;
       --accent-emerald-soft: rgba(34, 197, 94, 0.14);
+      --accent-pill-border: rgba(148, 163, 184, 0.55);
+      --accent-pill-bg: rgba(15, 23, 42, 0.96);
       --accent-pink-orange-from: #ff7a3a;
       --accent-pink-orange-to: #ff4fa0;
       --accent-soft-outline: rgba(148, 163, 184, 0.45);
-      --text-main: #e5edff;
+      --text-main: #e6f1ff;
       --text-soft: #9ca3c9;
-      --pill-bg: rgba(15, 23, 42, 0.95);
-      --pill-border: rgba(148, 163, 184, 0.4);
-      --input-bg: rgba(15, 23, 42, 0.9);
-      --input-border: rgba(148, 163, 184, 0.45);
-      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.65);
-      --radius-xl: 24px;
-      --radius-2xl: 28px;
+      --pill-bg: rgba(15, 23, 42, 0.96);
+      --pill-border: rgba(148, 163, 184, 0.5);
+      --input-bg: rgba(15, 23, 42, 0.94);
+      --input-border: rgba(148, 163, 184, 0.6);
+      --shadow-soft: 0 28px 70px rgba(0, 0, 0, 0.75);
+      --radius-xl: 22px;
+      --radius-2xl: 26px;
     }
 
     * {
@@ -35,8 +38,8 @@
     body {
       min-height: 100vh;
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Roboto", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Text", "Roboto", sans-serif;
       background: var(--bg-main);
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
@@ -45,18 +48,19 @@
     .page-shell {
       max-width: 520px;
       margin: 0 auto;
-      padding: 20px 18px 32px;
+      padding: 26px 18px 34px;
     }
 
     header {
       margin-bottom: 18px;
     }
 
+    /* top breadcrumb pill */
     .stack-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: 999px;
       background: var(--pill-bg);
       border: 1px solid var(--pill-border);
@@ -76,21 +80,21 @@
 
     h1 {
       margin-top: 14px;
-      font-size: 30px;
-      letter-spacing: 0.14em;
+      font-size: 32px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
     .subtitle {
-      margin-top: 10px;
+      margin-top: 11px;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.55;
       color: var(--text-soft);
       max-width: 34rem;
     }
 
     .mode-pill-row {
-      margin-top: 16px;
+      margin-top: 18px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
@@ -98,28 +102,29 @@
 
     .mode-pill {
       border-radius: 999px;
-      padding: 7px 16px;
-      border: 1px solid var(--accent-soft-outline);
+      padding: 7px 18px;
+      border: 1px solid var(--accent-pill-border);
       font-size: 11px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-soft);
-      background: rgba(15, 23, 42, 0.85);
+      background: var(--accent-pill-bg);
     }
 
+    /* main card */
     .panel {
-      margin-top: 22px;
-      padding: 18px 16px 20px;
+      margin-top: 26px;
+      padding: 20px 18px 22px;
       border-radius: var(--radius-2xl);
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(22px);
+      backdrop-filter: blur(24px);
     }
 
     .panel-title {
       font-size: 15px;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       margin-bottom: 4px;
     }
@@ -134,26 +139,32 @@
 
     .panel-description {
       font-size: 13px;
-      line-height: 1.55;
+      line-height: 1.6;
       color: var(--text-soft);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .divider {
       border: none;
       border-top: 1px solid rgba(148, 163, 184, 0.28);
-      margin: 14px 0 16px;
+      margin: 15px 0 18px;
     }
 
     .field-group {
-      margin-bottom: 14px;
+      margin-bottom: 15px;
     }
 
     .field-label {
       display: block;
       font-size: 11px;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+    }
+
+    .metrics-help {
+      font-size: 11px;
       color: var(--text-soft);
       margin-bottom: 6px;
     }
@@ -171,34 +182,28 @@
     .input {
       width: 100%;
       border-radius: 999px;
-      padding: 10px 14px;
+      padding: 11px 15px;
       border: 1px solid var(--input-border);
       background: var(--input-bg);
       color: var(--text-main);
       font-size: 13px;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease,
-        background 0.15s ease;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease,
+        background 0.14s ease;
     }
 
     .input::placeholder {
-      color: rgba(148, 163, 184, 0.6);
+      color: rgba(148, 163, 184, 0.7);
     }
 
     .input:focus {
       border-color: #38bdf8;
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
-      background: rgba(15, 23, 42, 0.95);
-    }
-
-    .metrics-help {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-bottom: 6px;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.7);
+      background: rgba(15, 23, 42, 0.98);
     }
 
     .button-group {
-      margin-top: 18px;
+      margin-top: 20px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -210,7 +215,7 @@
       justify-content: center;
       width: 100%;
       border-radius: 999px;
-      padding: 12px 18px;
+      padding: 12px 20px;
       font-size: 14px;
       font-weight: 600;
       border: 1px solid transparent;
@@ -228,38 +233,38 @@
         var(--accent-pink-orange-to)
       );
       color: #0f172a;
-      box-shadow: 0 18px 40px rgba(248, 113, 113, 0.6);
+      box-shadow: 0 20px 46px rgba(248, 113, 113, 0.65);
     }
 
     .btn-primary:active {
       transform: translateY(1px) scale(0.985);
-      box-shadow: 0 10px 24px rgba(248, 113, 113, 0.6);
+      box-shadow: 0 12px 26px rgba(248, 113, 113, 0.65);
     }
 
     .btn-outline {
       background: transparent;
-      border-color: rgba(148, 163, 184, 0.7);
+      border-color: rgba(148, 163, 184, 0.75);
       color: var(--text-main);
     }
 
     .btn-outline:hover {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.95);
     }
 
     .btn-outline-ghost {
       background: transparent;
-      border-color: rgba(30, 64, 175, 0.7);
+      border-color: rgba(37, 99, 235, 0.8);
       color: #93c5fd;
     }
 
     .btn-outline-ghost:hover {
-      background: rgba(15, 23, 42, 0.96);
+      background: rgba(15, 23, 42, 0.97);
     }
 
     .status-bar {
-      margin-top: 16px;
+      margin-top: 18px;
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.6;
       color: var(--text-soft);
     }
 
@@ -267,10 +272,10 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px;
+      padding: 4px 11px;
       border-radius: 999px;
-      border: 1px solid rgba(34, 197, 94, 0.6);
-      background: rgba(22, 163, 74, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      background: rgba(22, 163, 74, 0.14);
       margin-bottom: 6px;
       font-size: 11px;
       letter-spacing: 0.16em;
@@ -296,12 +301,12 @@
 
     @media (min-width: 640px) {
       .page-shell {
-        padding-top: 28px;
+        padding-top: 30px;
         padding-bottom: 40px;
       }
 
       h1 {
-        font-size: 32px;
+        font-size: 34px;
       }
     }
   </style>
@@ -313,12 +318,14 @@
         <span class="stack-pill-dot"></span>
         <span>BetSense AI Stack · Emotion Layer</span>
       </div>
+
       <h1>Emotion Engine</h1>
+
       <p class="subtitle">
         Real-time emotion and pressure index per match – combining crowd
         heat, pressure swings and shock risk into a single actionable band.
-        This console is a lightweight surface to test the backend API and
-        LiveData Connect pipeline.
+        This page is a lightweight console to test the backend API and check
+        your LiveData Connect wiring.
       </p>
 
       <div class="mode-pill-row">
@@ -329,10 +336,12 @@
     <section class="panel" aria-label="Emotion snapshot form">
       <div class="panel-title">Emotion Snapshot</div>
       <div class="panel-stack-label">Stack · Emotion</div>
+
       <p class="panel-description">
         Send a single snapshot into the Emotion Engine and preview mock
-        indices. Production flows will usually be wired from your own feeds
-        via <strong>LiveData Connect</strong>.
+        responses. In production, values will be driven automatically from
+        your own feeds via <strong>LiveData Connect</strong>, layered with
+        BetSense emotion intelligence.
       </p>
 
       <hr class="divider" />
@@ -371,7 +380,8 @@
         <div class="field-group">
           <div class="field-label">Emotion metrics · 0–100</div>
           <p class="metrics-help">
-            Try small test values. In production these are streamed automatically from your feeds.
+            Try small test values. In live stacks, these arrive automatically
+            from your feed or internal models.
           </p>
           <div class="field-row-inline">
             <input
@@ -482,10 +492,7 @@
           throw new Error(data.error || "Request failed");
         }
 
-        setStatus(
-          "Status · Mock response",
-          JSON.stringify(data, null, 2)
-        );
+        setStatus("Status · Mock response", JSON.stringify(data, null, 2));
       } catch (error) {
         console.error(error);
         setStatus(
@@ -506,10 +513,7 @@
           throw new Error(data.error || "Health check failed");
         }
 
-        setStatus(
-          "Status · Healthy",
-          JSON.stringify(data, null, 2)
-        );
+        setStatus("Status · Healthy", JSON.stringify(data, null, 2));
       } catch (error) {
         console.error(error);
         setStatus(
