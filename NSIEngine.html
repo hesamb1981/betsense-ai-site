@@ -2,813 +2,447 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BetSense · NSI Engine</title>
+  <title>BetSense · NSI Engine Console</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg-main: #050816;
-      --bg-card: rgba(8, 22, 48, 0.96);
-      --bg-card-soft: rgba(8, 22, 48, 0.88);
-      --border-soft: rgba(112, 148, 255, 0.35);
-      --text-main: #e6f0ff;
-      --text-soft: #a5b4d8;
-      --accent: #38f298;
-      --accent-soft: rgba(56, 242, 152, 0.2);
-      --accent-warm: #ff6a88;
-      --status-ok: #22c55e;
-      --status-error: #fb7185;
-      --status-idle: #64748b;
-      --pill-bg: rgba(15, 23, 42, 0.9);
-      --input-bg: rgba(15, 23, 42, 0.96);
-      --input-border: rgba(148, 163, 184, 0.55);
-      --btn-primary: linear-gradient(90deg, #ff6a88, #ff9f6a);
-      --btn-primary-shadow: 0 0 22px rgba(255, 138, 76, 0.55);
-      --btn-secondary-border: rgba(148, 163, 184, 0.65);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #020617 55%, #000 100%);
+      color: #e5e7eb;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        Roboto, sans-serif;
-      background: radial-gradient(circle at top, #0b1530 0, #050816 55%, #020617 100%);
-      color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .shell {
-      max-width: 900px;
-      margin: 0 auto;
       padding: 24px 16px 40px;
+      display: flex;
+      justify-content: center;
     }
-
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 60%);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+      padding: 24px 18px 28px;
+    }
     @media (min-width: 768px) {
       .shell {
-        padding: 32px 0 64px;
+        padding: 28px 32px 32px;
       }
     }
-
-    .engine-header-pill {
+    .badge-bar {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       padding: 6px 14px;
       border-radius: 999px;
-      background: var(--pill-bg);
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-    }
-
-    .engine-header-pill-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: var(--status-ok);
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.85);
-    }
-
-    h1 {
-      font-size: 30px;
-      letter-spacing: 0.15em;
-      margin: 18px 0 4px;
-      text-transform: uppercase;
-    }
-
-    .engine-subtitle {
-      margin: 0 0 18px;
-      font-size: 14px;
-      color: var(--text-soft);
-      line-height: 1.6;
-    }
-
-    .engine-tagline {
-      display: inline-flex;
-      padding: 7px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(129, 140, 248, 0.7);
-      background: rgba(30, 64, 175, 0.35);
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      color: #c7d2fe;
-    }
-
-    .card {
-      background: radial-gradient(circle at top left, #0b1f3a 0, #05091a 58%);
-      border-radius: 22px;
-      padding: 20px 16px 18px;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
-      margin-bottom: 18px;
-    }
-
-    @media (min-width: 768px) {
-      .card {
-        padding: 22px 22px 20px;
-      }
-    }
-
-    .card-title {
-      font-size: 16px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .card-kicker {
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: radial-gradient(circle at left, #22c55e22 0, transparent 55%);
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #a5b4d8;
-      margin-bottom: 10px;
+      color: #cbd5f5;
     }
-
-    .card-copy {
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+    h1 {
+      margin: 18px 0 6px;
+      font-size: 26px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #9ca3af;
+      max-width: 640px;
+    }
+    .pill {
+      display: inline-flex;
+      margin-top: 18px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.2);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+    .panel {
+      margin-top: 26px;
+      padding: 18px 16px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top, #020617 0, #020617 60%);
+    }
+    .panel-title {
+      font-size: 16px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .panel-sub {
       font-size: 13px;
-      color: var(--text-soft);
-      line-height: 1.7;
-      margin-bottom: 18px;
+      color: #9ca3af;
+      margin-bottom: 14px;
     }
-
-    .field-row {
-      display: flex;
-      flex-direction: column;
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 12px;
     }
-
     @media (min-width: 768px) {
-      .field-row--two {
-        flex-direction: row;
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .field-row--two .field {
-        flex: 1;
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field label {
-      font-size: 12px;
-      color: #cbd5f5;
-    }
-
-    .field small {
+    label {
       font-size: 11px;
-      color: #7c8bb5;
-    }
-
-    .field input,
-    .field select {
-      height: 40px;
-      border-radius: 999px;
-      border: 1px solid var(--input-border);
-      background: var(--input-bg);
-      color: var(--text-main);
-      font-size: 13px;
-      padding: 0 14px;
-      outline: none;
-    }
-
-    .field input::placeholder {
-      color: #6b7280;
-    }
-
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .badge-pill {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.65);
-      font-size: 11px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: #cbd5f5;
-      background: radial-gradient(circle at top, rgba(30, 64, 175, 0.7), rgba(15, 23, 42, 0.9));
-      min-width: 140px;
-      text-align: center;
+      color: #9ca3af;
+      margin-bottom: 6px;
+      display: block;
     }
-
-    .flag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .flag-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 13px;
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      box-sizing: border-box;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 184, 0.7);
       background: rgba(15, 23, 42, 0.95);
-      font-size: 11px;
       color: #e5e7eb;
-    }
-
-    .flag-pill input {
-      width: 14px;
-      height: 14px;
-      accent-color: var(--accent);
-    }
-
-    .section-label {
-      margin-top: 18px;
-      margin-bottom: 8px;
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #94a3ff;
-    }
-
-    .section-help {
-      font-size: 11px;
-      color: #7c8bb5;
-      margin-bottom: 10px;
-    }
-
-    .shock-row {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    @media (min-width: 768px) {
-      .shock-row {
-        flex-direction: row;
-      }
-      .shock-row .field {
-        flex: 1;
-      }
-    }
-
-    .button-row {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    @media (min-width: 768px) {
-      .button-row {
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-      .button-row > * {
-        flex: 1 1 45%;
-      }
-    }
-
-    .btn-primary {
-      border: none;
-      border-radius: 999px;
-      padding: 11px 14px;
-      font-size: 14px;
-      font-weight: 600;
-      background-image: var(--btn-primary);
-      color: #0f172a;
-      box-shadow: var(--btn-primary-shadow);
-      cursor: pointer;
-      text-align: center;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: default;
-      box-shadow: none;
-      transform: none;
-    }
-
-    .btn-primary:not(:disabled):active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.85);
-    }
-
-    .btn-secondary {
-      border-radius: 999px;
-      padding: 11px 14px;
+      padding: 10px 14px;
       font-size: 13px;
-      border: 1px solid var(--btn-secondary-border);
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
-      color: #e5e7eb;
-      text-align: center;
-      text-decoration: none;
+      outline: none;
+    }
+    input::placeholder {
+      color: #6b7280;
+    }
+    .flags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .flag {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 6px;
-    }
-
-    .btn-secondary span.dot {
-      width: 7px;
-      height: 7px;
+      padding: 7px 11px;
       border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(56, 242, 152, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 12px;
+      color: #e5e7eb;
     }
-
-    .btn-secondary--outline-blue {
-      border-color: rgba(96, 165, 250, 0.8);
-      color: #bfdbfe;
+    .flag input {
+      margin: 0;
     }
-
-    .btn-secondary--outline-soft {
-      border-color: rgba(148, 163, 184, 0.6);
-    }
-
-    .status-block {
+    .btn-row {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 18px;
     }
-
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #fb923c, #fb7185);
+      color: #111827;
+      box-shadow: 0 0 18px rgba(248, 113, 113, 0.6);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      color: #e5e7eb;
+    }
+    .status-bar {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px;
+      color: #cbd5f5;
+    }
     .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 14px;
+      padding: 7px 13px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.98);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      background: rgba(6, 78, 59, 0.8);
     }
-
-    .status-pill-dot {
+    .status-pill.error {
+      border-color: rgba(248, 113, 113, 0.85);
+      background: rgba(127, 29, 29, 0.9);
+    }
+    .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 999px;
-      background: var(--status-idle);
-      box-shadow: 0 0 12px rgba(148, 163, 184, 0.7);
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
     }
-
-    .status-pill.status-ok .status-pill-dot {
-      background: var(--status-ok);
-      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+    .status-dot.error {
+      background: #f97373;
+      box-shadow: 0 0 8px #f97373;
     }
-
-    .status-pill.status-error .status-pill-dot {
-      background: var(--status-error);
-      box-shadow: 0 0 14px rgba(248, 113, 113, 0.9);
-    }
-
-    .status-copy {
-      font-size: 11px;
-      color: #9ca3c7;
-    }
-
-    .output-card {
-      background: radial-gradient(circle at top right, #101f4e 0, #020617 65%);
-    }
-
-    .output-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    @media (min-width: 640px) {
-      .output-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    .metric-pill {
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 1));
+    pre {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.6);
       font-size: 12px;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #9ca3c7;
-    }
-
-    .metric-value {
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .note-block {
-      margin-top: 14px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(148, 163, 184, 0.5);
-      font-size: 12px;
-      color: #cbd5f5;
-    }
-
-    a.inline-link {
-      color: #a5b4ff;
-      text-decoration: none;
-    }
-
-    a.inline-link:hover {
-      text-decoration: underline;
+      max-height: 260px;
+      overflow: auto;
+      color: #e5e7eb;
     }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <header>
-      <div class="engine-header-pill">
-        <span class="engine-header-pill-dot"></span>
-        BETSENSE AI STACK · NEURO-SITUATIONAL LAYER
+  <div class="shell">
+    <div class="badge-bar">
+      <span class="dot"></span>
+      <span>BET SENSE AI STACK · NEURO-SITUATIONAL LAYER</span>
+    </div>
+
+    <h1>NSI ENGINE</h1>
+    <div class="subtitle">
+      Neuro-Situational Identity Engine – compact console to probe hidden neuro states per team and fixture.
+      This console talks directly to your backend at <strong>betsense-backend.onrender.com</strong>.
+    </div>
+
+    <div class="pill">Layer · NSI · LiveData Connect Ready</div>
+
+    <div class="panel">
+      <div class="panel-title">NSI SNAPSHOT</div>
+      <div class="panel-sub">
+        Use the fields below for manual analysis, or just hit <strong>Demo NSI Analysis</strong> to see a sample
+        response from the engine.
       </div>
-      <h1>NSI ENGINE</h1>
-      <p class="engine-subtitle">
-        Neuro-Situational Identity Engine – a compact console to probe hidden neuro states
-        per team and fixture. Combine Emotion, xG, pressure and shocks into a single NSI
-        signature that sits above classic match data.
-      </p>
-      <div class="engine-tagline">
-        LAYER · NEURO-SITUATIONAL IDENTITY
-      </div>
-    </header>
 
-    <!-- INPUT CARD -->
-    <section class="card">
-      <div class="card-kicker">STACK · NSI</div>
-      <div class="card-title">NSI SNAPSHOT</div>
-      <p class="card-copy">
-        Send a single match context into the NSI Engine and preview the neuro state,
-        collapse risk and clutch potential. In production, this layer is driven by your
-        live feeds via <span style="color:#a5b4ff;">LiveData Connect</span>.
-      </p>
-
-      <form id="nsi-form">
-        <div class="field-row">
-          <div class="field">
-            <label for="fixtureId">Fixture ID (optional)</label>
-            <input id="fixtureId" name="fixtureId" type="text" placeholder="Example: 123456" />
-          </div>
+      <div class="grid grid-2">
+        <div>
+          <label for="fixtureId">Fixture ID (optional)</label>
+          <input id="fixtureId" type="text" placeholder="Example: 123456" />
         </div>
-
-        <div class="section-label">Teams</div>
-        <div class="field-row field-row--two">
-          <div class="field">
-            <label for="team">Team</label>
-            <input id="team" name="team" type="text" placeholder="Team – Example: Arsenal" />
-          </div>
-          <div class="field">
-            <label for="opponent">Opponent</label>
-            <input id="opponent" name="opponent" type="text" placeholder="Opponent – Example: Spurs" />
-          </div>
-        </div>
-
-        <div class="section-label">Match context</div>
-        <div class="field-row field-row--two">
-          <div class="field">
-            <label for="minute">Minute · 0–120</label>
-            <input id="minute" name="minute" type="number" min="0" max="120" placeholder="e.g. 74" />
-          </div>
-          <div class="field">
-            <label for="scoreDiff">Score diff · team – opponent</label>
-            <input id="scoreDiff" name="scoreDiff" type="number" placeholder="e.g. +1, 0, -2..." />
-          </div>
-        </div>
-
-        <div class="field-row" style="margin-top:10px;">
-          <div class="field">
-            <label for="venue">Venue (optional)</label>
-            <select id="venue" name="venue">
-              <option value="">Select venue (optional)</option>
-              <option value="home">Home</option>
-              <option value="away">Away</option>
-              <option value="neutral">Neutral</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="section-label">High-stakes flags</div>
-        <div class="flag-row">
-          <label class="flag-pill">
-            <input id="flagMustWin" type="checkbox" />
-            <span>Must win</span>
-          </label>
-          <label class="flag-pill">
-            <input id="flagKnockout" type="checkbox" />
-            <span>Knockout</span>
-          </label>
-          <label class="flag-pill">
-            <input id="flagDerby" type="checkbox" />
-            <span>Derby</span>
-          </label>
-        </div>
-
-        <div class="section-label">Stack signals · 0–100</div>
-        <p class="section-help">
-          Demo-only sliders for Emotion, xG momentum, market pressure and behavior deviation.
-          In production, these are streamed from engine layers.
-        </p>
-
-        <div class="badge-row">
-          <div class="field" style="flex:1; min-width:140px;">
-            <label for="emotionIndex">Emotion index</label>
-            <input id="emotionIndex" name="emotionIndex" type="number" min="0" max="100" placeholder="0 – 100" />
-          </div>
-          <div class="field" style="flex:1; min-width:140px;">
-            <label for="xgMomentum">xG momentum</label>
-            <input id="xgMomentum" name="xgMomentum" type="number" min="0" max="100" placeholder="0 – 100" />
-          </div>
-        </div>
-
-        <div class="badge-row">
-          <div class="field" style="flex:1; min-width:140px;">
-            <label for="pressureIndex">Pressure index</label>
-            <input id="pressureIndex" name="pressureIndex" type="number" min="0" max="100" placeholder="0 – 100" />
-          </div>
-          <div class="field" style="flex:1; min-width:140px;">
-            <label for="behaviorDeviation">Behavior deviation</label>
-            <input id="behaviorDeviation" name="behaviorDeviation" type="number" min="0" max="100" placeholder="0 – 100" />
-          </div>
-        </div>
-
-        <div class="section-label">Shock triggers · minutes ago</div>
-        <p class="section-help">
-          How many minutes since the last goal, card or VAR shock for this team.
-        </p>
-
-        <div class="shock-row">
-          <div class="field">
-            <label for="lastGoalMinutes">Last goal · minutes</label>
-            <input id="lastGoalMinutes" name="lastGoalMinutes" type="number" min="0" placeholder="e.g. 3" />
-          </div>
-          <div class="field">
-            <label for="lastCardMinutes">Last card · minutes</label>
-            <input id="lastCardMinutes" name="lastCardMinutes" type="number" min="0" placeholder="e.g. 15" />
-          </div>
-          <div class="field">
-            <label for="lastVarMinutes">Last VAR · minutes</label>
-            <input id="lastVarMinutes" name="lastVarMinutes" type="number" min="0" placeholder="e.g. 27" />
-          </div>
-        </div>
-
-        <div class="button-row">
-          <button id="run-nsi-btn" type="submit" class="btn-primary">
-            Run NSI Analysis
-          </button>
-
-          <a href="NSIEngineHealth.html" class="btn-secondary btn-secondary--outline-soft">
-            Check NSI health
-          </a>
-
-          <a href="LiveDataConnect.html" class="btn-secondary btn-secondary--outline-blue">
-            <span class="dot"></span>
-            LiveData Connect
-          </a>
-
-          <a href="GeniusEngine.html" class="btn-secondary btn-secondary--outline-soft">
-            Back to Genius Engine
-          </a>
-
-          <a href="EmotionEngine.html" class="btn-secondary btn-secondary--outline-soft">
-            Back to Emotion Engine
-          </a>
-        </div>
-
-        <div class="status-block">
-          <div id="nsi-status-pill" class="status-pill status-idle">
-            <span class="status-pill-dot"></span>
-            <span id="nsi-status-label">STATUS · IDLE</span>
-          </div>
-          <div id="nsi-status-text" class="status-copy">
-            Ready to send a test snapshot into the NSI Engine.
-          </div>
-        </div>
-      </form>
-    </section>
-
-    <!-- OUTPUT CARD -->
-    <section id="nsi-output-card" class="card output-card">
-      <div class="card-kicker">OUTPUT · NSI SIGNATURE</div>
-      <div class="card-title">SESSION EDGE VIEW</div>
-      <p class="card-copy" id="nsi-output-intro">
-        Run an NSI snapshot to preview the neuro-situational identity for this team.
-        NSI score, collapse risk and clutch potential will appear here.
-      </p>
-
-      <div id="nsi-output-grid" class="output-grid" style="display:none;">
-        <div class="metric-pill">
-          <div class="metric-label">NSI score</div>
-          <div id="metric-nsi-score" class="metric-value">–</div>
-        </div>
-        <div class="metric-pill">
-          <div class="metric-label">Collapse risk</div>
-          <div id="metric-collapse-risk" class="metric-value">–</div>
-        </div>
-        <div class="metric-pill">
-          <div class="metric-label">Clutch potential</div>
-          <div id="metric-clutch" class="metric-value">–</div>
-        </div>
-        <div class="metric-pill">
-          <div class="metric-label">Behavior stability</div>
-          <div id="metric-stability" class="metric-value">–</div>
-        </div>
-        <div class="metric-pill">
-          <div class="metric-label">Shock sensitivity</div>
-          <div id="metric-shock" class="metric-value">–</div>
+        <div>
+          <label for="minute">Minute · 0–120</label>
+          <input id="minute" type="number" min="0" max="120" placeholder="e.g. 72" />
         </div>
       </div>
 
-      <div id="nsi-note-block" class="note-block" style="display:none;">
-        <strong>Session note.</strong>
-        <span id="metric-note"></span>
+      <div class="grid grid-2" style="margin-top:12px;">
+        <div>
+          <label for="team">Team</label>
+          <input id="team" type="text" placeholder="Team – e.g. Arsenal" />
+        </div>
+        <div>
+          <label for="opponent">Opponent</label>
+          <input id="opponent" type="text" placeholder="Opponent – e.g. Spurs" />
+        </div>
       </div>
-    </section>
-  </main>
+
+      <div class="grid grid-3" style="margin-top:16px;">
+        <div>
+          <label for="emotionIndex">Emotion index · 0–100</label>
+          <input id="emotionIndex" type="number" min="0" max="100" placeholder="e.g. 68" />
+        </div>
+        <div>
+          <label for="xgMomentum">xG momentum · 0–100</label>
+          <input id="xgMomentum" type="number" min="0" max="100" placeholder="e.g. 74" />
+        </div>
+        <div>
+          <label for="pressureIndex">Pressure index · 0–100</label>
+          <input id="pressureIndex" type="number" min="0" max="100" placeholder="e.g. 59" />
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:12px;">
+        <div>
+          <label for="behaviorDeviation">Behavior deviation · 0–100</label>
+          <input id="behaviorDeviation" type="number" min="0" max="100" placeholder="e.g. 41" />
+        </div>
+        <div>
+          <label for="scoreDiff">Score diff · team – opponent</label>
+          <input id="scoreDiff" type="number" placeholder="e.g. 1 (leading by one)" />
+        </div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <label>High-stakes flags</label>
+        <div class="flags">
+          <label class="flag"><input id="mustWin" type="checkbox" /> Must win</label>
+          <label class="flag"><input id="knockout" type="checkbox" /> Knockout</label>
+          <label class="flag"><input id="derby" type="checkbox" /> Derby</label>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <label>Shock triggers · minutes ago</label>
+        <div class="grid grid-3" style="margin-top:6px;">
+          <div><input id="lastGoal" type="number" min="0" placeholder="Last goal · minutes" /></div>
+          <div><input id="lastCard" type="number" min="0" placeholder="Last card · minutes" /></div>
+          <div><input id="lastVar" type="number" min="0" placeholder="Last VAR · minutes" /></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" id="runBtn">Run NSI Analysis</button>
+        <button class="btn-secondary" id="demoBtn">Demo NSI Analysis</button>
+        <button class="btn-secondary" id="healthBtn">Check NSI Health</button>
+      </div>
+
+      <div class="status-bar" id="statusBar">
+        <div class="status-pill">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Status · idle</span>
+        </div>
+      </div>
+
+      <pre id="output">NSI output will appear here.</pre>
+    </div>
+  </div>
 
   <script>
-    // Adjust this if your backend URL ever changes
-    const NSI_API_BASE = "https://betsense-backend.onrender.com";
+    const API_BASE = "https://betsense-backend.onrender.com";
 
-    const nsiForm = document.getElementById("nsi-form");
-    const runBtn = document.getElementById("run-nsi-btn");
-    const statusPill = document.getElementById("nsi-status-pill");
-    const statusLabel = document.getElementById("nsi-status-label");
-    const statusText = document.getElementById("nsi-status-text");
+    const runBtn = document.getElementById("runBtn");
+    const demoBtn = document.getElementById("demoBtn");
+    const healthBtn = document.getElementById("healthBtn");
+    const output = document.getElementById("output");
+    const statusText = document.getElementById("statusText");
+    const statusDot = document.getElementById("statusDot");
+    const statusBar = document.getElementById("statusBar");
 
-    const outputGrid = document.getElementById("nsi-output-grid");
-    const outputIntro = document.getElementById("nsi-output-intro");
-    const noteBlock = document.getElementById("nsi-note-block");
-
-    const metricNsiScore = document.getElementById("metric-nsi-score");
-    const metricCollapseRisk = document.getElementById("metric-collapse-risk");
-    const metricClutch = document.getElementById("metric-clutch");
-    const metricStability = document.getElementById("metric-stability");
-    const metricShock = document.getElementById("metric-shock");
-    const metricNote = document.getElementById("metric-note");
-
-    function setStatus(mode, message) {
-      statusPill.classList.remove("status-ok", "status-error");
-      if (mode === "ok") {
-        statusPill.classList.add("status-ok");
-        statusLabel.textContent = "STATUS · READY";
-      } else if (mode === "error") {
-        statusPill.classList.add("status-error");
-        statusLabel.textContent = "STATUS · ERROR";
-      } else if (mode === "running") {
-        statusLabel.textContent = "STATUS · RUNNING";
+    function setStatus(text, mode) {
+      statusText.textContent = text;
+      if (mode === "error") {
+        statusDot.classList.add("error");
+        statusBar.querySelector(".status-pill").classList.add("error");
       } else {
-        statusLabel.textContent = "STATUS · IDLE";
-      }
-      if (message) {
-        statusText.textContent = message;
+        statusDot.classList.remove("error");
+        statusBar.querySelector(".status-pill").classList.remove("error");
       }
     }
 
-    function collectPayload() {
-      const getVal = (id) => {
-        const el = document.getElementById(id);
-        return el ? el.value : "";
-      };
+    function boolFromCheckbox(id) {
+      return document.getElementById(id).checked;
+    }
 
-      const toNumberOrNull = (v) => {
-        if (v === "" || v === null || v === undefined) return null;
-        const n = Number(v);
-        return Number.isNaN(n) ? null : n;
-      };
+    function num(id) {
+      const v = document.getElementById(id).value;
+      if (v === "" || v === null || v === undefined) return 0;
+      const n = Number(v);
+      return isNaN(n) ? 0 : n;
+    }
 
+    function buildPayload() {
       return {
-        fixtureId: getVal("fixtureId") || null,
-        team: getVal("team") || null,
-        opponent: getVal("opponent") || null,
-        minute: toNumberOrNull(getVal("minute")),
-        scoreDiff: toNumberOrNull(getVal("scoreDiff")),
-        venue: getVal("venue") || null,
-        flags: {
-          mustWin: document.getElementById("flagMustWin").checked,
-          knockout: document.getElementById("flagKnockout").checked,
-          derby: document.getElementById("flagDerby").checked
-        },
-        stackSignals: {
-          emotionIndex: toNumberOrNull(getVal("emotionIndex")),
-          xgMomentum: toNumberOrNull(getVal("xgMomentum")),
-          pressureIndex: toNumberOrNull(getVal("pressureIndex")),
-          behaviorDeviation: toNumberOrNull(getVal("behaviorDeviation"))
-        },
-        shocks: {
-          lastGoalMinutes: toNumberOrNull(getVal("lastGoalMinutes")),
-          lastCardMinutes: toNumberOrNull(getVal("lastCardMinutes")),
-          lastVarMinutes: toNumberOrNull(getVal("lastVarMinutes"))
-        }
+        fixtureId: document.getElementById("fixtureId").value || null,
+        team: document.getElementById("team").value || null,
+        opponent: document.getElementById("opponent").value || null,
+        minute: num("minute"),
+        scoreDiff: num("scoreDiff"),
+        emotionIndex: num("emotionIndex"),
+        xgMomentum: num("xgMomentum"),
+        pressureIndex: num("pressureIndex"),
+        behaviorDeviation: num("behaviorDeviation"),
+        mustWin: boolFromCheckbox("mustWin"),
+        knockout: boolFromCheckbox("knockout"),
+        derby: boolFromCheckbox("derby"),
+        lastGoalMinutes: num("lastGoal"),
+        lastCardMinutes: num("lastCard"),
+        lastVarMinutes: num("lastVar"),
       };
     }
 
-    nsiForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
+    runBtn.addEventListener("click", async () => {
+      setStatus("Status · running NSI analysis…", "ok");
+      output.textContent = "Calling /api/nsi/analyze…";
 
-      runBtn.disabled = true;
-      const originalLabel = runBtn.textContent;
-      runBtn.textContent = "Analyzing…";
-
-      setStatus("running", "Analyzing current NSI snapshot…");
-
-      const payload = collectPayload();
+      const payload = buildPayload();
 
       try {
-        const response = await fetch(NSI_API_BASE + "/api/nsi/analyze", {
+        const res = await fetch(API_BASE + "/api/nsi/analyze", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(payload)
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-          throw new Error("HTTP " + response.status);
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          setStatus("Status · error from NSI Engine (analyze)", "error");
+          output.textContent = JSON.stringify(data, null, 2);
+          return;
         }
 
-        const json = await response.json();
-        const result = json.result || json;
+        setStatus("Status · NSI snapshot generated (analyze)", "ok");
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        setStatus("Status · network error (analyze)", "error");
+        output.textContent = "Request failed: " + err.message;
+      }
+    });
 
-        const nsiScore =
-          result.nsiScore ??
-          result.score ??
-          result.nsi_score ??
-          null;
+    demoBtn.addEventListener("click", async () => {
+      setStatus("Status · running NSI DEMO…", "ok");
+      output.textContent = "Calling /api/nsi/demo…";
 
-        const collapseRisk =
-          result.collapseRisk ??
-          result.collapse ??
-          result.collapse_risk ??
-          null;
+      try {
+        const res = await fetch(API_BASE + "/api/nsi/demo");
+        const data = await res.json().catch(() => ({}));
 
-        const clutchPotential =
-          result.clutchPotential ??
-          result.clutch ??
-          result.clutch_potential ??
-          null;
+        if (!res.ok) {
+          setStatus("Status · error from NSI DEMO", "error");
+          output.textContent = JSON.stringify(data, null, 2);
+          return;
+        }
 
-        const stability =
-          result.behaviorStability ??
-          result.stability ??
-          result.behaviourStability ??
-          null;
+        setStatus("Status · NSI DEMO snapshot generated", "ok");
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        setStatus("Status · network error (demo)", "error");
+        output.textContent = "Demo request failed: " + err.message;
+      }
+    });
 
-        const shockSensitivity =
-          result.shockSensitivity ??
-          result.shock ??
-          result.shock_sensitivity ??
-          null;
+    healthBtn.addEventListener("click", async () => {
+      setStatus("Status · checking NSI health…", "ok");
+      output.textContent = "Calling /api/nsi/health…";
 
-        const note =
-          result.note ||
-          result.summary ||
-          result.comment ||
-          "";
+      try {
+        const res = await fetch(API_BASE + "/api/nsi/health");
+        const data = await res.json().catch(() => ({}));
 
-        metricNsiScore.textContent =
-          nsiScore === null ? "–" : nsiScore.toString();
-        metricCollapseRisk.textContent = collapseRisk || "–";
-        metricClutch.textContent = clutchPotential || "–";
-        metricStability.textContent = stability || "–";
-        metricShock.textContent = shockSensitivity || "–";
-        metricNote.textContent = note || "No additional note returned by the engine.";
-
-        outputGrid.style.display = "grid";
-        noteBlock.style.display = "block";
-        outputIntro.textContent =
-          "NSI snapshot generated. Review the current neuro-situational identity for this team below.";
-
-        setStatus(
-          "ok",
-          "NSI snapshot generated. You can tweak the inputs and rerun as needed."
-        );
-      } catch (error) {
-        console.error("NSI error:", error);
-        setStatus(
-          "error",
-          "Could not reach NSI Engine. Check backend health or try again."
-        );
-      } finally {
-        runBtn.disabled = false;
-        runBtn.textContent = originalLabel;
+        if (!res.ok) {
+          setStatus("Status · NSI health error", "error");
+        } else {
+          setStatus("Status · NSI health OK", "ok");
+        }
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        setStatus("Status · network error (health)", "error");
+        output.textContent = "Health check failed: " + err.message;
       }
     });
   </script>
