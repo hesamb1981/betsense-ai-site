@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense – RBS Engine Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Base BetSense look & feel (simple, dark, clean) -->
+  <style>
+    :root {
+      --bg: #020817;
+      --card: #030712;
+      --card-soft: #020617;
+      --border: #1f2937;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --accent-strong: #0ea5e9;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --danger: #f97373;
+      --success: #4ade80;
+      --muted: #6b7280;
+      --badge-bg: #111827;
+      --pill-bg: #020617;
+      --pill-border: #1f2937;
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 22px 45px rgba(15, 23, 42, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 32px 16px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1120px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: conic-gradient(
+        from 210deg,
+        #0ea5e9,
+        #22c55e,
+        #a855f7,
+        #f97316,
+        #0ea5e9
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.8);
+    }
+
+    .brand-logo span {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0b1120;
+    }
+
+    .brand-text-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .brand-text-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #1f2937;
+      padding: 6px 12px;
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.18);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.3fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #0b1220 0, #020617 60%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .mode-pill {
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .metric-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .metric {
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #020617, #020617);
+      border: 1px solid #111827;
+      padding: 10px 11px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .metric-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .metric-tag {
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid #1f2937;
+      padding: 3px 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-soft);
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--accent-strong);
+    }
+
+    .metric-caption {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #a3e635, #eab308);
+      width: 0%;
+      transition: width 0.5s ease-out;
+    }
+
+    .flags-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top right, #0b1220 0, #020617 60%);
+      border: 1px solid #111827;
+      padding: 12px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .flags-title {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .flags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .flag-pill {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(248, 250, 252, 0.06);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 4px 9px;
+      font-size: 11px;
+      color: var(--text-soft);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .flag-pill.danger {
+      border-color: rgba(248, 113, 113, 0.45);
+      color: #fecaca;
+    }
+
+    .summary {
+      font-size: 12px;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    .summary span {
+      color: var(--accent-strong);
+      font-weight: 500;
+    }
+
+    .side-card {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, #020617 0, #020617 60%);
+      border: 1px solid var(--border);
+      padding: 16px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .side-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .side-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .side-caption {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .health-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #1f2937;
+      padding: 4px 9px;
+      font-size: 11px;
+      color: var(--success);
+    }
+
+    .health-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .meta-item {
+      border-radius: 14px;
+      border: 1px solid #111827;
+      background: #020617;
+      padding: 8px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .refresh-btn {
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #0ea5e9, #22c55e);
+      border: none;
+      color: #0b1120;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 7px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.8);
+    }
+
+    .refresh-btn span.icon {
+      font-size: 13px;
+    }
+
+    .status-text {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .status-text span {
+      color: var(--accent-strong);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+  <!-- Backend base URL -->
+  <script src="api-config.js"></script>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">
+          <span>B</span>
+        </div>
+        <div>
+          <div class="brand-text-title">BetSense Quantum Sports Suite</div>
+          <div class="brand-text-sub">Real-time behaviour switching · risk console</div>
+        </div>
+      </div>
+      <div class="pill">
+        <span class="pill-dot"></span>
+        <span>RBS Engine · demo payload only</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT: RBS metrics -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">RBS – Real Behaviour Switching Engine</div>
+            <div class="card-subtitle">
+              Single-match lens for late-game behaviour flips, panic risk and comeback chance.
+            </div>
+          </div>
+          <div class="mode-pill">MODE · DEMO</div>
+        </div>
+
+        <div class="metric-row">
+          <div class="metric">
+            <div class="metric-label-row">
+              <div class="metric-label">Switch risk</div>
+              <div class="metric-tag">Home &rarr; away</div>
+            </div>
+            <div class="metric-value" id="switchRiskValue">–%</div>
+            <div class="metric-caption">
+              Probability that the current behavioural regime flips in the next window.
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="switchRiskBar"></div>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label-row">
+              <div class="metric-label">Panic flip</div>
+              <div class="metric-tag">Fan / desk</div>
+            </div>
+            <div class="metric-value" id="panicFlipValue">–%</div>
+            <div class="metric-caption">
+              Panic-driven switches – penalty shocks, red cards, narrative breaks.
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="panicFlipBar"></div>
+            </div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-label-row">
+              <div class="metric-label">Comeback chance</div>
+              <div class="metric-tag">Scoreline context</div>
+            </div>
+            <div class="metric-value" id="comebackChanceValue">–%</div>
+            <div class="metric-caption">
+              Behaviour-adjusted probability that the trailing side forces a comeback.
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="comebackChanceBar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flags-card">
+          <div class="flags-title">Live behaviour flags</div>
+          <div class="flags-row" id="flagsRow">
+            <!-- Filled from API -->
+          </div>
+          <div class="summary" id="summaryText">
+            Waiting for <span>demo payload</span>…
+          </div>
+        </div>
+
+        <div class="footer-row">
+          <button class="refresh-btn" id="refreshBtn">
+            <span class="icon">⟳</span>
+            <span>Shuffle RBS demo payload</span>
+          </button>
+          <div class="status-text" id="apiStatus">
+            API: <span>idle</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: meta + health -->
+      <aside class="side-card">
+        <div class="side-header">
+          <div>
+            <div class="side-title">Engine health & meta</div>
+            <div class="side-caption">
+              In production this surface runs side-by-side with NSI and Fusion engines.
+            </div>
+          </div>
+          <div class="health-chip" id="healthChip">
+            <span class="health-chip-dot"></span>
+            <span>Engine health OK</span>
+          </div>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="meta-label">Engine</div>
+            <div class="meta-value" id="engineName">RBS</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Mode</div>
+            <div class="meta-value" id="modeLabel">demo</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Fixture</div>
+            <div class="meta-value" id="fixtureLabel">Static sample</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Minute / state</div>
+            <div class="meta-value" id="minuteLabel">–</div>
+          </div>
+        </div>
+
+        <div class="side-caption" style="margin-top:10px;">
+          In live trading stacks this lens plugs into the same
+          <a href="./live.html">BetSense live console</a> that powers NSI and Fusion.
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const statusEl = document.getElementById("apiStatus");
+    const summaryEl = document.getElementById("summaryText");
+    const flagsRow = document.getElementById("flagsRow");
+
+    const switchRiskValue = document.getElementById("switchRiskValue");
+    const panicFlipValue = document.getElementById("panicFlipValue");
+    const comebackChanceValue = document.getElementById("comebackChanceValue");
+
+    const switchRiskBar = document.getElementById("switchRiskBar");
+    const panicFlipBar = document.getElementById("panicFlipBar");
+    const comebackChanceBar = document.getElementById("comebackChanceBar");
+
+    const engineNameEl = document.getElementById("engineName");
+    const modeLabelEl = document.getElementById("modeLabel");
+    const fixtureLabelEl = document.getElementById("fixtureLabel");
+    const minuteLabelEl = document.getElementById("minuteLabel");
+
+    const refreshBtn = document.getElementById("refreshBtn");
+
+    function setStatus(text, accent = false) {
+      statusEl.innerHTML = 'API: <span>' + text + "</span>";
+      if (accent) {
+        statusEl.querySelector("span").style.color = "#0ea5e9";
+      }
+    }
+
+    function pct(value) {
+      if (typeof value !== "number") return "–%";
+      return value.toFixed(0) + "%";
+    }
+
+    function setBar(barEl, value) {
+      if (typeof value !== "number") {
+        barEl.style.width = "0%";
+      } else {
+        const clamped = Math.max(0, Math.min(100, value));
+        barEl.style.width = clamped + "%";
+      }
+    }
+
+    function renderFlags(flags) {
+      flagsRow.innerHTML = "";
+      if (!Array.isArray(flags) || flags.length === 0) {
+        const span = document.createElement("div");
+        span.className = "flag-pill";
+        span.textContent = "No behaviour flags in current snapshot";
+        flagsRow.appendChild(span);
+        return;
+      }
+
+      flags.forEach((f) => {
+        const pill = document.createElement("div");
+        pill.className = "flag-pill";
+        if (
+          typeof f === "string" &&
+          (f.toLowerCase().includes("panic") ||
+            f.toLowerCase().includes("collapse") ||
+            f.toLowerCase().includes("shock"))
+        ) {
+          pill.classList.add("danger");
+        }
+        pill.textContent = typeof f === "string" ? f : JSON.stringify(f);
+        flagsRow.appendChild(pill);
+      });
+    }
+
+    async function loadDemo() {
+      try {
+        setStatus("contacting RBS demo…", true);
+
+        const base = window.API_BASE_URL || "";
+        const url = base.replace(/\/$/, "") + "/api/rbs/demo";
+
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+        const data = await res.json();
+
+        // Metrics
+        const metrics = data.metrics || {};
+        const switchRisk = metrics.switchRisk;
+        const panicFlip = metrics.panicFlip;
+        const comebackChance = metrics.comebackChance;
+
+        switchRiskValue.textContent = pct(switchRisk);
+        panicFlipValue.textContent = pct(panicFlip);
+        comebackChanceValue.textContent = pct(comebackChance);
+
+        setBar(switchRiskBar, switchRisk);
+        setBar(panicFlipBar, panicFlip);
+        setBar(comebackChanceBar, comebackChance);
+
+        // Summary
+        const engine = data.engine || "RBS";
+        const mode = data.mode || "demo";
+        const summary = data.summary || "RBS demo snapshot loaded.";
+        const fixtureId = data.fixtureId || data.fixture || null;
+        const minute = data.minute != null ? data.minute : null;
+
+        engineNameEl.textContent = engine;
+        modeLabelEl.textContent = mode;
+        if (fixtureId) {
+          fixtureLabelEl.textContent = "#" + fixtureId.toString();
+        }
+        if (minute !== null) {
+          minuteLabelEl.textContent = minute + "′ game state";
+        }
+
+        renderFlags(data.flags || data.signals || []);
+
+        summaryEl.innerHTML =
+          "RBS engine <span>" +
+          engine +
+          "</span> has loaded a <span>" +
+          mode +
+          "</span> demo snapshot: " +
+          summary;
+
+        setStatus("demo payload OK", true);
+      } catch (err) {
+        console.error(err);
+        summaryEl.innerHTML =
+          "Unable to reach <span>RBS demo endpoint</span>. Check backend status or API base URL.";
+        setStatus("error contacting /api/rbs/demo");
+      }
+    }
+
+    refreshBtn.addEventListener("click", () => {
+      loadDemo();
+    });
+
+    // Initial load
+    loadDemo();
+  </script>
+</body>
+</html>
