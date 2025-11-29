@@ -1,111 +1,579 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>BetSense • RBS Engine</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>BetSense – RBS Engine Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<style>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: radial-gradient(circle at top, #020617 55%, #000 100%);
+      --card-bg: rgba(15, 23, 42, 0.98);
+      --accent: #38bdf8;
+      --accent-soft: #0ea5e9;
+      --accent-strong: #6366f1;
+      --danger: #fb7185;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-        margin: 0;
-        padding: 0;
-        background: radial-gradient(circle at top, #020617, #000);
-        font-family: system-ui, -apple-system, Segoe UI, sans-serif;
-        color: #e5e7eb;
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 40px;
     }
+
     .page {
-        max-width: 1100px;
-        margin: auto;
-        padding: 30px 20px;
+      width: 100%;
+      max-width: 1200px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, #020617 65%, #000 100%);
+      box-shadow: 0 32px 60px rgba(15, 23, 42, 0.9);
+      padding: 22px 18px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
     }
-    h1 {
-        font-size: 32px;
-        margin-bottom: 20px;
-        font-weight: 700;
-        text-align: center;
+
+    @media (min-width: 900px) {
+      .page {
+        padding: 28px 28px 30px;
+      }
     }
-    .input-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        margin: 12px 0;
+
+    /* HEADER */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 4px;
     }
-    input, select {
-        padding: 12px;
-        font-size: 16px;
-        border-radius: 10px;
-        border: 1px solid #374151;
-        background: #0f172a;
-        color: #e5e7eb;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    button {
-        width: 100%;
-        padding: 14px;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        margin-top: 20px;
-        background: linear-gradient(90deg, #4f46e5, #3b82f6);
-        color: #fff;
-        cursor: pointer;
-        font-weight: 600;
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 160deg,
+        #f97316,
+        #f97316 25%,
+        #22c55e 25%,
+        #22c55e 50%,
+        #38bdf8 50%,
+        #6366f1 75%,
+        #6366f1 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9),
+        0 12px 35px rgba(8, 47, 73, 0.9);
     }
-    #output {
-        margin-top: 30px;
-        background: #0f172a;
-        padding: 20px;
-        border-radius: 14px;
-        white-space: pre-wrap;
+
+    .brand-mark span {
+      font-weight: 700;
+      font-size: 18px;
+      color: #0b1120;
     }
-</style>
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: rgba(22, 163, 74, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      font-size: 12px;
+      color: #bbf7d0;
+      white-space: nowrap;
+    }
+
+    .status-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.22);
+    }
+
+    /* TITLE BLOCK */
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 30px;
+      }
+    }
+
+    .hero-kicker {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .hero-subcopy {
+      font-size: 13px;
+      color: var(--text-soft);
+      max-width: 540px;
+    }
+
+    /* LAYOUT: main vs side */
+
+    .layout {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    @media (min-width: 960px) {
+      .layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+
+    .main-card {
+      flex: 1.4;
+      border-radius: var(--radius-xl);
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      padding: 18px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    @media (min-width: 960px) {
+      .main-card {
+        padding: 20px 20px 22px;
+      }
+    }
+
+    .side-card {
+      flex: 1;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, #020617 60%, #000 100%);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 16px 15px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    /* FORM */
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+    }
+
+    @media (min-width: 720px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .input {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-main);
+      font-size: 14px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease,
+        background-color 0.14s ease;
+    }
+
+    .input::placeholder {
+      color: #6b7280;
+    }
+
+    .input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.5);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .btn-primary {
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      padding: 11px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      background: linear-gradient(90deg, var(--accent-soft), var(--accent-strong));
+      color: #0b1120;
+      box-shadow: 0 16px 35px rgba(37, 99, 235, 0.55);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+      box-shadow: 0 20px 45px rgba(37, 99, 235, 0.75);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 24px rgba(30, 64, 175, 0.8);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: wait;
+      box-shadow: none;
+    }
+
+    /* STATUS & OUTPUT */
+
+    .status-line {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .status-label {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+    }
+
+    .status-value-ok {
+      color: #4ade80;
+    }
+
+    .status-value-error {
+      color: var(--danger);
+    }
+
+    .result-shell {
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top, #020617 40%, #020617 100%);
+      padding: 10px 11px 12px;
+      min-height: 80px;
+      font-size: 12px;
+      color: var(--text-soft);
+      overflow-x: auto;
+    }
+
+    .result-shell pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    /* SIDE CARD CONTENT */
+
+    .side-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-size: 11px;
+      color: #e0f2fe;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .side-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .side-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .side-list strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+  </style>
 </head>
-
 <body>
-<div class="page">
-    <h1>RBS Engine • Demo Console</h1>
+  <div class="page">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark">
+          <span>B</span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">BETSENSE AI STACK · REAL BEHAVIORAL SWITCHING</div>
+          <div class="brand-subtitle">Quantum Sports Suite · Engine layer</div>
+        </div>
+      </div>
 
-    <div class="input-row">
-        <input id="team" placeholder="Team Name" />
-        <input id="opponent" placeholder="Opponent" />
-    </div>
+      <div class="status-pill">
+        <span class="status-pill-dot"></span>
+        <span>LiveData Connect ready</span>
+      </div>
+    </header>
 
-    <div class="input-row">
-        <input id="fixtureId" placeholder="Fixture ID" />
-        <input id="minute" placeholder="Minute (0–90)" />
-    </div>
+    <!-- Intro / title -->
+    <section class="hero">
+      <div class="hero-kicker">RBS ENGINE</div>
+      <h1 class="hero-title">RBS Engine · Demo Console</h1>
+      <p class="hero-subcopy">
+        Real Behavioral Switching Engine — detects critical behavioral switches inside a live match:
+        collapse moments, aggressive lifts and momentum flips that classic stats never see.
+      </p>
+    </section>
 
-    <button id="run-rbs-btn">Run RBS Engine</button>
+    <!-- Main layout -->
+    <section class="layout">
+      <!-- Left: Demo console -->
+      <div class="main-card">
+        <div>
+          <h2 class="card-title">RBS Demo Console</h2>
+          <p class="card-subtitle">
+            Trigger a demo analysis from the RBS Engine and preview detected switches and confidence
+            scores. In production this layer runs on your stacked feeds via LiveData Connect.
+          </p>
+        </div>
 
-    <div id="output">Result will appear here...</div>
-</div>
+        <form id="rbs-form">
+          <div class="grid grid-2">
+            <div>
+              <label class="field-label" for="team">Team name</label>
+              <input
+                id="team"
+                class="input"
+                type="text"
+                placeholder="e.g. Arsenal"
+                autocomplete="off"
+              />
+            </div>
 
-<script type="module">
-import { callEngine } from "/src-api-config.js";
+            <div>
+              <label class="field-label" for="opponent">Opponent</label>
+              <input
+                id="opponent"
+                class="input"
+                type="text"
+                placeholder="e.g. Spurs"
+                autocomplete="off"
+              />
+            </div>
+          </div>
 
-async function runRBSDemo() {
-    const payload = {
-        engine: "rbs",
-        team: document.getElementById("team").value,
-        opponent: document.getElementById("opponent").value,
-        fixtureId: document.getElementById("fixtureId").value,
-        minute: document.getElementById("minute").value,
-        mode: "demo"
-    };
+          <div class="grid grid-2">
+            <div>
+              <label class="field-label" for="fixtureId">Fixture ID</label>
+              <input
+                id="fixtureId"
+                class="input"
+                type="text"
+                placeholder="Demo ID (any text)"
+                autocomplete="off"
+              />
+            </div>
 
-    document.getElementById("output").textContent = "Processing...";
+            <div>
+              <label class="field-label" for="minute">Minute (0–120)</label>
+              <input
+                id="minute"
+                class="input"
+                type="number"
+                min="0"
+                max="120"
+                placeholder="e.g. 74"
+              />
+            </div>
+          </div>
 
-    try {
-        const data = await callEngine(payload);
-        document.getElementById("output").textContent =
-            JSON.stringify(data, null, 2);
-    } catch (e) {
-        document.getElementById("output").textContent =
-            "Error connecting to API.\n\n" + e;
+          <button id="run-rbs-btn" class="btn-primary" type="submit">
+            Run RBS Engine
+          </button>
+        </form>
+
+        <div class="status-line">
+          <span class="status-label">Status</span>
+          <span id="rbs-status" class="status-value-ok">Idle · waiting for input</span>
+        </div>
+
+        <div class="result-shell">
+          <pre id="rbs-output">Result will appear here…</pre>
+        </div>
+      </div>
+
+      <!-- Right: Explainer -->
+      <aside class="side-card">
+        <div class="side-tag">
+          <span class="side-tag-dot"></span>
+          <span>Behavioral switching layer</span>
+        </div>
+
+        <div>
+          <h3 class="card-title">What this engine looks for</h3>
+          <ul class="side-list">
+            <li><strong>Collapse moments</strong> – sudden drops in control, pressure and resilience.</li>
+            <li><strong>Aggressive lifts</strong> – bursts of high-risk, high-reward intent.</li>
+            <li><strong>Momentum flips</strong> – fans + odds + events snapping in the same direction.</li>
+            <li><strong>Switch confidence scores</strong> – how strong and durable the switch is.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <script type="module">
+    import { callEngine } from "/src-api-config.js";
+
+    const form = document.getElementById("rbs-form");
+    const teamInput = document.getElementById("team");
+    const opponentInput = document.getElementById("opponent");
+    const fixtureInput = document.getElementById("fixtureId");
+    const minuteInput = document.getElementById("minute");
+    const statusEl = document.getElementById("rbs-status");
+    const outputEl = document.getElementById("rbs-output");
+    const buttonEl = document.getElementById("run-rbs-btn");
+
+    function setStatus(text, mode = "idle") {
+      statusEl.textContent = text;
+
+      statusEl.classList.remove("status-value-ok", "status-value-error");
+
+      if (mode === "ok") statusEl.classList.add("status-value-ok");
+      if (mode === "error") statusEl.classList.add("status-value-error");
     }
-}
 
-document.getElementById("run-rbs-btn")
-        .addEventListener("click", runRBSDemo);
-</script>
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const team = teamInput.value.trim() || "Arsenal";
+      const opponent = opponentInput.value.trim() || "Spurs";
+      const fixtureId = fixtureInput.value.trim() || "DEMO_FIXTURE";
+      const minuteValue = minuteInput.value.trim();
+      const minute = minuteValue === "" ? 74 : Number(minuteValue);
+
+      const params = {
+        engine: "rbs",
+        mode: "demo",
+        team,
+        opponent,
+        fixtureId,
+        minute,
+      };
+
+      setStatus("Processing…", "idle");
+      outputEl.textContent = "";
+
+      buttonEl.disabled = true;
+
+      try {
+        const data = await callEngine(params);
+        setStatus("Status · OK · RBS switch map received", "ok");
+        outputEl.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        console.error(err);
+        setStatus("Status · Error contacting RBS API", "error");
+        outputEl.textContent =
+          "Request failed. Please try again.\n\n" + (err?.message || String(err));
+      } finally {
+        buttonEl.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
