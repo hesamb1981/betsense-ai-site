@@ -1,2 +1,17 @@
-/api/*   https://betsense-backend.onrender.com/:splat   200
-/*       /index.html                                    200
+# Netlify redirects for BetSense
+
+# 1) API proxy to Netlify function
+/api-football/*   /.netlify/functions/api-football-proxy   200
+
+# 2) Main pages
+/                /index.html          200
+/demo            /demo.html           200
+/live            /live.html           200
+/historical      /historical.html     200
+
+# 3) Engine consoles
+/rbs             /rbs.html                       200
+/nsi             /engine/nsi/NSIEngine.html      200
+
+# 4) Fallback – any other path goes to index
+/*               /index.html          200
