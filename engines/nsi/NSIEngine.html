@@ -24,36 +24,49 @@
       color: #e5e7eb;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: stretch;
       padding: 24px 12px 40px;
     }
 
-    .page {
+    .shell {
       width: 100%;
-      max-width: 520px;
-      border-radius: 28px;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      background: radial-gradient(circle at top left, #020617, #020617 65%);
-      box-shadow: 0 32px 80px rgba(15, 23, 42, 0.95);
-      padding: 26px 22px 24px;
+      max-width: 900px;
     }
 
-    .badge-row {
+    .card {
+      position: relative;
+      border-radius: 32px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at top left, #020617, #020617 75%);
+      box-shadow: 0 32px 80px rgba(15, 23, 42, 0.9);
+      padding: 24px 18px 22px;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 40px 16px 56px;
+      }
+      .card {
+        padding: 30px 26px 26px;
+      }
+    }
+
+    .pill-row {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 6px 14px;
       border-radius: 999px;
+      padding: 6px 14px;
       border: 1px solid rgba(55, 65, 81, 0.9);
-      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      background: radial-gradient(circle at top, #020617, #020617 85%);
       margin-bottom: 18px;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #9ca3af;
     }
 
-    .badge-dot {
+    .pill-dot {
       width: 9px;
       height: 9px;
       border-radius: 999px;
@@ -61,298 +74,365 @@
       box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
     }
 
-    .badge-main {
-      font-weight: 600;
+    .pill-label-strong {
       color: #e5e7eb;
+      font-weight: 600;
     }
 
-    .header-title {
+    .title-area {
+      margin-bottom: 20px;
+    }
+
+    .title {
       font-size: 1.9rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.15;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+      line-height: 1.05;
       margin-bottom: 10px;
     }
 
-    .header-subtitle {
+    .subtitle {
       font-size: 0.95rem;
       color: #9ca3af;
       line-height: 1.5;
-      margin-bottom: 22px;
+      max-width: 620px;
     }
 
-    .card {
-      border-radius: 22px;
-      background: radial-gradient(circle at top left, #020617, #000 80%);
-      border: 1px solid rgba(55, 65, 81, 0.95);
-      padding: 18px 18px 16px;
-      margin-bottom: 18px;
+    .grid {
+      margin-top: 22px;
+      display: grid;
+      gap: 18px;
     }
 
-    .card-title {
+    @media (min-width: 860px) {
+      .grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        align-items: stretch;
+      }
+    }
+
+    .panel {
+      border-radius: 24px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top left, #020617, #020617 90%);
+      padding: 18px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-title {
       font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 4px;
     }
 
-    .card-subtitle {
-      font-size: 0.85rem;
+    .panel-subtitle {
+      font-size: 0.88rem;
       color: #9ca3af;
-      line-height: 1.4;
-      margin-bottom: 14px;
+      line-height: 1.5;
     }
 
-    .btn-row {
+    .run-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex-wrap: nowrap;
+      gap: 10px;
+      margin-top: 4px;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
-      flex: 0 0 auto;
       border: none;
       border-radius: 999px;
-      padding: 11px 26px;
-      font-size: 0.95rem;
+      padding: 11px 22px;
+      font-size: 0.92rem;
       font-weight: 600;
       cursor: pointer;
-      background: linear-gradient(120deg, #fb7185, #f97316);
+      background: linear-gradient(90deg, #fb7185, #f97316);
       color: #0b1120;
-      box-shadow: 0 16px 40px rgba(248, 113, 113, 0.4);
+      box-shadow: 0 16px 40px rgba(248, 113, 113, 0.38);
       transition: transform 0.12s ease, box-shadow 0.12s ease,
         filter 0.12s ease;
       white-space: nowrap;
     }
 
     .btn-primary:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.95);
+      transform: translateY(1px) scale(0.985);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.9);
       filter: brightness(0.96);
     }
 
     .status-pill {
-      flex: 1 1 auto;
-      border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      padding: 7px 12px;
-      font-size: 0.8rem;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 6px 12px;
+      font-size: 0.8rem;
       color: #9ca3af;
-      justify-content: flex-end;
+      background: radial-gradient(circle at top, #020617, #020617 90%);
     }
 
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 999px;
-      background: #6b7280;
-      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-      transition: background 0.12s ease, box-shadow 0.12s ease;
+      background: #4b5563;
+      box-shadow: 0 0 6px rgba(75, 85, 99, 0.9);
     }
 
-    .status-label {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.72rem;
-      color: #6b7280;
+    .status-dot--running {
+      background: #facc15;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.9);
     }
 
-    .status-state {
+    .status-dot--ok {
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .status-dot--error {
+      background: #f97373;
+      box-shadow: 0 0 10px rgba(248, 113, 113, 0.9);
+    }
+
+    .status-main {
       color: #e5e7eb;
       font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
     }
 
-    .status-meta {
+    .status-extra {
       color: #9ca3af;
     }
 
-    .console-card {
-      border-radius: 22px;
-      background: radial-gradient(circle at top left, #020617, #000 80%);
-      border: 1px solid rgba(31, 41, 55, 0.95);
-      padding: 16px 16px 14px;
+    .console-panel {
+      position: relative;
     }
 
-    .console-header {
+    .console-header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      gap: 10px;
     }
 
-    .console-title {
+    .console-label {
       font-size: 0.82rem;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: #6b7280;
     }
 
-    .console-ok-btn {
+    .console-ok-pill {
       border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      padding: 3px 12px 4px;
+      padding: 3px 12px;
       font-size: 0.78rem;
-      background: transparent;
+      border: 1px solid rgba(55, 65, 81, 0.9);
       color: #9ca3af;
       cursor: default;
     }
 
-    .console-output {
-      margin-top: 4px;
-      border-radius: 18px;
-      background: radial-gradient(circle at top left, #020617, #020617 80%);
+    .console-box {
+      margin-top: 10px;
+      border-radius: 20px;
       border: 1px solid rgba(31, 41, 55, 0.95);
-      padding: 12px 13px 11px;
-      font-size: 0.8rem;
+      background: radial-gradient(circle at top, #020617, #000 78%);
+      padding: 14px 14px 14px;
+      min-height: 140px;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .console-text {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
         "Liberation Mono", "Courier New", monospace;
       color: #e5e7eb;
-      min-height: 80px;
       white-space: pre-wrap;
       word-break: break-word;
-      overflow-wrap: break-word;
     }
 
-    .console-hint {
-      margin-top: 10px;
-      font-size: 0.75rem;
+    .console-placeholder {
       color: #6b7280;
-      line-height: 1.4;
     }
 
-    @media (max-width: 400px) {
-      .btn-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .status-pill {
-        justify-content: flex-start;
-      }
+    .footer-hint {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: #6b7280;
+      max-width: 520px;
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="badge-row">
-      <span class="badge-dot"></span>
-      <span class="badge-main">NSI ENGINE</span>
-      <span>• LIVE READY</span>
-    </div>
-
-    <h1 class="header-title">NSI ENGINE — Demo Console</h1>
-
-    <p class="header-subtitle">
-      Run a demo NSI Engine analysis through the BetSense Ultra backend API.
-      This is a fixed showcase scenario to prove end-to-end connectivity.
-    </p>
-
+  <div class="shell">
     <div class="card">
-      <div class="card-title">NSI demo analyzer</div>
-      <div class="card-subtitle">
-        Tap the button to send a demo request into the NSI layer and inspect
-        the narrative it returns.
+      <!-- Top pill -->
+      <div class="pill-row">
+        <span class="pill-dot"></span>
+        <span class="pill-label-strong">NSI ENGINE</span>
+        <span>•</span>
+        <span>LIVE READY</span>
       </div>
 
-      <div class="btn-row">
-        <button id="run-nsi-demo" class="btn-primary">
-          Run NSI Demo
-        </button>
-
-        <div class="status-pill" id="status-pill">
-          <span class="status-dot" id="status-dot"></span>
-          <span class="status-label">Status</span>
-          <span class="status-state" id="status-state">idle</span>
-          <span class="status-meta" id="status-meta"></span>
+      <!-- Title + subtitle -->
+      <div class="title-area">
+        <div class="title">NSI ENGINE — Demo Console</div>
+        <div class="subtitle">
+          Run a demo NSI Engine analysis through the BetSense Ultra backend API.
+          This is a fixed showcase scenario to prove end-to-end connectivity.
         </div>
       </div>
-    </div>
 
-    <div class="console-card">
-      <div class="console-header">
-        <div class="console-title">CONSOLE OUTPUT</div>
-        <button class="console-ok-btn" id="output-ok">ok</button>
-      </div>
+      <div class="grid">
+        <!-- Left panel: demo analyzer -->
+        <section class="panel">
+          <div class="panel-title">NSI demo analyzer</div>
+          <div class="panel-subtitle">
+            Tap the button to send a demo request into the NSI layer and
+            inspect the narrative it returns.
+          </div>
 
-      <pre id="console-output" class="console-output">
-Tap “Run NSI Demo” to send a demo request into the NSI Engine…</pre>
+          <div class="run-row">
+            <button id="run-nsi-demo" class="btn-primary">
+              Run NSI Demo
+            </button>
 
-      <div class="console-hint">
-        This console uses the same backend endpoint your live NSI stack will
-        use.
+            <div class="status-pill" id="status-pill">
+              <span
+                class="status-dot"
+                id="status-dot"
+              ></span>
+              <span class="status-main" id="status-main">STATUS</span>
+              <span class="status-extra" id="status-extra">idle</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right panel: console -->
+        <section class="panel console-panel">
+          <div class="console-header-row">
+            <div class="console-label">CONSOLE OUTPUT</div>
+            <div class="console-ok-pill" id="console-pill">ok</div>
+          </div>
+
+          <div class="console-box">
+            <div
+              id="console-output"
+              class="console-text console-placeholder"
+            >
+Tap “Run NSI Demo” to send a demo request into the NSI Engine…
+            </div>
+          </div>
+
+          <div class="footer-hint">
+            This console uses the same backend endpoint your live NSI stack
+            will use.
+          </div>
+        </section>
       </div>
     </div>
   </div>
 
   <script>
-    const API_URL = "/.netlify/functions/nsi-demo";
-
-    const runBtn = document.getElementById("run-nsi-demo");
     const statusDot = document.getElementById("status-dot");
-    const statusState = document.getElementById("status-state");
-    const statusMeta = document.getElementById("status-meta");
-    const outputEl = document.getElementById("console-output");
+    const statusMain = document.getElementById("status-main");
+    const statusExtra = document.getElementById("status-extra");
+    const consoleOutput = document.getElementById("console-output");
+    const consolePill = document.getElementById("console-pill");
+    const runBtn = document.getElementById("run-nsi-demo");
 
-    function setStatus(state, metaText) {
-      statusState.textContent = state;
-      statusMeta.textContent = metaText ? " · " + metaText : "";
+    function setStatus(mode) {
+      statusDot.classList.remove(
+        "status-dot--running",
+        "status-dot--ok",
+        "status-dot--error"
+      );
 
-      if (state === "running") {
-        statusDot.style.background = "#facc15";
-        statusDot.style.boxShadow = "0 0 14px rgba(234,179,8,0.9)";
-      } else if (state === "ok") {
-        statusDot.style.background = "#22c55e";
-        statusDot.style.boxShadow = "0 0 14px rgba(34,197,94,0.9)";
-      } else if (state === "error") {
-        statusDot.style.background = "#f97373";
-        statusDot.style.boxShadow = "0 0 14px rgba(248,113,113,0.9)";
-      } else {
-        statusDot.style.background = "#6b7280";
-        statusDot.style.boxShadow = "0 0 0 rgba(0,0,0,0)";
+      if (mode === "idle") {
+        statusMain.textContent = "STATUS";
+        statusExtra.textContent = "idle";
+      } else if (mode === "running") {
+        statusDot.classList.add("status-dot--running");
+        statusMain.textContent = "STATUS";
+        statusExtra.textContent = "running";
+      } else if (mode === "ok") {
+        statusDot.classList.add("status-dot--ok");
+        statusMain.textContent = "STATUS";
+        statusExtra.textContent = "ok";
+      } else if (mode === "error") {
+        statusDot.classList.add("status-dot--error");
+        statusMain.textContent = "STATUS";
+        statusExtra.textContent = "error";
       }
     }
 
-    setStatus("idle", "");
+    function setConsole(text, isError) {
+      consoleOutput.textContent = text;
+      consoleOutput.classList.remove("console-placeholder");
+      if (isError) {
+        consolePill.textContent = "error";
+      } else {
+        consolePill.textContent = "ok";
+      }
+    }
 
-    runBtn.addEventListener("click", async () => {
-      setStatus("running", "sending demo request…");
-      outputEl.textContent = "Processing demo request…";
+    async function runNSIDemo() {
+      setStatus("running");
+      setConsole("Processing demo request…", false);
 
       try {
-        const res = await fetch(API_URL, {
+        const res = await fetch("/.netlify/functions/nsi-demo", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mode: "demo" }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // اگر بک‌اند دمو پارامتر خاصی می‌خواهد، اینجا قرار می‌دهیم
+          body: JSON.stringify({
+            engine: "nsi",
+            mode: "demo",
+          }),
         });
 
+        const text = await res.text();
+        let parsed;
+        try {
+          parsed = JSON.parse(text);
+        } catch (_) {
+          parsed = text;
+        }
+
         if (!res.ok) {
-          const text = await res.text();
-          setStatus("error", "http " + res.status);
-          outputEl.textContent = text || "Request failed.";
+          setStatus("error");
+          setConsole(
+            typeof parsed === "string"
+              ? parsed
+              : JSON.stringify(parsed, null, 2),
+            true
+          );
           return;
         }
 
-        let data;
-        try {
-          data = await res.json();
-          outputEl.textContent = JSON.stringify(data, null, 2);
-        } catch (e) {
-          const text = await res.text();
-          outputEl.textContent = text || "[no JSON body]";
-        }
-
-        setStatus("ok", "response received");
+        setStatus("ok");
+        setConsole(
+          typeof parsed === "string"
+            ? parsed
+            : JSON.stringify(parsed, null, 2),
+          false
+        );
       } catch (err) {
-        setStatus("error", "network error");
-        outputEl.textContent = err && err.message
-          ? err.message
-          : "Network error.";
+        setStatus("error");
+        setConsole(
+          `Request failed:\n${err && err.message ? err.message : String(err)}`,
+          true
+        );
       }
-    });
+    }
+
+    runBtn.addEventListener("click", runNSIDemo);
+    // وضعیت اولیه
+    setStatus("idle");
   </script>
 </body>
 </html>
