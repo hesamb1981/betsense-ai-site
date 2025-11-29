@@ -1,17 +1,12 @@
-# Netlify redirects for BetSense
+# Redirects for engine pages
+/NSIEngine     /engines/nsi/NSIEngine.html      200
+/RBSEngine     /engines/rbs/RBSEngine.html      200
+/FusionEngine  /engines/fusion/FusionEngine.html 200
+/EmotionEngine /engines/emotion/EmotionEngine.html 200
+/BehaviorDeviation /engines/behavior/BehaviorDeviation.html 200
+/OrderBookPressure  /engines/orderbook/OrderBookPressure.html 200
+/GoldenEngine  /engines/golden/GoldenEngine.html 200
+/GeniusEngine  /engines/genius/GeniusEngine.html 200
 
-# 1) API proxy to Netlify function
-/api-football/*   /.netlify/functions/api-football-proxy   200
-
-# 2) Main pages
-/                /index.html          200
-/demo            /demo.html           200
-/live            /live.html           200
-/historical      /historical.html     200
-
-# 3) Engine consoles
-/rbs             /rbs.html                       200
-/nsi             /engine/nsi/NSIEngine.html      200
-
-# 4) Fallback – any other path goes to index
-/*               /index.html          200
+# Default
+/*    /index.html   200
