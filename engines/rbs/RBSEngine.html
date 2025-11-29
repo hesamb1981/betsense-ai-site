@@ -1,161 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>BetSense - RBS Engine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<title>BetSense • RBS Engine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <style>
-    :root {
-      color-scheme: dark;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
+<style>
     body {
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #020617, #020617 55%, #000);
-      color: #e5e7eb;
-      display: flex;
-      justify-content: center;
-      padding: 24px 12px 40px;
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(circle at top, #020617, #000);
+        font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+        color: #e5e7eb;
     }
-
     .page {
-      width: 100%;
-      max-width: 1200px;
-      border-radius: 24px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: radial-gradient(circle at top left, #020617, #020617 65%);
-      box-shadow: 0 32px 60px rgba(15,23,42,0.9);
-      padding: 20px 16px 24px;
+        max-width: 1100px;
+        margin: auto;
+        padding: 30px 20px;
     }
-
-    @media (min-width: 900px) {
-      .page { padding: 24px 28px 32px; }
+    h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        font-weight: 700;
+        text-align: center;
     }
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
+    .input-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin: 12px 0;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    input, select {
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 10px;
+        border: 1px solid #374151;
+        background: #0f172a;
+        color: #e5e7eb;
     }
-
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: conic-gradient(
-        from 160deg,
-        #f97316,
-        #f97316 25%,
-        #22c55e 25%,
-        #22c55e 50%,
-        #38bdf8 50%,
-        #38bdf8 75%,
-        #a855f7 75%,
-        #a855f7
-      );
-      box-shadow: 0 0 12px rgba(56,189,248,0.5);
-    }
-
-    .brand-title {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: .4px;
-    }
-
-    .run-box {
-      margin-top: 22px;
-      border: 1px solid rgba(148,163,184,0.25);
-      border-radius: 16px;
-      padding: 18px;
-    }
-
     button {
-      margin-top: 16px;
-      padding: 12px 20px;
-      font-size: 16px;
-      background: #0ea5e9;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      color: white;
-      font-weight: 600;
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        border: none;
+        border-radius: 10px;
+        margin-top: 20px;
+        background: linear-gradient(90deg, #4f46e5, #3b82f6);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
     }
-
-    button:hover {
-      background: #38bdf8;
+    #output {
+        margin-top: 30px;
+        background: #0f172a;
+        padding: 20px;
+        border-radius: 14px;
+        white-space: pre-wrap;
     }
-
-    pre {
-      margin-top: 20px;
-      background: rgba(15,23,42,0.9);
-      padding: 20px;
-      border-radius: 12px;
-      color: #f8fafc;
-      overflow-x: auto;
-    }
-
-  </style>
+</style>
 </head>
 
 <body>
-  <div class="page">
-    
-    <div class="header">
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div class="brand-title">RBS Engine</div>
-      </div>
+<div class="page">
+    <h1>RBS Engine • Demo Console</h1>
+
+    <div class="input-row">
+        <input id="team" placeholder="Team Name" />
+        <input id="opponent" placeholder="Opponent" />
     </div>
 
-    <div class="run-box">
-      <h2>Run RBS Test</h2>
-
-      <button id="run-rbs-btn">Run RBS Engine</button>
-
-      <pre id="rbs-output">Waiting...</pre>
+    <div class="input-row">
+        <input id="fixtureId" placeholder="Fixture ID" />
+        <input id="minute" placeholder="Minute (0–90)" />
     </div>
 
-  </div>
+    <button id="run-rbs-btn">Run RBS Engine</button>
 
-  <script type="module">
-    import { callEngine } from "/src-api-config.js";
+    <div id="output">Result will appear here...</div>
+</div>
 
-    async function runRBSDemo() {
-      try {
-        const params = {
-          engine: "rbs",
-          mode: "demo",
-          fixtureId: "987654",
-          team: "Arsenal"
-        };
+<script type="module">
+import { callEngine } from "/src-api-config.js";
 
-        const data = await callEngine(params);
-        console.log("RBS Engine Response:", data);
+async function runRBSDemo() {
+    const payload = {
+        engine: "rbs",
+        team: document.getElementById("team").value,
+        opponent: document.getElementById("opponent").value,
+        fixtureId: document.getElementById("fixtureId").value,
+        minute: document.getElementById("minute").value,
+        mode: "demo"
+    };
 
-        document.getElementById("rbs-output").textContent =
-          JSON.stringify(data, null, 2);
+    document.getElementById("output").textContent = "Processing...";
 
-      } catch (err) {
-        document.getElementById("rbs-output").textContent =
-          "⚠️ Error running RBS Engine: " + err.message;
-      }
+    try {
+        const data = await callEngine(payload);
+        document.getElementById("output").textContent =
+            JSON.stringify(data, null, 2);
+    } catch (e) {
+        document.getElementById("output").textContent =
+            "Error connecting to API.\n\n" + e;
     }
+}
 
-    document.getElementById("run-rbs-btn")
-      .addEventListener("click", runRBSDemo);
-  </script>
-
+document.getElementById("run-rbs-btn")
+        .addEventListener("click", runRBSDemo);
+</script>
 </body>
 </html>
