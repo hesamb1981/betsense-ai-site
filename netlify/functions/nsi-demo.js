@@ -1,65 +1,47 @@
 // netlify/functions/nsi-demo.js
 
-const BACKEND_BASE_URL = "https://YOUR-RENDER-URL.onrender.com"; 
-// 👆 حسام، فقط این یک خط رو عوض کن:
-// به‌جای https://YOUR-RENDER-URL.onrender.com
-// دقیقاً همون آدرسی رو بذار که قبلاً برای تست NSI Demo
-// توی Render زدی و جواب JSON گرفتی
-// (تا قبل از /api/... یعنی مثلاً:
-//  https://betsense-ultra-backend.onrender.com )
-
 exports.handler = async (event) => {
-  // فقط اجازه POST
+  // فقط درخواست POST را قبول کن
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ error: "Method Not Allowed" }),
     };
   }
 
   try {
-    const url = `${BACKEND_BASE_URL}/api/nsi-demo`;
-
-    const upstreamRes = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    // اینجا فعلاً یک دمو ثابت برمی‌گردانیم
+    // بعداً می‌توانیم همین‌جا به بک‌اند اصلی وصلش کنیم
+    const demoResponse = {
+      engine: "NSI",
+      mode: "demo",
+      status: "ok",
+      summary: "Demo NSI narrative generated successfully.",
+      narrative: [
+        "Home side shows stable attacking intent but with rising fatigue.",
+        "Opposition defensive line starts to lose compactness after 70th minute.",
+        "Behavioral switching window is opening on both flanks.",
+      ],
+      confidence: 0.93,
+      meta: {
+        version: "NSI-DEM0-1.0",
+        generatedAt: new Date().toISOString(),
       },
-      // نیازی به بادی خاصی نداریم، دمو ثابته
-      body: JSON.stringify({ demo: true }),
-    });
+    };
 
-    const text = await upstreamRes.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (_) {
-      data = { raw: text };
-    }
-
-    if (!upstreamRes.ok) {
-      // اگر بک‌اند خودش ارور بده
-      return {
-        statusCode: upstreamRes.status,
-        body: JSON.stringify({
-          error: "Upstream NSI error",
-          details: data,
-        }),
-      };
-    }
-
-    // موفق
     return {
       statusCode: 200,
-      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(demoResponse, null, 2),
     };
   } catch (err) {
+    console.error("NSI demo error:", err);
+
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: "NSI demo failed",
-        details: err.message,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error: "NSI demo failed" }),
     };
   }
 };
