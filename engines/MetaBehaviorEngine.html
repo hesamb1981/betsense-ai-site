@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta-Behavior Engine — Demo Console</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0f17;
+            font-family: 'Inter', sans-serif;
+            color: #e8e8e8;
+        }
+
+        .page-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .engine-header {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 18px 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .engine-title {
+            font-size: 34px;
+            font-weight: 700;
+            margin-top: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-right: 10px;
+            background: rgba(0,255,120,0.15);
+            border: 1px solid rgba(0,255,120,0.3);
+            color: #00ff9c;
+        }
+
+        .panel {
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 22px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .panel-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0 18px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .run-button {
+            padding: 14px 28px;
+            border-radius: 14px;
+            background: linear-gradient(90deg, #ff6a6a, #ff9d00);
+            border: none;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .status-ok { color: #00ff89; margin-left: 10px; }
+        .status-error { color: #ff4b4b; margin-left: 10px; }
+
+        .console-box {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 14px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.45;
+            margin-top: 14px;
+            color: #b9b9b9;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="page-container">
+
+    <div class="engine-header">
+        <span class="badge">META-BEHAVIOR ENGINE</span>
+        <span class="badge" style="background:rgba(0,200,255,0.18);border-color:rgba(0,200,255,0.32);color:#4ecbff;">
+            LIVE READY • DEMO
+        </span>
+
+        <div class="engine-title">META-BEHAVIOR ENGINE — Demo Console</div>
+
+        <p>
+            Run a demo Meta-Behavior analysis through the BetSense Ultra backend stack.
+            This console showcases long-horizon behavioral patterns for a selected club
+            across multiple matches.
+        </p>
+    </div>
+
+
+    <div class="panel">
+        <div class="panel-title">Meta-behavior demo analyzer</div>
+
+        <label>TEAM NAME</label>
+        <input class="input-field" id="teamInput" placeholder="e.g. Arsenal">
+
+        <label>LEAGUE</label>
+        <input class="input-field" id="leagueInput" placeholder="e.g. Premier League">
+
+        <label>SAMPLE WINDOW (MATCHES)</label>
+        <input class="input-field" id="sampleInput" placeholder="e.g. 50">
+
+        <button class="run-button" onclick="runMetaDemo()">Run Meta Demo</button>
+
+        <span id="statusDot" class="status-ok">● ok</span>
+    </div>
+
+
+
+    <div class="panel">
+        <div class="panel-title">CONSOLE OUTPUT</div>
+        <div id="consoleOutput" class="console-box">{ waiting for demo request... }</div>
+    </div>
+
+</div>
+
+
+<script>
+async function runMetaDemo() {
+
+    document.getElementById("consoleOutput").innerText = "Processing demo request…";
+
+    const payload = {
+        team: document.getElementById("teamInput").value || "Demo Team",
+        league: document.getElementById("leagueInput").value || "Demo League",
+        sample: document.getElementById("sampleInput").value || 10
+    };
+
+    try {
+        const response = await fetch("/.netlify/functions/meta-demo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        document.getElementById("consoleOutput").innerText =
+            JSON.stringify(data, null, 4);
+
+        document.getElementById("statusDot").className = "status-ok";
+        document.getElementById("statusDot").innerText = "● ok";
+
+    } catch (err) {
+
+        document.getElementById("consoleOutput").innerText =
+            JSON.stringify({ error: "Meta demo failed" }, null, 4);
+
+        document.getElementById("statusDot").className = "status-error";
+        document.getElementById("statusDot").innerText = "● error";
+    }
+}
+</script>
+
+</body>
+</html>
