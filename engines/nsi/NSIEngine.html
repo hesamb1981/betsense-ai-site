@@ -76,6 +76,29 @@ async function runNSIDemo() {
 }
 
 </script>
+    <script type="module">
+    import { callEngine } from "/src-api-config.js";
+
+    async function runNSIDemo() {
+        const params = {
+            engine: "nsi",
+            mode: "demo",
+            fixtureId: "123456",
+            team: "Arsenal"
+        };
+
+        const data = await callEngine("nsi", params);
+
+        console.log("NSI Engine Response:", data);
+
+        document.getElementById("nsi-output").innerText =
+            JSON.stringify(data, null, 2);
+    }
+
+    document
+        .getElementById("run-nsi-btn")
+        .addEventListener("click", runNSIDemo);
+</script>
 
 </body>
 </html>
