@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meta-Behavior Engine • Demo Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #000);
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 32px 12px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 28px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at top left, #020617, #020617 65%);
+      box-shadow: 0 32px 70px rgba(15, 23, 42, 0.95);
+      padding: 24px 20px 28px;
+    }
+
+    .pill-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top left, #022c22, #020617 70%);
+      margin-bottom: 18px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #22c55e;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+    }
+
+    .pill-label-main {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    .pill-label-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    .card {
+      margin-top: 22px;
+      border-radius: 22px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      padding: 18px 16px 18px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 0.86rem;
+      color: #9ca3af;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .input-grid {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .input {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      color: #e5e7eb;
+      outline: none;
+    }
+
+    .input::placeholder {
+      color: #4b5563;
+    }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .btn-primary {
+      border: none;
+      border-radius: 999px;
+      padding: 11px 22px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(120deg, #fb7185, #f97316);
+      color: #0b1120;
+      box-shadow: 0 18px 40px rgba(249, 115, 22, 0.4);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease, opacity 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.9);
+      filter: brightness(0.96);
+    }
+
+    .status-pill {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      color: #9ca3af;
+      background: radial-gradient(circle at top left, #020617, #020617 85%);
+    }
+
+    .status-label {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #6b7280;
+      font-size: 0.7rem;
+    }
+
+    .status-value {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+    }
+
+    .status-dot-small {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .output {
+      margin-top: 8px;
+      border-radius: 20px;
+      background: radial-gradient(circle at top left, #020617, #000 78%);
+      border: 1px dashed rgba(55, 65, 81, 0.95);
+      padding: 14px 14px 12px;
+      font-size: 0.8rem;
+      min-height: 96px;
+      color: #9ca3af;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .output-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .output-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+    }
+
+    .tag-pill {
+      font-size: 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 3px 8px;
+      color: #9ca3af;
+    }
+
+    .output-body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      color: #e5e7eb;
+      line-height: 1.5;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 0.7rem;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 40px 16px 48px;
+      }
+      .page {
+        padding: 28px 24px 28px;
+      }
+      .title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="pill-row">
+        <span class="pill-dot"></span>
+        <span class="pill-label-main">META-BEHAVIOR ENGINE</span>
+        <span class="pill-label-sub">LIVE READY • DEMO</span>
+      </div>
+
+      <h1 class="title">META-BEHAVIOR ENGINE — Demo Console</h1>
+      <p class="subtitle">
+        Run a demo Meta-Behavior analysis through the BetSense Ultra backend
+        stack. This console showcases long-horizon behavioral patterns for a
+        single club across multiple matches.
+      </p>
+    </header>
+
+    <section class="card">
+      <h2 class="card-title">Meta-behavior demo analyzer</h2>
+      <p class="card-subtitle">
+        Configure a simple scenario and tap <strong>Run Meta Demo</strong> to
+        generate a narrative of long-term behavioral tendencies for the
+        selected team.
+      </p>
+
+      <div class="input-grid">
+        <div>
+          <div class="field-label">Team name</div>
+          <input
+            id="team-input"
+            class="input"
+            placeholder="e.g. Arsenal"
+            autocomplete="off"
+          />
+        </div>
+
+        <div>
+          <div class="field-label">League</div>
+          <input
+            id="league-input"
+            class="input"
+            placeholder="e.g. Premier League"
+            autocomplete="off"
+          />
+        </div>
+
+        <div>
+          <div class="field-label">Sample window (matches)</div>
+          <input
+            id="window-input"
+            class="input"
+            placeholder="e.g. 10"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button id="run-meta-demo" class="btn-primary">
+          Run Meta Demo
+        </button>
+
+        <div class="status-pill" id="status-pill">
+          <span class="status-label">Status</span>
+          <span class="status-value" id="status-value">
+            <span class="status-dot-small" id="status-dot"></span>
+            idle
+          </span>
+        </div>
+      </div>
+
+      <div class="output" id="output">
+        <div class="output-label-row">
+          <span class="output-label">Console output</span>
+          <span class="tag-pill" id="output-tag">preview</span>
+        </div>
+        <div class="output-body" id="output-body">
+Tap “Run Meta Demo” to generate a sample long-term behavioral narrative for the selected team…
+        </div>
+      </div>
+
+      <p class="hint">
+        This console will later call the same backend endpoint your live
+        Meta-Behavior stack will use. For now, it returns a local prototype
+        response so you can design and sell the concept.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const button = document.getElementById("run-meta-demo");
+    const statusPill = document.getElementById("status-pill");
+    const statusValue = document.getElementById("status-value");
+    const statusDot = document.getElementById("status-dot");
+    const outputBody = document.getElementById("output-body");
+    const outputTag = document.getElementById("output-tag");
+
+    const teamInput = document.getElementById("team-input");
+    const leagueInput = document.getElementById("league-input");
+    const windowInput = document.getElementById("window-input");
+
+    function setStatus(mode, text) {
+      // mode: "idle" | "running" | "ok"
+      if (mode === "running") {
+        statusDot.style.backgroundColor = "#facc15";
+        statusDot.style.boxShadow = "0 0 12px rgba(250, 204, 21, 0.9)";
+      } else if (mode === "ok") {
+        statusDot.style.backgroundColor = "#22c55e";
+        statusDot.style.boxShadow = "0 0 12px rgba(34, 197, 94, 0.9)";
+      } else {
+        statusDot.style.backgroundColor = "#4b5563";
+        statusDot.style.boxShadow = "none";
+      }
+      statusValue.lastChild.textContent = " " + text;
+    }
+
+    function formatMetaDemo(team, league, windowSize) {
+      const safeTeam = team || "Selected team";
+      const safeLeague = league || "the chosen league";
+      const matches = windowSize || "last 10";
+
+      return {
+        engine: "META_BEHAVIOR",
+        mode: "demo-local",
+        status: "ok",
+        summary: `Meta-behavior pattern generated successfully for ${safeTeam}.`,
+        narrative: [
+          `${safeTeam} shows recurring phases of high-risk attacking intent followed by extended control phases across the ${matches} matches.`,
+          `In ${safeLeague}, late-game behavior (75’+) often shifts toward protecting existing game states rather than chasing additional goals.`,
+          `Pressing intensity tends to drop after minute 70, opening switching windows on the weak-side flank in more than 60% of observed games.`
+        ],
+        confidence: 0.91,
+        meta: {
+          sample_window_matches: matches,
+          engine_stack: ["NSI", "RBS", "OrderBookPressure", "Historical"],
+          scenario: "LONG_HORIZON_BEHAVIOR"
+        }
+      };
+    }
+
+    button.addEventListener("click", () => {
+      const team = teamInput.value.trim();
+      const league = leagueInput.value.trim();
+      const windowSize = windowInput.value.trim();
+
+      button.disabled = true;
+      setStatus("running", "running");
+      outputTag.textContent = "processing";
+      outputBody.textContent = "Processing meta-behavior demo request…";
+
+      // شبیه‌سازی پاسخ دمو لوکال – اتصال به بک‌اند
+      // واقعی رو در مرحله بعد انجام می‌دهیم.
+      setTimeout(() => {
+        const payload = formatMetaDemo(team, league, windowSize);
+        outputTag.textContent = "ok";
+
+        outputBody.textContent = JSON.stringify(payload, null, 2);
+        setStatus("ok", "ok");
+        button.disabled = false;
+      }, 700);
+    });
+
+    // حالت اولیه
+    setStatus("idle", "idle");
+  </script>
+</body>
+</html>
