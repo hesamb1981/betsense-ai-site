@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>META-BEHAVIOR ENGINE — Demo Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #000);
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, #020617, #020617 65%);
+      box-shadow: 0 32px 60px rgba(15, 23, 42, 0.9);
+      padding: 24px 20px 24px;
+    }
+
+    .badge-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .badge-engine {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .badge-mode {
+      color: #6b7280;
+    }
+
+    .title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      line-height: 1.45;
+    }
+
+    .card {
+      margin-top: 18px;
+      border-radius: 20px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 18px 16px 18px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .field-input {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top left, #020617, #020617 85%);
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      outline: none;
+    }
+
+    .field-input::placeholder {
+      color: #4b5563;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .btn-primary {
+      flex: 0 0 auto;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(90deg, #fb7185, #f97316);
+      color: #0b1120;
+      box-shadow: 0 14px 35px rgba(248, 113, 113, 0.35);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+      filter: brightness(0.95);
+    }
+
+    .status-pill {
+      flex: 1 1 auto;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #9ca3af;
+      justify-content: flex-end;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #6b7280;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    .status-pill.ok .status-dot {
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .status-pill.running .status-dot {
+      background: #eab308;
+      box-shadow: 0 0 10px rgba(234, 179, 8, 0.8);
+    }
+
+    .status-pill.error .status-dot {
+      background: #f97373;
+      box-shadow: 0 0 10px rgba(248, 113, 113, 0.9);
+    }
+
+    .status-label {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.7rem;
+      color: #6b7280;
+    }
+
+    .status-value {
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .output-card {
+      margin-top: 18px;
+      border-radius: 20px;
+      background: radial-gradient(circle at top left, #020617, #000 75%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 14px 14px 12px;
+    }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .output-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #6b7280;
+    }
+
+    .chip {
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    .console {
+      border-radius: 14px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      background: radial-gradient(circle at top left, #020617, #020617 85%);
+      padding: 10px 10px 10px;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      min-height: 110px;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: #6b7280;
+      line-height: 1.45;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 32px 16px 48px;
+      }
+
+      .page {
+        max-width: 560px;
+        padding: 26px 22px 24px;
+      }
+
+      .title {
+        font-size: 1.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="badge-row">
+      <span class="badge-dot"></span>
+      <span class="badge-engine">META-BEHAVIOR ENGINE</span>
+      <span>•</span>
+      <span class="badge-mode">LIVE READY • DEMO</span>
+    </div>
+
+    <div class="title">META-BEHAVIOR ENGINE — Demo Console</div>
+    <div class="subtitle">
+      Run a demo Meta-Behavior analysis through the BetSense Ultra backend stack.
+      This console showcases long-horizon behavioral patterns for a single club
+      across multiple matches.
+    </div>
+
+    <!-- Demo card -->
+    <div class="card">
+      <div class="card-title">Meta-behavior demo analyzer</div>
+      <div class="card-subtitle">
+        Configure a simple scenario and tap <strong>Run Meta Demo</strong> to
+        generate a narrative of long-term behavioral tendencies for the selected
+        team.
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Team name</div>
+        <input
+          id="team-input"
+          class="field-input"
+          placeholder="e.g. Arsenal"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">League</div>
+        <input
+          id="league-input"
+          class="field-input"
+          placeholder="e.g. Premier League"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Sample window (matches)</div>
+        <input
+          id="window-input"
+          class="field-input"
+          placeholder="e.g. 10"
+          inputmode="numeric"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="btn-row">
+        <button id="run-meta-demo" class="btn-primary">Run Meta Demo</button>
+
+        <div id="status-pill" class="status-pill">
+          <span class="status-label">Status</span>
+          <span class="status-dot"></span>
+          <span id="status-value" class="status-value">idle</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output card -->
+    <div class="output-card">
+      <div class="output-header">
+        <div class="output-title">Console output</div>
+        <div class="chip" id="output-chip">ok</div>
+      </div>
+      <div id="console" class="console">
+Tap “Run Meta Demo” to generate a prototype Meta-Behavior narrative…
+      </div>
+    </div>
+
+    <div class="hint">
+      This console currently returns a local prototype Meta-Behavior response so
+      you can showcase and sell the concept before wiring the live multi-engine
+      backend stack.
+    </div>
+  </div>
+
+  <script>
+    const runButton = document.getElementById("run-meta-demo");
+    const statusPill = document.getElementById("status-pill");
+    const statusValue = document.getElementById("status-value");
+    const consoleEl = document.getElementById("console");
+    const chipEl = document.getElementById("output-chip");
+
+    const teamInput = document.getElementById("team-input");
+    const leagueInput = document.getElementById("league-input");
+    const windowInput = document.getElementById("window-input");
+
+    function setStatus(mode, text) {
+      statusPill.classList.remove("ok", "running", "error");
+      statusPill.classList.add(mode);
+      statusValue.textContent = text;
+      chipEl.textContent = mode === "ok" ? "ok" : mode;
+    }
+
+    function buildLocalResponse(team, league, sampleWindow) {
+      const safeTeam = team || "Selected team";
+      const safeLeague = league || "selected league";
+      const safeWindow = sampleWindow || "last 10";
+
+      return {
+        engine: "META_BEHAVIOR",
+        mode: "demo-local",
+        status: "ok",
+        summary:
+          "Meta-behavior pattern generated successfully for " + safeTeam + ".",
+        narrative: [
+          safeTeam +
+            " shows recurring phases of high-risk attacking intent followed by controlled consolidation periods across the last " +
+            safeWindow +
+            " matches.",
+          "In the " +
+            safeLeague +
+            ", late-game behavior (75’+) frequently shifts toward protecting existing states rather than aggressively chasing additional goals.",
+          "Pressing intensity tends to drop after minute 70, opening switching windows on the weak-side flank in more than 60% of observed games."
+        ],
+        confidence: 0.9,
+        meta: {
+          sample_window_matches: "last " + safeWindow,
+          engine_stack: ["NSI", "RBS", "OrderBookPressure", "Historical"],
+          scenario: "LONG_HORIZON_BEHAVIOR"
+        }
+      };
+    }
+
+    function formatJson(obj) {
+      try {
+        return JSON.stringify(obj, null, 2);
+      } catch (e) {
+        return String(obj);
+      }
+    }
+
+    runButton.addEventListener("click", () => {
+      const team = teamInput.value.trim();
+      const league = leagueInput.value.trim();
+      const windowSize = windowInput.value.trim() || "10";
+
+      setStatus("running", "running");
+      consoleEl.textContent = "Processing demo request…";
+
+      // شبیه‌سازی پاسخ لوکال – بدون تماس واقعی به بکند
+      setTimeout(() => {
+        try {
+          const response = buildLocalResponse(team, league, windowSize);
+          const pretty = formatJson(response);
+          consoleEl.textContent = pretty;
+          setStatus("ok", "ok");
+        } catch (err) {
+          consoleEl.textContent =
+            '{ "error": "Meta-behavior demo failed" }';
+          setStatus("error", "error");
+        }
+      }, 450);
+    });
+  </script>
+</body>
+</html>
