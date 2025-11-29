@@ -1,83 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NSI Engine</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NSI Engine</title>
 
-<link rel="stylesheet" href="../styles/engine-core.css" />
+    <style>
+        body {
+            background: #0b0f19;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+        }
 
-<style>
-/* استایل هماهنگ با BetSense — 100% بدون تغییر */
-body {
-  background: #0b1221;
-  font-family: Inter, sans-serif;
-  color: white;
-  padding: 40px;
-}
-.engine-box {
-  background: #0f1a33;
-  border-radius: 18px;
-  padding: 25px;
-  border: 1px solid #243b55;
-  max-width: 650px;
-  margin: auto;
-}
-.btn {
-  background: linear-gradient(90deg, #ff5f6d, #ff9966);
-  padding: 14px 22px;
-  border-radius: 14px;
-  margin-top: 15px;
-  cursor: pointer;
-  text-align: center;
-  font-weight: 600;
-  font-size: 17px;
-}
-.btn-blue {
-  background: #1b2d50;
-}
-.status-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-}
-</style>
+        .panel {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 18px;
+            max-width: 600px;
+        }
 
-<script src="../../scripts/api-config.js"></script>
+        button {
+            background: linear-gradient(90deg,#ff5f6d,#ffc371);
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
 
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            color: #8ef9ff;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="engine-box">
-  <h1>NSI ENGINE</h1>
-  <p>Neuro-Structural Intelligence Engine — Live behavioral + structural shifts.</p>
+    <div class="panel">
+        <h2>NSI ENGINE — Demo Console</h2>
+        <p>Run demo NSI engine analysis using backend API.</p>
 
-  <div class="btn" onclick="runDemo()">Run NSI demo analysis</div>
-  <div class="btn btn-blue" onclick="checkHealth()">Check NSI health</div>
+        <button onclick="runNSIDemo()">Run NSI Demo</button>
 
-  <p id="status" style="margin-top:20px;">Status: idle</p>
-  
-  <pre id="output" style="margin-top:20px; white-space:pre-wrap;"></pre>
-</div>
+        <div id="output"></div>
+    </div>
+
+
+<script src="/scripts/api-config.js"></script>
 
 <script>
-async function checkHealth() {
-  document.getElementById("status").innerText = "Checking health...";
-  const res = await fetch(`${window.API_BASE_URL}/api/nsi/health`);
-  const data = await res.json();
-  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
-  document.getElementById("status").innerText = "Health check complete";
+
+async function runNSIDemo() {
+
+    const url = API_BASE_URL + "/api/nsi/demo";
+
+    document.getElementById("output").innerHTML = "⏳ Running demo…";
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        document.getElementById("output").innerHTML =
+            JSON.stringify(data, null, 2);
+
+    } catch (err) {
+        document.getElementById("output").innerHTML =
+            "❌ Error connecting to backend";
+    }
 }
 
-async function runDemo() {
-  document.getElementById("status").innerText = "Running NSI demo...";
-  const res = await fetch(`${window.API_BASE_URL}/api/nsi/demo`);
-  const data = await res.json();
-  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
-  document.getElementById("status").innerText = "Demo complete";
-}
 </script>
 
 </body>
