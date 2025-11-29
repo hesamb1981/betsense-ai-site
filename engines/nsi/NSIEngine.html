@@ -38,16 +38,36 @@
       padding: 24px 20px 24px;
     }
 
-    .header {
-      margin-bottom: 20px;
+    .pill-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.6);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+      margin-bottom: 14px;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9ca3af;
     }
 
-    .eyebrow {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #38bdf8;
-      margin-bottom: 4px;
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .pill-strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .header {
+      margin-bottom: 18px;
     }
 
     .title {
@@ -92,7 +112,7 @@
       flex: 0 0 auto;
       border: none;
       border-radius: 999px;
-      padding: 10px 20px;
+      padding: 10px 22px;
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
@@ -100,13 +120,19 @@
       color: #0b1120;
       box-shadow: 0 14px 35px rgba(248, 113, 113, 0.35);
       transition: transform 0.12s ease, box-shadow 0.12s ease,
-        filter 0.12s ease;
+        filter 0.12s ease, opacity 0.12s ease;
     }
 
     .btn-primary:active {
       transform: translateY(1px) scale(0.99);
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
       filter: brightness(0.95);
+    }
+
+    .btn-primary[disabled] {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
     }
 
     .status-pill {
@@ -126,7 +152,7 @@
       height: 8px;
       border-radius: 999px;
       background: #22c55e;
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
     }
 
     .status-text-strong {
@@ -139,17 +165,24 @@
     }
 
     .output {
-      margin-top: 14px;
+      margin-top: 16px;
       border-radius: 16px;
       background: radial-gradient(circle at top left, #020617, #000 75%);
       border: 1px dashed rgba(55, 65, 81, 0.9);
       padding: 12px 12px 10px;
       font-size: 0.8rem;
-      min-height: 72px;
+      min-height: 92px;
       color: #9ca3af;
       overflow-wrap: break-word;
       word-break: break-word;
       white-space: pre-wrap;
+    }
+
+    .output-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
     }
 
     .output-label {
@@ -157,7 +190,14 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: #6b7280;
-      margin-bottom: 4px;
+    }
+
+    .output-status-tag {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #9ca3af;
     }
 
     .output-body {
@@ -190,42 +230,52 @@
 </head>
 <body>
   <div class="page">
+    <div class="pill-row">
+      <span class="pill-dot"></span>
+      <span class="pill-strong">NSI ENGINE</span>
+      <span>•</span>
+      <span>LIVE READY</span>
+    </div>
+
     <div class="header">
-      <div class="eyebrow">BetSense AI Stack • NSI Layer</div>
       <div class="title">NSI ENGINE — Demo Console</div>
       <div class="subtitle">
-        Run demo NSI Engine analysis using the backend API and preview the
-        behavior narrative this layer returns.
+        Run a demo NSI Engine analysis through the BetSense Ultra backend API.
+        This is a fixed showcase scenario to prove end-to-end connectivity.
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">NSI demo analyzer</div>
       <div class="card-subtitle">
-        Tap the button below to send a demo request to the NSI Engine via
-        BetSense Ultra API.
+        Tap the button to send a demo request into the NSI layer and inspect
+        the narrative it returns.
       </div>
 
       <div class="btn-row">
-        <button id="run-nsi-demo" class="btn-primary">Run NSI Demo</button>
+        <button id="run-nsi-demo" class="btn-primary">
+          Run NSI Demo
+        </button>
 
         <div class="status-pill" id="status-pill">
           <span class="status-dot" id="status-dot"></span>
-          <span class="status-text-strong" id="status-main">Status · idle</span>
-          <span class="status-text-soft" id="status-sub">Tap Run NSI Demo</span>
+          <span class="status-text-strong" id="status-strong">Status · idle</span>
+          <span class="status-text-soft" id="status-soft">ready</span>
         </div>
       </div>
 
       <div class="output" id="output">
-        <div class="output-label">NSI engine response</div>
+        <div class="output-label-row">
+          <div class="output-label">Console output</div>
+          <div class="output-status-tag" id="output-tag">ok</div>
+        </div>
         <div class="output-body" id="output-body">
-Result will appear here…
+          Waiting for NSI demo call…
         </div>
       </div>
 
       <div class="hint">
-        Demo uses a fixed sample match (Arsenal vs Spurs) and minute 78 —
-        in production this layer reads your live stacked feeds via LiveData Connect.
+        This console uses the same backend endpoint your live NSI stack will use.
       </div>
     </div>
   </div>
@@ -233,59 +283,74 @@ Result will appear here…
   <script type="module">
     import { callEngine } from "/src-api-config.js";
 
-    const btn = document.getElementById("run-nsi-demo");
+    const runBtn = document.getElementById("run-nsi-demo");
+    const statusPill = document.getElementById("status-pill");
     const statusDot = document.getElementById("status-dot");
-    const statusMain = document.getElementById("status-main");
-    const statusSub = document.getElementById("status-sub");
+    const statusStrong = document.getElementById("status-strong");
+    const statusSoft = document.getElementById("status-soft");
+    const outputTag = document.getElementById("output-tag");
     const outputBody = document.getElementById("output-body");
 
-    function setStatus(state, message) {
+    function setStatus(state) {
       if (state === "idle") {
         statusDot.style.background = "#22c55e";
-        statusMain.textContent = "Status · idle";
-        statusSub.textContent = message || "Tap Run NSI Demo";
-      } else if (state === "running") {
-        statusDot.style.background = "#eab308";
-        statusMain.textContent = "Status · running";
-        statusSub.textContent = message || "Contacting NSI backend…";
+        statusDot.style.boxShadow = "0 0 12px rgba(34,197,94,0.8)";
+        statusStrong.textContent = "Status · idle";
+        statusSoft.textContent = "ready";
+      } else if (state === "loading") {
+        statusDot.style.background = "#facc15";
+        statusDot.style.boxShadow = "0 0 10px rgba(250,204,21,0.9)";
+        statusStrong.textContent = "Status · running";
+        statusSoft.textContent = "contacting backend…";
       } else if (state === "ok") {
         statusDot.style.background = "#22c55e";
-        statusMain.textContent = "Status · success";
-        statusSub.textContent = message || "NSI Engine responded";
+        statusDot.style.boxShadow = "0 0 12px rgba(34,197,94,0.9)";
+        statusStrong.textContent = "Status · ok";
+        statusSoft.textContent = "response received";
       } else if (state === "error") {
         statusDot.style.background = "#ef4444";
-        statusMain.textContent = "Status · error";
-        statusSub.textContent = message || "Could not reach backend";
+        statusDot.style.boxShadow = "0 0 12px rgba(239,68,68,0.9)";
+        statusStrong.textContent = "Status · error";
+        statusSoft.textContent = "check backend";
       }
     }
 
-    btn.addEventListener("click", async () => {
-      setStatus("running");
-      outputBody.textContent = "Processing…";
-
+    async function runDemo() {
       try {
+        runBtn.disabled = true;
+        setStatus("loading");
+        outputTag.textContent = "running…";
+        outputBody.textContent = "Calling NSI demo endpoint…";
+
         const params = {
           engine: "nsi",
           mode: "demo",
           fixtureId: "123456",
           team: "Arsenal",
           opponent: "Spurs",
-          minute: 78
+          minute: 74
         };
 
         const data = await callEngine(params);
 
         setStatus("ok");
+        outputTag.textContent = "ok";
         outputBody.textContent = JSON.stringify(data, null, 2);
       } catch (err) {
         console.error(err);
         setStatus("error");
-        outputBody.textContent =
-          (err && err.message) || "Request failed. Please try again.";
+        outputTag.textContent = "error";
+        outputBody.textContent = JSON.stringify(
+          { error: err?.message || "NSI demo failed" },
+          null,
+          2
+        );
+      } finally {
+        runBtn.disabled = false;
       }
-    });
+    }
 
-    // اولیه
+    runBtn.addEventListener("click", runDemo);
     setStatus("idle");
   </script>
 </body>
