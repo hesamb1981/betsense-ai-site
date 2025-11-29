@@ -2,88 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NSI Engine • Demo Console</title>
-
-  <style>
-    :root {
-      color-scheme: dark;
-      --accent1: #fb7185;
-      --accent2: #f97316;
-      --primary-bg: radial-gradient(circle at top, #020617, #000);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Inter", system-ui, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: var(--primary-bg);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 32px 16px;
-      color: #e5e7eb;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 520px;
-      background: rgba(2, 6, 23, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      border-radius: 28px;
-      padding: 28px 24px;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.4);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(30, 41, 59, 0.6);
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
-      margin-bottom: 20px;
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-    }
-    .badge-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 10px #22c55e;
-    }
-
-    .title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      color: #9ca3af;
-      line-height: 1.5;
-      margin-bottom: 22px;
-      font-size: 0.95rem;
-    }
-
-    .card {
-      background: rgba(2, 6, 23, 0.6);
-      border: 1px solid rgba(100, 116, 139, 0.4);
-      padding: 20px 16px;
-      border-radius: 22px;
-      margin-bottom: 24px;
-    }
-   <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
   <title>NSI ENGINE — Demo Console</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -113,56 +31,54 @@
     .page {
       width: 100%;
       max-width: 520px;
-      border-radius: 32px;
+      border-radius: 28px;
       border: 1px solid rgba(148, 163, 184, 0.4);
       background: radial-gradient(circle at top left, #020617, #020617 65%);
       box-shadow: 0 32px 60px rgba(15, 23, 42, 0.9);
-      padding: 24px 22px 24px;
+      padding: 24px 20px 24px;
     }
 
-    .pill {
+    .badge-row {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: radial-gradient(circle at left, #022c22, #020617 70%);
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: radial-gradient(circle at left, #064e3b, #020617 70%);
       margin-bottom: 18px;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
     }
 
-    .pill-dot {
-      width: 9px;
-      height: 9px;
+    .badge-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 999px;
       background: #22c55e;
       box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
     }
 
-    .pill-text-strong {
+    .badge-text-main {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: #e5e7eb;
-      font-weight: 600;
     }
 
-    .pill-text-soft {
-      color: #9ca3af;
+    .badge-text-sub {
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6ee7b7;
     }
 
-    .pill-separator {
-      color: #4b5563;
-    }
-
-    .title {
+    .header-title {
       font-size: 1.9rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
+      font-weight: 700;
+      letter-spacing: 0.02em;
       margin-bottom: 8px;
     }
 
-    .subtitle {
+    .header-subtitle {
       font-size: 0.95rem;
       color: #9ca3af;
       line-height: 1.5;
@@ -170,11 +86,11 @@
     }
 
     .card {
-      border-radius: 24px;
+      border-radius: 22px;
       background: radial-gradient(circle at top left, #020617, #020617 80%);
-      border: 1px solid rgba(55, 65, 81, 0.95);
+      border: 1px solid rgba(55, 65, 81, 0.9);
       padding: 18px 16px 16px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .card-title {
@@ -184,29 +100,30 @@
     }
 
     .card-subtitle {
-      font-size: 0.82rem;
+      font-size: 0.9rem;
       color: #9ca3af;
       margin-bottom: 14px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .btn-row {
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
     }
 
     .btn-primary {
       flex: 0 0 auto;
       border: none;
       border-radius: 999px;
-      padding: 11px 24px;
-      font-size: 0.92rem;
+      padding: 11px 26px;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
       background: linear-gradient(90deg, #fb7185, #f97316);
       color: #0b1120;
-      box-shadow: 0 16px 40px rgba(248, 113, 113, 0.4);
+      box-shadow: 0 18px 40px rgba(248, 113, 113, 0.35);
       transition: transform 0.12s ease, box-shadow 0.12s ease,
         filter 0.12s ease;
       white-space: nowrap;
@@ -214,113 +131,131 @@
 
     .btn-primary:active {
       transform: translateY(1px) scale(0.99);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.9);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.9);
       filter: brightness(0.95);
     }
 
     .status-pill {
       flex: 1 1 auto;
+      min-width: 0;
       border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.95);
+      border: 1px solid rgba(55, 65, 81, 0.9);
       padding: 7px 10px;
       font-size: 0.8rem;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       color: #9ca3af;
-      justify-content: flex-end;
+      background: radial-gradient(circle at left, #020617, #020617 80%);
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 999px;
-      background: #4b5563;
+      background: #6b7280;
       box-shadow: 0 0 0 rgba(15, 23, 42, 0.9);
+      flex-shrink: 0;
     }
 
-    .status-text-label {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.7rem;
-      color: #6b7280;
-    }
-
-    .status-text-strong {
-      color: #e5e7eb;
-      font-weight: 500;
-    }
-
-    .status-text-soft {
-      color: #9ca3af;
-    }
-
-    .status-pill.ok .status-dot {
+    .status-dot--ok {
       background: #22c55e;
       box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
     }
 
-    .status-pill.processing .status-dot {
-      background: #f97316;
-      box-shadow: 0 0 12px rgba(249, 115, 22, 0.9);
+    .status-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      flex-shrink: 0;
     }
 
-    .status-pill.error .status-dot {
-      background: #ef4444;
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
+    .status-main {
+      color: #e5e7eb;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .output-card {
-      border-radius: 24px;
+    .status-sub {
+      color: #9ca3af;
+      font-size: 0.78rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status-spacer {
+      flex: 1 1 auto;
+      min-width: 4px;
+    }
+
+    .console-card {
+      border-radius: 22px;
       background: radial-gradient(circle at top left, #020617, #000 75%);
       border: 1px solid rgba(31, 41, 55, 0.95);
-      padding: 14px 14px 12px;
+      padding: 16px 16px 14px;
     }
 
-    .output-header {
+    .console-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.8rem;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .console-title {
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
       color: #9ca3af;
     }
 
-    .output-label {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.72rem;
-      color: #6b7280;
-    }
-
-    .output-chip {
-      padding: 3px 10px;
+    .console-pill {
+      margin-left: auto;
       border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.95);
-      font-size: 0.75rem;
-      color: #e5e7eb;
-    }
-
-    .output-body {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 3px 10px;
       font-size: 0.8rem;
       color: #e5e7eb;
-      padding: 10px 10px 8px;
-      border-radius: 16px;
-      background: radial-gradient(circle at top left, #020617, #020617 80%);
-      border: 1px dashed rgba(55, 65, 81, 0.95);
-      min-height: 88px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .console-pill-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      padding: 1px 10px;
+      line-height: 1.4;
+      cursor: pointer;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+      background: transparent;
+    }
+
+    .console-output {
+      border-radius: 18px;
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      padding: 12px 12px 10px;
+      background: radial-gradient(circle at top left, #020617, #000 80%);
+      font-size: 0.8rem;
+      color: #e5e7eb;
       overflow-wrap: break-word;
       word-break: break-word;
       white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      max-height: 260px;
+      overflow-y: auto;
     }
 
     .hint {
-      margin-top: 10px;
-      font-size: 0.72rem;
+      margin-top: 12px;
+      font-size: 0.75rem;
       color: #6b7280;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     @media (min-width: 768px) {
@@ -330,118 +265,161 @@
 
       .page {
         max-width: 560px;
-        padding: 26px 24px 24px;
+        padding: 26px 22px 24px;
       }
 
-      .title {
-        font-size: 2rem;
+      .header-title {
+        font-size: 2.1rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <!-- Top pill -->
-    <div class="pill">
-      <span class="pill-dot"></span>
-      <span class="pill-text-strong">NSI ENGINE</span>
-      <span class="pill-separator">•</span>
-      <span class="pill-text-soft">LIVE READY</span>
+  <main class="page">
+    <!-- Top badge -->
+    <div class="badge-row">
+      <span class="badge-dot"></span>
+      <span class="badge-text-main">NSI ENGINE</span>
+      <span class="badge-text-sub">• LIVE READY</span>
     </div>
 
-    <!-- Title / intro -->
-    <div class="title">NSI ENGINE — Demo Console</div>
-    <div class="subtitle">
-      Run a demo NSI Engine analysis through the BetSense Ultra backend API.
-      This is a fixed showcase scenario to prove end-to-end connectivity.
-    </div>
+    <!-- Heading -->
+    <header>
+      <h1 class="header-title">NSI ENGINE — Demo Console</h1>
+      <p class="header-subtitle">
+        Run a demo NSI Engine analysis through the BetSense Ultra backend API.
+        This is a fixed showcase scenario to prove end-to-end connectivity.
+      </p>
+    </header>
 
-    <!-- Demo card -->
-    <div class="card">
-      <div class="card-title">NSI demo analyzer</div>
-      <div class="card-subtitle">
+    <!-- Demo analyzer card -->
+    <section class="card">
+      <h2 class="card-title">NSI demo analyzer</h2>
+      <p class="card-subtitle">
         Tap the button to send a demo request into the NSI layer and inspect
         the narrative it returns.
-      </div>
+      </p>
 
       <div class="btn-row">
         <button id="run-nsi-demo" class="btn-primary">Run NSI Demo</button>
 
-        <div class="status-pill" id="status-pill">
-          <span class="status-dot" id="status-dot"></span>
-          <span class="status-text-label">Status</span>
-          <span class="status-text-strong" id="status-main">idle</span>
-          <span class="status-text-soft" id="status-extra"></span>
+        <div class="status-pill">
+          <span id="status-dot" class="status-dot"></span>
+          <span class="status-label">Status</span>
+          <span id="status-main" class="status-main">idle</span>
+          <span class="status-spacer"></span>
+          <span id="status-sub" class="status-sub">waiting for first run…</span>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Output card -->
-    <div class="output-card">
-      <div class="output-header">
-        <span class="output-label">Console output</span>
-        <span class="output-chip" id="output-chip">ok</span>
+    <!-- Console output -->
+    <section class="console-card">
+      <div class="console-header">
+        <div class="console-title">Console output</div>
+        <div class="console-pill">
+          <span>ok</span>
+          <button id="clear-output" class="console-pill-btn">clear</button>
+        </div>
       </div>
-      <pre class="output-body" id="nsi-output">
-Tap “Run NSI Demo” to send a demo request into the NSI Engine…
-      </pre>
-    </div>
 
-    <div class="hint">
+      <pre id="console-output" class="console-output">
+Tap “Run NSI Demo” to send a demo request into the NSI Engine…</pre>
+    </section>
+
+    <p class="hint">
       This console uses the same backend endpoint your live NSI stack will use.
-    </div>
-  </div>
+    </p>
+  </main>
 
   <script type="module">
     import { callEngine } from "/src-api-config.js";
 
     const runBtn = document.getElementById("run-nsi-demo");
-    const statusPill = document.getElementById("status-pill");
+    const clearBtn = document.getElementById("clear-output");
+    const statusDot = document.getElementById("status-dot");
     const statusMain = document.getElementById("status-main");
-    const statusExtra = document.getElementById("status-extra");
-    const outputEl = document.getElementById("nsi-output");
-    const outputChip = document.getElementById("output-chip");
+    const statusSub = document.getElementById("status-sub");
+    const outputEl = document.getElementById("console-output");
 
-    function setStatus(mode, mainText, extraText) {
-      statusPill.classList.remove("ok", "processing", "error");
-      if (mode) statusPill.classList.add(mode);
-      statusMain.textContent = mainText;
-      statusExtra.textContent = extraText || "";
-    }
+    function setStatus({ state, message, ok }) {
+      statusMain.textContent = state;
+      statusSub.textContent = message;
 
-    function setOutput(data) {
-      try {
-        outputEl.textContent = JSON.stringify(data, null, 2);
-      } catch (e) {
-        outputEl.textContent = String(data);
+      if (ok) {
+        statusDot.classList.add("status-dot--ok");
+      } else {
+        statusDot.classList.remove("status-dot--ok");
       }
     }
 
-    runBtn.addEventListener("click", async () => {
-      setStatus("processing", "processing", "requesting demo…");
-      outputChip.textContent = "…";
+    function setOutput(text) {
+      outputEl.textContent = text;
+    }
 
+    clearBtn.addEventListener("click", () => {
+      setOutput("Tap “Run NSI Demo” to send a demo request into the NSI Engine…");
+      setStatus({
+        state: "idle",
+        message: "waiting for first run…",
+        ok: false,
+      });
+    });
+
+    runBtn.addEventListener("click", async () => {
       try {
+        setStatus({
+          state: "running",
+          message: "sending demo request to NSI Engine…",
+          ok: false,
+        });
+        setOutput("Processing demo request…");
+
+        // ثابتِ دمو – هر وقت خواستی بعداً می‌تونیم پارامترها رو داینامیک کنیم
         const params = {
           engine: "nsi",
           mode: "demo",
           fixtureId: "123456",
           team: "Arsenal",
           opponent: "Spurs",
-          minute: 78
+          minute: 78,
         };
 
         const data = await callEngine(params);
 
-        setStatus("ok", "ok", "response received");
-        outputChip.textContent = "ok";
-        setOutput(data);
+        setStatus({
+          state: "ok",
+          message: "response received",
+          ok: true,
+        });
+
+        setOutput(JSON.stringify(data, null, 2));
       } catch (err) {
-        setStatus("error", "error", "request failed");
-        outputChip.textContent = "error";
-        setOutput({ error: err?.message || String(err) });
+        setStatus({
+          state: "error",
+          message: "backend error – see console output",
+          ok: false,
+        });
+
+        setOutput(
+          JSON.stringify(
+            {
+              error: true,
+              message: err?.message || "Request failed",
+            },
+            null,
+            2
+          )
+        );
       }
+    });
+
+    // وضعیت اولیه
+    setStatus({
+      state: "idle",
+      message: "waiting for first run…",
+      ok: false,
     });
   </script>
 </body>
-</html> 
+</html>
