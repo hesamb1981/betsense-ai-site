@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NSI Engine</title>
 
+<link rel="stylesheet" href="../styles/engine-core.css" />
+
+<style>
+/* استایل هماهنگ با BetSense — 100% بدون تغییر */
+body {
+  background: #0b1221;
+  font-family: Inter, sans-serif;
+  color: white;
+  padding: 40px;
+}
+.engine-box {
+  background: #0f1a33;
+  border-radius: 18px;
+  padding: 25px;
+  border: 1px solid #243b55;
+  max-width: 650px;
+  margin: auto;
+}
+.btn {
+  background: linear-gradient(90deg, #ff5f6d, #ff9966);
+  padding: 14px 22px;
+  border-radius: 14px;
+  margin-top: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  font-size: 17px;
+}
+.btn-blue {
+  background: #1b2d50;
+}
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+</style>
+
+<script src="../../scripts/api-config.js"></script>
+
+</head>
+<body>
+
+<div class="engine-box">
+  <h1>NSI ENGINE</h1>
+  <p>Neuro-Structural Intelligence Engine — Live behavioral + structural shifts.</p>
+
+  <div class="btn" onclick="runDemo()">Run NSI demo analysis</div>
+  <div class="btn btn-blue" onclick="checkHealth()">Check NSI health</div>
+
+  <p id="status" style="margin-top:20px;">Status: idle</p>
+  
+  <pre id="output" style="margin-top:20px; white-space:pre-wrap;"></pre>
+</div>
+
+<script>
+async function checkHealth() {
+  document.getElementById("status").innerText = "Checking health...";
+  const res = await fetch(`${window.API_BASE_URL}/api/nsi/health`);
+  const data = await res.json();
+  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+  document.getElementById("status").innerText = "Health check complete";
+}
+
+async function runDemo() {
+  document.getElementById("status").innerText = "Running NSI demo...";
+  const res = await fetch(`${window.API_BASE_URL}/api/nsi/demo`);
+  const data = await res.json();
+  document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+  document.getElementById("status").innerText = "Demo complete";
+}
+</script>
+
+</body>
+</html>
