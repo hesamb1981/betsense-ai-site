@@ -1,187 +1,541 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Behavior Engine — Demo Console</title>
+  <meta charset="UTF-8" />
+  <title>BetSense • Meta-Behavior Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #0a0f17;
-            font-family: 'Inter', sans-serif;
-            color: #e8e8e8;
-        }
+  <!-- Basic dark UI just like NSI / RBS pages -->
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #020617;
+      --bg-card-soft: #02081f;
+      --accent-green: #22c55e;
+      --accent-blue: #22d3ee;
+      --accent-pill: #0f172a;
+      --accent-pill-border: #1f2937;
+      --accent-text-soft: #94a3b8;
+      --accent-text-strong: #e5e7eb;
+      --console-bg: #020617;
+      --console-border: #1e293b;
+      --danger: #f97373;
+      --button-gradient: linear-gradient(135deg, #fb923c, #ec4899);
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      --radius-lg: 26px;
+    }
 
-        .page-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .engine-header {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 18px 25px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-        }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-main);
+      background:
+        radial-gradient(circle at top left, #0f172a 0, transparent 55%),
+        radial-gradient(circle at bottom right, #020617 0, transparent 55%),
+        #000000;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        .engine-title {
-            font-size: 34px;
-            font-weight: 700;
-            margin-top: 12px;
-        }
+    .page-shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
 
-        .badge {
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-right: 10px;
-            background: rgba(0,255,120,0.15);
-            border: 1px solid rgba(0,255,120,0.3);
-            color: #00ff9c;
-        }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
 
-        .panel {
-            background: rgba(255,255,255,0.045);
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 22px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-        }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-        .panel-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+    .brand-title {
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
 
-        .input-field {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0 18px;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.14);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 16px;
-        }
+    .brand-sub {
+      font-size: 13px;
+      color: var(--accent-text-soft);
+    }
 
-        .run-button {
-            padding: 14px 28px;
-            border-radius: 14px;
-            background: linear-gradient(90deg, #ff6a6a, #ff9d00);
-            border: none;
-            font-size: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            color: #fff;
-            margin-top: 10px;
-        }
+    .header-link {
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #1e293b;
+      text-decoration: none;
+      color: var(--accent-text-strong);
+      background: #020617aa;
+    }
 
-        .status-ok { color: #00ff89; margin-left: 10px; }
-        .status-error { color: #ff4b4b; margin-left: 10px; }
+    .header-link:hover {
+      border-color: #38bdf8;
+    }
 
-        .console-box {
-            background: rgba(0,0,0,0.35);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 16px;
-            border-radius: 14px;
-            white-space: pre-wrap;
-            font-size: 14px;
-            line-height: 1.45;
-            margin-top: 14px;
-            color: #b9b9b9;
-        }
-    </style>
+    .engine-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
 
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--accent-pill);
+      border: 1px solid var(--accent-pill-border);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-text-soft);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-green);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.18);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .hero-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--accent-text-soft);
+      max-width: 640px;
+    }
+
+    .layout {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    @media (min-width: 880px) {
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr);
+      }
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 20px 18px 18px;
+      background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.85),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--accent-text-soft);
+      margin-bottom: 12px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--accent-text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .status-dot.error {
+      background: var(--danger);
+    }
+
+    .status-label {
+      text-transform: uppercase;
+    }
+
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-text-soft);
+    }
+
+    .field-input {
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      padding: 8px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .field-input::placeholder {
+      color: #6b7280;
+    }
+
+    .field-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px #0ea5e9;
+    }
+
+    .actions-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .btn-primary {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background-image: var(--button-gradient);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(236, 72, 153, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 18px rgba(236, 72, 153, 0.5);
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: var(--accent-text-soft);
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      border-color: #38bdf8;
+      color: #e5e7eb;
+    }
+
+    .console-wrapper {
+      border-radius: 20px;
+      background: var(--console-bg);
+      border: 1px solid var(--console-border);
+      padding: 12px 12px 10px;
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: #e5e7eb;
+      max-height: 340px;
+      overflow: auto;
+      position: relative;
+    }
+
+    .console-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .console-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #374151;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .foot-note {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--accent-text-soft);
+    }
+  </style>
 </head>
+
 <body>
+  <div class="page-shell">
+    <!-- HEADER -->
+    <header>
+      <div class="brand">
+        <div class="brand-title">BETSENSE ULTRA</div>
+        <div class="brand-sub">Enterprise behavioral insight stack</div>
+      </div>
+      <a href="index.html" class="header-link">← Back to main site</a>
+    </header>
 
-<div class="page-container">
+    <!-- HERO -->
+    <section>
+      <div class="engine-pill-row">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          META-BEHAVIOR ENGINE
+        </div>
+        <div class="pill">LIVE READY • DEMO</div>
+      </div>
 
-    <div class="engine-header">
-        <span class="badge">META-BEHAVIOR ENGINE</span>
-        <span class="badge" style="background:rgba(0,200,255,0.18);border-color:rgba(0,200,255,0.32);color:#4ecbff;">
-            LIVE READY • DEMO
-        </span>
+      <h1>META-BEHAVIOR ENGINE — Demo Console</h1>
+      <p class="hero-text">
+        Run a Meta-Behavior analysis through the BetSense Ultra backend stack.
+        This console showcases long-horizon behavioral patterns for a selected
+        club across multiple matches.
+      </p>
+    </section>
 
-        <div class="engine-title">META-BEHAVIOR ENGINE — Demo Console</div>
+    <!-- MAIN LAYOUT -->
+    <main class="layout">
+      <!-- DEMO CONSOLE CARD -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Meta-behavior demo analyzer</div>
+            <div class="card-subtitle">
+              Configure a simple scenario and tap
+              <strong>Run Meta Demo</strong> to generate a narrative of
+              long-term behavioral tendencies.
+            </div>
+          </div>
+          <div class="status-pill" id="meta-status-pill">
+            <span class="status-dot" id="meta-status-dot"></span>
+            <span class="status-label" id="meta-status-label">OK</span>
+          </div>
+        </div>
 
-        <p>
-            Run a demo Meta-Behavior analysis through the BetSense Ultra backend stack.
-            This console showcases long-horizon behavioral patterns for a selected club
-            across multiple matches.
+        <!-- FORM -->
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label" for="meta-team">Team name</label>
+            <input
+              id="meta-team"
+              class="field-input"
+              placeholder="e.g. Arsenal"
+              autocomplete="off"
+            />
+          </div>
+          <div class="field">
+            <label class="field-label" for="meta-league">League</label>
+            <input
+              id="meta-league"
+              class="field-input"
+              placeholder="e.g. Premier League"
+              autocomplete="off"
+            />
+          </div>
+          <div class="field">
+            <label class="field-label" for="meta-window">
+              Sample window (matches)
+            </label>
+            <input
+              id="meta-window"
+              class="field-input"
+              type="number"
+              min="1"
+              placeholder="e.g. 50"
+            />
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="actions-row">
+          <button id="run-meta-demo" class="btn-primary">
+            Run Meta Demo
+          </button>
+
+          <a href="LiveDataConnect.html" class="btn-secondary">
+            Live connected data →
+          </a>
+        </div>
+
+        <!-- CONSOLE -->
+        <div class="console-wrapper">
+          <div class="console-header">
+            <span>CONSOLE OUTPUT</span>
+            <span class="console-tag" id="meta-console-tag">prototype</span>
+          </div>
+          <pre id="meta-console-output">
+Tap “Run Meta Demo” to send a demo request into the Meta-Behavior engine…
+          </pre>
+        </div>
+
+        <p class="foot-note">
+          This console uses the same backend endpoint your live Meta-Behavior
+          stack will use. For now, it returns a prototype response so you can
+          design and sell the concept.
         </p>
-    </div>
+      </section>
+    </main>
+  </div>
 
+  <!-- DEMO WIRES -->
+  <script>
+    (function () {
+      const ENDPOINT = "/.netlify/functions/meta-demo";
 
-    <div class="panel">
-        <div class="panel-title">Meta-behavior demo analyzer</div>
+      const statusDot = document.getElementById("meta-status-dot");
+      const statusLabel = document.getElementById("meta-status-label");
+      const consoleOutput = document.getElementById("meta-console-output");
+      const consoleTag = document.getElementById("meta-console-tag");
 
-        <label>TEAM NAME</label>
-        <input class="input-field" id="teamInput" placeholder="e.g. Arsenal">
+      function setStatus(state, message) {
+        if (state === "running") {
+          statusDot.classList.remove("error");
+          statusDot.style.background = "#22c55e";
+          statusLabel.textContent = "RUNNING";
+        } else if (state === "ok") {
+          statusDot.classList.remove("error");
+          statusDot.style.background = "#22c55e";
+          statusLabel.textContent = "OK";
+        } else {
+          statusDot.classList.add("error");
+          statusLabel.textContent = "ERROR";
+        }
+        if (message) {
+          consoleOutput.textContent = message;
+        }
+      }
 
-        <label>LEAGUE</label>
-        <input class="input-field" id="leagueInput" placeholder="e.g. Premier League">
+      async function runDemo() {
+        const team = document.getElementById("meta-team").value || "Selected team";
+        const league =
+          document.getElementById("meta-league").value || "Selected league";
+        const windowRaw =
+          document.getElementById("meta-window").value || "50";
 
-        <label>SAMPLE WINDOW (MATCHES)</label>
-        <input class="input-field" id="sampleInput" placeholder="e.g. 50">
+        const windowMatches = parseInt(windowRaw, 10) || 50;
 
-        <button class="run-button" onclick="runMetaDemo()">Run Meta Demo</button>
+        setStatus("running", "Processing Meta-Behavior demo request…");
+        consoleTag.textContent = "request";
 
-        <span id="statusDot" class="status-ok">● ok</span>
-    </div>
-
-
-
-    <div class="panel">
-        <div class="panel-title">CONSOLE OUTPUT</div>
-        <div id="consoleOutput" class="console-box">{ waiting for demo request... }</div>
-    </div>
-
-</div>
-
-
-<script>
-async function runMetaDemo() {
-
-    document.getElementById("consoleOutput").innerText = "Processing demo request…";
-
-    const payload = {
-        team: document.getElementById("teamInput").value || "Demo Team",
-        league: document.getElementById("leagueInput").value || "Demo League",
-        sample: document.getElementById("sampleInput").value || 10
-    };
-
-    try {
-        const response = await fetch("/.netlify/functions/meta-demo", {
+        try {
+          const res = await fetch(ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+              team,
+              league,
+              sample_window_matches: windowMatches,
+            }),
+          });
+
+          const text = await res.text();
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch {
+            data = { raw: text };
+          }
+
+          setStatus("ok");
+          consoleTag.textContent = "response";
+
+          consoleOutput.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          consoleTag.textContent = "error";
+          setStatus(
+            "error",
+            JSON.stringify(
+              { error: "Meta demo failed", detail: String(err) },
+              null,
+              2
+            )
+          );
+        }
+      }
+
+      document
+        .getElementById("run-meta-demo")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          runDemo();
         });
-
-        const data = await response.json();
-
-        document.getElementById("consoleOutput").innerText =
-            JSON.stringify(data, null, 4);
-
-        document.getElementById("statusDot").className = "status-ok";
-        document.getElementById("statusDot").innerText = "● ok";
-
-    } catch (err) {
-
-        document.getElementById("consoleOutput").innerText =
-            JSON.stringify({ error: "Meta demo failed" }, null, 4);
-
-        document.getElementById("statusDot").className = "status-error";
-        document.getElementById("statusDot").innerText = "● error";
-    }
-}
-</script>
-
+    })();
+  </script>
 </body>
 </html>
