@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense - RBS Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #000);
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1200px;
+      border-radius: 24px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: radial-gradient(circle at top left, #020617, #020617 65%);
+      box-shadow: 0 32px 60px rgba(15,23,42,0.9);
+      padding: 20px 16px 24px;
+    }
+
+    @media (min-width: 900px) {
+      .page { padding: 24px 28px 32px; }
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 160deg,
+        #f97316,
+        #f97316 25%,
+        #22c55e 25%,
+        #22c55e 50%,
+        #38bdf8 50%,
+        #38bdf8 75%,
+        #a855f7 75%,
+        #a855f7
+      );
+      box-shadow: 0 0 12px rgba(56,189,248,0.5);
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: .4px;
+    }
+
+    .run-box {
+      margin-top: 22px;
+      border: 1px solid rgba(148,163,184,0.25);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    button {
+      margin-top: 16px;
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #0ea5e9;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: #38bdf8;
+    }
+
+    pre {
+      margin-top: 20px;
+      background: rgba(15,23,42,0.9);
+      padding: 20px;
+      border-radius: 12px;
+      color: #f8fafc;
+      overflow-x: auto;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    
+    <div class="header">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-title">RBS Engine</div>
+      </div>
+    </div>
+
+    <div class="run-box">
+      <h2>Run RBS Test</h2>
+
+      <button id="run-rbs-btn">Run RBS Engine</button>
+
+      <pre id="rbs-output">Waiting...</pre>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { callEngine } from "/src-api-config.js";
+
+    async function runRBSDemo() {
+      try {
+        const params = {
+          engine: "rbs",
+          mode: "demo",
+          fixtureId: "987654",
+          team: "Arsenal"
+        };
+
+        const data = await callEngine(params);
+        console.log("RBS Engine Response:", data);
+
+        document.getElementById("rbs-output").textContent =
+          JSON.stringify(data, null, 2);
+
+      } catch (err) {
+        document.getElementById("rbs-output").textContent =
+          "⚠️ Error running RBS Engine: " + err.message;
+      }
+    }
+
+    document.getElementById("run-rbs-btn")
+      .addEventListener("click", runRBSDemo);
+  </script>
+
+</body>
+</html>
