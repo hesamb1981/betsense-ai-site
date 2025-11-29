@@ -1,293 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>NSI Engine • Demo Console</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="UTF-8" />
+  <title>NSI Engine • Demo Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <style>
-      :root {
-        color-scheme: dark;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-      }
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #000);
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, #020617, #020617 65%);
+      box-shadow: 0 32px 60px rgba(15, 23, 42, 0.9);
+      padding: 24px 20px 24px;
+    }
+
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #38bdf8;
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      line-height: 1.4;
+    }
+
+    .card {
+      margin-top: 16px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 18px 16px 16px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      flex: 0 0 auto;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(90deg, #fb7185, #f97316);
+      color: #0b1120;
+      box-shadow: 0 14px 35px rgba(248, 113, 113, 0.35);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+      filter: brightness(0.95);
+    }
+
+    .status-pill {
+      flex: 1 1 auto;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #9ca3af;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .status-text-strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .status-text-soft {
+      color: #6b7280;
+    }
+
+    .output {
+      margin-top: 14px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top left, #020617, #000 75%);
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      padding: 12px 12px 10px;
+      font-size: 0.8rem;
+      min-height: 72px;
+      color: #9ca3af;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .output-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .output-body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      color: #e5e7eb;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: #6b7280;
+    }
+
+    @media (min-width: 768px) {
       body {
-        min-height: 100vh;
-        background: radial-gradient(
-          circle at top,
-          #020617 0,
-          #020617 55%,
-          #000 100%
-        );
-        color: #e5e7eb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px 16px;
+        padding: 32px 16px 48px;
       }
 
       .page {
-        width: 100%;
-        max-width: 480px;
+        max-width: 520px;
+        padding: 26px 22px 24px;
       }
 
-      .console-card {
-        background: radial-gradient(circle at top left, #020617 0, #020617 70%, #020617);
-        border-radius: 24px;
-        border: 1px solid rgba(148, 163, 184, 0.35);
-        box-shadow: 0 32px 80px rgba(15, 23, 42, 0.9);
-        padding: 24px 20px 20px;
+      .title {
+        font-size: 1.8rem;
       }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="eyebrow">BetSense AI Stack • NSI Layer</div>
+      <div class="title">NSI ENGINE — Demo Console</div>
+      <div class="subtitle">
+        Run demo NSI Engine analysis using the backend API and preview the
+        behavior narrative this layer returns.
+      </div>
+    </div>
 
-      @media (min-width: 480px) {
-        .console-card {
-          padding: 28px 24px 22px;
-        }
-      }
+    <div class="card">
+      <div class="card-title">NSI demo analyzer</div>
+      <div class="card-subtitle">
+        Tap the button below to send a demo request to the NSI Engine via
+        BetSense Ultra API.
+      </div>
 
-      .console-title {
-        font-size: 1.4rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: #f9fafb;
-        margin-bottom: 8px;
-      }
+      <div class="btn-row">
+        <button id="run-nsi-demo" class="btn-primary">Run NSI Demo</button>
 
-      .console-subtitle {
-        font-size: 0.9rem;
-        color: #9ca3af;
-        line-height: 1.5;
-        margin-bottom: 20px;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: #a5b4fc;
-        background: rgba(15, 23, 42, 0.9);
-        border-radius: 999px;
-        padding: 6px 12px;
-        border: 1px solid rgba(129, 140, 248, 0.5);
-        margin-bottom: 16px;
-      }
-
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 999px;
-        background: #22c55e;
-        box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
-      }
-
-      .primary-btn {
-        width: 100%;
-        border: none;
-        border-radius: 999px;
-        padding: 14px 18px;
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: #0b1020;
-        background-image: linear-gradient(90deg, #f97316, #fb7185);
-        box-shadow: 0 12px 35px rgba(248, 113, 113, 0.4);
-        cursor: pointer;
-        transition: transform 120ms ease-out, box-shadow 120ms ease-out,
-          filter 120ms ease-out;
-      }
-
-      .primary-btn:active {
-        transform: translateY(1px) scale(0.99);
-        box-shadow: 0 6px 18px rgba(248, 113, 113, 0.25);
-        filter: brightness(0.92);
-      }
-
-      .status-row {
-        margin-top: 18px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.8rem;
-        color: #9ca3af;
-        gap: 8px;
-      }
-
-      .status-label {
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        font-weight: 600;
-        font-size: 0.72rem;
-        color: #6b7280;
-      }
-
-      .status-value {
-        color: #e5e7eb;
-        font-variant-numeric: tabular-nums;
-      }
-
-      .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 999px;
-        margin-right: 4px;
-      }
-
-      .status-idle {
-        background: #6b7280;
-      }
-
-      .status-running {
-        background: #f97316;
-        box-shadow: 0 0 12px rgba(249, 115, 22, 0.9);
-      }
-
-      .status-ok {
-        background: #22c55e;
-        box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
-      }
-
-      .status-error {
-        background: #ef4444;
-        box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
-      }
-
-      .output {
-        margin-top: 14px;
-        background: radial-gradient(circle at top left, #020617, #020617 65%);
-        border-radius: 18px;
-        border: 1px solid rgba(55, 65, 81, 0.85);
-        padding: 10px 12px;
-        max-height: 220px;
-        overflow: auto;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          "Liberation Mono", "Courier New", monospace;
-        font-size: 0.8rem;
-        color: #d1d5db;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      .output::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .output::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      .output::-webkit-scrollbar-thumb {
-        background: #4b5563;
-        border-radius: 999px;
-      }
-
-      .footer-note {
-        margin-top: 10px;
-        font-size: 0.72rem;
-        color: #6b7280;
-      }
-    </style>
-  </head>
-
-  <body>
-    <main class="page">
-      <section class="console-card">
-        <div class="pill">
-          <span class="dot"></span>
-          NSI Engine • Live Ready
+        <div class="status-pill" id="status-pill">
+          <span class="status-dot" id="status-dot"></span>
+          <span class="status-text-strong" id="status-main">Status · idle</span>
+          <span class="status-text-soft" id="status-sub">Tap Run NSI Demo</span>
         </div>
+      </div>
 
-        <h1 class="console-title">NSI ENGINE — Demo Console</h1>
-        <p class="console-subtitle">
-          Run a demo NSI engine analysis through the BetSense Ultra backend API.
-          This is a fixed showcase scenario to prove end-to-end connectivity.
-        </p>
-
-        <button id="run-nsi-demo-btn" class="primary-btn">
-          Run NSI Demo
-        </button>
-
-        <div class="status-row">
-          <div class="status-label">STATUS</div>
-          <div class="status-value" id="nsi-status">
-            <span class="status-dot status-idle" id="nsi-status-dot"></span>
-            idle
-          </div>
+      <div class="output" id="output">
+        <div class="output-label">NSI engine response</div>
+        <div class="output-body" id="output-body">
+Result will appear here…
         </div>
+      </div>
 
-        <pre id="nsi-output" class="output">Result will appear here…</pre>
+      <div class="hint">
+        Demo uses a fixed sample match (Arsenal vs Spurs) and minute 78 —
+        in production this layer reads your live stacked feeds via LiveData Connect.
+      </div>
+    </div>
+  </div>
 
-        <div class="footer-note">
-          This console calls the same backend endpoint your live stack will use.
-        </div>
-      </section>
-    </main>
+  <script type="module">
+    import { callEngine } from "/src-api-config.js";
 
-    <script type="module">
-      import { callEngine } from "/src-api-config.js";
+    const btn = document.getElementById("run-nsi-demo");
+    const statusDot = document.getElementById("status-dot");
+    const statusMain = document.getElementById("status-main");
+    const statusSub = document.getElementById("status-sub");
+    const outputBody = document.getElementById("output-body");
 
-      const runBtn = document.getElementById("run-nsi-demo-btn");
-      const statusEl = document.getElementById("nsi-status");
-      const statusDot = document.getElementById("nsi-status-dot");
-      const outputEl = document.getElementById("nsi-output");
-
-      function setStatus(mode, text) {
-        statusDot.classList.remove(
-          "status-idle",
-          "status-running",
-          "status-ok",
-          "status-error"
-        );
-
-        if (mode === "running") statusDot.classList.add("status-running");
-        else if (mode === "ok") statusDot.classList.add("status-ok");
-        else if (mode === "error") statusDot.classList.add("status-error");
-        else statusDot.classList.add("status-idle");
-
-        statusEl.innerHTML = "";
-        statusEl.appendChild(statusDot);
-        statusEl.appendChild(document.createTextNode(" " + text));
+    function setStatus(state, message) {
+      if (state === "idle") {
+        statusDot.style.background = "#22c55e";
+        statusMain.textContent = "Status · idle";
+        statusSub.textContent = message || "Tap Run NSI Demo";
+      } else if (state === "running") {
+        statusDot.style.background = "#eab308";
+        statusMain.textContent = "Status · running";
+        statusSub.textContent = message || "Contacting NSI backend…";
+      } else if (state === "ok") {
+        statusDot.style.background = "#22c55e";
+        statusMain.textContent = "Status · success";
+        statusSub.textContent = message || "NSI Engine responded";
+      } else if (state === "error") {
+        statusDot.style.background = "#ef4444";
+        statusMain.textContent = "Status · error";
+        statusSub.textContent = message || "Could not reach backend";
       }
+    }
 
-      async function runNSIDemo() {
-        try {
-          setStatus("running", "running…");
-          outputEl.textContent = "Contacting NSI engine…";
+    btn.addEventListener("click", async () => {
+      setStatus("running");
+      outputBody.textContent = "Processing…";
 
-          // سناریوی دمو ثابت – فقط برای تست اتصال
-          const params = {
-            engine: "nsi",
-            mode: "demo",
-            fixtureId: "123456",
-            team: "Arsenal",
-            opponent: "Spurs",
-            minute: 78,
-          };
+      try {
+        const params = {
+          engine: "nsi",
+          mode: "demo",
+          fixtureId: "123456",
+          team: "Arsenal",
+          opponent: "Spurs",
+          minute: 78
+        };
 
-          const data = await callEngine(params);
+        const data = await callEngine(params);
 
-          setStatus("ok", "ok");
-          outputEl.textContent = JSON.stringify(data, null, 2);
-        } catch (err) {
-          console.error(err);
-          setStatus("error", "error");
-          outputEl.textContent =
-            "NSI demo request failed. Please try again in a moment.";
-        }
+        setStatus("ok");
+        outputBody.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        console.error(err);
+        setStatus("error");
+        outputBody.textContent =
+          (err && err.message) || "Request failed. Please try again.";
       }
+    });
 
-      runBtn.addEventListener("click", runNSIDemo);
-    </script>
-  </body>
+    // اولیه
+    setStatus("idle");
+  </script>
+</body>
 </html>
