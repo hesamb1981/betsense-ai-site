@@ -1,8 +1,5 @@
 exports.handler = async () => {
   try {
-    // -----------------------------
-    // ORDERBOOK OPTION D DEMO OUTPUT
-    // -----------------------------
     const demoResponse = {
       ok: true,
       engine: "OrderBook Pressure Index",
@@ -14,16 +11,14 @@ exports.handler = async () => {
         sellSideImbalance: 38,
         sweepAlerts: 2,
         ladderStability: 71,
-        liquidityPockets: 4,
+        liquidityPockets: 4
       },
       narrative: {
         short:
           "OrderBook Pressure Index shows moderate buy-side pressure with generally stable ladder structure.",
         long:
-          "OrderBook Engine (Option D) detects a healthy but controlled buy-side imbalance. " +
-          "Liquidity pockets are visible on both sides of the book, with no extreme sweep activity. " +
-          "Ladder stability remains good and no major micro-structure stress is detected at this time.",
-      },
+          "OrderBook Engine (Option D) detects a healthy but controlled buy-side imbalance. Liquidity pockets are visible on both sides of the book, with no extreme sweep activity. Ladder stability remains good and no major micro-structure stress is detected at this time."
+      }
     };
 
     return {
@@ -34,15 +29,11 @@ exports.handler = async () => {
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify(
-        {
-          ok: false,
-          error: "OrderBook demo failed.",
-          details: err.message,
-        },
-        null,
-        2
-      ),
+      body: JSON.stringify({
+        ok: false,
+        error: "OrderBook demo failed.",
+        details: err.message,
+      }),
     };
   }
 };
