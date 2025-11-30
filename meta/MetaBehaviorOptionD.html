@@ -1,1 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meta Behavior Engine — Option D UI • BetSense</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-panel: #070c1a;
+      --bg-panel-soft: #0b1222;
+      --border-soft: #20263a;
+      --accent: #21e4a8;
+      --accent-soft: #21bde4;
+      --text-main: #f5f7ff;
+      --text-muted: #9aa4c6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 48px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .kicker-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 4px 10px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .lede {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 640px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .panel {
+      background: radial-gradient(circle at top left, #111827 0, #020617 55%, #000 100%);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+      padding: 22px 20px 22px;
+      margin-bottom: 22px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .panel-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .panel-kicker {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .panel-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .mode-pill {
+      border-radius: 999px;
+      padding: 6px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.4));
+    }
+
+    .mode-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+    }
+
+    .panel-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .panel-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 640px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .label span {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    input, select {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 9px 12px;
+      font-size: 13px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      outline: none;
+      width: 100%;
+    }
+
+    input::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    select {
+      padding-right: 32px;
+    }
+
+    .toggle-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .dot-on {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .dot-off {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .btn-preview {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #020617;
+      background-image: linear-gradient(135deg, #22c55e, #22d3ee);
+      box-shadow: 0 14px 40px rgba(34, 211, 238, 0.32);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+      margin-top: 6px;
+    }
+
+    .btn-preview:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 18px 45px rgba(34, 211, 238, 0.42);
+    }
+
+    .btn-preview span.dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 2px solid #020617;
+      background: rgba(15, 23, 42, 0.1);
+      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.4);
+    }
+
+    .output-panel {
+      background: var(--bg-panel-soft);
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 18px 16px 16px;
+    }
+
+    .output-kicker {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .output-title {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .output-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .output-text strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 20px 10px 32px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .panel {
+        border-radius: 20px;
+        padding: 18px 16px 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-preview {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="kicker-row">
+      <span class="pill">BetSense AI Stack</span>
+      <span class="pill">Meta-Behavior Layer</span>
+    </div>
+
+    <h1>Meta Behavior Engine — Option D UI</h1>
+
+    <p class="lede">
+      Configure how the Meta Behavior Engine fuses NSI, Behavior, RBS, Emotion and OrderBook layers
+      to generate one <strong>meta-behavior Option D profile</strong> for a single club or fixture.
+    </p>
+
+    <!-- CONFIG PANEL -->
+    <section class="panel">
+      <header class="panel-header">
+        <div class="panel-title-wrap">
+          <span class="panel-kicker">Meta behavior analyzer</span>
+          <span class="panel-title">Option D configuration</span>
+        </div>
+
+        <span class="mode-pill">
+          <span class="mode-dot"></span>
+          Demo mode · Local stack
+        </span>
+      </header>
+
+      <div class="panel-body">
+        <p class="panel-text">
+          Set the scan window and narrative focus for Meta Behavior Option D.
+          The engine will combine long-horizon NSI, deviation, RBS, Emotion and OrderBook pressure
+          into a single meta-behavior risk profile around the selected club.
+        </p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label class="label">Primary club <span>(e.g. Chelsea)</span></label>
+            <input type="text" placeholder="e.g. Chelsea" />
+          </div>
+
+          <div class="field">
+            <label class="label">League / competition <span>(e.g. Premier League)</span></label>
+            <input type="text" placeholder="e.g. Premier League" />
+          </div>
+
+          <div class="field">
+            <label class="label">Sample window (matches)</label>
+            <input type="number" placeholder="e.g. 40" />
+          </div>
+
+          <div class="field">
+            <label class="label">Output focus</label>
+            <select>
+              <option>Stability vs instability</option>
+              <option>Switching-risk & late flips</option>
+              <option>OrderBook pressure vs tactical DNA</option>
+              <option>Emotion & momentum vs NSI baseline</option>
+              <option>Full meta-behavior stream</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top: 10px;">
+          <label class="label">Meta layers included</label>
+          <div class="toggle-row">
+            <span class="toggle"><span class="dot-on"></span> NSI baseline</span>
+            <span class="toggle"><span class="dot-on"></span> Behavior deviation</span>
+            <span class="toggle"><span class="dot-on"></span> RBS switching-risk</span>
+            <span class="toggle"><span class="dot-on"></span> Emotion index</span>
+            <span class="toggle"><span class="dot-on"></span> OrderBook pressure</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Narrative options</label>
+          <div class="toggle-row">
+            <span class="toggle"><span class="dot-on"></span> Track stable vs unstable regimes</span>
+            <span class="toggle"><span class="dot-on"></span> Highlight switching-risk zones</span>
+            <span class="toggle"><span class="dot-off"></span> Include live in-play feed (enterprise)</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn-preview">
+          <span class="dot"></span>
+          Preview Meta Behavior Option D
+        </button>
+
+        <p class="panel-text" style="font-size: 11px;">
+          Note: this Option D UI is a shell for tuning and demo purposes only – it does not send real API traffic.
+          Enterprise buyers connect their own feeds via <strong>LiveData Connect</strong> and call the Meta Behavior
+          Engine API stack directly.
+        </p>
+      </div>
+    </section>
+
+    <!-- OUTPUT FOCUS PANEL
