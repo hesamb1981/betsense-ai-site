@@ -1,112 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fusion Engine — Option D</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>BetSense Fusion Engine — Option D</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<style>
-    body {
-        background:#0b0f19;
-        font-family: Arial, sans-serif;
-        color:white;
-        padding:20px;
-    }
+    <!-- استفاده از همان استایل اصلی سایت -->
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
 
-    .title {
-        font-size:34px;
-        font-weight:800;
-        margin-bottom:20px;
-    }
+  <body class="page page--engine">
+    <!-- TOP BAR -->
+    <header class="engine-header">
+      <div class="engine-header__inner">
+        <a href="/" class="engine-logo">
+          <span class="engine-logo__dot"></span>
+          <span class="engine-logo__text">BetSense AI Suite</span>
+        </a>
 
-    .input-box {
-        background:#111827;
-        padding:15px;
-        margin-bottom:20px;
-        border-radius:12px;
-        border:1px solid #1f2937;
-    }
+        <nav class="engine-nav">
+          <a href="/fusion/FusionEngine.html" class="engine-nav__link">
+            Fusion Engine
+          </a>
+          <a href="/engines/nsi/NSIEngine.html" class="engine-nav__link">
+            NSI Engine
+          </a>
+          <a href="/engines/rbs/RBSEngine.html" class="engine-nav__link">
+            RBS Engine
+          </a>
+          <a href="/MetaBehaviorEngine.html" class="engine-nav__link">
+            Meta-Behavior
+          </a>
+        </nav>
 
-    input {
-        width:100%;
-        padding:12px;
-        background:#0f172a;
-        border:1px solid #1e293b;
-        border-radius:10px;
-        color:white;
-        font-size:16px;
-    }
+        <a href="#live-connect" class="btn btn--pill btn--outline">
+          Live Connected Data
+        </a>
+      </div>
+    </header>
 
-    .btn {
-        margin-top:15px;
-        width:100%;
-        padding:15px;
-        border-radius:12px;
-        font-size:18px;
-        font-weight:bold;
-        color:white;
-        background: linear-gradient(90deg, #ff4d4d, #ffa64d);
-        border:none;
-    }
+    <!-- HERO / TITLE -->
+    <main class="engine-main">
+      <section class="engine-hero engine-hero--fusion">
+        <div class="engine-hero__badge-row">
+          <span class="pill pill--green">FUSION ENGINE</span>
+          <span class="pill pill--blue">OPTION D • UI CONSOLE</span>
+        </div>
 
-    .console {
-        background:#0f172a;
-        padding:20px;
-        margin-top:20px;
-        border-radius:12px;
-        white-space: pre-wrap;
-        border:1px solid #1e293b;
-    }
-</style>
-</head>
+        <h1 class="engine-hero__title">
+          Fusion Engine — Option D UI
+        </h1>
 
-<body>
+        <p class="engine-hero__subtitle">
+          A single cockpit that fuses NSI, RBS, Emotion and Order-Book layers
+          into one clean narrative stream for each selected club.
+        </p>
 
-<div class="title">Fusion Engine — Option D</div>
+        <div class="engine-hero__cta-row">
+          <a href="#option-d-console" class="btn btn--primary">
+            Open Option&nbsp;D console
+          </a>
+          <a href="/fusion/FusionEngine.html" class="btn btn--ghost">
+            Back to Fusion overview
+          </a>
+        </div>
+      </section>
 
-<div class="input-box">
-    <label>TEAM NAME</label>
-    <input id="team" placeholder="e.g. Arsenal">
-</div>
+      <!-- OPTION D CONFIG PANEL -->
+      <section id="option-d-console" class="engine-section">
+        <div class="engine-grid engine-grid--2">
+          <!-- LEFT: CONFIG CARD -->
+          <article class="engine-card">
+            <h2 class="engine-card__title">Option D configuration</h2>
+            <p class="engine-card__subtitle">
+              Configure how Fusion Engine blends the independent layers for a
+              single club or fixture.
+            </p>
 
-<div class="input-box">
-    <label>LEAGUE</label>
-    <input id="league" placeholder="e.g. Premier League">
-</div>
+            <form class="engine-form">
+              <label class="engine-field">
+                <span class="engine-field__label">Primary club</span>
+                <input
+                  type="text"
+                  class="engine-input"
+                  placeholder="e.g. Arsenal"
+                />
+              </label>
 
-<div class="input-box">
-    <label>SAMPLE WINDOW (MATCHES)</label>
-    <input id="window" placeholder="e.g. 50">
-</div>
+              <label class="engine-field">
+                <span class="engine-field__label">League / competition</span>
+                <input
+                  type="text"
+                  class="engine-input"
+                  placeholder="e.g. Premier League"
+                />
+              </label>
 
-<button class="btn" onclick="runFusion()">Run Fusion Demo</button>
+              <label class="engine-field">
+                <span class="engine-field__label">
+                  Sample window (matches)
+                </span>
+                <input
+                  type="number"
+                  class="engine-input"
+                  placeholder="e.g. 20"
+                  min="5"
+                  max="100"
+                />
+              </label>
 
-<div id="output" class="console">Console Output...</div>
+              <div class="engine-field engine-field--inline">
+                <span class="engine-field__label">Fusion layers</span>
+                <div class="engine-chips">
+                  <label class="chip chip--toggle">
+                    <input type="checkbox" checked />
+                    <span>NSI</span>
+                  </label>
+                  <label class="chip chip--toggle">
+                    <input type="checkbox" checked />
+                    <span>RBS</span>
+                  </label>
+                  <label class="chip chip--toggle">
+                    <input type="checkbox" checked />
+                    <span>Emotion index</span>
+                  </label>
+                  <label class="chip chip--toggle">
+                    <input type="checkbox" checked />
+                    <span>OrderBook pressure</span>
+                  </label>
+                </div>
+              </div>
 
-<script>
-async function runFusion() {
-    const team = document.getElementById("team").value.trim();
-    const league = document.getElementById("league").value.trim();
-    const windowSize = document.getElementById("window").value.trim();
+              <div class="engine-field engine-field--inline">
+                <span class="engine-field__label">Output focus</span>
+                <div class="engine-chips">
+                  <label class="chip chip--radio">
+                    <input type="radio" name="focus" checked />
+                    <span>Attacking edge</span>
+                  </label>
+                  <label class="chip chip--radio">
+                    <input type="radio" name="focus" />
+                    <span>Risk envelope</span>
+                  </label>
+                  <label class="chip chip--radio">
+                    <input type="radio" name="focus" />
+                    <span>Momentum swings</span>
+                  </label>
+                </div>
+              </div>
 
-    const output = document.getElementById("output");
-    output.innerHTML = "Running Fusion Engine...";
+              <button
+                type="button"
+                class="btn btn--primary btn--full"
+                disabled
+              >
+                Prototype only – live connect via backend
+              </button>
 
-    try {
-        const res = await fetch("/.netlify/functions/fusion-demo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ team, league, windowSize })
-        });
+              <p class="engine-hint">
+                This Option&nbsp;D UI is a static prototype for sales demos.
+                When connected to your live feeds, the same layout will stream
+                fused narratives in real-time.
+              </p>
+            </form>
+          </article>
 
-        const data = await res.json();
-        output.innerHTML = JSON.stringify(data, null, 2);
+          <!-- RIGHT: NARRATIVE PREVIEW -->
+          <article class="engine-card engine-card--console">
+            <div class="engine-card__header">
+              <h2 class="engine-card__title">Narrative preview</h2>
+              <span class="pill pill--soft">prototype</span>
+            </div>
 
-    } catch (err) {
-        output.innerHTML = JSON.stringify({ error: "Fusion Demo Failed", details: err }, null, 2);
-    }
+            <pre class="engine-console">
+{
+  "engine": "FUSION",
+  "mode": "option-d-ui",
+  "status": "ok",
+  "summary": "Unified match narrative stream ready for live data connection.",
+  "narrative": [
+    "NSI layer flags a rising attacking intent from the home side, 
+     coinciding with fresh substitutions.",
+    "RBS layer shows a growing probability of behavioral switching 
+     after minute 70 if the scoreline remains level.",
+    "Emotion index detects crowd heat spikes after marginal referee 
+     decisions, amplifying volatility windows.",
+    "OrderBook pressure highlights short bursts of mispriced odds 
+     during high-stress phases."
+  ],
+  "meta": {
+    "fusion_stack": [
+      "NSI",
+      "RBS",
+      "EmotionIndex",
+      "OrderBookPressure"
+    ],
+    "scenario": "OPTION_D_FUSION_CONSOLE"
+  }
 }
-</script>
+            </pre>
 
-</body>
+            <p class="engine-hint">
+              In the live product this panel will stream real fused commentary
+              for each selected fixture while your traders focus on execution.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- LIVE CONNECT CTA -->
+      <section id="live-connect" class="engine-section engine-section--cta">
+        <div class="engine-cta">
+          <h2 class="engine-cta__title">Plug in your live feeds</h2>
+          <p class="engine-cta__text">
+            Connect Fusion Engine Option&nbsp;D directly to your in-play odds,
+            xG, tempo and order-book feeds. One integration, four behavioral
+            layers, a single clean narrative.
+          </p>
+          <div class="engine-cta__actions">
+            <a href="mailto:hello@betsense.casino" class="btn btn--primary">
+              Live Connected Data
+            </a>
+            <a href="/fusion/FusionEngine.html" class="btn btn--ghost">
+              View full Fusion Engine spec
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="engine-footer">
+      <div class="engine-footer__inner">
+        <span>BetSense Fusion Engine · Independent module · Option D UI</span>
+      </div>
+    </footer>
+  </body>
 </html>
