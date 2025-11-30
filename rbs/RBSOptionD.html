@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RBS Engine — Option D Console</title>
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<style>
+body {
+  background: #0b1221;
+  color: #e8ecf7;
+  font-family: Arial, sans-serif;
+}
+.card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 22px;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.btn-primary {
+  background: linear-gradient(90deg, #0aff8a, #00c2ff);
+  padding: 14px 26px;
+  border-radius: 18px;
+  color: #00131f;
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+}
+.response-box {
+  background: rgba(0,0,0,0.4);
+  padding: 18px;
+  border-radius: 18px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.header-badge {
+  font-size: 14px;
+  color: #6ec1ff;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+
+<body class="p-6">
+
+<div class="max-w-2xl mx-auto">
+
+  <div class="mb-6 header-badge">BETSENSE AI STACK • RBS LAYER</div>
+
+  <h1 class="text-3xl font-bold mb-4">
+    RBS ENGINE — Option D Console
+  </h1>
+
+  <p class="text-lg mb-8 text-gray-300">
+    Run an RBS Engine demo request through the BetSense Ultra API and inspect switching-risk, 
+    late flips and regime-shift instability for a selected club or fixture.
+  </p>
+
+  <div class="card mb-8">
+
+    <h2 class="text-xl font-semibold mb-4">RBS demo analyzer</h2>
+
+    <p class="mb-4 text-gray-300">
+      Tap the button below to send a demo request to the RBS Engine backend and 
+      preview switching-risk flags, regime-shift instability and flip profiles.
+    </p>
+
+    <button id="runDemo" class="btn-primary mb-4 w-full">
+      ▶ Run RBS Demo
+    </button>
+
+    <div id="status" class="text-green-400 font-bold mb-3">
+      ● STATUS • READY
+    </div>
+
+    <div id="response" class="response-box">
+      Waiting for first RBS Engine demo...
+    </div>
+
+  </div>
+
+  <p class="text-gray-400 text-sm">
+    This console is for internal BetSense testing only. Production integrations should call the 
+    RBS Engine API stack directly with their own live or historical feeds.
+  </p>
+
+</div>
+
+<script>
+// Handle button click
+document.getElementById("runDemo").addEventListener("click", async () => {
+
+  document.getElementById("status").innerHTML = "● STATUS • LOADING...";
+  document.getElementById("response").innerHTML = "Loading RBS Engine demo...";
+
+  try {
+    const res = await fetch("/.netlify/functions/rbs-demo");
+    const data = await res.json();
+
+    document.getElementById("status").innerHTML = "● STATUS • OK";
+    document.getElementById("response").innerHTML = JSON.stringify(data, null, 2);
+
+  } catch (err) {
+    document.getElementById("status").innerHTML = "● STATUS • ERROR";
+    document.getElementById("response").innerHTML = "Error loading demo.";
+  }
+
+});
+</script>
+
+</body>
+</html>
