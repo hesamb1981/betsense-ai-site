@@ -1,110 +1,753 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fusion Engine – Option D UI</title>
+  <meta charset="UTF-8" />
+  <title>Fusion Engine — Option D UI Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Simple BetSense-style shell (dark gradient + clean UI) -->
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-panel: #020617;
+      --bg-card: #020617;
+      --bg-card-soft: #020617;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.15);
+      --accent-strong: #22c55e;
+      --pill-bg: rgba(15, 23, 42, 0.85);
+      --border-subtle: rgba(148, 163, 184, 0.4);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-dim: #6b7280;
+      --headline: #f9fafb;
+      --danger: #fb923c;
+      --focus-ring: rgba(59, 130, 246, 0.5);
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
+      --shadow-btn: 0 14px 35px rgba(248, 113, 113, 0.45);
+      --btn-gradient: linear-gradient(135deg, #fb923c, #f97316, #ec4899);
+    }
 
-<link href="https://betsense.casino/styles/main.css" rel="stylesheet">
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
-body {
-    background: #081018;
-    font-family: 'Inter', sans-serif;
-    color: #d7e2f2;
-    padding: 20px;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at top left, #0f172a 0, #020617 45%),
+        radial-gradient(circle at bottom right, #111827 0, #020617 55%),
+        #020617;
+      -webkit-font-smoothing: antialiased;
+    }
 
-.container {
-    max-width: 900px;
-    margin: auto;
-}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-.section {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 22px;
-}
+    .page-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 16px 56px;
+    }
 
-.section h2 {
-    color: #6ad1ff;
-    font-size: 20px;
-    margin-bottom: 14px;
-}
+    @media (min-width: 768px) {
+      .page-shell {
+        padding: 40px 24px 72px;
+      }
+    }
 
-label {
-    display:block;
-    margin-top:16px;
-    font-size:15px;
-}
+    /* Top suite header ---------------------------------------------------- */
 
-input, select {
-    width:100%;
-    background:#0f1b29;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #1c2b3c;
-    color:white;
-    margin-top:6px;
-}
-.checkbox-row {
-    margin-top:12px;
-}
-.checkbox-row label {
-    display:inline-block;
-    margin-right:15px;
-}
-a.button {
-    display:inline-block;
-    background:#0099ff;
-    color:white;
-    padding:12px 20px;
-    border-radius:10px;
-    margin-top:15px;
-    text-decoration:none;
-}
-</style>
+    .suite-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .suite-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 20px;
+      background: radial-gradient(circle at 20% 20%, #22d3ee, #6366f1 45%, #0f172a);
+      box-shadow:
+        0 0 0 1px rgba(148, 163, 184, 0.4),
+        0 18px 40px rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .suite-icon-inner {
+      width: 22px;
+      height: 22px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 25% 20%, #22c55e, #16a34a 40%, #0f172a);
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .suite-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .suite-name {
+      font-size: 1.25rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--headline);
+    }
+
+    .suite-tags {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    /* Engine pill row ----------------------------------------------------- */
+
+    .engine-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--pill-bg);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow:
+        0 0 0 4px var(--accent-soft),
+        0 0 18px rgba(34, 197, 94, 0.8);
+    }
+
+    .pill-live {
+      border-color: rgba(96, 165, 250, 0.7);
+    }
+
+    .pill-live span:last-child {
+      color: #bfdbfe;
+    }
+
+    /* Hero section -------------------------------------------------------- */
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--headline);
+      margin: 0 0 12px;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .hero-subtitle {
+      max-width: 640px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+    }
+
+    .hero-link {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      color: #bfdbfe;
+      opacity: 0.9;
+    }
+
+    .hero-link:hover {
+      opacity: 1;
+    }
+
+    /* Layout: config + console ------------------------------------------- */
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.1fr);
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #0b1120 0, #020617 55%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: var(--shadow-soft);
+      padding: 22px 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 24px 24px 26px;
+      }
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.09), transparent 55%);
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--headline);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .status-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    /* Form --------------------------------------------------------------- */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.85rem;
+    }
+
+    .field-label-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .field-label {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+      color: var(--text-soft);
+    }
+
+    .field-hint {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+
+    .text-input {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.7);
+      padding: 9px 11px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      width: 100%;
+    }
+
+    .text-input::placeholder {
+      color: #6b7280;
+    }
+
+    .text-input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px var(--focus-ring);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .fusion-layers {
+      margin-top: 4px;
+      border-radius: 18px;
+      border: 1px dashed rgba(148, 163, 184, 0.5);
+      padding: 10px 12px;
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .fusion-layers-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .layer-checkbox-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      font-size: 0.85rem;
+    }
+
+    .checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-main);
+    }
+
+    .checkbox-input {
+      width: 15px;
+      height: 15px;
+      border-radius: 5px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      accent-color: var(--accent-strong);
+    }
+
+    .output-focus {
+      margin-top: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 10px 12px 2px;
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .output-focus-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .output-select {
+      width: 100%;
+      margin-top: 5px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 0.86rem;
+      padding: 7px 10px;
+      outline: none;
+    }
+
+    .output-select:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px var(--focus-ring);
+    }
+
+    .form-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    @media (min-width: 600px) {
+      .form-footer {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      background-image: var(--btn-gradient);
+      color: #0b1120;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .primary-button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.3), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.18s ease-out;
+    }
+
+    .primary-button:hover::after {
+      opacity: 1;
+    }
+
+    .primary-button span.icon-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #fefce8;
+    }
+
+    .form-note {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* Console card -------------------------------------------------------- */
+
+    .console-card {
+      background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.06), #020617 55%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow: var(--shadow-soft);
+      padding: 20px 18px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .console-card {
+        padding: 22px 22px 24px;
+      }
+    }
+
+    .console-card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.14), transparent 60%);
+      pointer-events: none;
+    }
+
+    .console-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .console-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .console-title {
+      font-size: 0.86rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .console-status {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .console-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.95);
+    }
+
+    .console-output {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 18px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 14px 14px 14px;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+      line-height: 1.6;
+      max-height: 340px;
+      overflow: auto;
+      white-space: pre;
+    }
+
+    .console-output dim {
+      color: var(--text-dim);
+    }
+
+    .console-hint {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="page-shell">
+    <!-- Suite header ----------------------------------------------------- -->
+    <header class="suite-header">
+      <div class="suite-icon">
+        <div class="suite-icon-inner"></div>
+      </div>
+      <div class="suite-title-block">
+        <div class="suite-name">BetSense AI Suite</div>
+        <div class="suite-tags">Emotion · xG · OrderBook · Quantum</div>
+      </div>
+    </header>
 
-<div class="container">
-
-    <h1 style="color:#8bc9ff; font-size:30px;">Fusion Engine — Option D UI</h1>
-
-    <div class="section">
-        <h2>Overview</h2>
-        <p>
-        A single cockpit that fuses NSI, RBS, Emotion and OrderBook layers into one clean narrative stream for each selected club.
-        </p>
-        <a class="button" href="FusionEngine.html">Back to Fusion Engine</a>
+    <!-- Engine id + mode pills ------------------------------------------ -->
+    <div class="engine-pill-row">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        <span>Fusion Engine</span>
+      </div>
+      <div class="pill pill-live">
+        <span>Option&nbsp;D&nbsp;·&nbsp;UI console</span>
+      </div>
     </div>
 
+    <!-- Hero ------------------------------------------------------------- -->
+    <div class="hero-kicker">Fusion Engine · Option D</div>
+    <h1 class="hero-title">Fusion Engine — Option D UI</h1>
+    <p class="hero-subtitle">
+      A single cockpit that fuses NSI, RBS, Emotion and Order-Book layers into one
+      clean narrative stream for each selected club. Configure which layers you
+      want to blend, then ship the output into your own dashboards or feeds.
+    </p>
 
-    <div class="section">
-        <h2>Option D Configuration</h2>
+    <div class="hero-links">
+      <a href="FusionEngine.html" class="hero-link">Open Option&nbsp;D console</a>
+      <a href="FusionEngine.html" class="hero-link">Back to Fusion overview</a>
+    </div>
 
-        <label>Primary club</label>
-        <input placeholder="e.g. Arsenal">
+    <!-- Layout: configuration + console preview ------------------------- -->
+    <section class="layout">
+      <!-- Left: configuration card -->
+      <article class="card">
+        <div class="card-inner">
+          <div class="card-title-row">
+            <div class="card-title">Option D configuration</div>
+            <div class="status-pill">
+              <span class="status-pill-dot"></span>
+              <span>Live ready</span>
+            </div>
+          </div>
 
-        <label>League / competition</label>
-        <input placeholder="e.g. Premier League">
+          <div class="form-grid">
+            <div class="field">
+              <div class="field-label-row">
+                <span class="field-label">Primary club</span>
+                <span class="field-hint">Single club lens</span>
+              </div>
+              <input
+                class="text-input"
+                type="text"
+                placeholder="e.g. Arsenal"
+                autocomplete="off"
+              />
+            </div>
 
-        <label>Sample window (matches)</label>
-        <input placeholder="e.g. 20">
+            <div class="field">
+              <div class="field-label-row">
+                <span class="field-label">League / competition</span>
+                <span class="field-hint">Used for meta-behavior priors</span>
+              </div>
+              <input
+                class="text-input"
+                type="text"
+                placeholder="e.g. Premier League"
+                autocomplete="off"
+              />
+            </div>
 
-        <div class="checkbox-row">
-            <label><input type="checkbox" checked> NSI</label>
-            <label><input type="checkbox" checked> RBS</label>
-            <label><input type="checkbox" checked> Emotion Index</label>
-            <label><input type="checkbox" checked> OrderBook Pressure</label>
+            <div class="field">
+              <div class="field-label-row">
+                <span class="field-label">Sample window (matches)</span>
+                <span class="field-hint">Recent history Option&nbsp;D looks at</span>
+              </div>
+              <input
+                class="text-input"
+                type="number"
+                placeholder="e.g. 20"
+                min="1"
+                max="200"
+              />
+            </div>
+          </div>
+
+          <!-- Fusion layer switches -->
+          <div class="fusion-layers">
+            <div class="fusion-layers-title">Fusion layers</div>
+            <div class="layer-checkbox-row">
+              <label class="checkbox-label">
+                <input class="checkbox-input" type="checkbox" checked />
+                <span>NSI</span>
+              </label>
+              <label class="checkbox-label">
+                <input class="checkbox-input" type="checkbox" checked />
+                <span>RBS</span>
+              </label>
+              <label class="checkbox-label">
+                <input class="checkbox-input" type="checkbox" checked />
+                <span>Emotion index</span>
+              </label>
+              <label class="checkbox-label">
+                <input class="checkbox-input" type="checkbox" checked />
+                <span>OrderBook pressure</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Output focus -->
+          <div class="output-focus">
+            <div class="output-focus-title">Output focus</div>
+            <select class="output-select">
+              <option value="default">
+                Balanced narrative (risk + momentum + control)
+              </option>
+              <option value="late-game">
+                Late-game switching windows (75'+)
+              </option>
+              <option value="risk">
+                Risk envelope &amp; drawdown focus
+              </option>
+              <option value="momentum">
+                Momentum / xG-pressure bursts
+              </option>
+            </select>
+          </div>
+
+          <!-- Footer -->
+          <div class="form-footer">
+            <button class="primary-button" type="button">
+              <span class="icon-dot"></span>
+              <span>Save Option&nbsp;D preset</span>
+            </button>
+            <div class="form-note">
+              Saved presets can later be wired into your own dashboards,
+              watchlists or signal queues through LiveData Connect.
+            </div>
+          </div>
         </div>
+      </article>
 
-    </div>
+      <!-- Right: console-preview card ----------------------------------- -->
+      <aside class="console-card">
+        <div class="console-inner">
+          <div class="console-title-row">
+            <div class="console-title">Preview · fused narrative</div>
+            <div class="console-status">
+              <span class="console-status-dot"></span>
+              <span>Simulated</span>
+            </div>
+          </div>
 
-</div>
+          <div class="console-output">
+{
+  "engine": "FUSION",
+  "mode": "option_d_ui",
+  "status": "ok",
+  "summary": "UI preset generated successfully.",
+  "narrative": [
+    "Selected club will be analysed through NSI, RBS, Emotion and OrderBook layers, blended into a single storyline.",
+    "Sample window and league priors tune how aggressively late-game behaviour is weighted.",
+    "Output focus controls whether Fusion emphasises risk envelope, momentum bursts or balanced game-state flow."
+  ],
+  "meta": {
+    "layers_enabled": ["NSI", "RBS", "EmotionIndex", "OrderBookPressure"],
+    "option": "D",
+    "routing_hint": "Use this preset to drive live Fusion Engine calls from your internal tools."
+  }
+}
+          </div>
 
+          <div class="console-hint">
+            This preview is static. Your live deployment will call the Fusion
+            backend with your own feeds, presets and routing keys.
+          </div>
+        </div>
+      </aside>
+    </section>
+  </div>
 </body>
 </html>
