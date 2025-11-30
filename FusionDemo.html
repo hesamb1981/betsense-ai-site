@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fusion Engine — Demo Console • BetSense</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #050b1f;
+      --bg-card-soft: #070f26;
+      --border-soft: rgba(148, 163, 184, 0.25);
+      --text-main: #e5f0ff;
+      --text-soft: #9ca3af;
+      --accent: #22d3ee;
+      --accent-soft: rgba(56, 189, 248, 0.3);
+      --accent-strong: #4ade80;
+      --danger: #f97373;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-pill: 999px;
+      --shadow-card: 0 24px 80px rgba(15, 23, 42, 0.85);
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top, #0b1120 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 16px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1120px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: linear-gradient(
+        120deg,
+        rgba(15, 23, 42, 0.9),
+        rgba(15, 23, 42, 0.45)
+      );
+      backdrop-filter: blur(16px);
+    }
+
+    .badge.badge-accent {
+      border-color: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: 1.15;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 span.dim {
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .lead {
+      margin: 0 0 24px;
+      max-width: 720px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-soft);
+    }
+
+    .card {
+      margin-top: 8px;
+      padding: 24px 20px 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      background:
+        radial-gradient(circle at top, rgba(45, 212, 191, 0.12), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.15), transparent 60%),
+        linear-gradient(145deg, #020617, #020617 40%, #020617);
+      box-shadow: var(--shadow-card);
+    }
+
+    .card-inner {
+      border-radius: var(--radius-md);
+      background: radial-gradient(circle at top left, #020617, #000814);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 20px 18px 18px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-title-block h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .card-title-block p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-soft);
+      max-width: 460px;
+      line-height: 1.5;
+    }
+
+    .pill {
+      align-self: flex-start;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 11px;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), #020617);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.2);
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      position: relative;
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius-pill);
+      padding: 12px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #020617;
+      background-image: linear-gradient(135deg, #4ade80, #22d3ee);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.8),
+        0 18px 40px rgba(34, 211, 238, 0.35);
+      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, opacity 0.1s;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.9),
+        0 10px 24px rgba(34, 211, 238, 0.25);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.6),
+        0 6px 18px rgba(15, 23, 42, 0.8);
+    }
+
+    .btn span.icon {
+      font-size: 17px;
+      margin-top: -1px;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    .status-dot.error {
+      background: var(--danger);
+      box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.35);
+    }
+
+    .status-label {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .status-text {
+      color: #e5f0ff;
+    }
+
+    .status-hint {
+      opacity: 0.7;
+      font-size: 12px;
+    }
+
+    .output-shell {
+      border-radius: 18px;
+      padding: 14px 14px 12px;
+      background: radial-gradient(circle at top left, #020617, #020617 55%, #000814);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+    }
+
+    .output-header span.label {
+      opacity: 0.85;
+    }
+
+    .output-header span.mono {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      font-size: 10px;
+      text-transform: none;
+      letter-spacing: 0.08em;
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    pre {
+      margin: 0;
+      padding: 12px 0 4px;
+      max-height: 280px;
+      overflow: auto;
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-soft);
+      max-width: 620px;
+      line-height: 1.5;
+    }
+
+    .footer-note strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 40px 24px 56px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .card {
+        padding: 28px 26px 26px;
+      }
+
+      .card-inner {
+        padding: 22px 22px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="badge-row">
+      <div class="badge">BetSense AI Stack</div>
+      <div class="badge badge-accent">Fusion layer</div>
+    </div>
+
+    <h1>
+      FUSION ENGINE <span class="dim">— Demo Console</span>
+    </h1>
+
+    <p class="lead">
+      Run a Fusion Engine demo request through the BetSense Ultra API and inspect a
+      combined narrative plus fused NSI / RBS / Emotion &amp; OrderBook metrics stream
+      for a single club or fixture.
+    </p>
+
+    <section class="card">
+      <div class="card-inner">
+        <header class="card-header">
+          <div class="card-title-block">
+            <h2>Fusion demo analyzer</h2>
+            <p>
+              Tap the button below to send a demo request to the Fusion Engine backend.
+              The console will render the fused behavioral, NSI, RBS, Emotion index and
+              OrderBook pressure layers as a single JSON response.
+            </p>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            Demo mode · local stack
+          </div>
+        </header>
+
+        <div class="actions-row">
+          <button id="runFusionDemo" class="btn">
+            <span class="icon">▶</span>
+            <span>Run Fusion Demo</span>
+          </button>
+        </div>
+
+        <div class="status-row">
+          <span id="fusionStatusDot" class="status-dot"></span>
+          <span class="status-label">Status</span>
+          <span id="fusionStatusText" class="status-text">READY</span>
+          <span id="fusionStatusHint" class="status-hint">
+            Waiting for first Fusion Engine demo.
+          </span>
+        </div>
+
+        <div class="output-shell">
+          <div class="output-header">
+            <span class="label">Fusion demo response</span>
+            <span class="mono">/.netlify/functions/fusion-demo</span>
+          </div>
+          <pre id="fusionOutput">
+Waiting for Fusion Engine demo…
+          </pre>
+        </div>
+
+        <p class="footer-note">
+          This console is for internal <strong>BetSense</strong> testing only. Production
+          integrations should call the Fusion Engine API stack directly with their own
+          live or historical feeds.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const runBtn = document.getElementById("runFusionDemo");
+      const statusDot = document.getElementById("fusionStatusDot");
+      const statusText = document.getElementById("fusionStatusText");
+      const statusHint = document.getElementById("fusionStatusHint");
+      const output = document.getElementById("fusionOutput");
+
+      function setStatus(mode, text, hint) {
+        statusDot.classList.remove("error");
+        if (mode === "error") {
+          statusDot.classList.add("error");
+        }
+        statusText.textContent = text;
+        if (hint) statusHint.textContent = hint;
+      }
+
+      async function runDemo() {
+        runBtn.disabled = true;
+        setStatus("loading", "RUNNING", "Sending Fusion Engine demo request…");
+        output.textContent = "Waiting for Fusion Engine demo response…";
+
+        try {
+          const response = await fetch("/.netlify/functions/fusion-demo", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              scenario: "FUSION_LAYER_DEMO",
+            }),
+          });
+
+          const text = await response.text();
+
+          let payload;
+          try {
+            payload = JSON.parse(text);
+          } catch (e) {
+            payload = text;
+          }
+
+          if (!response.ok) {
+            setStatus(
+              "error",
+              "ERROR",
+              "HTTP " + response.status + " from Fusion Engine demo."
+            );
+          } else {
+            setStatus("ok", "OK", "Fusion Engine demo completed successfully.");
+          }
+
+          if (typeof payload === "string") {
+            output.textContent = String(payload);
+          } else {
+            output.textContent = JSON.stringify(payload, null, 2);
+          }
+        } catch (err) {
+          console.error(err);
+          setStatus("error", "ERROR", "Network error from Fusion Engine demo.");
+          output.textContent =
+            "Fusion demo error:\n" +
+            (err && err.message ? err.message : String(err));
+        } finally {
+          runBtn.disabled = false;
+        }
+      }
+
+      runBtn.addEventListener("click", runDemo);
+    })();
+  </script>
+</body>
+</html>
