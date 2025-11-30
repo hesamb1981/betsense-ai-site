@@ -1,1 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Behavior Deviation Scanner · IP Concept Sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-strong: #f9fafb;
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-yellow: #facc15;
+      --accent-red: #fb7185;
+      --accent-purple: #a855f7;
+      --border: rgba(148, 163, 184, 0.45);
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.9);
+      --shadow-hard: 0 0 0 1px rgba(15, 23, 42, 0.9), 0 32px 80px rgba(0, 0, 0, 0.9);
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      color: var(--text-main);
+      background: radial-gradient(circle at top left, #0f172a, #020617 55%, #000 100%);
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 48px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1040px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: conic-gradient(from 210deg, #22c55e, #38bdf8, #a855f7, #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9), 0 16px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .brand-icon-inner {
+      width: 60%;
+      height: 60%;
+      border-radius: 20px;
+      background: radial-gradient(circle at 30% 0, #e0f2fe, #0f172a 60%);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill-link {
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-link-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero {
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at top right, rgba(168, 85, 247, 0.18), transparent 55%),
+        #020617;
+      padding: 24px 20px 22px;
+      box-shadow: var(--shadow-hard);
+      border: 1px solid var(--border);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .hero-left {
+      max-width: 76%;
+    }
+
+    .labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .label-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.9);
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .label-pill strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .title {
+      margin: 0 0 8px;
+      font-size: 25px;
+      line-height: 1.25;
+      color: var(--text-strong);
+    }
+
+    .kicker {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-soft);
+      max-width: 560px;
+    }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .mode-pill {
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.4), rgba(2, 6, 23, 0.96));
+      color: #e5e7eb;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 14px;
+    }
+
+    .meta-pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-yellow);
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+      gap: 16px;
+    }
+
+    .panel {
+      border-radius: var(--radius-lg);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .panel-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .panel-title span {
+      color: #e5e7eb;
+    }
+
+    .bullet-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 13px;
+    }
+
+    .bullet-list li {
+      margin-bottom: 6px;
+    }
+
+    .bullet-list span.label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--accent-blue);
+      margin-right: 4px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .metric-card {
+      border-radius: 16px;
+      padding: 9px 10px 8px;
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), #020617);
+      font-size: 11px;
+    }
+
+    .metric-label {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: #f9fafb;
+      margin-bottom: 2px;
+    }
+
+    .metric-footnote {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    .section-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+      gap: 14px;
+    }
+
+    .section {
+      border-radius: var(--radius-lg);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      margin-top: 4px;
+    }
+
+    .section h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--text-strong);
+    }
+
+    .section p {
+      margin: 0 0 6px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.98);
+      color: #cbd5f5;
+    }
+
+    footer {
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 11px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    footer a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 20px 12px 32px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero {
+        padding: 18px 14px 16px;
+      }
+      .hero-top {
+        flex-direction: column;
+      }
+      .hero-left {
+        max-width: 100%;
+      }
+      .hero-right {
+        align-items: flex-start;
+      }
+      .grid-two,
+      .section-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">
+          <div class="brand-icon-inner"></div>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">BETSENSE QUANTUM SPORTS SUITE</div>
+          <div class="brand-sub">Behavior Deviation Scanner · IP surface</div>
+        </div>
+      </div>
+      <div class="links">
+        <a class="pill-link" href="/index.html">
+          <span class="pill-link-dot"></span>
+          Back to marketing page
+        </a>
+        <a class="pill-link" href="/live.html">Open live console</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-top">
+          <div class="hero-left">
+            <div class="labels">
+              <div class="label-pill"><strong>Behavior Deviation Scanner</strong> · IP concept sheet</div>
+              <div class="label-pill">Market micro-structure · emotion drift</div>
+            </div>
+            <h1 class="title">Spot when the market stops behaving like itself.</h1>
+            <p class="kicker">
+              Behavior Deviation Scanner learns the “normal” signature of a book –
+              volatility, order flow, odds velocity, crowd stress – and flags the exact
+              minutes where behaviour breaks pattern. Built so risk can catch regime
+              breaks before P&amp;L does.
+            </p>
+          </div>
+          <div class="hero-right">
+            <div class="mode-pill">RISK VIEW · LIVE SCAN</div>
+            <div class="mode-pill" style="background:radial-gradient(circle at top left,rgba(248,250,252,0.2),#020617);">
+              IP REGISTRATION CANDIDATE
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-pill">
+            <span class="meta-dot"></span>
+            Watches behaviour, not just price levels
+          </div>
+          <div class="meta-pill">
+            Baseline built per competition, sport and client liquidity profile
+          </div>
+          <div class="meta-pill">
+            Designed for alert queues &amp; executive heatmaps
+          </div>
+        </div>
+
+        <div class="grid-two">
+          <div class="panel">
+            <div class="panel-title"><span>Normal</span> vs abnormal behaviour</div>
+            <ul class="bullet-list">
+              <li>
+                <span class="label">Baseline</span>
+                Engine learns historic windows where the market behaved “as expected”
+                given odds, tempo and emotion.
+              </li>
+              <li>
+                <span class="label">Live scan</span>
+                At run-time, it tracks drift from that baseline in four channels:
+                <em>velocity, skew, tension, micro-liquidity.</em>
+              </li>
+              <li>
+                <span class="label">Deviation</span>
+                When drift crosses a regime boundary, the engine tags the minute with a
+                behaviour label – squeeze, capitulation, stale, manipulated, etc.
+              </li>
+              <li>
+                <span class="label">Output</span>
+                The console renders the story in plain language so risk teams don’t
+                need to read raw ladders.
+              </li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title"><span>Live deviation</span> snapshot</div>
+            <div class="metric-grid">
+              <div class="metric-card">
+                <div class="metric-label">Deviation score</div>
+                <div class="metric-value" style="color:#f97316;">72/100</div>
+                <div class="metric-footnote">How far current behaviour sits outside the learned norm.</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Primary label</div>
+                <div class="metric-value" style="color:#fb7185;">Capitulation</div>
+                <div class="metric-footnote">Order flow one-sided, odds sliding faster than xG suggests.</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Alert priority</div>
+                <div class="metric-value" style="color:#22c55e;">High</div>
+                <div class="metric-footnote">Should appear in the risk team’s hot-list within 1–2 seconds.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-row">
+        <article class="section">
+          <h3>Why this scanner is different</h3>
+          <p>
+            Traditional tools watch prices and volumes. Behavior Deviation Scanner cares
+            about <strong>shape</strong> and <strong>tempo</strong> – how the market moves when nothing is wrong,
+            and how that motion breaks when real stress or manipulation enters.
+          </p>
+          <p>
+            By learning a local baseline per competition and client, the system avoids
+            naïve global thresholds and becomes specific to each book’s real personality.
+          </p>
+          <div class="tags">
+            <span class="tag">Local regime models</span>
+            <span class="tag">Sequence-aware patterns</span>
+            <span class="tag">Explained labels, not raw scores</span>
+          </div>
+        </article>
+
+        <article class="section">
+          <h3>IP angle</h3>
+          <p>
+            The IP sits in the combination of: behaviour baselining, deviation scoring
+            and the fixed vocabulary of labels and narratives built for risk &amp; exec users.
+          </p>
+          <p>
+            Instead of generic anomaly detection, BetSense defines a repeatable
+            <strong>“When this pattern appears, tell this story”</strong> mapping that can be
+            documented, licensed and defended.
+          </p>
+          <div class="tags">
+            <span class="tag">Behaviour vocabulary</span>
+            <span class="tag">Narrative templates</span>
+            <span class="tag">Cross-competition calibration</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="section-row">
+        <article class="section">
+          <h3>Use-cases</h3>
+          <ul class="bullet-list">
+            <li>Real-time alerts when behaviour breaks pattern while price still looks “fine”.</li>
+            <li>Post-session audit: which matches behaved outside norms and why.</li>
+            <li>Feed an executive board with a simple count of “calm vs stressed” books.</li>
+            <li>Back-testing: compare P&amp;L on sessions where deviation alerts fired vs did not.</li>
+          </ul>
+        </article>
+
+        <article class="section">
+          <h3>Navigation</h3>
+          <p>Companion IP surfaces:</p>
+          <div class="tags">
+            <a class="tag" href="/FusionEngine.html">Fusion Engine</a>
+            <a class="tag" href="/EmotionFusion.html">Emotion Fusion Engine</a>
+            <a class="tag" href="/MatchNarrative.html">Ultra Match Narrative Engine</a>
+            <a class="tag" href="/OrderBookPressure.html">OrderBook Pressure Index</a>
+          </div>
+        </article>
+      </section>
+
+      <footer>
+        <div>BetSense Behavior Deviation Scanner · intellectual property concept sheet.</div>
+        <div>Back to main: <a href="/index.html">/index.html</a></div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
