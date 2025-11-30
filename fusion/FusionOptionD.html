@@ -5,138 +5,311 @@
   <title>Fusion Engine • Demo Console</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- GLOBAL STYLE SYSTEM (MATCHES BETSENSE MAIN UI 100%) -->
   <style>
     :root {
       color-scheme: dark;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 32px 12px;
-      background: radial-gradient(circle at top, #010814, #000);
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #000);
+      color: #e5e7eb;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      color: #e2e8f0;
+      align-items: center;
+      padding: 24px 12px 40px;
     }
 
     .page {
       width: 100%;
-      max-width: 520px;
-      border: 1px solid rgba(148,163,184,0.35);
-      border-radius: 28px;
-      padding: 26px 22px;
-      background: radial-gradient(circle at top left, #020617, #000 65%);
-      box-shadow: 0 32px 60px rgba(0,0,0,0.9);
+      max-width: 480px;
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, #020617, #020617 65%);
+      box-shadow: 0 32px 60px rgba(15, 23, 42, 0.9);
+      padding: 24px 20px 24px;
+    }
+
+    .header {
+      margin-bottom: 20px;
     }
 
     .eyebrow {
-      text-transform: uppercase;
       font-size: 0.75rem;
-      color: #38bdf8;
+      text-transform: uppercase;
       letter-spacing: 0.12em;
+      color: #38bdf8;
       margin-bottom: 4px;
     }
 
     .title {
-      font-size: 1.7rem;
+      font-size: 1.6rem;
       font-weight: 700;
       margin-bottom: 6px;
     }
 
     .subtitle {
       font-size: 0.9rem;
-      color: #94a3b8;
-      margin-bottom: 22px;
-      line-height: 1.45;
+      color: #9ca3af;
+      line-height: 1.4;
     }
 
     .card {
-      background: radial-gradient(circle at top left, #020617, #000 78%);
-      border: 1px solid rgba(55,65,81,0.9);
-      border-radius: 20px;
-      padding: 20px 16px;
-      margin-bottom: 20px;
+      margin-top: 16px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #020617, #020617 80%);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 18px 16px 16px;
     }
 
     .card-title {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
       margin-bottom: 6px;
     }
 
     .card-subtitle {
-      font-size: 0.85rem;
-      color: #94a3b8;
+      font-size: 0.8rem;
+      color: #9ca3af;
       margin-bottom: 12px;
     }
 
-    .btn {
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      flex: 0 0 auto;
       border: none;
       border-radius: 999px;
-      padding: 12px 20px;
-      font-size: 0.95rem;
+      padding: 10px 20px;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
-      background: linear-gradient(90deg,#fb7185,#f97316);
-      color: #0f172a;
-      width: 100%;
-      box-shadow: 0 14px 35px rgba(248,113,113,0.35);
-      transition: 0.15s ease;
-      margin-bottom: 12px;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      color: #0b1120;
+      box-shadow: 0 14px 35px rgba(56, 189, 248, 0.35);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease;
     }
-    .btn:active {
-      transform: scale(0.98);
+
+    .btn-primary:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
       filter: brightness(0.95);
     }
 
+    .status-pill {
+      flex: 1 1 auto;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #9ca3af;
+      min-width: 0;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .status-text-strong {
+      color: #e5e7eb;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .status-text-soft {
+      color: #6b7280;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .output {
-      background: rgba(0,0,0,0.4);
-      border: 1px dashed rgba(100,116,139,0.7);
-      border-radius: 14px;
-      padding: 14px 12px;
-      font-size: 0.85rem;
-      color: #e2e8f0;
-      min-height: 100px;
+      margin-top: 14px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top left, #020617, #000 75%);
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      padding: 12px 12px 10px;
+      font-size: 0.8rem;
+      min-height: 72px;
+      color: #9ca3af;
+      overflow-wrap: break-word;
+      word-break: break-word;
       white-space: pre-wrap;
+    }
+
+    .output-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .output-body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      color: #e5e7eb;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: #6b7280;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 32px 16px 48px;
+      }
+
+      .page {
+        max-width: 520px;
+        padding: 26px 22px 24px;
+      }
+
+      .title {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
-
 <body>
   <div class="page">
-    <div class="eyebrow">BetSense AI • Fusion Layer</div>
-    <div class="title">FUSION ENGINE — Demo Console</div>
-    <div class="subtitle">
-      Run Fusion Engine demo analysis through BetSense Ultra API.
+    <div class="header">
+      <div class="eyebrow">BetSense AI Stack • Fusion Layer</div>
+      <div class="title">FUSION ENGINE — Demo Console</div>
+      <div class="subtitle">
+        Run a Fusion Engine demo request through the BetSense Ultra API and
+        inspect the combined narrative and fused metrics.
+      </div>
     </div>
 
     <div class="card">
-      <div class="card-title">Run Fusion Demo</div>
-      <div class="card-subtitle">Tap below to send request to Fusion Engine backend.</div>
+      <div class="card-title">Fusion demo analyzer</div>
+      <div class="card-subtitle">
+        Tap the button below to send a demo request to the Fusion Engine backend
+        and preview the fused behavioral / NSI / RBS signals.
+      </div>
 
-      <button id="run-fusion" class="btn">Run Fusion Demo</button>
+      <div class="btn-row">
+        <button id="run-fusion-demo" class="btn-primary">Run Fusion Demo</button>
 
-      <div class="output" id="fusion-output">Waiting...</div>
+        <div class="status-pill" id="status-pill">
+          <span class="status-dot" id="status-dot"></span>
+          <span class="status-text-strong" id="status-strong">Status · READY</span>
+          <span class="status-text-soft" id="status-soft">
+            Waiting for first Fusion demo run
+          </span>
+        </div>
+      </div>
+
+      <div class="output" id="output">
+        <div class="output-label">Fusion demo response</div>
+        <div class="output-body" id="output-body">
+          Waiting...
+        </div>
+      </div>
+
+      <div class="hint">
+        This console is for internal BetSense testing only. Production
+        integrations should call the Fusion Engine API directly.
+      </div>
     </div>
   </div>
 
   <script>
-    document.getElementById("run-fusion").onclick = async () => {
-      const box = document.getElementById("fusion-output");
-      box.textContent = "Connecting to Fusion Engine…";
+    const FUSION_DEMO_URL =
+      "https://betsense-backend.onrender.com/api/fusion/demo";
 
-      try {
-        const res = await fetch("https://betsense-backend.onrender.com/api/fusion/demo");
-        const data = await res.json();
-        box.textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        box.textContent = "⚠️ Connection failed.";
+    const runBtn = document.getElementById("run-fusion-demo");
+    const statusPill = document.getElementById("status-pill");
+    const statusDot = document.getElementById("status-dot");
+    const statusStrong = document.getElementById("status-strong");
+    const statusSoft = document.getElementById("status-soft");
+    const outputBody = document.getElementById("output-body");
+
+    function setStatus(mode, message) {
+      if (mode === "idle") {
+        statusDot.style.background = "#22c55e";
+        statusDot.style.boxShadow = "0 0 12px rgba(34, 197, 94, 0.9)";
+        statusStrong.textContent = "Status · READY";
+        statusSoft.textContent = message || "Waiting for first Fusion demo run";
+      } else if (mode === "loading") {
+        statusDot.style.background = "#eab308";
+        statusDot.style.boxShadow = "0 0 12px rgba(234, 179, 8, 0.9)";
+        statusStrong.textContent = "Status · RUNNING";
+        statusSoft.textContent = message || "Sending Fusion demo request…";
+      } else if (mode === "error") {
+        statusDot.style.background = "#ef4444";
+        statusDot.style.boxShadow = "0 0 12px rgba(239, 68, 68, 0.9)";
+        statusStrong.textContent = "Status · ERROR";
+        statusSoft.textContent = message || "Something went wrong.";
+      } else if (mode === "ok") {
+        statusDot.style.background = "#22c55e";
+        statusDot.style.boxShadow = "0 0 12px rgba(34, 197, 94, 0.9)";
+        statusStrong.textContent = "Status · DEMO COMPLETE";
+        statusSoft.textContent = message || "Fusion demo response received.";
       }
-    };
+    }
+
+    async function runFusionDemo() {
+      try {
+        setStatus("loading", "Calling Fusion demo endpoint…");
+        outputBody.textContent = "Calling Fusion Engine demo…";
+
+        const res = await fetch(FUSION_DEMO_URL, {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          setStatus("error", `HTTP ${res.status} from Fusion backend`);
+          outputBody.textContent =
+            "Fusion demo error:\n\n" +
+            `Status: ${res.status}\n` +
+            (text || "No body returned.");
+          return;
+        }
+
+        const data = await res.json();
+        setStatus("ok", "Fusion demo response received from backend.");
+
+        outputBody.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        console.error(err);
+        setStatus("error", "Network or CORS error when calling Fusion demo.");
+        outputBody.textContent =
+          "Fusion demo error:\n\n" +
+          (err && err.message ? err.message : String(err));
+      }
+    }
+
+    runBtn.addEventListener("click", runFusionDemo);
+    setStatus("idle");
   </script>
 </body>
 </html>
