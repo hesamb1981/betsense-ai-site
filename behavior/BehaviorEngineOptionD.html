@@ -1,554 +1,436 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Behavior Deviation Engine — Option D</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense • Behavior Engine Option D Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Global BetSense styles -->
-    <link rel="stylesheet" href="/styles.css" />
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #020818;
+      --bg-card-soft: #020b1f;
+      --accent: #22c55e;
+      --accent-soft: #4ade80;
+      --accent-blue: #22d3ee;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.9);
+      --radius-xl: 28px;
+    }
 
-    <style>
-      /* Lightweight layout helpers so page looks good
-         even اگر فقط styles.css لود شود */
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .tag-row {
+      display: inline-flex;
+      gap: 10px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 20px;
+    }
+    .tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    h1 {
+      font-size: 26px;
+      line-height: 1.25;
+      margin: 0 0 8px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    h1 span.dim {
+      color: var(--text-soft);
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      max-width: 640px;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .console-card {
+      margin-top: 26px;
+      background: radial-gradient(circle at top left, #0b1120 0, #020617 55%, #020617 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      box-shadow: var(--shadow-soft);
+      padding: 22px 18px 20px;
+    }
+
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .console-title {
+      font-size: 16px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .mode-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 12px;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .mode-pill-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    .console-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .console-copy {
+      font-size: 14px;
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .primary-btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 13px 26px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #020617;
+      background: linear-gradient(90deg, #22c55e, #22d3ee);
+      box-shadow: 0 16px 40px rgba(16, 185, 129, 0.65);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out,
+        filter 0.08s ease-out;
+    }
+
+    .primary-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 10px 24px rgba(16, 185, 129, 0.6);
+      filter: brightness(0.97);
+    }
+
+    .primary-btn-icon {
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      background: #020617;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .primary-btn-icon::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 6px solid #22c55e;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    .status-label {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 11px;
+    }
+
+    .status-value {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .status-message {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .response-card {
+      margin-top: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: radial-gradient(circle at top left, #020617 0, #020617 60%, #000 100%);
+      padding: 14px 14px 16px;
+    }
+
+    .response-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .response-label span {
+      color: var(--accent-blue);
+    }
+
+    pre {
+      margin: 0;
+      max-height: 320px;
+      overflow: auto;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-main);
+      padding: 12px 10px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top left, #020617 0, #020617 55%, #020617 100%);
+      border: 1px solid rgba(30, 64, 175, 0.75);
+    }
+
+    @media (max-width: 640px) {
       body {
-        margin: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "Inter", sans-serif;
-        background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
-        color: #e5e7eb;
+        padding: 20px 12px 28px;
       }
-
-      .page {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
+      .console-card {
+        padding: 18px 14px 16px;
+        border-radius: 22px;
       }
-
-      .engine-shell {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 24px 16px 56px;
-      }
-
-      header.engine-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 32px;
-      }
-
-      .brand-lockup {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .brand-mark {
-        width: 32px;
-        height: 32px;
-        border-radius: 12px;
-        background: conic-gradient(
-          from 140deg,
-          #06b6d4,
-          #22c55e,
-          #f97316,
-          #6366f1,
-          #06b6d4
-        );
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-      }
-
-      .brand-title {
-        font-size: 18px;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: #f9fafb;
-      }
-
-      .engine-tagline {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: #9ca3af;
-      }
-
-      .header-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .btn {
-        border-radius: 999px;
-        padding: 8px 18px;
-        font-size: 13px;
-        font-weight: 500;
-        border: 1px solid transparent;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #f97316, #ec4899);
-        color: #0b1020;
-        border-color: rgba(248, 250, 252, 0.05);
-        box-shadow: 0 12px 40px rgba(236, 72, 153, 0.4);
-      }
-
-      .btn-outline {
-        background: radial-gradient(circle at top left, #111827, #020617);
-        color: #e5e7eb;
-        border-color: #334155;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 4px 12px;
-        border-radius: 999px;
-        font-size: 11px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        background: rgba(15, 23, 42, 0.9);
-        border: 1px solid rgba(148, 163, 184, 0.4);
-        color: #9ca3af;
-      }
-
-      .pill-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 999px;
-        background: #22c55e;
-        box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-        gap: 28px;
-        align-items: center;
-        margin-bottom: 40px;
-      }
-
-      @media (max-width: 860px) {
-        .hero {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        header.engine-header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .header-actions {
-          align-self: stretch;
-        }
-      }
-
-      .hero-title {
-        font-size: clamp(28px, 4vw, 36px);
-        line-height: 1.1;
-        font-weight: 700;
-        color: #f9fafb;
-        margin: 14px 0 12px;
-      }
-
-      .hero-subtitle {
-        font-size: 14px;
-        color: #cbd5f5;
-        max-width: 32rem;
-      }
-
-      .hero-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin: 16px 0 24px;
-      }
-
-      .meta-chip {
-        font-size: 12px;
-        padding: 5px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.5);
-        color: #9ca3af;
-        background: rgba(15, 23, 42, 0.85);
-      }
-
-      .hero-cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .hero-panel {
-        border-radius: 24px;
-        padding: 18px 18px 16px;
-        border: 1px solid rgba(148, 163, 184, 0.5);
-        background: radial-gradient(circle at top, #020617, #020617 40%, #020617);
-        box-shadow: 0 18px 50px rgba(15, 23, 42, 0.9);
-      }
-
-      .panel-title {
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        color: #9ca3af;
-        margin-bottom: 8px;
-      }
-
-      .panel-highlight {
+      h1 {
         font-size: 22px;
-        font-weight: 600;
-        color: #fbbf24;
-        margin-bottom: 4px;
       }
-
-      .panel-note {
-        font-size: 12px;
-        color: #9ca3af;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 16px;
-        margin-bottom: 32px;
-      }
-
-      .card {
-        border-radius: 18px;
-        padding: 16px 16px 14px;
-        background: radial-gradient(circle at top left, #111827, #020617);
-        border: 1px solid rgba(55, 65, 81, 0.9);
-      }
-
-      .card-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        color: #9ca3af;
-        margin-bottom: 6px;
-      }
-
-      .card-title {
-        font-size: 15px;
-        font-weight: 600;
-        color: #e5e7eb;
-        margin-bottom: 6px;
-      }
-
-      .card-body {
+      .subtitle {
         font-size: 13px;
-        color: #9ca3af;
       }
-
-      .option-section-title {
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: #9ca3af;
-        margin-bottom: 8px;
-      }
-
-      .option-wrap {
-        display: grid;
-        grid-template-columns: minmax(0, 2.2fr) minmax(0, 3fr);
-        gap: 18px;
+      .console-header {
+        flex-direction: column;
         align-items: flex-start;
-        margin-bottom: 36px;
       }
-
-      @media (max-width: 860px) {
-        .option-wrap {
-          grid-template-columns: minmax(0, 1fr);
-        }
+      .primary-btn {
+        width: 100%;
+        justify-content: center;
       }
-
-      .option-main {
-        border-radius: 20px;
-        padding: 16px 16px 14px;
-        border: 1px solid rgba(148, 163, 184, 0.6);
-        background: radial-gradient(circle at top left, #0f172a, #020617);
+      .status-pill {
+        width: 100%;
+        justify-content: space-between;
       }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <!-- Top tags -->
+    <div class="tag-row">
+      <span class="tag"><span class="tag-dot"></span> BETSENSE AI STACK</span>
+      <span class="tag">BEHAVIOR LAYER</span>
+    </div>
 
-      .option-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 4px 11px;
-        border-radius: 999px;
-        border: 1px solid rgba(252, 211, 77, 0.6);
-        background: rgba(30, 64, 175, 0.3);
-        color: #facc15;
-        font-size: 11px;
-        letter-spacing: 0.13em;
-        text-transform: uppercase;
-      }
+    <!-- Heading -->
+    <h1>
+      BEHAVIOR ENGINE — <span class="dim">Option D Console</span>
+    </h1>
+    <p class="subtitle">
+      Run a Behavior Engine Option D demo request through the BetSense Ultra API
+      and inspect long-horizon stability, deviation risk and regime-shift
+      instability for a selected club or fixture.
+    </p>
 
-      .option-price-row {
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-        margin: 10px 0 4px;
-      }
-
-      .option-price {
-        font-size: 24px;
-        font-weight: 600;
-        color: #f9fafb;
-      }
-
-      .option-caption {
-        font-size: 11px;
-        color: #9ca3af;
-      }
-
-      .option-list {
-        margin: 10px 0 14px;
-        padding-left: 18px;
-      }
-
-      .option-list li {
-        font-size: 13px;
-        color: #cbd5f5;
-        margin-bottom: 4px;
-      }
-
-      .badge-stack {
-        font-size: 11px;
-        padding: 3px 9px;
-        border-radius: 999px;
-        background: rgba(15, 118, 110, 0.3);
-        color: #6ee7b7;
-        border: 1px solid rgba(45, 212, 191, 0.6);
-      }
-
-      .option-side {
-        display: grid;
-        gap: 10px;
-      }
-
-      .option-mini {
-        border-radius: 16px;
-        padding: 12px 12px 10px;
-        border: 1px solid rgba(55, 65, 81, 0.9);
-        background: radial-gradient(circle at top left, #020617, #020617);
-      }
-
-      .option-mini-title {
-        font-size: 13px;
-        font-weight: 500;
-        color: #e5e7eb;
-        margin-bottom: 4px;
-      }
-
-      .option-mini-body {
-        font-size: 12px;
-        color: #9ca3af;
-      }
-
-      footer.engine-footer {
-        border-top: 1px solid rgba(31, 41, 55, 0.9);
-        padding: 16px 16px 28px;
-        margin-top: auto;
-        font-size: 11px;
-        color: #6b7280;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body class="page">
-    <div class="engine-shell">
-      <!-- HEADER -->
-      <header class="engine-header">
-        <div class="brand-lockup">
-          <div class="brand-mark"></div>
-          <div>
-            <div class="brand-title">BetSense Behavior Engine</div>
-            <div class="engine-tagline">Behavior Deviation Scanner • Option D</div>
-          </div>
-        </div>
-
-        <div class="header-actions">
-          <a href="/LiveDataConnect.html" class="btn btn-outline">
-            Live Connected Data
-          </a>
-          <a href="/BehaviorDeviation.html" class="btn btn-primary">
-            Open behavior console
-          </a>
+    <!-- Console -->
+    <section class="console-card">
+      <header class="console-header">
+        <div class="console-title">BEHAVIOR OPTION D ANALYZER</div>
+        <div class="mode-pill">
+          <span class="mode-pill-dot"></span>
+          <span>Demo mode · Local stack</span>
         </div>
       </header>
 
-      <!-- HERO -->
-      <section class="hero">
-        <div>
-          <div class="pill">
-            <span class="pill-dot"></span>
-            Behavior Deviation Engine
-            <span>• Option D</span>
-          </div>
+      <div class="console-body">
+        <p class="console-copy">
+          Tap the button below to send a demo request to the Behavior Engine
+          backend and preview fused behavior-stability flags, deviation
+          profiles and switching-risk markers for a single club or fixture.
+        </p>
 
-          <h1 class="hero-title">
-            Scan for abnormal patterns across 7,000+ historical matches.
-          </h1>
+        <div class="controls-row">
+          <div class="button-row">
+            <button id="run-demo" class="primary-btn">
+              <span class="primary-btn-icon"></span>
+              <span>Run Behavior Option D</span>
+            </button>
 
-          <p class="hero-subtitle">
-            The Behavior Deviation Engine highlights matches where tactical,
-            tempo or psychological patterns drift away from a club’s usual
-            profile. Option&nbsp;D wraps the engine into a ready-to-sell,
-            enterprise-grade module.
-          </p>
-
-          <div class="hero-meta">
-            <div class="meta-chip">Standalone &amp; stack-ready</div>
-            <div class="meta-chip">NSI • RBS • OrderBook compatible</div>
-            <div class="meta-chip">Starter pack: 7,000+ games</div>
-          </div>
-
-          <div class="hero-cta-row">
-            <a href="mailto:hello@betsense.casino?subject=Behavior%20Engine%20Option%20D"
-               class="btn btn-primary">
-              Book live demo
-            </a>
-            <a href="/RBSEngine.html" class="btn btn-outline">
-              View full engine stack
-            </a>
-          </div>
-        </div>
-
-        <aside class="hero-panel">
-          <div class="panel-title">Behavior deviation snapshot</div>
-          <div class="panel-highlight">Club-level anomaly radar</div>
-          <div class="panel-note">
-            Option&nbsp;D ships with a fully branded console, alert views and
-            narrative explanations so trading teams can understand
-            <strong>why</strong> a game is behaving differently – not just that
-            it is.
-          </div>
-        </aside>
-      </section>
-
-      <!-- CORE VALUE CARDS -->
-      <section>
-        <div class="option-section-title">What behavior option d includes</div>
-        <div class="grid">
-          <article class="card">
-            <div class="card-label">01 • Deviation scanner</div>
-            <div class="card-title">Long-horizon behavior baseline</div>
-            <p class="card-body">
-              We build a club-specific baseline from thousands of historical
-              matches. The engine then flags current games where tempo, press,
-              risk profile or game-state management drift from that normal
-              signature.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-label">02 • Explainable output</div>
-            <div class="card-title">Narratives, not just flags</div>
-            <p class="card-body">
-              Each deviation is explained in natural language – examples:
-              “Unusually passive after scoring first”, or
-              “Pressing intensity crashes before half-time in high-stakes
-              fixtures.”
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="card-label">03 • Stack-ready</div>
-            <div class="card-title">Plugs into NSI / RBS / OrderBook</div>
-            <p class="card-body">
-              Option&nbsp;D is built to sit alongside NSI, RBS and
-              OrderBookPressure. Behavior tags can be exposed in live trading
-              consoles, risk dashboards or alert feeds with a single
-              <span class="badge-stack">Live Connected Data</span> link.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <!-- OPTION D BLOCK -->
-      <section>
-        <div class="option-section-title">License format • option d</div>
-        <div class="option-wrap">
-          <div class="option-main">
-            <div class="option-pill">
-              Behavior Deviation Engine • Option D
+            <div class="status-pill" id="status-pill">
+              <span class="status-dot" id="status-dot"></span>
+              <span class="status-label">Status</span>
+              <span class="status-value" id="status-text">READY</span>
             </div>
-
-            <div class="option-price-row">
-              <div class="option-price">Enterprise module</div>
-              <div class="option-caption">
-                priced per shop / per brand • 12-month license
-              </div>
-            </div>
-
-            <ul class="option-list">
-              <li>Full behavior-deviation console with club &amp; league views.</li>
-              <li>Pre-computed pack of 7,000+ historical matches.</li>
-              <li>
-                Ready to connect via your own feeds using
-                <span class="badge-stack">Live Connected Data</span>.
-              </li>
-              <li>
-                API + narrative output layer for embedding inside sportsbook,
-                terminals or internal trading tools.
-              </li>
-              <li>
-                Sold as a completely independent engine or as part of the full
-                BetSense stack.
-              </li>
-            </ul>
-
-            <a href="mailto:hello@betsense.casino?subject=Behavior%20Engine%20Option%20D"
-               class="btn btn-primary">
-              Discuss Behavior Option D
-            </a>
           </div>
 
-          <div class="option-side">
-            <article class="option-mini">
-              <div class="option-mini-title">1• Data &amp; model hand-off</div>
-              <p class="option-mini-body">
-                We can keep the engine hosted on BetSense infrastructure, or
-                hand off models + documentation for your internal team to host
-                and operate.
-              </p>
-            </article>
-
-            <article class="option-mini">
-              <div class="option-mini-title">2• White-label UI</div>
-              <p class="option-mini-body">
-                The console can be branded for a single operator or packaged as
-                a white-label module for multiple retail partners.
-              </p>
-            </article>
-
-            <article class="option-mini">
-              <div class="option-mini-title">3• Upgrade path</div>
-              <p class="option-mini-body">
-                Option&nbsp;D is the “full” behavior module. From here it is
-                one click to activate NSI, RBS and Meta-Behavior for a complete
-                long-horizon edge stack.
-              </p>
-            </article>
+          <div class="status-message" id="status-message">
+            Waiting for first Behavior Option D demo.
           </div>
         </div>
-      </section>
-    </div>
 
-    <footer class="engine-footer">
-      Behavior Deviation Engine is an independent BetSense module and can be
-      licensed on its own or as part of the wider BetSense AI Suite.
-    </footer>
-  </body>
+        <div class="response-card">
+          <div class="response-label">
+            BEHAVIOR OPTION D <span>DEMO RESPONSE</span>
+          </div>
+          <pre id="response-output">Waiting...</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const runButton = document.getElementById("run-demo");
+    const statusText = document.getElementById("status-text");
+    const statusMsg = document.getElementById("status-message");
+    const statusDot = document.getElementById("status-dot");
+    const responseOutput = document.getElementById("response-output");
+    const statusPill = document.getElementById("status-pill");
+
+    function setStatus(state, message) {
+      statusText.textContent = state;
+      statusMsg.textContent = message;
+
+      if (state === "READY" || state === "OK") {
+        statusDot.style.backgroundColor = "#22c55e";
+        statusDot.style.boxShadow = "0 0 0 4px rgba(34, 197, 94, 0.25)";
+        statusPill.style.borderColor = "rgba(148,163,184,0.35)";
+      } else if (state === "RUNNING") {
+        statusDot.style.backgroundColor = "#22d3ee";
+        statusDot.style.boxShadow = "0 0 0 4px rgba(34, 211, 238, 0.25)";
+        statusPill.style.borderColor = "rgba(56,189,248,0.7)";
+      } else {
+        statusDot.style.backgroundColor = "#ef4444";
+        statusDot.style.boxShadow = "0 0 0 4px rgba(239, 68, 68, 0.35)";
+        statusPill.style.borderColor = "rgba(239,68,68,0.8)";
+      }
+    }
+
+    runButton.addEventListener("click", async () => {
+      setStatus("RUNNING", "Sending Behavior Option D demo request…");
+      responseOutput.textContent = "Waiting for Behavior Engine demo response…";
+
+      try {
+        const res = await fetch("/.netlify/functions/behavior-optiond-demo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mode: "demo-local" }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          setStatus("ERROR", `HTTP ${res.status} from behavior-optiond-demo`);
+        } else {
+          setStatus("OK", "Behavior Option D demo completed successfully.");
+        }
+
+        responseOutput.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        console.error(err);
+        setStatus("ERROR", "Behavior demo error. See console for details.");
+        responseOutput.textContent = JSON.stringify(
+          {
+            error: "Request failed",
+            message: err.message || String(err),
+          },
+          null,
+          2
+        );
+      }
+    });
+
+    // initial
+    setStatus("READY", "Waiting for first Behavior Option D demo.");
+  </script>
+</body>
 </html>
