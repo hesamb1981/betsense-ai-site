@@ -1,56 +1,43 @@
 // Fusion Engine Demo JS
-// Handles UI button, fetch request, and console output rendering
+// This file handles the demo API request and UI updates for Fusion Demo Console
 
 document.addEventListener("DOMContentLoaded", () => {
-    const runButton = document.getElementById("runFusionDemo");
-    const statusIndicator = document.getElementById("fusionStatus");
-    const outputBox = document.getElementById("fusionOutput");
+  const btn = document.getElementById("runFusionDemo");
+  const statusEl = document.getElementById("fusionStatus");
+  const outputEl = document.getElementById("fusionOutput");
 
-    function setStatus(text, color) {
-        statusIndicator.textContent = text;
-        statusIndicator.style.color = color;
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    statusEl.innerHTML = "Status: PROCESSING…";
+    statusEl.style.color = "#4fc3f7";
+    outputEl.innerHTML = "Waiting...";
+
+    try {
+      const response = await fetch(
+        "https://betsense-ultra-api.onrender.com/api/fusion/demo"
+      );
+
+      if (!response.ok) {
+        outputEl.innerHTML =
+          "Fusion demo error:\n\nStatus: " +
+          response.status +
+          "\n{\"error\":\"Not Found\"}";
+        statusEl.innerHTML = "Status: ERROR";
+        statusEl.style.color = "#ef5350";
+        return;
+      }
+
+      const data = await response.json();
+
+      statusEl.innerHTML = "Status: READY";
+      statusEl.style.color = "#69f0ae";
+      outputEl.innerHTML = JSON.stringify(data, null, 2);
+    } catch (err) {
+      statusEl.innerHTML = "Status: ERROR";
+      statusEl.style.color = "#ef5350";
+      outputEl.innerHTML =
+        "Fusion demo error:\n\nNetwork failure or API offline.";
     }
-
-    async function runDemo() {
-        setStatus("RUNNING…", "#00eaff");
-        outputBox.textContent = "Waiting…";
-
-        try {
-            const response = await fetch(
-                "https://betsense-ultra-api.onrender.com/api/fusion/demo",
-                {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" }
-                }
-            );
-
-            if (!response.ok) {
-                const err = await response.text();
-                setStatus("ERROR", "#ff4444");
-                outputBox.textContent =
-                    "Fusion demo error:\n\nStatus: " +
-                    response.status +
-                    "\n" +
-                    err;
-                return;
-            }
-
-            const data = await response.json();
-
-            setStatus("READY", "#00ff88");
-            outputBox.textContent = JSON.stringify(data, null, 2);
-        } catch (error) {
-            setStatus("ERROR", "#ff4444");
-            outputBox.textContent =
-                "Fusion demo error:\n\n" + error.toString();
-        }
-    }
-
-    if (runButton) {
-        runButton.addEventListener("click", runDemo);
-    }
-
-    // Initial UI state
-    setStatus("READY", "#00ff88");
-    outputBox.textContent = "Waiting…";
+  });
 });
