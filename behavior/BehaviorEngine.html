@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BetSense • Behavior Deviation Engine — Demo Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --card: #020617;
+      --card-soft: #020b24;
+      --border: rgba(148, 163, 184, 0.25);
+      --text-main: #e5f0ff;
+      --text-soft: #9ca9c6;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --danger: #fb7185;
+      --success: #22c55e;
+      --badge: #020617;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 1200px;
+      padding: 32px 16px 40px;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    .suite-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.95));
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .suite-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    h1 {
+      margin: 14px 0 4px;
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-soft);
+      max-width: 640px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), rgba(15, 23, 42, 0.96));
+    }
+
+    .pill-ghost {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .card {
+      border-radius: 26px;
+      padding: 22px 18px 20px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.36), rgba(15, 23, 42, 0.96)),
+        linear-gradient(to bottom right, #020617, #020617);
+      box-shadow:
+        0 24px 80px rgba(15, 23, 42, 0.95),
+        inset 0 0 0 0.5px rgba(148, 163, 184, 0.35);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .card-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-kicker {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(148, 163, 184, 0.85);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .mode-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9));
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mode-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(148, 163, 184, 0.9);
+      margin-bottom: 6px;
+    }
+
+    .control-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--danger);
+      box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.3);
+    }
+
+    .status-pill.ready .status-dot {
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.32);
+    }
+
+    .status-text-strong {
+      color: var(--text-main);
+    }
+
+    .btn-primary {
+      border: none;
+      cursor: pointer;
+      outline: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      color: #020617;
+      box-shadow:
+        0 12px 40px rgba(34, 197, 94, 0.45),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, opacity 0.1s;
+    }
+
+    .btn-primary span.icon {
+      font-size: 16px;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow:
+        0 8px 26px rgba(34, 197, 94, 0.35),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-primary[disabled] {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow:
+        0 6px 20px rgba(15, 23, 42, 0.8),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .response-card {
+      margin-top: 14px;
+      border-radius: 22px;
+      padding: 16px 14px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), #020617);
+      box-shadow: inset 0 0 0 0.5px rgba(15, 23, 42, 0.9);
+    }
+
+    .response-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 12px;
+    }
+
+    .response-title {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    .response-endpoint {
+      font-size: 10px;
+      color: rgba(148, 163, 184, 0.72);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    pre {
+      margin: 0;
+      padding: 10px 10px 10px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 1), #020617);
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 260px;
+      overflow: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: rgba(148, 163, 184, 0.82);
+      line-height: 1.6;
+    }
+
+    .footer-note strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+      .page-shell {
+        padding: 32px 24px 48px;
+      }
+      h1 {
+        font-size: 30px;
+      }
+      .card {
+        padding: 24px 22px 22px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      main {
+        grid-template-columns: minmax(0, 1.3fr);
+      }
+      .page-shell {
+        padding-top: 40px;
+      }
+      h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header>
+      <div class="suite-badge">
+        <span class="suite-dot"></span>
+        <span>BetSense AI Stack • Behavior Layer</span>
+      </div>
+      <h1>Behavior Deviation Engine — Demo Console</h1>
+      <p class="subtitle">
+        Run a Behavior Deviation Engine demo request through the BetSense Ultra API and inspect
+        long-horizon stability &amp; switching-risk narratives for a single club or fixture.
+      </p>
+      <div class="pill-row">
+        <div class="pill">Behavior deviation scanner</div>
+        <div class="pill pill-ghost">Switching risk • regime shifts</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card" id="behavior-card">
+        <div class="card-header">
+          <div class="card-title-block">
+            <div class="card-kicker">Behavior demo analyzer</div>
+            <div class="card-title">Send behavior engine demo</div>
+          </div>
+          <div class="mode-pill">
+            <span class="mode-dot"></span>
+            <span>Demo mode · local stack</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          Tap the button below to send a demo request to the Behavior Deviation Engine backend and preview the fused
+          behavior-stability flags, deviation profile and switching-risk markers for a single club or fixture.
+        </div>
+
+        <div class="field-row">
+          <div>
+            <div class="label">Controls</div>
+            <div class="control-inline">
+              <button class="btn-primary" id="run-demo">
+                <span class="icon">▶</span>
+                <span>Run behavior demo</span>
+              </button>
+
+              <div id="status-pill" class="status-pill">
+                <span class="status-dot"></span>
+                <span class="status-text">
+                  <span class="status-text-strong">Status ·</span> waiting for first demo…
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="response-card">
+          <div class="response-title-row">
+            <div class="response-title">Behavior demo response</div>
+            <div class="response-endpoint">/.netlify/functions/behavior-demo</div>
+          </div>
+          <pre id="response-box">{  
+  "message": "Waiting for first Behavior Engine demo…"  
+}</pre>
+        </div>
+
+        <p class="footer-note">
+          This console is for internal <strong>BetSense</strong> testing only. Production integrations should call the
+          <strong>Behavior Deviation</strong> Engine API stack directly with their own live or historical feeds.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const btn = document.getElementById("run-demo");
+    const statusPill = document.getElementById("status-pill");
+    const responseBox = document.getElementById("response-box");
+
+    function setStatus(mode, text) {
+      statusPill.classList.remove("ready");
+      statusPill.classList.remove("error");
+
+      const dot = statusPill.querySelector(".status-dot");
+      const label = statusPill.querySelector(".status-text");
+
+      if (mode === "ready") {
+        statusPill.classList.add("ready");
+        label.innerHTML = '<span class="status-text-strong">Status ·</span> READY';
+      } else if (mode === "error") {
+        dot.style.background = "#fb7185";
+        label.innerHTML =
+          '<span class="status-text-strong">Status ·</span> ERROR';
+      } else if (mode === "loading") {
+        dot.style.background = "#facc15";
+        label.innerHTML =
+          '<span class="status-text-strong">Status ·</span> RUNNING…';
+      } else {
+        dot.style.background = "#fb7185";
+        label.innerHTML =
+          '<span class="status-text-strong">Status ·</span> ' + text;
+      }
+    }
+
+    async function runDemo() {
+      btn.disabled = true;
+      setStatus("loading");
+
+      try {
+        const res = await fetch("/.netlify/functions/behavior-demo");
+        const json = await res.json();
+        responseBox.textContent = JSON.stringify(json, null, 2);
+
+        if (res.ok && json.status === "ok") {
+          setStatus("ready");
+        } else {
+          setStatus("error");
+        }
+      } catch (err) {
+        setStatus("error");
+        responseBox.textContent = JSON.stringify(
+          {
+            error: "Request failed",
+            detail: String(err),
+          },
+          null,
+          2
+        );
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    btn.addEventListener("click", runDemo);
+  </script>
+</body>
+</html>
