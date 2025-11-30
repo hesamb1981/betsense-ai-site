@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetSense OrderBook Pressure Engine — Option D</title>
+  <style>
+    :root {
+      --bg-main: #050815;
+      --bg-card: #0b1020;
+      --accent: #00ffb3;
+      --accent-soft: rgba(0, 255, 179, 0.12);
+      --text-main: #f5f7ff;
+      --text-soft: #a3acc7;
+      --danger: #ff4b81;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --pill-bg: rgba(255, 255, 255, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #131b3a 0, #050815 55%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 40px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      border-radius: 24px;
+      background: radial-gradient(circle at top left, #192447 0, #050815 55%);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+      padding: 24px 18px 28px;
+    }
+
+    @media (min-width: 720px) {
+      .shell {
+        padding: 28px 32px 32px;
+      }
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--pill-bg);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 14px rgba(0, 255, 179, 0.9);
+    }
+
+    .pill-live {
+      color: var(--accent);
+      border: 1px solid rgba(0, 255, 179, 0.4);
+      background: rgba(0, 255, 179, 0.06);
+    }
+
+    h1 {
+      font-size: 26px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 720px) {
+      h1 {
+        font-size: 32px;
+      }
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-soft);
+      max-width: 560px;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 840px) {
+      .grid {
+        grid-template-columns: 1.3fr 1fr;
+      }
+    }
+
+    .card {
+      background: linear-gradient(145deg, #0b1020, #050815);
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      padding: 16px 18px 18px;
+    }
+
+    .card + .card {
+      margin-top: 10px;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      column-gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid rgba(0, 255, 179, 0.4);
+    }
+
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .stat {
+      flex: 1 1 90px;
+      min-width: 0;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .stat-value.accent {
+      color: var(--accent);
+    }
+
+    .stat-value.danger {
+      color: var(--danger);
+    }
+
+    .list {
+      margin-top: 6px;
+      padding-left: 16px;
+    }
+
+    .list li {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.45;
+      margin-bottom: 4px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff7b45, #ff4b81);
+      color: #050509;
+      box-shadow: 0 14px 40px rgba(255, 111, 150, 0.45);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 12px;
+      max-width: 520px;
+    }
+
+    .tag-strip {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+      background: rgba(255, 255, 255, 0.04);
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="pill-row">
+      <div class="pill">BetSense • AI Suite</div>
+      <div class="pill pill-live">
+        <span class="pill-dot"></span>
+        OPTION D • INDEPENDENT ENGINE
+      </div>
+    </section>
+
+    <header>
+      <h1>OrderBook Pressure Engine — Option&nbsp;D</h1>
+      <p class="subtitle">
+        Stand-alone OrderBook Pressure cockpit that ingests live order-book,
+        odds and velocity to surface pre-trade windows, spoofing pressure and
+        micro-momentum for a single shop or desk.
+      </p>
+    </header>
+
+    <section class="grid">
+      <!-- LEFT: WHAT THE BUYER GETS -->
+      <article class="card">
+        <div class="card-title-row">
+          <div class="card-title">What’s included</div>
+          <div class="badge">Option&nbsp;D • UI + Logic</div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat-label">Scope</div>
+            <div class="stat-value accent">
+              OrderBook Pressure cockpit (1 engine)
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Mode</div>
+            <div class="stat-value">Pre-trade &amp; in-play</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Latency profile</div>
+            <div class="stat-value danger">&lt; 150ms render</div>
+          </div>
+        </div>
+
+        <ul class="list">
+          <li>
+            Independent **OrderBook Pressure** web console (separate from the
+            main BetSense site) with your branding and colours.
+          </li>
+          <li>
+            UI panels for ladder heat, spoofing detection, pressure waves and
+            “stay in / get out” traffic-light view.
+          </li>
+          <li>
+            Ready endpoint hooks for your own live feeds (WebSocket / REST).
+          </li>
+          <li>
+            JSON contract so your dev team can plug in any data provider
+            without touching the UI.
+          </li>
+          <li>
+            License wording allowing you to re-use the cockpit in multiple
+            branches of the same operator.
+          </li>
+        </ul>
+
+        <div class="tag-strip">
+          <span class="tag">OrderBook heat-map</span>
+          <span class="tag">Spoofing alerts</span>
+          <span class="tag">Pressure index</span>
+          <span class="tag">Operator-ready UI</span>
+        </div>
+
+        <div class="cta-row">
+          <a href="#" class="btn btn-primary">Preview Option D package</a>
+          <a href="#" class="btn btn-secondary">Live data connection spec</a>
+        </div>
+
+        <p class="hint">
+          This is a static demo page. In a real deployment, both buttons
+          above will point into your private documentation or live demo
+          environment.
+        </p>
+      </article>
+
+      <!-- RIGHT: HOW IT CONNECTS -->
+      <article class="card">
+        <div class="card-title-row">
+          <div class="card-title">Engine wiring</div>
+          <div class="badge">Live ready</div>
+        </div>
+
+        <ul class="list">
+          <li>
+            The cockpit expects a single JSON feed that exposes
+            bid/ask-ladder, traded volume bursts and implied volatility band.
+          </li>
+          <li>
+            Local logic converts order-book snapshots into a simple
+            **pressure score** (0-100) for each side of the book.
+          </li>
+          <li>
+            Switching windows, spoofing and “air pockets” are labelled and
+            pushed into the narrative strip on the right-hand side.
+          </li>
+          <li>
+            The same feed can later be shared with the Meta-Behavior Engine
+            stack without UI changes.
+          </li>
+        </ul>
+
+        <div class="tag-strip">
+          <span class="tag">Single engine module</span>
+          <span class="tag">Compatible with NSI / Meta</span>
+          <span class="tag">Future proof schema</span>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
