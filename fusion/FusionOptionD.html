@@ -1,73 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Fusion Engine — Option D UI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fusion Engine – Option D UI</title>
+
+<link href="https://betsense.casino/styles/main.css" rel="stylesheet">
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #0b1221;
-        color: white;
-        padding: 20px;
-        line-height: 1.6;
-    }
+body {
+    background: #081018;
+    font-family: 'Inter', sans-serif;
+    color: #d7e2f2;
+    padding: 20px;
+}
 
-    a {
-        color: #4ea3ff;
-        font-weight: bold;
-        text-decoration: none;
-    }
+.container {
+    max-width: 900px;
+    margin: auto;
+}
 
-    h1, h2 {
-        font-weight: 700;
-    }
+.section {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 22px;
+}
 
-    .container {
-        max-width: 900px;
-        margin: auto;
-    }
+.section h2 {
+    color: #6ad1ff;
+    font-size: 20px;
+    margin-bottom: 14px;
+}
 
-    .section {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 20px;
-    }
+label {
+    display:block;
+    margin-top:16px;
+    font-size:15px;
+}
 
-    input, select {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: none;
-        margin-top: 8px;
-        background: #192033;
-        color: white;
-    }
-
-    label {
-        font-weight: bold;
-        margin-top: 15px;
-        display: block;
-    }
-
-    .checkbox-group {
-        display: flex;
-        gap: 15px;
-        margin-top: 10px;
-    }
-
-    .btn {
-        margin-top: 20px;
-        display: inline-block;
-        background: #00a8ff;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-weight: bold;
-        color: black;
-    }
+input, select {
+    width:100%;
+    background:#0f1b29;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #1c2b3c;
+    color:white;
+    margin-top:6px;
+}
+.checkbox-row {
+    margin-top:12px;
+}
+.checkbox-row label {
+    display:inline-block;
+    margin-right:15px;
+}
+a.button {
+    display:inline-block;
+    background:#0099ff;
+    color:white;
+    padding:12px 20px;
+    border-radius:10px;
+    margin-top:15px;
+    text-decoration:none;
+}
 </style>
 </head>
 
@@ -75,44 +72,36 @@
 
 <div class="container">
 
-    <a href="/index.html">BetSense AI Suite</a>  
-    <br><br>
+    <h1 style="color:#8bc9ff; font-size:30px;">Fusion Engine — Option D UI</h1>
 
-    <h1>Fusion Engine — Option D UI</h1>
+    <div class="section">
+        <h2>Overview</h2>
+        <p>
+        A single cockpit that fuses NSI, RBS, Emotion and OrderBook layers into one clean narrative stream for each selected club.
+        </p>
+        <a class="button" href="FusionEngine.html">Back to Fusion Engine</a>
+    </div>
 
-    <p>
-    A unified cockpit blending NSI, RBS, Emotion Index and OrderBook Pressure into a single narrative stream.
-    </p>
-
-    <a href="/fusion/FusionEngine.html" class="btn">Open Option D Console</a>
 
     <div class="section">
         <h2>Option D Configuration</h2>
 
         <label>Primary club</label>
-        <input type="text" placeholder="e.g. Arsenal" />
+        <input placeholder="e.g. Arsenal">
 
         <label>League / competition</label>
-        <input type="text" placeholder="e.g. Premier League"/>
+        <input placeholder="e.g. Premier League">
 
         <label>Sample window (matches)</label>
-        <input type="number" placeholder="e.g. 20"/>
+        <input placeholder="e.g. 20">
 
-        <label>Fusion layers</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" checked /> NSI</label>
-            <label><input type="checkbox" checked /> RBS</label>
-            <label><input type="checkbox" checked /> Emotion Index</label>
-            <label><input type="checkbox" checked /> OrderBook</label>
+        <div class="checkbox-row">
+            <label><input type="checkbox" checked> NSI</label>
+            <label><input type="checkbox" checked> RBS</label>
+            <label><input type="checkbox" checked> Emotion Index</label>
+            <label><input type="checkbox" checked> OrderBook Pressure</label>
         </div>
 
-        <label>Output focus</label>
-        <select>
-            <option>Match Risk</option>
-            <option>Momentum Shift</option>
-            <option>Shock Probability</option>
-            <option>Combined Fusion Narrative</option>
-        </select>
     </div>
 
 </div>
