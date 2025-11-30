@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fusion Engine — Option D</title>
+
+<style>
+    body {
+        background:#0b0f19;
+        font-family: Arial, sans-serif;
+        color:white;
+        padding:20px;
+    }
+
+    .title {
+        font-size:34px;
+        font-weight:800;
+        margin-bottom:20px;
+    }
+
+    .input-box {
+        background:#111827;
+        padding:15px;
+        margin-bottom:20px;
+        border-radius:12px;
+        border:1px solid #1f2937;
+    }
+
+    input {
+        width:100%;
+        padding:12px;
+        background:#0f172a;
+        border:1px solid #1e293b;
+        border-radius:10px;
+        color:white;
+        font-size:16px;
+    }
+
+    .btn {
+        margin-top:15px;
+        width:100%;
+        padding:15px;
+        border-radius:12px;
+        font-size:18px;
+        font-weight:bold;
+        color:white;
+        background: linear-gradient(90deg, #ff4d4d, #ffa64d);
+        border:none;
+    }
+
+    .console {
+        background:#0f172a;
+        padding:20px;
+        margin-top:20px;
+        border-radius:12px;
+        white-space: pre-wrap;
+        border:1px solid #1e293b;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="title">Fusion Engine — Option D</div>
+
+<div class="input-box">
+    <label>TEAM NAME</label>
+    <input id="team" placeholder="e.g. Arsenal">
+</div>
+
+<div class="input-box">
+    <label>LEAGUE</label>
+    <input id="league" placeholder="e.g. Premier League">
+</div>
+
+<div class="input-box">
+    <label>SAMPLE WINDOW (MATCHES)</label>
+    <input id="window" placeholder="e.g. 50">
+</div>
+
+<button class="btn" onclick="runFusion()">Run Fusion Demo</button>
+
+<div id="output" class="console">Console Output...</div>
+
+<script>
+async function runFusion() {
+    const team = document.getElementById("team").value.trim();
+    const league = document.getElementById("league").value.trim();
+    const windowSize = document.getElementById("window").value.trim();
+
+    const output = document.getElementById("output");
+    output.innerHTML = "Running Fusion Engine...";
+
+    try {
+        const res = await fetch("/.netlify/functions/fusion-demo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ team, league, windowSize })
+        });
+
+        const data = await res.json();
+        output.innerHTML = JSON.stringify(data, null, 2);
+
+    } catch (err) {
+        output.innerHTML = JSON.stringify({ error: "Fusion Demo Failed", details: err }, null, 2);
+    }
+}
+</script>
+
+</body>
+</html>
