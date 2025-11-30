@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BetSense Behavior Deviation Engine — Option D</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050814;
+      --bg-card: #0b101f;
+      --bg-card-soft: #101629;
+      --accent: #32e9ff;
+      --accent-soft: #1b9fff;
+      --danger: #ff4b81;
+      --text: #f5f7ff;
+      --muted: #8d96b8;
+      --border: #20273a;
+      --radius-lg: 18px;
+      --radius-xl: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Roboto", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #171d3a 0, #050814 55%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 40px;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+      align-items: center;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(
+        135deg,
+        rgba(13, 210, 255, 0.08),
+        rgba(76, 34, 255, 0.25)
+      );
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #24ff9c;
+      box-shadow: 0 0 10px rgba(36, 255, 156, 0.9);
+    }
+
+    .pill-gray {
+      background: rgba(7, 12, 34, 0.85);
+      border-color: rgba(255, 255, 255, 0.04);
+    }
+
+    .title-block h1 {
+      font-size: 30px;
+      line-height: 1.05;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .title-block h1 span {
+      color: var(--accent);
+    }
+
+    .title-block p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 580px;
+    }
+
+    .layout {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #202b4a 0, #050814 55%);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 18px 18px 20px;
+      box-shadow: 0 22px 45px rgba(0, 0, 0, 0.75);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      background: rgba(11, 239, 180, 0.1);
+      color: #45f3c1;
+      border: 1px solid rgba(69, 243, 193, 0.6);
+    }
+
+    .badge-soft {
+      background: rgba(20, 33, 71, 0.9);
+      color: var(--muted);
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .list {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      list-style: none;
+    }
+
+    .list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .list li::before {
+      content: "•";
+      color: var(--accent);
+      font-size: 18px;
+      line-height: 16px;
+      margin-top: -1px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .meta-pill {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(4, 10, 30, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+    }
+
+    .meta-pill strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .cta-row {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        background 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6b3d, #ff2e88);
+      color: #ffffff;
+      box-shadow: 0 14px 30px rgba(255, 72, 140, 0.45);
+    }
+
+    .btn-primary span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ffffff;
+    }
+
+    .btn-secondary {
+      background: rgba(10, 16, 38, 0.95);
+      color: var(--muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-live {
+      background: radial-gradient(circle at top, #27ffae 0, #00c3ff 40%, #071020 100%);
+      color: #050814;
+      font-weight: 600;
+      box-shadow: 0 14px 30px rgba(39, 255, 174, 0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.8);
+    }
+
+    .console {
+      margin-top: 18px;
+      background: #050814;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 12px 14px;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+        Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: #d7e1ff;
+      overflow: auto;
+      max-height: 260px;
+    }
+
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(7, 16, 35, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .status-ok-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #26ff9a;
+      box-shadow: 0 0 10px rgba(38, 255, 154, 0.9);
+    }
+
+    .status-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 10px;
+    }
+
+    .console pre {
+      white-space: pre-wrap;
+      line-height: 1.45;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.85;
+    }
+
+    @media (max-width: 860px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 540px) {
+      body {
+        padding: 20px 12px 32px;
+      }
+
+      .card {
+        border-radius: 18px;
+      }
+
+      .title-block h1 {
+        font-size: 24px;
+      }
+
+      .cta-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="pill-row">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        BETSENSE • BEHAVIOR DEVIATION ENGINE
+      </div>
+      <div class="pill pill-gray">Option D • Independent Module</div>
+    </div>
+
+    <section class="title-block">
+      <h1>
+        Behavior Deviation <span>Engine</span><br />
+        Option D cockpit
+      </h1>
+      <p>
+        This independent Behavior Deviation console scans long-run match
+        histories to flag recurring behavioral breaks – moments where a club
+        systematically leaves its “normal” pattern under pressure.
+      </p>
+    </section>
+
+    <section class="layout">
+      <!-- LEFT CARD – EXPLAINER -->
+      <article class="card">
+        <header class="card-header">
+          <div class="card-title">What this Option D module does</div>
+          <div class="badge-soft">Standalone Behavior View</div>
+        </header>
+        <ul class="list">
+          <li>
+            Detects <strong>systematic deviations</strong> in pressing, tempo
+            and risk-taking versus the team’s baseline pattern.
+          </li>
+          <li>
+            Ranks clubs by how often they
+            <strong>lose structure under stress</strong> (late goals, red
+            cards, market shocks).
+          </li>
+          <li>
+            Builds a clean narrative you can show directly to
+            <strong>traders, risk teams or shop clients</strong>.
+          </li>
+          <li>
+            Designed to plug into BetSense Ultra or to run as a completely
+            <strong>independent Behavior Deviation product.</strong>
+          </li>
+        </ul>
+
+        <div class="meta-row">
+          <div class="meta-pill">
+            <strong>Sample window:</strong> last 50–80 league games
+          </div>
+          <div class="meta-pill">
+            <strong>Inputs:</strong> match flows, events, late-game states
+          </div>
+          <div class="meta-pill">
+            <strong>Output:</strong> text narrative + risk tags
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a href="/" class="btn btn-secondary">
+            ← Back to BetSense main site
+          </a>
+          <a href="/behavior/BehaviorDeviation.html" class="btn btn-primary">
+            <span class="dot"></span>
+            Full Behavior Engine page
+          </a>
+          <a href="#" class="btn btn-live">
+            Live Connected Data
+          </a>
+        </div>
+
+        <p class="footer-note">
+          The <strong>Live Connected Data</strong> button is reserved for future
+          enterprise buyers – they will attach their own match feeds or
+          historical datasets here with a single tap.
+        </p>
+      </article>
+
+      <!-- RIGHT CARD – DEMO NARRATIVE MOCK -->
+      <article class="card">
+        <header class="card-header">
+          <div class="card-title">Behavior deviation narrative preview</div>
+          <div class="badge">Prototype Output</div>
+        </header>
+
+        <div class="console">
+          <div class="console-header">
+            <span>CONSOLE OUTPUT</span>
+            <div class="status-pill">
+              <span class="status-ok-dot"></span>
+              <span class="status-label">status • ok</span>
+            </div>
+          </div>
+          <pre>{
+  "engine": "BEHAVIOR_DEVIATION",
+  "mode": "demo-local",
+  "status": "ok",
+  "summary": "Long-run behavioral deviation pattern generated successfully for Selected team.",
+  "narrative": [
+    "Across the last 60 league matches, Selected team shows a clear split between 'controlled' and 'chaotic' phases.",
+    "When protecting a one-goal lead after minute 70, pressing intensity drops sharply and the back line retreats 8–10 metres deeper than its baseline shape.",
+    "In matches where market odds move heavily against them in-play, Selected team switches to long-ball patterns 65% more often than their norm.",
+    "Red-card events trigger a sustained loss of compactness on the weak-side flank in over half of observed cases."
+  ],
+  "risk_tags": [
+    "LATE-GAME STRUCTURE LOSS",
+    "PRESSURE-SENSITIVE TEMPO",
+    "WEAK-SIDE FLANK VULNERABILITY"
+  ],
+  "confidence": 0.89,
+  "meta": {
+    "sample_window_matches": "last 60",
+    "engine_stack": [
+      "NSI",
+      "RBS",
+      "OrderBookPressure",
+      "Historical"
+    ],
+    "scenario": "BEHAVIOR_DEVIATION_OPTION_D"
+  }
+}</pre>
+        </div>
+
+        <p class="footer-note">
+          This is a fixed local prototype response – once your live stack is
+          wired, the same layout will render real Behavior Deviation narratives
+          per club for your buyers.
+        </p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
