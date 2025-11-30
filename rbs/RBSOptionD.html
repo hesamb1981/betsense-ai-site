@@ -2,502 +2,808 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RBS Engine — Option D Console | BetSense</title>
+  <title>RBS Engine — Option D UI • BetSense</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- Base fonts & reset -->
   <style>
-    :root {
-      --bg-main: #020616;
-      --bg-card: rgba(9, 16, 36, 0.96);
-      --bg-card-soft: rgba(15, 23, 42, 0.95);
-      --border-soft: rgba(148, 163, 184, 0.25);
-      --text-main: #e5e7eb;
-      --text-soft: #9ca3af;
-      --text-faint: #6b7280;
-      --accent-blue: #38bdf8;
-      --accent-rbs: #60a5fa;
-      --accent-pill: rgba(56, 189, 248, 0.1);
-      --btn-gradient-from: #22c55e;
-      --btn-gradient-to: #22d3ee;
-      --status-ok: #22c55e;
-      --status-bad: #f97373;
-      --code-bg: #020617;
-    }
-
     * {
       box-sizing: border-box;
-      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-main: #020816;
+      --bg-card: #050d1f;
+      --bg-card-soft: #071326;
+      --accent-cyan: #00c8ff;
+      --accent-green: #20ff9f;
+      --accent-purple: #9f7bff;
+      --accent-amber: #ffc857;
+      --text-main: #f6f7ff;
+      --text-soft: #a9b4d8;
+      --pill-bg: #071326;
+      --pill-border: #182744;
+      --badge-bg: #09172b;
+      --border-subtle: #122039;
+      --shadow-card: 0 22px 45px rgba(0, 0, 0, 0.65);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-pill: 999px;
+      --transition-fast: 0.18s ease-out;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Inter", "Segoe UI", sans-serif;
+    }
+
+    html,
+    body {
+      height: 100%;
     }
 
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Inter", sans-serif;
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top, #06142f 0, #020816 45%, #01040b 100%);
       color: var(--text-main);
-      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
-      display: flex;
-      justify-content: center;
-      padding: 32px 16px 40px;
+      -webkit-font-smoothing: antialiased;
+      padding: 24px 16px 40px;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 32px 24px 56px;
+      }
     }
 
     .page-shell {
-      width: 100%;
-      max-width: 980px;
+      max-width: 1120px;
+      margin: 0 auto;
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
+    /* Top breadcrumb bar */
 
-    .pill {
-      padding: 6px 14px;
-      border-radius: 999px;
+    .top-breadcrumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(4, 19, 42, 0.9);
+      border: 1px solid rgba(55, 99, 179, 0.7);
+      box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.06);
+      margin-bottom: 22px;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      border: 1px solid rgba(148, 163, 184, 0.35);
       color: var(--text-soft);
-      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .top-breadcrumb-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #4dffbf, #00b894 45%, #007bff 100%);
+      box-shadow: 0 0 14px rgba(0, 255, 190, 0.8);
+    }
+
+    .top-breadcrumb span strong {
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    /* Main title section */
+
+    .page-header {
+      margin-bottom: 26px;
+    }
+
+    .page-kicker {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 768px) {
+      .page-title {
+        font-size: 34px;
+      }
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-soft);
+      max-width: 640px;
+    }
+
+    .page-subtitle strong {
+      color: var(--accent-amber);
+      font-weight: 600;
+    }
+
+    /* Engine nav pills */
+
+    .engine-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 22px 0 26px;
+    }
+
+    .engine-pill {
+      padding: 7px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--pill-border);
+      background: var(--pill-bg);
+      color: var(--text-soft);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      white-space: nowrap;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast), box-shadow var(--transition-fast),
+        transform var(--transition-fast);
     }
 
-    .pill-dot {
+    .engine-pill span.dot {
       width: 7px;
       height: 7px;
       border-radius: 999px;
-      background: #22c55e;
+      background: rgba(0, 255, 163, 0.9);
+      box-shadow: 0 0 9px rgba(0, 255, 163, 0.7);
     }
 
-    .pill-tag {
-      color: var(--accent-blue);
+    .engine-pill:hover {
+      border-color: rgba(0, 200, 255, 0.9);
+      color: var(--text-main);
+      box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.18);
+      transform: translateY(-1px);
     }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .engine-pill.is-active {
+      background: radial-gradient(circle at 0 0, #0dffb2, #00c8ff 55%, #4b7dff 110%);
+      color: #021020;
+      border-color: transparent;
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.65);
     }
 
-    .subtitle {
-      font-size: 14px;
-      color: var(--text-soft);
-      max-width: 720px;
-      line-height: 1.6;
-      margin-bottom: 28px;
+    .engine-pill.is-active span.dot {
+      background: #021020;
+      box-shadow: none;
     }
 
-    .grid {
+    /* Layout: main and sidebar */
+
+    .layout-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr);
+      grid-template-columns: minmax(0, 1.7fr);
       gap: 18px;
     }
 
-    @media (min-width: 900px) {
-      .grid {
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    @media (min-width: 960px) {
+      .layout-grid {
+        grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+        align-items: flex-start;
       }
     }
 
     .card {
-      border-radius: 26px;
-      padding: 22px 20px 18px;
-      background: radial-gradient(circle at top left, #0b1120 0, var(--bg-card-soft) 40%, #020617 100%);
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.85);
       position: relative;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, #0a2342 0, var(--bg-card) 40%, #030917 100%);
+      border: 1px solid rgba(54, 88, 156, 0.85);
+      box-shadow: var(--shadow-card);
+      padding: 22px 18px 20px;
       overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 24px 24px 22px;
+      }
     }
 
     .card-header-label {
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--text-faint);
-      margin-bottom: 10px;
+      color: var(--text-soft);
+      margin-bottom: 6px;
     }
 
     .card-title-row {
       display: flex;
-      justify-content: space-between;
-      gap: 8px;
       align-items: center;
-      margin-bottom: 16px;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
     .card-title {
       font-size: 18px;
-      font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
-    .mode-pill {
-      padding: 6px 10px;
-      border-radius: 999px;
+    .demo-pill {
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(87, 111, 187, 0.9);
+      background: rgba(4, 22, 51, 0.9);
       font-size: 11px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.55);
-      color: var(--text-soft);
       display: inline-flex;
-      gap: 6px;
       align-items: center;
-    }
-
-    .mode-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
-    }
-
-    .card-body {
-      font-size: 14px;
-      color: var(--text-soft);
-      line-height: 1.7;
-      margin-bottom: 22px;
-    }
-
-    .controls-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .run-button {
-      border: none;
-      border-radius: 999px;
-      padding: 14px 28px;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-      background-image: linear-gradient(90deg, var(--btn-gradient-from), var(--btn-gradient-to));
-      color: #0b1120;
-      box-shadow: 0 18px 45px rgba(34, 197, 94, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-    }
-
-    .run-button:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.25);
-      filter: brightness(0.98);
-    }
-
-    .run-button-icon {
-      width: 0;
-      height: 0;
-      border-left: 10px solid #0b1120;
-      border-top: 7px solid transparent;
-      border-bottom: 7px solid transparent;
-    }
-
-    .status-pill {
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      display: inline-flex;
       gap: 8px;
-      align-items: center;
-      font-size: 12px;
       color: var(--text-soft);
+      white-space: nowrap;
     }
 
-    .status-dot {
+    .demo-pill-dot {
       width: 9px;
       height: 9px;
       border-radius: 999px;
-      background: var(--status-ok);
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+      background: radial-gradient(circle at 30% 30%, #4dffbf, #00c67a 55%, #00a4ff 100%);
+      box-shadow: 0 0 14px rgba(0, 255, 190, 0.9);
     }
 
-    .status-dot.error {
-      background: var(--status-bad);
-      box-shadow: 0 0 10px rgba(248, 113, 113, 0.9);
+    .card-body-intro {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-soft);
+      margin-bottom: 18px;
     }
 
-    .status-label {
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+    /* Form */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    @media (min-width: 720px) {
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .form-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .form-label-row span.hint {
       font-size: 11px;
+      opacity: 0.8;
     }
 
-    .status-text {
-      font-weight: 500;
-    }
-
-    .status-extra {
-      font-size: 11px;
-      color: var(--text-faint);
-    }
-
-    .response-shell {
-      margin-top: 14px;
-      border-radius: 18px;
-      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
-      border: 1px solid rgba(30, 64, 175, 0.8);
-      padding: 14px 12px;
+    .input-shell {
       position: relative;
     }
 
-    .response-label-row {
+    .input-shell input,
+    .input-shell select {
+      width: 100%;
+      font: inherit;
+      font-size: 13px;
+      padding: 9px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(60, 96, 164, 0.9);
+      background: radial-gradient(circle at top left, #0c203e 0, #040b19 36%, #020611 100%);
+      color: var(--text-main);
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+        background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .input-shell input::placeholder {
+      color: rgba(169, 180, 216, 0.68);
+    }
+
+    .input-shell input:focus,
+    .input-shell select:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .chip-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 10px;
+    }
+
+    .chip {
       font-size: 11px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-faint);
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(65, 105, 189, 0.9);
+      background: rgba(6, 20, 46, 0.85);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .response-endpoint {
-      font-size: 11px;
-      color: var(--accent-blue);
-      opacity: 0.9;
+    .chip.is-on {
+      background: radial-gradient(circle at 0 0, #0dffb2, #00c8ff 60%, #4b7dff 110%);
+      color: #021020;
+      border-color: transparent;
     }
 
-    .code-scroll {
-      max-height: 260px;
-      overflow: auto;
-      padding: 10px 8px 8px;
-      border-radius: 12px;
-      background: var(--code-bg);
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.85);
     }
 
-    pre {
-      margin: 0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      color: #e5e7eb;
-      line-height: 1.6;
-      white-space: pre;
-    }
+    /* Toggles list */
 
-    .metrics-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .toggle-list {
+      margin: 14px 0 18px;
+      display: grid;
+      gap: 8px;
       font-size: 13px;
       color: var(--text-soft);
     }
 
-    .metrics-list li {
-      margin-bottom: 6px;
-      padding-left: 12px;
-      position: relative;
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .metrics-list li::before {
-      content: "";
-      width: 4px;
-      height: 4px;
+    .toggle-dot {
+      width: 11px;
+      height: 11px;
       border-radius: 999px;
-      background: var(--accent-rbs);
-      position: absolute;
-      left: 0;
-      top: 9px;
-      box-shadow: 0 0 6px rgba(96, 165, 250, 0.8);
+      border: 1px solid rgba(77, 228, 166, 0.9);
+      background: radial-gradient(circle at 30% 30%, #53ffbf, #00b894 55%, #0096ff 100%);
+      box-shadow: 0 0 14px rgba(0, 255, 190, 0.8);
     }
 
-    .footer-note {
+    .toggle-dot.is-off {
+      background: radial-gradient(circle at 30% 30%, #ff9f40, #f75940 55%, #d92b7c 100%);
+      border-color: rgba(255, 139, 110, 0.9);
+      box-shadow: 0 0 12px rgba(255, 103, 77, 0.9);
+    }
+
+    /* Primary button */
+
+    .primary-cta-row {
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .primary-btn {
+      border: none;
+      cursor: pointer;
+      font: inherit;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 11px 22px;
+      border-radius: 999px;
+      color: #021020;
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        filter var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .primary-btn span.icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #021020, #021020);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.95);
+    }
+
+    .primary-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.85);
+    }
+
+    .cta-note {
+      font-size: 11px;
+      color: var(--text-soft);
+      opacity: 0.8;
+    }
+
+    /* Sidebar / Option D behaviour explainer */
+
+    .sidebar-card {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top, #0b1e3a 0, #050d1f 40%, #020712 100%);
+      border: 1px solid rgba(64, 98, 170, 0.85);
+      box-shadow: var(--shadow-card);
+      padding: 20px 18px 20px;
+    }
+
+    @media (min-width: 768px) {
+      .sidebar-card {
+        padding: 22px 22px 22px;
+      }
+    }
+
+    .sidebar-kicker {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-purple);
+      margin-bottom: 8px;
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-body {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .sidebar-body strong {
+      color: var(--accent-amber);
+      font-weight: 600;
+    }
+
+    .sidebar-list {
+      list-style: none;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-soft);
+      display: grid;
+      gap: 6px;
+    }
+
+    .sidebar-list li span.label {
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 11px;
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    .sidebar-footnote {
       margin-top: 16px;
       font-size: 11px;
-      color: var(--text-faint);
       line-height: 1.7;
+      color: var(--text-soft);
+      opacity: 0.85;
     }
 
-    a {
-      color: var(--accent-blue);
+    .sidebar-footnote strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* LiveData button */
+
+    .livedata-cta {
+      margin: 24px 0 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .livedata-btn {
       text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(107, 91, 255, 0.9);
+      color: #e4e2ff;
+      background: radial-gradient(circle at 0 0, #4b2fff 0, #1c0f60 40%, #05091c 100%);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.8);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        filter var(--transition-fast), border-color var(--transition-fast);
+      white-space: nowrap;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .livedata-btn span.dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #60ffea, #38ffb0 55%, #ffef9f 100%);
+      box-shadow: 0 0 14px rgba(120, 255, 210, 0.9);
+    }
+
+    .livedata-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      border-color: rgba(148, 132, 255, 1);
+    }
+
+    .livedata-note {
+      font-size: 11px;
+      color: var(--text-soft);
+      max-width: 380px;
     }
   </style>
 </head>
 <body>
-  <main class="page-shell">
-    <!-- Top tags -->
-    <div class="pill-row">
-      <div class="pill">
-        <span class="pill-dot"></span>
-        BETSENSE AI STACK
-      </div>
-      <div class="pill pill-tag">RBS LAYER</div>
-      <div class="pill">SWITCHING&nbsp;RISK · REGIME&nbsp;SHIFTS</div>
+  <div class="page-shell">
+    <!-- Breadcrumb -->
+    <div class="top-breadcrumb">
+      <span class="top-breadcrumb-dot"></span>
+      <span>BET SENSE AI STACK • <strong>RBS LAYER</strong></span>
     </div>
 
-    <!-- Heading -->
-    <h1>RBS ENGINE — Option D Console</h1>
-    <p class="subtitle">
-      Run an RBS Engine demo request through the BetSense Ultra API and inspect
-      switching-risk flags, late flips and regime-shift instability for a selected club or fixture.
-    </p>
+    <!-- Header -->
+    <header class="page-header">
+      <div class="page-kicker">RBS Engine • Option D UI</div>
+      <h1 class="page-title">RBS Engine — Option D UI</h1>
+      <p class="page-subtitle">
+        Configure how the <strong>RBS (Regime-Break &amp; Switching-Risk)</strong> Engine
+        scans match history to profile switching-risk, late flips and regime-shift
+        instability for a single club or fixture.
+      </p>
+    </header>
 
-    <section class="grid">
-      <!-- LEFT: Console -->
-      <section class="card">
-        <div class="card-header-label">RBS DEMO ANALYZER</div>
+    <!-- Engine nav pills -->
+    <nav class="engine-nav">
+      <a href="/fusion/FusionOptionD.html" class="engine-pill">
+        <span class="dot"></span>
+        Fusion Engine
+      </a>
+      <a href="/nsi/NSIOptionD.html" class="engine-pill">
+        <span class="dot"></span>
+        NSI Engine
+      </a>
+      <a href="/rbs/RBSOptionD.html" class="engine-pill is-active">
+        <span class="dot"></span>
+        RBS Engine
+      </a>
+      <a href="/MetaBehaviorEngineOptionD.html" class="engine-pill">
+        <span class="dot"></span>
+        Meta-Behavior
+      </a>
+      <a href="/behavior/BehaviorOptionD.html" class="engine-pill">
+        <span class="dot"></span>
+        Behavior
+      </a>
+    </nav>
 
+    <!-- Main layout -->
+    <main class="layout-grid">
+      <!-- Left: configuration card -->
+      <section class="card" aria-labelledby="rbs-config-title">
+        <div class="card-header-label">RBS demo analyzer</div>
         <div class="card-title-row">
-          <div class="card-title">Send RBS Engine demo</div>
-          <div class="mode-pill">
-            <span class="mode-dot"></span>
-            DEMO MODE · LOCAL STACK
+          <h2 class="card-title" id="rbs-config-title">
+            RBS Option D configuration
+          </h2>
+          <div class="demo-pill">
+            <span class="demo-pill-dot"></span>
+            Demo mode · local stack
           </div>
         </div>
 
-        <div class="card-body">
-          Tap the button below to send a demo request to the RBS Engine backend
-          and preview switching-risk flags, regime-shift instability and flip
-          profiles for a single club or fixture.
-        </div>
-
-        <div class="controls-row">
-          <button id="runRbsDemo" class="run-button">
-            <span class="run-button-icon"></span>
-            <span>Run RBS Demo</span>
-          </button>
-
-          <div id="statusPill" class="status-pill">
-            <span id="statusDot" class="status-dot"></span>
-            <span class="status-label">STATUS</span>
-            <span id="statusText" class="status-text">READY</span>
-            <span id="statusExtra" class="status-extra">Waiting for first RBS Engine demo.</span>
-          </div>
-        </div>
-
-        <div class="response-shell">
-          <div class="response-label-row">
-            <span>RBS DEMO RESPONSE</span>
-            <span class="response-endpoint">/.netlify/functions/rbs-demo</span>
-          </div>
-
-          <div class="code-scroll">
-            <pre id="responseBox">
-{/* RBS demo response will appear here once you run the demo. */}
-            </pre>
-          </div>
-        </div>
-
-        <p class="footer-note">
-          This console is for internal BetSense testing only.
-          Production integrations should call the RBS Engine API stack directly
-          with their own live or historical feeds.
+        <p class="card-body-intro">
+          Set the scan window and narrative focus for <strong>RBS Option D</strong>.
+          The engine will inspect switching-risk flags, regime-shift markers and flip
+          profiles around the selected club or fixture.
         </p>
+
+        <!-- Form -->
+        <div class="form-grid" aria-label="RBS configuration inputs">
+          <div class="form-field">
+            <div class="form-label-row">
+              <label for="club">Primary club</label>
+              <span class="hint">e.g. Chelsea</span>
+            </div>
+            <div class="input-shell">
+              <input id="club" type="text" placeholder="e.g. Chelsea" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-label-row">
+              <label for="league">League / competition</label>
+              <span class="hint">e.g. Premier League</span>
+            </div>
+            <div class="input-shell">
+              <input id="league" type="text" placeholder="e.g. Premier League" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-label-row">
+              <label for="sample">Sample window (matches)</label>
+              <span class="hint">e.g. 40</span>
+            </div>
+            <div class="input-shell">
+              <input id="sample" type="number" placeholder="e.g. 40" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-label-row">
+              <label for="focus">Output focus</label>
+            </div>
+            <div class="input-shell">
+              <select id="focus">
+                <option selected>Switching-risk &amp; regime shifts</option>
+                <option>Late flip probability</option>
+                <option>Collapse vs comeback risk</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Behavior layers chips -->
+        <div class="form-field" style="margin-bottom: 6px;">
+          <div class="form-label-row">
+            <label>RBS layers</label>
+            <span class="hint">Toggle which RBS tracks to emphasise</span>
+          </div>
+          <div class="chip-row">
+            <div class="chip is-on">
+              <span class="chip-dot"></span>
+              Switching-risk flags
+            </div>
+            <div class="chip is-on">
+              <span class="chip-dot"></span>
+              Regime-shift bands
+            </div>
+            <div class="chip is-on">
+              <span class="chip-dot"></span>
+              Late flip markers
+            </div>
+            <div class="chip">
+              <span class="chip-dot"></span>
+              Collapse vs comeback bias
+            </div>
+          </div>
+        </div>
+
+        <!-- Toggles -->
+        <div class="toggle-list" aria-label="What the RBS UI tracks">
+          <div class="toggle-item">
+            <span class="toggle-dot"></span>
+            <span>Track <strong>stable vs unstable</strong> tactical regimes.</span>
+          </div>
+          <div class="toggle-item">
+            <span class="toggle-dot"></span>
+            <span>Highlight high-risk <strong>switching-zones</strong>.</span>
+          </div>
+          <div class="toggle-item">
+            <span class="toggle-dot"></span>
+            <span>Surface late-flip and wild comeback <strong>profiles</strong>.</span>
+          </div>
+          <div class="toggle-item">
+            <span class="toggle-dot is-off"></span>
+            <span>Include live in-play feed (enterprise).</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="primary-cta-row">
+          <button class="primary-btn" type="button">
+            <span class="icon">▶</span>
+            Preview RBS Option D
+          </button>
+          <div class="cta-note">
+            This UI is for internal BetSense testing and Option D tuning. Production
+            clients plug their own feeds through LiveData Connect.
+          </div>
+        </div>
       </section>
 
-      <!-- RIGHT: Quick explanation -->
-      <section class="card">
-        <div class="card-header-label">OPTION D · OUTPUT FOCUS</div>
-        <div class="card-title-row">
-          <div class="card-title">How RBS Option D behaves</div>
-        </div>
+      <!-- Right: behaviour explainer -->
+      <aside class="sidebar-card" aria-labelledby="sidebar-title">
+        <div class="sidebar-kicker">Option D · Output focus</div>
+        <h2 class="sidebar-title" id="sidebar-title">
+          How RBS Option D behaves
+        </h2>
 
-        <div class="card-body">
-          Option D is tuned for high-signal switching-risk monitoring over a
-          defined sample window. It is designed to surface:
-        </div>
+        <p class="sidebar-body">
+          Option D scans the last <strong>20–50 matches</strong> to understand where a
+          club follows its usual tactical DNA and where it drifts into unstable
+          switching regimes, wild flips or collapse-risk states.
+        </p>
 
-        <ul class="metrics-list">
-          <li><strong>SwitchRisk</strong> – aggregate risk of regime switching for the selected club.</li>
-          <li><strong>PanicFlip</strong> – probability of late panic flips or meltdown phases.</li>
-          <li><strong>ComebackChance</strong> – likelihood that the club can stabilize and mount a comeback.</li>
-          <li><strong>Instability profile</strong> – internal markers describing how volatile the regime currently is.</li>
+        <ul class="sidebar-list">
+          <li>
+            <span class="label">Switching-risk bands</span>
+            Zones where the engine sees repeated tactical switching and elevated
+            probability of regime shifts.
+          </li>
+          <li>
+            <span class="label">Deviation spikes</span>
+            Pockets where the club’s behaviour breaks character – panic patterns,
+            sudden conservatism or reckless chasing.
+          </li>
+          <li>
+            <span class="label">Late flip markers</span>
+            Profiles showing vulnerability to late collapses or surprise
+            comebacks in the closing phases.
+          </li>
+          <li>
+            <span class="label">Narrative stream</span>
+            A clean text summary of how “in-character” or “off-script” the club has
+            been over the chosen window.
+          </li>
         </ul>
 
-        <p class="footer-note">
-          In a full BetSense stack, RBS Option D can be fused with NSI, Emotion
-          and OrderBook layers via the <strong>Fusion Engine</strong> for richer
-          narratives and stacked risk flags.
+        <p class="sidebar-footnote">
+          These Option D profiles are designed for <strong>trading desks</strong> and
+          <strong> operators</strong> who need a fast mental model of a club’s
+          switching-risk and regime-shift instability before going live.
         </p>
-      </section>
-    </section>
-  </main>
+      </aside>
+    </main>
 
-  <script>
-    (function () {
-      const button = document.getElementById("runRbsDemo");
-      const statusDot = document.getElementById("statusDot");
-      const statusText = document.getElementById("statusText");
-      const statusExtra = document.getElementById("statusExtra");
-      const responseBox = document.getElementById("responseBox");
-
-      const ENDPOINT = "/.netlify/functions/rbs-demo";
-
-      function setStatus(mode, extra) {
-        if (mode === "loading") {
-          statusDot.classList.remove("error");
-          statusDot.style.background = "#facc15";
-          statusText.textContent = "LOADING…";
-          statusExtra.textContent = extra || "Waiting for RBS demo response…";
-        } else if (mode === "error") {
-          statusDot.classList.add("error");
-          statusText.textContent = "ERROR";
-          statusExtra.textContent = extra || "RBS demo request failed.";
-        } else {
-          statusDot.classList.remove("error");
-          statusDot.style.background = "#22c55e";
-          statusText.textContent = "OK";
-          statusExtra.textContent = extra || "RBS demo response generated successfully.";
-        }
-      }
-
-      button.addEventListener("click", async () => {
-        setStatus("loading", "HTTP request to RBS demo endpoint…");
-        responseBox.textContent = "Waiting for RBS demo response…";
-
-        try {
-          const res = await fetch(ENDPOINT);
-          const text = await res.text();
-
-          if (!res.ok) {
-            setStatus("error", "HTTP " + res.status + " from RBS demo.");
-            try {
-              const errJson = JSON.parse(text);
-              responseBox.textContent = JSON.stringify(errJson, null, 2);
-            } catch (e) {
-              responseBox.textContent = text || "Unknown error";
-            }
-            return;
-          }
-
-          let pretty;
-          try {
-            const json = JSON.parse(text);
-            pretty = JSON.stringify(json, null, 2);
-          } catch (e) {
-            pretty = text;
-          }
-
-          setStatus("ok");
-          responseBox.textContent = pretty;
-        } catch (err) {
-          setStatus("error", "Network error while calling RBS demo.");
-          responseBox.textContent = String(err);
-        }
-      });
-    })();
-  </script>
+    <!-- LiveData Connect CTA -->
+    <div class="livedata-cta">
+      <a class="livedata-btn" href="/livedata-connect.html">
+        <span class="dot"></span>
+        LiveData Connect
+      </a>
+      <p class="livedata-note">
+        Enterprise buyers bring their own licensed live sports feeds and plug them
+        into BetSense Engines via <strong>LiveData Connect</strong>. RBS outputs can
+        be pushed directly into internal trading tools or UIs.
+      </p>
+    </div>
+  </div>
 </body>
 </html>
