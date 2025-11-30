@@ -1,30 +1,30 @@
-exports.handler = async () => {
+exports.handler = async (event, context) => {
   try {
-    // Demo response until backend API is connected
+    // Mock demo response for Fusion Engine
     const demoResponse = {
       status: "ok",
-      fusion_demo: {
-        message: "Fusion Engine demo placeholder",
-        behavior_score: 62,
-        nsi_score: 71,
-        rbs_score: 58,
-        fused_output: "Balanced pressure · moderate risk"
-      }
+      message: "Fusion Engine demo response",
+      fused_metrics: {
+        nsi: 0.72,
+        rbs: 0.64,
+        emotion: 0.58,
+        orderbook: 0.61
+      },
+      narrative: "Team shows rising momentum with balanced emotional pressure."
     };
 
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
       body: JSON.stringify(demoResponse)
     };
 
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Server error" })
+      body: JSON.stringify({
+        error: "Fusion demo internal error",
+        details: error.message
+      })
     };
   }
 };
