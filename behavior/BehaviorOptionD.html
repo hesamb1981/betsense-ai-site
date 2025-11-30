@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Behavior Deviation Engine — Option D UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020818;
+      --bg-card: #020617;
+      --bg-card-soft: #020818;
+      --border-soft: rgba(148, 163, 184, 0.35);
+      --border-strong: rgba(148, 163, 184, 0.65);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-strong: #f9fafb;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.18);
+      --pill-bg: rgba(15, 23, 42, 0.95);
+      --pill-border: rgba(148, 163, 184, 0.55);
+      --badge-bg: rgba(34, 197, 94, 0.18);
+      --badge-dot: #22c55e;
+      --input-bg: #020617;
+      --input-border: rgba(148, 163, 184, 0.55);
+      --pill-text: #e5e7eb;
+      --danger: #f97373;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      padding: 24px 16px 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .stack-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stack-pill {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--pill-border);
+      background: var(--pill-bg);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stack-pill span.dim {
+      opacity: .7;
+    }
+
+    .stack-pill span.highlight {
+      color: #38bdf8;
+    }
+
+    .title-block {
+      margin-bottom: 26px;
+    }
+
+    .title-block h1 {
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-strong);
+      margin-bottom: 10px;
+    }
+
+    .title-block p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-soft);
+      max-width: 640px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr);
+      gap: 18px;
+    }
+
+    @media (min-width: 880px) {
+      .layout {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      }
+    }
+
+    .card {
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, #020b24 0, #020617 45%, #020617 100%);
+      padding: 18px 18px 20px;
+      box-shadow:
+        0 32px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--badge-dot);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.24);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      color: var(--text-strong);
+      margin-bottom: 6px;
+    }
+
+    .card p.lead {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 520px) {
+      .field-row.cols-2 {
+        grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      }
+    }
+
+    label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      color: var(--text-soft);
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid var(--input-border);
+      background: linear-gradient(120deg, #020617, #020a1b);
+      color: var(--text-main);
+      padding: 9px 13px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(148, 163, 184, 0.8);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pill {
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--pill-text);
+    }
+
+    .pill.primary {
+      border-color: rgba(56, 189, 248, 0.7);
+      color: #38bdf8;
+    }
+
+    .pill.accent {
+      border-color: rgba(34, 197, 94, 0.7);
+      color: var(--accent);
+    }
+
+    .toggle-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .toggle-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 1);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+      position: relative;
+    }
+
+    .toggle-dot.on::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 0, #22c55e, #16a34a);
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+    }
+
+    .btn-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      padding: 10px 20px;
+      font-size: 13px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #22c55e, #0ea5e9);
+      color: #020617;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 16px 30px rgba(34, 197, 94, 0.35);
+    }
+
+    .btn-primary span.icon {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #020617;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .hint strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .output-card {
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, #020b24 0, #020617 50%, #020617 100%);
+      padding: 18px 18px 20px;
+      box-shadow:
+        0 32px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .output-card h3 {
+      font-size: 15px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+    }
+
+    .output-card h2 {
+      font-size: 18px;
+      color: var(--text-strong);
+      margin-bottom: 8px;
+    }
+
+    .output-card p {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+    }
+
+    .output-list {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-soft);
+      padding-left: 0;
+    }
+
+    .output-list li {
+      margin-bottom: 6px;
+    }
+
+    .output-list span.tag {
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-size: 11px;
+      color: var(--text-main);
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--text-soft);
+      max-width: 640px;
+    }
+
+    .footer-note strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="stack-pill-row">
+      <div class="stack-pill">
+        <span class="dim">BETSENSE AI STACK</span>
+        <span>•</span>
+        <span class="highlight">BEHAVIOR LAYER</span>
+      </div>
+    </div>
+
+    <div class="title-block">
+      <h1>BEHAVIOR DEVIATION ENGINE — OPTION D UI</h1>
+      <p>
+        Configure how the Behavior Deviation Engine scans long-horizon match
+        history to detect <strong>stable vs unstable tactical regimes</strong>,
+        switching-risk markers and late flips for a single club or fixture.
+      </p>
+    </div>
+
+    <section class="layout">
+      <!-- LEFT: CONFIG CARD -->
+      <article class="card">
+        <header class="card-header">
+          <div>
+            <div class="card-title">Behavior demo analyzer</div>
+            <h2>Behavior Option D configuration</h2>
+          </div>
+          <div class="badge">
+            <span class="badge-dot"></span>
+            <span>Demo mode · Local stack</span>
+          </div>
+        </header>
+
+        <p class="lead">
+          Set the scan window and narrative focus for Behavior Option D.
+          The engine will inspect stability flags, deviation phases and
+          regime-switch risk around the selected club.
+        </p>
+
+        <div class="field-row cols-2">
+          <div class="field-group">
+            <label for="club">Primary club</label>
+            <input id="club" type="text" placeholder="e.g. Chelsea" />
+          </div>
+          <div class="field-group">
+            <label for="league">League / competition</label>
+            <input id="league" type="text" placeholder="e.g. Premier League" />
+          </div>
+        </div>
+
+        <div class="field-row cols-2">
+          <div class="field-group">
+            <label for="matches">Sample window (matches)</label>
+            <input id="matches" type="number" placeholder="e.g. 40" />
+          </div>
+          <div class="field-group">
+            <label for="focus">Output focus</label>
+            <select id="focus">
+              <option value="stability">Stability vs instability</option>
+              <option value="switch-risk">Switching-risk markers</option>
+              <option value="late-flips">Late flip behaviour</option>
+              <option value="profile">Full deviation profile</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Behavior layers</label>
+          <div class="pill-row">
+            <div class="pill primary">NSI baseline</div>
+            <div class="pill accent">Deviation flags</div>
+            <div class="pill">Regime-shift risk</div>
+            <div class="pill">Late flip markers</div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle">
+              <div class="toggle-dot on"></div>
+              <span>Track <strong>stable vs unstable</strong> phases</span>
+            </div>
+            <div class="toggle">
+              <div class="toggle-dot on"></div>
+              <span>Highlight <strong>switching-risk zones</strong></span>
+            </div>
+            <div class="toggle">
+              <div class="toggle-dot"></div>
+              <span>Include <strong>live in-play feed</strong> (enterprise)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" type="button">
+            <span class="icon"></span>
+            <span>Preview Behavior Option D</span>
+          </button>
+          <p class="hint">
+            This UI is for <strong>internal BetSense</strong> testing and
+            Option D tuning. Production clients plug their own feeds through
+            <strong>LiveData Connect</strong>.
+          </p>
+        </div>
+      </article>
+
+      <!-- RIGHT: OUTPUT EXPLANATION -->
+      <article class="output-card">
+        <h3>Option D · Output focus</h3>
+        <h2>How Behavior Option D behaves</h2>
+        <p>
+          Option D scans the last 20–50 matches to understand where a club
+          behaves like its usual tactical DNA and where it
+          <strong>deviates into unstable regimes</strong>.
+        </p>
+        <ul class="output-list">
+          <li>
+            <span class="tag">Stability bands —</span>
+            Long-horizon zones where the club stays close to its normal playing
+            template.
+          </li>
+          <li>
+            <span class="tag">Deviation spikes —</span>
+            Phases where the system flags tactical drift, panic patterns
+            or unsustainable game states.
+          </li>
+          <li>
+            <span class="tag">Switching-risk —</span>
+            Markers where the club is vulnerable to <strong>late flips</strong>
+            or regime shifts (e.g. sudden collapse, wild comebacks).
+          </li>
+          <li>
+            <span class="tag">Narrative stream —</span>
+            A clean text narrative summarising how “in-character”
+            or “off-script” the club has been over the window.
+          </li>
+        </ul>
+        <p>
+          These Option D profiles are designed for <strong>trading desks
+          and operators</strong> who need a fast mental model of a club’s
+          behavioural risk before going live.
+        </p>
+      </article>
+    </section>
+
+    <p class="footer-note">
+      <strong>Note:</strong> This page is a UI shell only – it does not send
+      real API traffic. Enterprise buyers connect their own live or historical
+      feeds through <strong>LiveData Connect</strong> and call the Behavior
+      Engine API stack directly.
+    </p>
+  </main>
+</body>
+</html>
