@@ -1,218 +1,317 @@
+// app/dataspine/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
-const API_BASE = "https://betsense-backend.onrender.com";
+const API_BASE =
+  process.env.NEXT_PUBLIC_BETSENSE_API_BASE ||
+  "https://betsense-backend.onrender.com";
 
-type DataSpineResponse = {
+type DemoState = {
   ok: boolean;
   engine: string;
-  mode?: string;
+  mode: string;
   summary?: string;
   metrics?: Record<string, number | string>;
-  message?: string;
 };
 
 export default function DataSpinePage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [health, setHealth] = useState<string | null>(null);
-  const [demoResult, setDemoResult] = useState<DataSpineResponse | null>(null);
+  const [demoData, setDemoData] = useState<DemoState | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCheckHealth = async () => {
+  async function runDemo() {
     try {
-      setIsLoading(true);
+      setLoading(true);
       setError(null);
-      const res = await fetch(`${API_BASE}/api/dataspine/health`);
-      if (!res.ok) {
-        throw new Error(`Health error: ${res.status}`);
-      }
-      const json = await res.json();
-      setHealth(JSON.stringify(json, null, 2));
-    } catch (err: any) {
-      setError(err.message || "Health check failed");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleRunDemo = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      setDemoResult(null);
+      setDemoData(null);
 
       const res = await fetch(`${API_BASE}/api/dataspine/demo`, {
-        method: "POST",
+        method: "GET",
       });
 
       if (!res.ok) {
-        throw new Error(`Demo error: ${res.status}`);
+        throw new Error(`Status ${res.status}`);
       }
 
-      const json = (await res.json()) as DataSpineResponse;
-      setDemoResult(json);
-    } catch (err: any) {
-      setError(err.message || "Demo request failed");
+      const json = await res.json();
+      setDemoData(json);
+    } catch (e: any) {
+      setError("Demo request failed. Please try again.");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
-  };
+  }
 
   return (
-    <main className="min-h-screen bg-[#050816] text-slate-100">
-      <section className="mx-auto flex max-w-5xl flex-col gap-10 px-4 pb-16 pt-24">
-        {/* هدر و معرفی، هم‌استایل با بقیه سایت */}
-        <header className="space-y-6">
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.35em] text-sky-300/70">
-              BETSENSE INTERNAL ENGINES
-            </p>
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+    <main className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-12 lg:py-16">
+        {/* بالا: تیتر و توضیح کوتاه */}
+        <section className="space-y-6">
+          <div className="inline-flex flex-wrap gap-2 text-xs font-medium text-sky-300">
+            <span className="rounded-full border border-sky-500/40 bg-sky-900/40 px-3 py-1 uppercase tracking-[0.18em]">
+              BetSense internal engine
+            </span>
+            <span className="rounded-full border border-emerald-500/30 bg-emerald-900/40 px-3 py-1 uppercase tracking-[0.18em]">
+              OrderBook · Quantum layer
+            </span>
+          </div>
+
+          <div className="space-y-4">
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl lg:text-5xl">
               DataSpine Engine
             </h1>
+            <p className="max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
+              The DataSpine Engine fuses{" "}
+              <span className="text-sky-300">
+                orderbook pressure, volatility, micro-momentum
+              </span>{" "}
+              and ladder flows into a single, clean signal for in-play trading
+              desks, quant teams and enterprise prediction stacks.
+            </p>
           </div>
 
-          <div className="flex flex-wrap gap-3 text-xs font-medium uppercase tracking-[0.25em] text-sky-200/80">
-            <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1">
-              Orderbook pressure
-            </span>
-            <span className="rounded-full border border-sky-500/40 bg-sky-500/5 px-3 py-1">
-              Momentum &amp; volatility
-            </span>
-            <span className="rounded-full border border-sky-500/40 bg-sky-500/5 px-3 py-1">
-              Multi-match radar
-            </span>
+          {/* دکمه‌ها */}
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={runDemo}
+              disabled={loading}
+              className="inline-flex items-center gap-2 rounded-full bg-sky-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-500/40 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? "Running demo…" : "Run DataSpine demo"}
+            </button>
+
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-400/60 bg-emerald-900/20 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300 hover:border-emerald-300 hover:bg-emerald-900/40"
+            >
+              Live connected data
+              <span className="text-[0.6rem] text-emerald-200/80">
+                (API / feeds)
+              </span>
+            </a>
           </div>
+        </section>
 
-          <p className="max-w-3xl text-sm leading-relaxed text-slate-300">
-            The DataSpine Engine ingests raw odds, market micro-moves, and order
-            book pressure into a unified{" "}
-            <span className="font-semibold text-sky-200">
-              &quot;Data Spine&quot; flow
-            </span>{" "}
-            suitable for live consoles, risk dashboards, and enterprise API
-            buyers. This page is a simple internal demo to verify the engine is
-            online and returning fused signals.
-          </p>
-        </header>
-
-        {/* بدنه: توضیحات + کارت دمو */}
-        <div className="grid gap-8 md:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
-          {/* ستون توضیحی */}
-          <div className="space-y-6">
-            <div className="rounded-3xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 via-slate-900 to-slate-950 p-6 shadow-[0_0_40px_rgba(56,189,248,0.25)]">
-              <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-sky-200">
-                What DataSpine does
+        {/* بدنه صفحه: توضیحات + پَنِل دمو */}
+        <section className="grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1.1fr)]">
+          {/* ستون چپ: توضیح‌ها و کارت‌ها */}
+          <div className="space-y-8">
+            {/* What DataSpine does */}
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6 lg:p-7">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+                What the DataSpine Engine does
               </h2>
-              <ul className="space-y-2 text-sm text-slate-200">
-                <li>• Track live momentum and micro-volatility across markets.</li>
-                <li>
-                  • Read orderbook pressure and imbalance on home vs away vs
-                  draw.
+              <p className="mt-3 text-sm leading-relaxed text-slate-300">
+                DataSpine turns messy orderbook depth, queue position and price
+                velocity into a{" "}
+                <span className="text-sky-300">
+                  single enterprise-ready pressure profile
+                </span>{" "}
+                that can be wired straight into risk consoles, auto-trading
+                logic or retail-facing products.
+              </p>
+
+              <ul className="mt-5 space-y-3 text-sm text-slate-200">
+                <li className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-sky-400" />
+                  <span>
+                    Track{" "}
+                    <span className="text-sky-300">
+                      buy/sell imbalances &amp; ladder sweeps
+                    </span>{" "}
+                    across multiple books and venues.
+                  </span>
                 </li>
-                <li>
-                  • Detect late-comeback risk, panic flips, and one-way pressure
-                  clusters.
+                <li className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  <span>
+                    Detect{" "}
+                    <span className="text-emerald-300">
+                      spoofing, fading size and micro-momentum flips
+                    </span>{" "}
+                    before they hit the scoreboard.
+                  </span>
                 </li>
-                <li>
-                  • Output clean JSON signals for terminals, APIs, and strategy
-                  engines.
+                <li className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-fuchsia-400" />
+                  <span>
+                    Build a{" "}
+                    <span className="text-fuchsia-300">
+                      clean “pressure spine”
+                    </span>{" "}
+                    that plugs into BetSense Meta-Behavior, Emotion and NSI
+                    engines.
+                  </span>
                 </li>
               </ul>
             </div>
 
-            <div className="rounded-3xl border border-slate-700/60 bg-slate-900/60 p-6">
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
-                Live Connected Data
+            {/* سه کارت متریک مثل داشبورد حرفه‌ای */}
+            <div className="grid gap-4 sm:grid-cols-3">
+              <MetricCard
+                label="OrderBook pressure"
+                value="74%"
+                tone="bullish"
+                caption="Net buy-side pressure vs last 5 mins"
+              />
+              <MetricCard
+                label="Volatility band"
+                value="Medium"
+                tone="neutral"
+                caption="Spread, whip and ladder churn"
+              />
+              <MetricCard
+                label="Flip risk window"
+                value="3.2 min"
+                tone="alert"
+                caption="Expected time to next regime flip"
+              />
+            </div>
+
+            {/* لایه اینترپرایز */}
+            <div className="rounded-3xl border border-slate-800 bg-gradient-to-tr from-slate-900/80 via-slate-900/40 to-sky-900/40 p-5 sm:p-6 lg:p-7">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">
+                Enterprise layer
               </h3>
-              <p className="text-sm text-slate-300">
-                This demo uses a pre-built sample response. Enterprise buyers
-                can plug in their{" "}
-                <span className="font-medium text-sky-200">
-                  own live feeds and APIs
+              <p className="mt-3 text-sm leading-relaxed text-slate-200">
+                DataSpine is designed for{" "}
+                <span className="text-sky-300">
+                  trading houses, quant teams and large sportsbook operators
                 </span>{" "}
-                into the DataSpine Engine via the{" "}
-                <span className="font-medium text-sky-200">
-                  &quot;Live Connected Data&quot;
-                </span>{" "}
-                integration button on the main suite.
+                that need a hardened signal layer, not a toy dashboard.
               </p>
+              <div className="mt-4 grid gap-3 text-xs text-slate-300 sm:grid-cols-3">
+                <FeaturePill title="API-first">
+                  REST / WebSocket endpoints for live stacks.
+                </FeaturePill>
+                <FeaturePill title="Multi-feed">
+                  Combine odds, ladders &amp; internal books.
+                </FeaturePill>
+                <FeaturePill title="Stack-ready">
+                  Routes directly into BetSense Ultra console.
+                </FeaturePill>
+              </div>
             </div>
           </div>
 
-          {/* ستون دمو */}
-          <div className="space-y-4">
-            <div className="rounded-3xl border border-sky-500/40 bg-slate-900/80 p-6">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-200">
-                  Run DataSpine Demo
-                </h2>
-                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-200">
-                  <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_0_4px_rgba(52,211,153,0.35)]" />
-                  Demo mode
+          {/* ستون راست: پنل دمو و JSON */}
+          <div className="space-y-5">
+            <div className="rounded-3xl border border-sky-700/60 bg-slate-900/60 p-5 shadow-[0_0_40px_rgba(56,189,248,0.35)] sm:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
+                    DataSpine demo
+                  </p>
+                  <p className="text-xs text-slate-300">
+                    Sample spine snapshot. In production this panel would be
+                    wired to your{" "}
+                    <span className="text-sky-300">live orderbook feeds</span>.
+                  </p>
+                </div>
+                <span className="rounded-full border border-emerald-400/60 bg-emerald-900/40 px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-emerald-200">
+                  Simulated
                 </span>
               </div>
 
-              <p className="mb-4 text-xs leading-relaxed text-slate-300">
-                Tap the button to send a{" "}
-                <span className="font-medium text-sky-100">
-                  sample request
-                </span>{" "}
-                to the DataSpine demo endpoint. This does not use real
-                production odds; it simply proves the engine and routes are
-                wired correctly.
-              </p>
+              <div className="mt-4 h-[220px] overflow-auto rounded-2xl bg-slate-950/80 p-3 text-xs leading-relaxed text-emerald-100">
+                {error && (
+                  <div className="rounded-xl border border-rose-500/60 bg-rose-900/40 px-3 py-2 text-[0.7rem] text-rose-100">
+                    {error}
+                  </div>
+                )}
 
-              <div className="mb-4 flex flex-wrap items-center gap-3">
-                <button
-                  onClick={handleRunDemo}
-                  disabled={isLoading}
-                  className="inline-flex items-center justify-center rounded-full bg-sky-500 px-5 py-2 text-sm font-semibold text-slate-950 shadow-[0_0_25px_rgba(56,189,248,0.55)] transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:bg-sky-500/60"
-                >
-                  {isLoading ? "Running…" : "Run DataSpine demo"}
-                </button>
+                {!error && !demoData && !loading && (
+                  <p className="text-[0.7rem] text-slate-400">
+                    Tap <span className="text-sky-300">“Run DataSpine demo”</span>{" "}
+                    above to fetch a sample response from the BetSense backend.
+                  </p>
+                )}
 
-                <button
-                  onClick={handleCheckHealth}
-                  disabled={isLoading}
-                  className="inline-flex items-center justify-center rounded-full border border-sky-400/50 bg-transparent px-4 py-2 text-xs font-semibold text-sky-200 transition hover:bg-sky-500/10 disabled:cursor-not-allowed disabled:border-sky-400/30 disabled:text-sky-300/60"
-                >
-                  Check health
-                </button>
+                {loading && (
+                  <p className="animate-pulse text-[0.7rem] text-sky-300">
+                    Fetching DataSpine demo snapshot…
+                  </p>
+                )}
+
+                {demoData && !loading && (
+                  <pre className="whitespace-pre-wrap text-[0.7rem]">
+                    {JSON.stringify(demoData, null, 2)}
+                  </pre>
+                )}
               </div>
+            </div>
 
-              {error && (
-                <div className="mb-3 rounded-2xl border border-rose-500/60 bg-rose-500/10 px-3 py-2 text-xs text-rose-100">
-                  {error}
-                </div>
-              )}
-
-              {demoResult && (
-                <div className="mb-3 rounded-2xl border border-slate-700 bg-slate-950/60 p-3">
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                    Demo response
-                  </p>
-                  <pre className="max-h-64 overflow-auto text-xs leading-relaxed text-slate-100">
-                    {JSON.stringify(demoResult, null, 2)}
-                  </pre>
-                </div>
-              )}
-
-              {health && (
-                <div className="rounded-2xl border border-emerald-500/50 bg-emerald-500/10 p-3">
-                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-200">
-                    Health status
-                  </p>
-                  <pre className="max-h-40 overflow-auto text-xs leading-relaxed text-emerald-50">
-                    {health}
-                  </pre>
-                </div>
-              )}
+            {/* باکس «چطور استفاده می‌شود» */}
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-5 text-xs text-slate-300 sm:p-6">
+              <h4 className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                How enterprise buyers use DataSpine
+              </h4>
+              <ul className="mt-3 space-y-2">
+                <li>• Pre-trade edge filters for sharp customer queues.</li>
+                <li>• In-play micro-momentum layer on top of xG &amp; tempo.</li>
+                <li>• Panic / spoof detection inside quant risk consoles.</li>
+                <li>
+                  • Fused into the BetSense Meta-Behavior Engine as the
+                  orderbook spine.
+                </li>
+              </ul>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
+  );
+}
+
+/* ---------- کامپوننت‌های کوچک داخل همین فایل برای راحتی ---------- */
+
+type MetricProps = {
+  label: string;
+  value: string;
+  tone: "bullish" | "neutral" | "alert";
+  caption: string;
+};
+
+function MetricCard({ label, value, tone, caption }: MetricProps) {
+  const toneColor =
+    tone === "bullish"
+      ? "text-emerald-300"
+      : tone === "alert"
+      ? "text-rose-300"
+      : "text-sky-300";
+
+  const toneDot =
+    tone === "bullish"
+      ? "bg-emerald-400"
+      : tone === "alert"
+      ? "bg-rose-400"
+      : "bg-sky-400";
+
+  return (
+    <div className="flex flex-col justify-between rounded-3xl border border-slate-800 bg-slate-900/60 p-4">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-slate-400">
+          {label}
+        </p>
+        <span className={`h-1.5 w-1.5 rounded-full ${toneDot}`} />
+      </div>
+      <p className={`mt-2 text-xl font-semibold ${toneColor}`}>{value}</p>
+      <p className="mt-1 text-[0.7rem] text-slate-400">{caption}</p>
+    </div>
+  );
+}
+
+type PillProps = {
+  title: string;
+  children: React.ReactNode;
+};
+
+function FeaturePill({ title, children }: PillProps) {
+  return (
+    <div className="rounded-2xl border border-slate-700/70 bg-slate-950/60 p-3">
+      <p className="text-[0.7rem] font-semibold text-slate-100">{title}</p>
+      <p className="mt-1 text-[0.7rem] text-slate-400">{children}</p>
+    </div>
   );
 }
