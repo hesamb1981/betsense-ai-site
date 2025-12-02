@@ -1,212 +1,204 @@
 "use client";
 
-import { useState } from "react";
-
-type DemoResponse = {
-  ok: boolean;
-  engine: string;
-  mode?: string;
-  summary?: string;
-  metrics?: Record<string, number | string>;
-  [key: string]: any;
-};
+import React, { useState } from "react";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_BETSENSE_BACKEND_URL ||
+  process.env.NEXT_PUBLIC_BETSENSE_API_BASE ||
   "https://betsense-backend.onrender.com";
-
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="rounded-full border border-slate-600/80 bg-slate-900/80 px-3 py-1 text-xs text-slate-200">
-      {children}
-    </span>
-  );
-}
-
-function Dot() {
-  return (
-    <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-400" />
-  );
-}
 
 export default function DataSpinePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<DemoResponse | null>({
-    ok: true,
-    engine: "DataSpine",
-    mode: "demo",
-    summary: "Sample DataSpine demo response",
-    metrics: {
-      momentumScore: 78,
-      volatilityIndex: 21,
-      pressureBias: "home",
-      patternCluster: "late-comeback-risk",
-    },
-  });
+  const [result, setResult] = useState<any | null>(null);
 
-  async function runDemo() {
+  const handleRunDemo = async () => {
     setLoading(true);
     setError(null);
+    setResult(null);
+
     try {
       const res = await fetch(`${API_BASE}/api/dataspine/demo`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "demo" }),
       });
 
       if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
+        throw new Error(`Demo request failed (${res.status})`);
       }
 
       const json = await res.json();
       setResult(json);
-    } catch (err) {
-      setError(
-        "Demo request failed. Please try again or contact BetSense support."
-      );
+    } catch (err: any) {
+      setError(err?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const prettyJson = result
+    ? JSON.stringify(result, null, 2)
+    : `// DataSpine demo response will appear here
+// Tap "Run DataSpine Demo" to see a sample output.`;
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100">
-      <main className="mx-auto flex max-w-6xl flex-col gap-12 px-4 pb-24 pt-20 sm:px-6 lg:px-8">
-        {/* HERO */}
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-slate-100">
+      {/* صفحه را در وسط نگه می‌داریم مثل استایل اصلی سایت */}
+      <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-12 px-4 pb-16 pt-24 md:px-8 lg:pt-28">
+        {/* هدر و تیتر اصلی */}
         <section className="space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-4 py-1 text-xs tracking-[0.2em] uppercase text-cyan-300">
-            <span>BetSense internal engines</span>
-            <span className="h-1 w-1 rounded-full bg-cyan-400" />
-            <span>DataSpine Engine</span>
-          </div>
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-teal-300/80">
+            BETSENSE INTERNAL ENGINE
+          </p>
 
-          <h1 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
+          <h1 className="text-balance text-4xl font-semibold tracking-tight text-slate-50 md:text-5xl lg:text-6xl">
             DataSpine Engine
           </h1>
 
-          <div className="flex flex-wrap gap-3">
-            <Badge>OrderBook pressure</Badge>
-            <Badge>Momentum curves</Badge>
-            <Badge>Flow imbalance</Badge>
-            <Badge>Enterprise-ready</Badge>
-          </div>
-
-          <p className="max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
-            The DataSpine Engine reads live orderbook flow, micro-momentum and
-            pressure shifts and turns them into clean, session-ready signals for
-            trading stacks, in-play models and prediction terminals.
+          <p className="max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
+            The DataSpine Engine reads{" "}
+            <span className="font-semibold text-slate-100">
+              orderbook pressure, tempo swings and micro-momentum
+            </span>{" "}
+            across thousands of odds updates and turns it into one clean,
+            actionable signal for in-play trading stacks.
           </p>
 
-          <ul className="grid gap-2 text-sm text-slate-300 sm:grid-cols-2">
-            <li className="flex gap-2">
-              <Dot />
-              <span>
-                Detects one-sided orderbook crush and trapped liquidity.
-              </span>
-            </li>
-            <li className="flex gap-2">
-              <Dot />
-              <span>Maps pressure swings into a simple momentum-risk score.</span>
-            </li>
-            <li className="flex gap-2">
-              <Dot />
-              <span>
-                Blends tempo, volatility and flow imbalance into one signal.
-              </span>
-            </li>
-            <li className="flex gap-2">
-              <Dot />
-              <span>
-                Designed to plug into live APIs, quant stacks and trading UIs.
-              </span>
-            </li>
-          </ul>
+          {/* تگ‌های بالای صفحه – شبیه سایت اصلی */}
+          <div className="flex flex-wrap gap-3 pt-2 text-xs md:text-[13px]">
+            <span className="rounded-full border border-teal-400/40 bg-teal-400/10 px-4 py-1.5 tracking-[0.2em] text-teal-200">
+              ORDERBOOK PRESSURE
+            </span>
+            <span className="rounded-full border border-sky-400/40 bg-sky-400/10 px-4 py-1.5 tracking-[0.2em] text-sky-200">
+              MOMENTUM RADAR
+            </span>
+            <span className="rounded-full border border-purple-400/40 bg-purple-400/10 px-4 py-1.5 tracking-[0.2em] text-purple-200">
+              MULTI-MATCH DEPTH
+            </span>
+          </div>
         </section>
 
-        {/* DEMO + SIDE PANEL */}
-        <section className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-          {/* DEMO CARD */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold sm:text-xl">
-              Run DataSpine Demo
-            </h2>
-            <p className="text-sm text-slate-300">
-              Tap the button to send a sample demo request to the DataSpine
-              Engine. This is a pre-built simulation – no live bookmaker traffic
-              is used.
-            </p>
-
-            <button
-              onClick={runDemo}
-              disabled={loading}
-              className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-2 text-sm font-medium text-slate-900 shadow-lg shadow-cyan-500/30 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {loading ? "Running demo…" : "Run DataSpine demo"}
-            </button>
-
-            {error && (
-              <p className="text-xs text-red-400">
-                {error}
-              </p>
-            )}
-
-            <div className="rounded-2xl border border-slate-700/80 bg-slate-900/60 p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-xs font-medium text-slate-300">
-                  Demo response
-                </span>
-                <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
-                  JSON · read-only
-                </span>
-              </div>
-              <pre className="max-h-72 overflow-auto rounded-xl bg-black/40 p-3 text-[11px] leading-relaxed text-emerald-100">
-                {JSON.stringify(result, null, 2)}
-              </pre>
-            </div>
-          </div>
-
-          {/* SIDE PANEL */}
-          <aside className="space-y-5 rounded-2xl border border-slate-700/80 bg-slate-900/50 p-5">
-            <h3 className="text-sm font-semibold text-slate-100 tracking-wide">
+        {/* دو ستون: توضیحات + کارت دمو */}
+        <section className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-start">
+          {/* ستون چپ: توضیحات تجاری */}
+          <div className="space-y-6">
+            <h2 className="text-lg font-semibold text-slate-50 md:text-xl">
               What the DataSpine Engine does
-            </h3>
-            <ul className="space-y-2 text-sm text-slate-300">
-              <li className="flex gap-2">
-                <Dot />
+            </h2>
+
+            <ul className="space-y-3 text-sm leading-relaxed text-slate-300 md:text-[15px]">
+              <li className="flex gap-3">
+                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-teal-300" />
                 <span>
-                  Reads micro-momentum and pressure bursts across the book.
+                  Tracks <span className="font-semibold">live orderbook</span>{" "}
+                  and liquidity to spot when markets are leaning too hard one
+                  way.
                 </span>
               </li>
-              <li className="flex gap-2">
-                <Dot />
+              <li className="flex gap-3">
+                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-sky-300" />
                 <span>
-                  Flags late-session squeezes, panic flips and fake moves.
+                  Maps <span className="font-semibold">micro-momentum</span>{" "}
+                  and pressure bursts that don&apos;t show up in scoreline
+                  alone.
                 </span>
               </li>
-              <li className="flex gap-2">
-                <Dot />
-                <span>Outputs a clean, single edge score for each fixture.</span>
-              </li>
-              <li className="flex gap-2">
-                <Dot />
+              <li className="flex gap-3">
+                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-purple-300" />
                 <span>
-                  Built as a standalone engine or part of the BetSense AI Suite.
+                  Blends <span className="font-semibold">volatility</span>,{" "}
+                  <span className="font-semibold">shock risk</span> and{" "}
+                  <span className="font-semibold">late comebacks</span> into one
+                  spine-style risk curve.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                <span>
+                  Creates a single{" "}
+                  <span className="font-semibold">DataSpine signal</span> ready
+                  to plug into trading screens, prediction engines and
+                  enterprise APIs.
                 </span>
               </li>
             </ul>
 
-            <div className="mt-4 rounded-xl border border-cyan-500/40 bg-cyan-500/5 p-4 text-xs text-cyan-100">
-              <p className="mb-1 font-semibold">Live Connected Data</p>
-              <p className="text-[11px] text-cyan-100/80">
-                Enterprise buyers can plug their own live feeds or APIs directly
-                into DataSpine via a dedicated integration layer. The demo here
-                runs in offline simulation mode.
+            {/* باکس کوچک برای دکمه Live Connected Data */}
+            <div className="mt-4 rounded-2xl border border-teal-400/30 bg-slate-900/50 px-4 py-4 text-xs text-slate-300 backdrop-blur">
+              <p className="font-semibold text-teal-200">
+                Live Connected Data · Enterprise
+              </p>
+              <p className="mt-1">
+                Production buyers can plug their own live odds, orderbook or
+                risk feeds into the DataSpine Engine via a single{" "}
+                <span className="font-mono text-[11px] text-teal-200">
+                  /dataspine
+                </span>{" "}
+                endpoint.
               </p>
             </div>
-          </aside>
+          </div>
+
+          {/* ستون راست: کارت دمو */}
+          <div className="space-y-4">
+            <div className="rounded-3xl border border-slate-700/80 bg-slate-900/70 p-5 shadow-[0_0_60px_rgba(0,0,0,0.7)] backdrop-blur md:p-6">
+              <h3 className="text-sm font-semibold tracking-tight text-slate-50 md:text-base">
+                Run DataSpine Demo
+              </h3>
+              <p className="mt-2 text-xs text-slate-300 md:text-[13px]">
+                Tap the button below to send a sample demo request to the
+                DataSpine Engine. This uses the same backend stack as your
+                internal Meta engine demo.
+              </p>
+
+              <button
+                onClick={handleRunDemo}
+                disabled={loading}
+                className="mt-4 inline-flex items-center justify-center rounded-full bg-teal-400 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-teal-500/40 transition hover:bg-teal-300 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {loading ? "Running demo…" : "Run DataSpine Demo"}
+              </button>
+
+              {error && (
+                <p className="mt-3 rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-xs text-red-100">
+                  Demo error: {error}
+                </p>
+              )}
+
+              <div className="mt-4 rounded-2xl border border-slate-700 bg-slate-950/70 p-3 text-[11px] leading-relaxed text-slate-200 md:text-xs">
+                <div className="flex items-center justify-between pb-2 text-[11px] text-slate-400">
+                  <span className="font-mono">DataSpine demo JSON</span>
+                  <span className="rounded-full border border-teal-400/40 bg-teal-400/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-teal-200">
+                    Read-only
+                  </span>
+                </div>
+                <pre className="max-h-64 overflow-auto whitespace-pre text-[11px] md:text-[11px]">
+                  {prettyJson}
+                </pre>
+              </div>
+            </div>
+
+            {/* وضعیت health بک‌اند */}
+            <div className="rounded-2xl border border-slate-700/70 bg-slate-950/70 px-4 py-3 text-[11px] text-slate-300">
+              <p className="font-semibold text-slate-100">
+                Backend health · DataSpine
+              </p>
+              <p className="mt-1">
+                Health endpoint:
+                <a
+                  href={`${API_BASE}/api/dataspine/health`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-1 font-mono text-[11px] text-teal-300 underline underline-offset-2"
+                >
+                  {API_BASE}/api/dataspine/health
+                </a>
+              </p>
+              <p className="mt-1 text-[11px] text-slate-400">
+                Used by internal monitors and future enterprise consoles.
+              </p>
+            </div>
+          </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
