@@ -2,239 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AOIE Test Console</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      background: #020617;
-      color: #e5e7eb;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      padding: 24px;
-    }
-
-    .card {
-      max-width: 480px;
-      margin: 0 auto;
-      background: radial-gradient(circle at top left, #0f172a, #020617);
-      border-radius: 18px;
-      border: 1px solid #1f2937;
-      padding: 20px 20px 24px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    h1 {
-      font-size: 20px;
-      margin: 0 0 4px;
-    }
-
-    .subtitle {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 16px;
-    }
-
-    label {
-      font-size: 13px;
-      color: #d1d5db;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid #374151;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #22c55e;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
-    }
-
-    .field {
-      margin-bottom: 12px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    button {
-      margin-top: 8px;
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      background: linear-gradient(135deg, #22c55e, #4ade80);
-      color: #022c22;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: default;
-    }
-
-    .status {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #9ca3af;
-      min-height: 16px;
-    }
-
-    .status.ok {
-      color: #22c55e;
-    }
-
-    .status.error {
-      color: #f97373;
-    }
-
-    pre {
-      margin-top: 14px;
-      padding: 10px;
-      border-radius: 12px;
-      background: #020617;
-      border: 1px solid #111827;
-      font-size: 12px;
-      max-height: 260px;
-      overflow: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AOIE Engine Test</title>
+  <script type="module" src="./aoie.js"></script>
 </head>
-<body>
-  <div class="card">
-    <h1>AOIE Test Console</h1>
-    <div class="subtitle">
-      Quick test panel for <b>BetSense AOIE</b> backend.
-    </div>
 
-    <form id="aoieForm">
-      <div class="field">
-        <label for="matchId">Match ID</label>
-        <input
-          id="matchId"
-          name="matchId"
-          type="text"
-          value="T-ARS-TOT-2025-TEST"
-          required
-        />
-      </div>
+<body style="background:#0a0f29; color:white; font-family:Arial; padding:20px;">
+  <h2>AOIE Engine Test Page</h2>
 
-      <div class="field">
-        <label for="market">Market</label>
-        <select id="market" name="market">
-          <option value="MAIN" selected>MAIN</option>
-          <option value="ALT">ALT</option>
-        </select>
-      </div>
+  <button id="runBtn" style="
+      padding:12px 20px;
+      background:#4e91ff;
+      border:none;
+      border-radius:10px;
+      color:white;
+      font-size:18px;
+      cursor:pointer;">
+    Run AOIE Engine
+  </button>
 
-      <div class="field">
-        <label>Odds (home / draw / away)</label>
-        <div class="grid-3">
-          <input
-            id="homeOdds"
-            type="number"
-            step="0.01"
-            value="2.45"
-            required
-          />
-          <input
-            id="drawOdds"
-            type="number"
-            step="0.01"
-            value="3.10"
-            required
-          />
-          <input
-            id="awayOdds"
-            type="number"
-            step="0.01"
-            value="2.90"
-            required
-          />
-        </div>
-      </div>
+  <pre id="output" style="
+      margin-top:20px;
+      padding:15px;
+      background:#111a3a;
+      border-radius:10px;
+      white-space:pre-wrap;
+  "></pre>
 
-      <button type="submit" id="runBtn">Run AOIE</button>
-      <div id="status" class="status"></div>
-    </form>
+  <script type="module">
+    import { runAOIE } from "./aoie.js";
 
-    <pre id="output">{  }</pre>
-  </div>
+    document.getElementById("runBtn").onclick = async () => {
+      const result = await runAOIE(
+        "T-ARS-TOT-2025-TEST",
+        "MAIN",
+        { home: 2.45, draw: 3.10, away: 2.90 }
+      );
 
-  <script>
-    const form = document.getElementById("aoieForm");
-    const runBtn = document.getElementById("runBtn");
-    const statusEl = document.getElementById("status");
-    const outputEl = document.getElementById("output");
-
-    const BACKEND_URL = "https://betsense-backend.onrender.com/api/aoie/run";
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const matchId = document.getElementById("matchId").value.trim();
-      const market = document.getElementById("market").value.trim();
-      const home = parseFloat(document.getElementById("homeOdds").value);
-      const draw = parseFloat(document.getElementById("drawOdds").value);
-      const away = parseFloat(document.getElementById("awayOdds").value);
-
-      const payload = {
-        matchId,
-        market,
-        odds: {
-          home,
-          draw,
-          away
-        }
-      };
-
-      statusEl.className = "status";
-      statusEl.textContent = "Sending request to AOIE backend…";
-      runBtn.disabled = true;
-      outputEl.textContent = "{  }";
-
-      try {
-        const response = await fetch(BACKEND_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-
-        if (!response.ok || data.ok === false) {
-          statusEl.className = "status error";
-          statusEl.textContent = data.error || "Request failed";
-        } else {
-          statusEl.className = "status ok";
-          statusEl.textContent = "AOIE response received ✔️";
-        }
-
-        outputEl.textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        statusEl.className = "status error";
-        statusEl.textContent = "Network error while calling backend";
-        outputEl.textContent = String(err);
-      } finally {
-        runBtn.disabled = false;
-      }
-    });
+      document.getElementById("output").textContent =
+        JSON.stringify(result, null, 2);
+    };
   </script>
 </body>
 </html>
