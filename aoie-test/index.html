@@ -5,164 +5,335 @@
   <title>AOIE Engine Test Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    :root {
+      --bg-main: #02061a;
+      --card-bg: #060b28;
+      --accent: #2dd4ff;
+      --accent-soft: rgba(45, 212, 255, 0.18);
+      --accent-strong: #22c55e;
+      --text-main: #e5ecff;
+      --text-muted: #8b9cca;
+      --border-subtle: #161b3a;
+      --error: #f97373;
+      --shadow-soft: 0 22px 55px rgba(0, 0, 0, 0.65);
+      --radius-xl: 24px;
+      --radius-pill: 999px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Roboto", sans-serif;
+        "Helvetica Neue", Arial, sans-serif;
     }
 
     body {
       min-height: 100vh;
-      background: #020617;
-      color: #e5e7eb;
+      background: radial-gradient(circle at top, #071436 0, #020111 45%, #000 100%);
+      color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px 16px;
     }
 
-    .wrapper {
+    .page-shell {
       width: 100%;
-      max-width: 480px;
-      background: radial-gradient(circle at top left, #0f172a, #020617 60%);
-      border-radius: 24px;
-      padding: 24px 20px;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      max-width: 460px;
     }
 
-    .title {
-      font-size: 22px;
-      font-weight: 700;
+    .card {
+      background: radial-gradient(circle at top left, #141c46 0, #05071b 55%);
+      border-radius: var(--radius-xl);
+      padding: 28px 22px 26px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(67, 56, 202, 0.65);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.14), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(129, 140, 248, 0.12), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 11px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 253, 0.55);
+      font-size: 11px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-muted);
       margin-bottom: 16px;
-      color: #f9fafb;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    h1 {
+      font-size: 24px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
     }
 
     .subtitle {
       font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 22px;
       line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 20px;
     }
 
-    .btn {
+    .button-row {
+      margin-bottom: 18px;
+    }
+
+    button#runBtn {
       width: 100%;
-      padding: 12px 16px;
-      border-radius: 999px;
       border: none;
+      cursor: pointer;
+      border-radius: var(--radius-pill);
+      padding: 12px 18px;
       font-size: 15px;
       font-weight: 600;
-      letter-spacing: 0.02em;
-      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-      color: #020617;
-      box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.3),
-        0 15px 35px rgba(56, 189, 248, 0.35);
-      display: flex;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      color: #020617;
+      background: linear-gradient(90deg, #38bdf8, #22c55e);
+      box-shadow:
+        0 15px 35px rgba(15, 23, 42, 0.9),
+        0 0 30px rgba(56, 189, 248, 0.7);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease, opacity 0.12s ease;
     }
 
-    .btn:active {
-      transform: scale(0.97);
-      opacity: 0.9;
-    }
-
-    .btn span.dot {
-      width: 9px;
-      height: 9px;
+    button#runBtn span.dot {
+      width: 12px;
+      height: 12px;
       border-radius: 999px;
-      background: #bbf7d0;
-      box-shadow: 0 0 12px #22c55e;
+      background: rgba(15, 23, 42, 0.9);
+      box-shadow: inset 0 0 0 2px rgba(148, 163, 253, 0.8);
     }
 
-    .result-box {
-      margin-top: 18px;
-      padding: 14px 12px;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      min-height: 80px;
-      font-family: "JetBrains Mono", "SF Mono", Menlo, Monaco, monospace;
-      font-size: 11px;
+    button#runBtn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow:
+        0 8px 18px rgba(15, 23, 42, 0.9),
+        0 0 18px rgba(56, 189, 248, 0.65);
+      filter: brightness(0.97);
+    }
+
+    button#runBtn:disabled {
+      cursor: default;
+      opacity: 0.6;
+      box-shadow:
+        0 10px 24px rgba(15, 23, 42, 0.85),
+        0 0 18px rgba(56, 189, 248, 0.35);
+    }
+
+    .console {
+      border-radius: 18px;
+      padding: 12px 12px 10px;
+      background: radial-gradient(circle at top left, #020617 0, #020014 50%);
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
       color: #e5e7eb;
+      min-height: 82px;
+      line-height: 1.5;
       overflow-x: auto;
-      white-space: pre;
+      white-space: pre-wrap;
+      word-break: break-word;
+      position: relative;
     }
 
-    .hint {
+    .console-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(148, 163, 253, 0.8);
+      margin-bottom: 4px;
+    }
+
+    .console-body {
+      color: #e5e7eb;
+    }
+
+    .console-body .faded {
+      color: rgba(148, 163, 253, 0.8);
+    }
+
+    .console.error {
+      border-color: rgba(248, 113, 113, 0.9);
+      box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.35);
+    }
+
+    .console.error .console-body {
+      color: var(--error);
+    }
+
+    .footer-note {
       margin-top: 10px;
       font-size: 11px;
-      color: #6b7280;
+      color: var(--text-muted);
+    }
+
+    .footer-note a {
+      color: rgba(96, 165, 250, 0.95);
+      text-decoration: none;
+    }
+
+    .footer-note a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <h1 class="title">AOIE Engine Test Page</h1>
-    <p class="subtitle">
-      Tap the button below to send a sample payload to your
-      BetSense backend and see the AOIE engine response in real time.
-    </p>
+  <div class="page-shell">
+    <div class="card">
+      <div class="card-inner">
+        <div class="pill-label">
+          <span class="pill-dot"></span>
+          AOIE · BACKEND LINK
+        </div>
 
-    <button class="btn" onclick="runAoie()">
-      <span class="dot"></span>
-      <span>Run AOIE Engine</span>
-    </button>
+        <h1>AOIE Engine Test Page</h1>
+        <p class="subtitle">
+          Tap the button below to send a sample payload to your BetSense backend
+          and see the AOIE engine response in real time.
+        </p>
 
-    <pre id="resultBox" class="result-box">
-// AOIE output will appear here...
-    </pre>
+        <div class="button-row">
+          <button id="runBtn">
+            <span class="dot"></span>
+            <span>Run AOIE Engine</span>
+          </button>
+        </div>
 
-    <p class="hint">
-      This is a private test page on <strong>betsense.casino/aoie-test/</strong>
-      for manual AOIE Live checks.
-    </p>
+        <div class="console" id="consoleBox">
+          <div class="console-label">AOIE RESPONSE</div>
+          <div class="console-body" id="consoleText">
+            Ready. Tap <span class="faded">“Run AOIE Engine”</span> to send a test
+            request.
+          </div>
+        </div>
+
+        <div class="footer-note">
+          This is a private test page on
+          <a href="https://betsense.casino/aoie-test/" target="_blank"
+            >betsense.casino/aoie-test/</a
+          >
+          for manual AOIE Live checks.
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // 🔗 Backend AOIE endpoint (Render)
-    const AOIE_ENDPOINT =
+    const runBtn = document.getElementById("runBtn");
+    const consoleBox = document.getElementById("consoleBox");
+    const consoleText = document.getElementById("consoleText");
+
+    // آدرس بک‌اند تو:
+    const BACKEND_URL =
       "https://betsense-backend.onrender.com/api/aoie/run";
 
-    async function runAoie() {
-      const box = document.getElementById("resultBox");
-      box.textContent = "Running AOIE engine...";
+    // یک payload نمونه شبیه همونی که در ReqBin تست کردیم
+    const SAMPLE_PAYLOAD = {
+      matchId: "T-ARS-TOT-2025-TEST",
+      market: "MAIN",
+      odds: {
+        home: 2.45,
+        draw: 3.1,
+        away: 2.9,
+      },
+    };
 
-      // Sample payload (Tottenham vs Arsenal)
-      const payload = {
-        matchId: "T-ARS-TOT-2025-TEST-001",
-        market: "MAIN",
-        odds: {
-          home: 2.45,
-          draw: 3.10,
-          away: 2.90
-        }
-      };
-
+    function pretty(json) {
       try {
-        const res = await fetch(AOIE_ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        let data;
-        try {
-          data = await res.json();
-        } catch (e) {
-          data = { ok: false, error: "Could not parse JSON response" };
-        }
-
-        box.textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        box.textContent = "Network / CORS error: " + err.message;
+        return JSON.stringify(json, null, 2);
+      } catch (e) {
+        return String(json);
       }
     }
+
+    async function runAoieTest() {
+      consoleBox.classList.remove("error");
+      runBtn.disabled = true;
+      consoleText.textContent = "Running AOIE engine…";
+
+      // timeout دستی برای وقتی که Render دیر جواب می‌دهد
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 15000); // اگر ۱۵ ثانیه پاسخی نیامد، درخواست را قطع کن
+
+      try {
+        const response = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(SAMPLE_PAYLOAD),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(
+            `HTTP ${response.status} – ${response.statusText}\n\n${text}`
+          );
+        }
+
+        const data = await response.json();
+        consoleText.textContent = pretty(data);
+      } catch (err) {
+        consoleBox.classList.add("error");
+
+        if (err.name === "AbortError") {
+          consoleText.textContent =
+            "Request timed out.\nBackend did not respond in time.\n\n" +
+            "The Render free instance may be waking up or unreachable right now.";
+        } else {
+          consoleText.textContent =
+            "Error while calling AOIE backend:\n\n" +
+            err.message;
+        }
+      } finally {
+        runBtn.disabled = false;
+      }
+    }
+
+    runBtn.addEventListener("click", runAoieTest);
   </script>
 </body>
 </html>
