@@ -1,301 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Ultra Pro · Live Console – AOIE Engine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      :root {
-        --bg-main: #020617;
-        --bg-card: #020c1f;
-        --accent-1: #22d3ee;
-        --accent-2: #22c55e;
-        --accent-3: #3b82f6;
-        --text-main: #e5e7eb;
-        --text-muted: #9ca3af;
-        --danger: #f97373;
-        --radius-xl: 22px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Ultra Pro · Live Console – AOIE Engine Hook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Helvetica Neue", Arial, sans-serif;
+    }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "Segoe UI", sans-serif;
-      }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #101830 0, #050712 45%, #020309 100%);
+      color: #f5f7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
 
-      body {
-        min-height: 100vh;
-        background: radial-gradient(circle at top, #020617 0, #000 55%, #020617 100%);
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px 12px;
-      }
+    .shell {
+      width: 100%;
+      max-width: 980px;
+      border-radius: 32px;
+      background: radial-gradient(circle at top left, #18274b 0, #060815 55%, #050612 100%);
+      border: 1px solid rgba(120, 180, 255, 0.16);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.75);
+      padding: 28px 18px 24px;
+    }
 
+    @media (min-width: 720px) {
       .shell {
-        width: 100%;
-        max-width: 480px;
+        padding: 32px 32px 28px;
       }
+    }
 
-      .header-title {
-        font-size: 26px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-align: left;
-        margin-bottom: 16px;
+    .headline {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .subline {
+      font-size: 14px;
+      color: rgba(214, 223, 255, 0.8);
+      max-width: 560px;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .pill-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: radial-gradient(circle at top left, #162a4a 0, #050816 70%);
+      border: 1px solid rgba(112, 184, 255, 0.4);
+      color: rgba(214, 223, 255, 0.92);
+    }
+
+    .pill-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #66ffb0 0, #09d37b 45%, #038b4b 100%);
+      box-shadow: 0 0 10px rgba(73, 255, 190, 0.7);
+    }
+
+    .pill-label {
+      opacity: 0.9;
+    }
+
+    .button-wrap {
+      margin: 18px 0 20px;
+    }
+
+    .run-btn {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 999px;
+      padding: 14px 20px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #19bbff 0%, #16df7b 55%, #0ed2ff 100%);
+      color: #020309;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out,
+        filter 0.12s ease-out, opacity 0.12s ease-out;
+    }
+
+    .run-btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+      filter: brightness(0.96);
+    }
+
+    .run-btn.disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .run-btn-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #b4f4ff 0, #4cceff 45%, #0073ff 100%);
+    }
+
+    .response-card {
+      margin-top: 10px;
+      border-radius: 22px;
+      background: radial-gradient(circle at top left, #151c38 0, #050814 70%, #020308 100%);
+      border: 1px solid rgba(110, 164, 255, 0.35);
+      padding: 16px 14px;
+      overflow: hidden;
+    }
+
+    @media (min-width: 720px) {
+      .response-card {
+        padding: 18px 18px;
       }
+    }
 
-      .card {
-        background: radial-gradient(circle at top left, #0f172a 0, #020617 52%);
-        border-radius: 28px;
-        padding: 22px 18px 20px;
-        box-shadow: 0 26px 70px rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(148, 163, 184, 0.22);
-      }
+    .response-title {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(173, 197, 255, 0.85);
+      margin-bottom: 10px;
+    }
 
-      .card-header-line {
-        display: flex;
-        align-items: center;
-        margin-bottom: 18px;
-      }
+    .response-box {
+      width: 100%;
+      max-height: 360px;
+      border-radius: 16px;
+      background: #02040b;
+      padding: 12px 12px;
+      font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+      font-size: 12px;
+      color: #c9e2ff;
+      overflow: auto;
+      border: 1px solid rgba(75, 118, 220, 0.55);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
+      white-space: pre;
+    }
 
-      .status-pill {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 14px;
-        border-radius: 999px;
-        background: rgba(15, 23, 42, 0.9);
-        border: 1px solid rgba(56, 189, 248, 0.4);
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--text-muted);
-      }
+    .response-box.error {
+      border-color: #ff5a75;
+      color: #ffd8df;
+      box-shadow: inset 0 0 18px rgba(150, 22, 60, 0.8);
+    }
 
-      .status-pill-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 999px;
-        margin-right: 8px;
-        background: #22c55e;
-        box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
-      }
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(180, 202, 255, 0.8);
+      line-height: 1.4;
+    }
 
-      .status-pill span:last-child {
-        color: #e5e7eb;
-        font-weight: 600;
-      }
+    .hint a {
+      color: #58d8ff;
+      text-decoration: none;
+    }
 
-      .title-main {
-        font-size: 22px;
-        font-weight: 700;
-        margin-bottom: 8px;
-      }
+    .hint a:hover {
+      text-decoration: underline;
+    }
 
-      .subtitle {
-        font-size: 13px;
-        color: var(--text-muted);
-        line-height: 1.5;
-        margin-bottom: 18px;
-      }
-
-      .btn-row {
-        margin-bottom: 18px;
-      }
-
-      .btn-primary {
-        width: 100%;
-        border: none;
-        outline: none;
-        border-radius: 999px;
-        font-size: 17px;
-        font-weight: 700;
-        padding: 14px 18px;
-        color: #f9fafb;
-        background-image: linear-gradient(90deg, #0ea5e9, #22c55e);
-        box-shadow: 0 18px 45px rgba(56, 189, 248, 0.45);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-      }
-
-      .btn-primary:active {
-        transform: translateY(1px);
-        box-shadow: 0 10px 28px rgba(56, 189, 248, 0.4);
-      }
-
-      .btn-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: rgba(15, 23, 42, 0.9);
-        box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9),
-          0 0 10px rgba(15, 23, 42, 0.9);
-      }
-
-      .output-shell {
-        margin-top: 4px;
-      }
-
-      .output-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: var(--text-muted);
-        margin-bottom: 6px;
-      }
-
-      .output-box {
-        width: 100%;
-        min-height: 120px;
-        max-height: 420px;
-        overflow: auto;
-        border-radius: 18px;
-        padding: 12px 10px 14px;
-        background: radial-gradient(circle at top left, #020617 0, #000 70%);
-        border: 1px solid rgba(15, 23, 42, 0.9);
-        box-shadow: inset 0 0 0 1px rgba(30, 64, 175, 0.45);
-      }
-
-      pre {
-        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
-          Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        font-size: 11px;
-        color: #e5e7eb;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      .footer-note {
-        margin-top: 10px;
-        font-size: 11px;
-        color: var(--text-muted);
-      }
-
-      .footer-note a {
-        color: #38bdf8;
-        text-decoration: none;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="shell">
-      <div class="header-title">Ultra Pro · Live Console</div>
-
-      <div class="card">
-        <div class="card-header-line">
-          <div class="status-pill">
-            <span class="status-pill-dot"></span>
-            <span>AOIE · Engine Link</span>
-          </div>
-        </div>
-
-        <h1 class="title-main">AOIE Engine – Live Hook</h1>
-        <p class="subtitle">
-          Tap the button below to fire a sample AOIE request against your
-          BetSense backend and see the live engine response, exactly like the
-          Ultra Pro console will use in production.
-        </p>
-
-        <div class="btn-row">
-          <button id="btn-run-aoie-ultra" class="btn-primary">
-            <span class="btn-dot"></span>
-            <span>Run AOIE Engine</span>
-          </button>
-        </div>
-
-        <div class="output-shell">
-          <div class="output-label">AOIE response</div>
-          <div class="output-box">
-            <pre id="aoie-ultra-output">Tap “Run AOIE Engine” to start…</pre>
-          </div>
-        </div>
-
-        <div class="footer-note">
-          This Ultra Pro hook calls:
-          <br />
-          <code>https://betsense-backend.onrender.com/aoie/run</code>
-        </div>
+    .endpoint {
+      font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+      font-size: 11px;
+      color: rgba(163, 195, 255, 0.96);
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="pill-row">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        <span class="pill-label">AOIE · ENGINE LINK</span>
       </div>
     </div>
 
-    <script>
-      const AOIE_ULTRA_ENDPOINT =
-        "https://betsense-backend.onrender.com/aoie/run";
+    <h1 class="headline">Ultra Pro · Live Console</h1>
+    <p class="subline">
+      Tap the button below to fire a sample AOIE request against your BetSense
+      backend and see the live engine response, exactly like the Ultra Pro
+      console will use in production.
+    </p>
 
-      const SAMPLE_PAYLOAD = {
-        matchId: "T-ARS-TOT-2025-TEST",
-        market: "MAIN",
-        odds: {
-          home: 2.45,
-          draw: 3.1,
-          away: 2.9,
-        },
-      };
+    <div class="button-wrap">
+      <button id="runButton" class="run-btn">
+        <span class="run-btn-dot"></span>
+        <span>Run AOIE Engine</span>
+      </button>
+    </div>
 
-      const btnUltra = document.getElementById("btn-run-aoie-ultra");
-      const outUltra = document.getElementById("aoie-ultra-output");
+    <section class="response-card">
+      <div class="response-title">AOIE Response</div>
+      <pre id="responseBox" class="response-box">Waiting for AOIE call…</pre>
+      <p class="hint">
+        This Ultra Pro hook calls:
+        <span class="endpoint">
+          https://betsense-backend.onrender.com/aoie/run
+        </span>
+      </p>
+    </section>
+  </main>
 
-      function setOutput(message, isError = false) {
-        if (isError) {
-          outUltra.style.color = "#fca5a5";
-        } else {
-          outUltra.style.color = "#e5e7eb";
-        }
-        outUltra.textContent = message;
+  <script>
+    const AOIE_ENDPOINT = "https://betsense-backend.onrender.com/aoie/run";
+
+    const runButton = document.getElementById("runButton");
+    const responseBox = document.getElementById("responseBox");
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        runButton.classList.add("disabled");
+        runButton.disabled = true;
+        responseBox.classList.remove("error");
+        responseBox.textContent = "Running AOIE engine…";
+      } else {
+        runButton.classList.remove("disabled");
+        runButton.disabled = false;
       }
+    }
 
-      async function runAoieUltra() {
-        setOutput("Running AOIE engine…");
+    function pretty(obj) {
+      try {
+        return JSON.stringify(obj, null, 2);
+      } catch (_) {
+        return String(obj);
+      }
+    }
+
+    runButton.addEventListener("click", async () => {
+      setLoading(true);
+
+      try {
+        const payload = {
+          matchId: "T-ARS-TOT-2025-ULTRA",
+          market: "MAIN",
+          odds: {
+            home: 2.45,
+            draw: 3.1,
+            away: 2.9,
+          },
+        };
+
+        const res = await fetch(AOIE_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const text = await res.text();
+        let data;
 
         try {
-          const res = await fetch(AOIE_ULTRA_ENDPOINT, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(SAMPLE_PAYLOAD),
-          });
-
-          if (!res.ok) {
-            const text = await res.text();
-            setOutput(
-              [
-                "Error reaching backend.",
-                `Status: ${res.status}`,
-                "",
-                text || "Backend did not respond as expected.",
-                "",
-                "The Render free server may be waking up or unreachable right now.",
-                "Try again in 5–10 seconds.",
-              ].join("\n"),
-              true
-            );
-            return;
-          }
-
-          const data = await res.json();
-          setOutput(JSON.stringify(data, null, 2));
+          data = JSON.parse(text);
         } catch (err) {
-          setOutput(
-            [
-              "Error reaching backend.",
-              err.message || String(err),
-              "",
-              "The Render free server may be sleeping.",
-              "Try again in 5–10 seconds.",
-            ].join("\n"),
-            true
-          );
+          responseBox.classList.add("error");
+          responseBox.textContent =
+            "Received non-JSON response from backend:\n\n" + text;
+          return;
         }
-      }
 
-      btnUltra.addEventListener("click", runAoieUltra);
-    </script>
-  </body>
+        if (!res.ok || data.ok === false) {
+          responseBox.classList.add("error");
+          responseBox.textContent =
+            "Backend returned an error:\n\n" + pretty(data);
+          return;
+        }
+
+        responseBox.classList.remove("error");
+        responseBox.textContent = pretty(data);
+      } catch (err) {
+        responseBox.classList.add("error");
+        responseBox.textContent =
+          "Error reaching backend:\n" + err.message +
+          "\n\nCheck that the Render service is live.";
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
 </html>
