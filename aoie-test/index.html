@@ -2,46 +2,167 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AOIE Engine Test</title>
-  <script type="module" src="./aoie.js"></script>
+  <title>AOIE Engine Test Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Roboto", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #020617;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 480px;
+      background: radial-gradient(circle at top left, #0f172a, #020617 60%);
+      border-radius: 24px;
+      padding: 24px 20px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #020617;
+      box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.3),
+        0 15px 35px rgba(56, 189, 248, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .btn span.dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #bbf7d0;
+      box-shadow: 0 0 12px #22c55e;
+    }
+
+    .result-box {
+      margin-top: 18px;
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      min-height: 80px;
+      font-family: "JetBrains Mono", "SF Mono", Menlo, Monaco, monospace;
+      font-size: 11px;
+      color: #e5e7eb;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+  </style>
 </head>
+<body>
+  <div class="wrapper">
+    <h1 class="title">AOIE Engine Test Page</h1>
+    <p class="subtitle">
+      Tap the button below to send a sample payload to your
+      BetSense backend and see the AOIE engine response in real time.
+    </p>
 
-<body style="background:#0a0f29; color:white; font-family:Arial; padding:20px;">
-  <h2>AOIE Engine Test Page</h2>
+    <button class="btn" onclick="runAoie()">
+      <span class="dot"></span>
+      <span>Run AOIE Engine</span>
+    </button>
 
-  <button id="runBtn" style="
-      padding:12px 20px;
-      background:#4e91ff;
-      border:none;
-      border-radius:10px;
-      color:white;
-      font-size:18px;
-      cursor:pointer;">
-    Run AOIE Engine
-  </button>
+    <pre id="resultBox" class="result-box">
+// AOIE output will appear here...
+    </pre>
 
-  <pre id="output" style="
-      margin-top:20px;
-      padding:15px;
-      background:#111a3a;
-      border-radius:10px;
-      white-space:pre-wrap;
-  "></pre>
+    <p class="hint">
+      This is a private test page on <strong>betsense.casino/aoie-test/</strong>
+      for manual AOIE Live checks.
+    </p>
+  </div>
 
-  <script type="module">
-    import { runAOIE } from "./aoie.js";
+  <script>
+    // 🔗 Backend AOIE endpoint (Render)
+    const AOIE_ENDPOINT =
+      "https://betsense-backend.onrender.com/api/aoie/run";
 
-    document.getElementById("runBtn").onclick = async () => {
-      const result = await runAOIE(
-        "T-ARS-TOT-2025-TEST",
-        "MAIN",
-        { home: 2.45, draw: 3.10, away: 2.90 }
-      );
+    async function runAoie() {
+      const box = document.getElementById("resultBox");
+      box.textContent = "Running AOIE engine...";
 
-      document.getElementById("output").textContent =
-        JSON.stringify(result, null, 2);
-    };
+      // Sample payload (Tottenham vs Arsenal)
+      const payload = {
+        matchId: "T-ARS-TOT-2025-TEST-001",
+        market: "MAIN",
+        odds: {
+          home: 2.45,
+          draw: 3.10,
+          away: 2.90
+        }
+      };
+
+      try {
+        const res = await fetch(AOIE_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        let data;
+        try {
+          data = await res.json();
+        } catch (e) {
+          data = { ok: false, error: "Could not parse JSON response" };
+        }
+
+        box.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        box.textContent = "Network / CORS error: " + err.message;
+      }
+    }
   </script>
 </body>
 </html>
