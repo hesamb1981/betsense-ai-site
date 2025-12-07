@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BetSense USI – Test Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #050816;
+        color: #f9fafb;
+        margin: 0;
+        padding: 24px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
+
+      .card {
+        max-width: 600px;
+        border-radius: 16px;
+        padding: 20px;
+        background: rgba(15, 23, 42, 0.9);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.8);
+      }
+
+      button {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #22c55e;
+        color: #020617;
+      }
+
+      button:active {
+        transform: scale(0.97);
+      }
+
+      pre {
+        margin-top: 16px;
+        padding: 12px;
+        background: #020617;
+        border-radius: 12px;
+        font-size: 12px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Ultra Security Intelligence (USI) – Test Console</h1>
+      <p style="font-size: 14px; opacity: 0.9; margin-bottom: 16px">
+        Click the button below to send a sample request to the USI engine
+        (Real&nbsp;Madrid vs Barcelona).
+      </p>
+
+      <button id="run-usi-btn">Run USI Test</button>
+
+      <pre id="usi-result">Waiting for test…</pre>
+    </div>
+
+    <script type="module">
+      import { callUSI } from "./engines/usiClient.js";
+
+      const btn = document.getElementById("run-usi-btn");
+      const resultEl = document.getElementById("usi-result");
+
+      btn.addEventListener("click", async () => {
+        resultEl.textContent = "Running USI…";
+
+        try {
+          const response = await callUSI("Real Madrid", "Barcelona", 0.88);
+          resultEl.textContent = JSON.stringify(response, null, 2);
+        } catch (err) {
+          console.error(err);
+          resultEl.textContent = "Error: " + err.message;
+        }
+      });
+    </script>
+  </body>
+</html>
