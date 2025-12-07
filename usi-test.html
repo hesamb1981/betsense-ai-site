@@ -2,303 +2,124 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Ultra Security Intelligence (USI) – Test Console</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        background: #020617;
-        color: #e5e7eb;
-      }
-
-      .page {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 32px 16px;
-      }
-
-      .card {
-        width: 100%;
-        max-width: 720px;
-        background: radial-gradient(circle at top, #0f172a, #020617);
-        border-radius: 24px;
-        padding: 28px 24px 24px;
-        box-shadow: 0 28px 80px rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-      }
-
-      .eyebrow {
-        font-size: 12px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #38bdf8;
-        margin-bottom: 8px;
-      }
-
-      h1 {
-        font-size: 26px;
-        line-height: 1.2;
-        margin: 0 0 10px;
-        color: #f9fafb;
-      }
-
-      .subtitle {
-        font-size: 14px;
-        color: #9ca3af;
-        max-width: 540px;
-      }
-
-      .section-divider {
-        height: 1px;
-        border: 0;
-        margin: 18px 0 18px;
-        background: radial-gradient(circle at left, #22c55e, transparent),
-          radial-gradient(circle at right, #38bdf8, transparent),
-          linear-gradient(to right, rgba(148, 163, 184, 0.2), transparent 12%),
-          linear-gradient(to left, rgba(148, 163, 184, 0.2), transparent 12%);
-      }
-
-      .actions-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .primary-btn {
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 10px 20px;
-        border-radius: 999px;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        background: radial-gradient(circle at top left, #4ade80, #16a34a);
-        color: #022c22;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 14px 40px rgba(22, 163, 74, 0.55);
-        transition: transform 0.11s ease, box-shadow 0.11s ease,
-          filter 0.11s ease;
-        white-space: nowrap;
-      }
-
-      .primary-btn span.icon {
-        font-size: 16px;
-        transform: translateY(1px);
-      }
-
-      .primary-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 18px 55px rgba(22, 163, 74, 0.78);
-        filter: brightness(1.05);
-      }
-
-      .primary-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 10px 28px rgba(22, 163, 74, 0.7);
-        filter: brightness(0.98);
-      }
-
-      .hint-text {
-        font-size: 12px;
-        color: #9ca3af;
-      }
-
-      .response-shell {
-        margin-top: 18px;
-        background: radial-gradient(circle at top left, #0b1120, #020617);
-        border-radius: 16px;
-        padding: 12px 12px 10px;
-        border: 1px solid rgba(148, 163, 184, 0.22);
-        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
-          Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        font-size: 13px;
-        color: #e5e7eb;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .response-shell::before {
-        content: "USI • Live Security Snapshot";
-        position: absolute;
-        top: 9px;
-        right: 14px;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        color: #64748b;
-      }
-
-      .response-shell pre {
-        margin: 0;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      .live-connected-row {
-        margin-top: 14px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .live-connected-note {
-        font-size: 11px;
-        color: #94a3b8;
-        max-width: 380px;
-      }
-
-      @media (max-width: 640px) {
-        .card {
-          padding: 22px 16px 18px;
-          border-radius: 18px;
-        }
-
-        h1 {
-          font-size: 22px;
-        }
-
-        .subtitle {
-          font-size: 13px;
-        }
-
-        .response-shell {
-          font-size: 12px;
-        }
-
-        .live-connected-row {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .response-shell::before {
-          display: none;
-        }
-      }
-    </style>
+    <title>BetSense Ultra – USI Test & Live Connect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CDN فقط برای استایل فرانت -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <div class="page">
-      <div class="card">
-        <div class="eyebrow">BetSense Ultra • Security Layer</div>
-        <h1>Ultra Security Intelligence (USI) – Test Console</h1>
-        <p class="subtitle">
-          Click “Run USI Test” to send a sample request into the USI Engine
-          using Real Madrid vs Barcelona. This is a fully isolated security
-          layer for enterprise risk intelligence.
+  <body
+    class="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center p-4"
+  >
+    <div
+      class="max-w-3xl w-full bg-slate-900/60 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-xl space-y-10"
+    >
+      <!-- بخش ۱: USI Test Console -->
+      <section class="space-y-4">
+        <h1 class="text-2xl md:text-3xl font-semibold">
+          Ultra Security Intelligence (USI) – Test Console
+        </h1>
+        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+          Click the button below to send a sample request to the USI engine
+          (Real Madrid vs Barcelona).
         </p>
 
-        <hr class="section-divider" />
+        <button
+          id="usi-test-btn"
+          class="px-5 py-2.5 rounded-full bg-emerald-500 text-slate-950 font-semibold text-sm md:text-base hover:bg-emerald-400 active:scale-95 transition"
+        >
+          Run USI Test
+        </button>
 
-        <div class="actions-row">
-          <button id="runUsiTestBtn" class="primary-btn">
-            <span class="icon">▶</span>
-            <span>Run USI Test</span>
-          </button>
-          <span class="hint-text">
-            The engine returns a synthetic security snapshot in &lt; 2 seconds.
-          </span>
-        </div>
-
-        <div class="response-shell">
-          <pre id="usiResponse">
+        <pre
+          id="usi-output"
+          class="mt-4 bg-slate-950/60 border border-slate-800 rounded-2xl p-4 text-xs md:text-sm overflow-x-auto"
+        >
 {
-  "securityStatus": "Waiting…",
-  "riskScore": "—",
-  "analyzedTeams": ["Real Madrid", "Barcelona"],
-  "timestamp": null
-}
-          </pre>
-        </div>
+  "securityStatus": "PASS",
+  "riskScore": "0.12",
+  "analyzedTeams": [
+    "Real Madrid",
+    "Barcelona"
+  ],
+  "timestamp": "2025-12-07T07:11:40.665Z",
+  "signature": "demo-signature"
+}</pre
+        >
+      </section>
 
-        <div class="live-connected-row">
-          <div id="live-connected-data-slot"></div>
-          <p class="live-connected-note">
-            Live Connected Data lets your enterprise plug real-time feeds
-            (trading, risk, compliance, match data or your own APIs) straight
-            into BetSense Ultra engines with a single integration.
-          </p>
-        </div>
-      </div>
+      <!-- بخش ۲: Live Connected Data (Global Partner Connect) -->
+      <section class="space-y-4 border-t border-slate-800 pt-6 md:pt-8">
+        <h2 class="text-xl md:text-2xl font-semibold">
+          Live Connected Data – Partner Connect Demo
+        </h2>
+        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+          This button sends a generic live-connect payload to the BetSense
+          Live Connected Data server. Any partner can plug their own live data
+          into this endpoint with a schema-agnostic JSON payload.
+        </p>
+
+        <button
+          id="live-connect-btn"
+          class="px-5 py-2.5 rounded-full bg-sky-500 text-slate-950 font-semibold text-sm md:text-base hover:bg-sky-400 active:scale-95 transition"
+        >
+          Send Live Connect Ping
+        </button>
+
+        <pre
+          id="live-connect-output"
+          class="mt-4 bg-slate-950/60 border border-slate-800 rounded-2xl p-4 text-xs md:text-sm overflow-x-auto"
+        >
+// Live Connected Data response will appear here…</pre
+        >
+      </section>
     </div>
 
-    <script type="module">
-      import { renderLiveConnectedDataButton } from "./components/LiveConnectedDataButton.js";
+    <!-- اسکریپت تست USI -->
+    <script>
+      const USI_URL = "https://betsense-usi.onrender.com/api/usi";
 
-      const API_URL = "https://betsense-usi.onrender.com/api/usi";
+      const usiBtn = document.getElementById("usi-test-btn");
+      const usiOutput = document.getElementById("usi-output");
 
-      const runButton = document.getElementById("runUsiTestBtn");
-      const responsePre = document.getElementById("usiResponse");
+      usiBtn.addEventListener("click", async () => {
+        usiBtn.disabled = true;
+        const originalText = usiBtn.innerText;
+        usiBtn.innerText = "Running…";
 
-      async function runUsiTest() {
+        const payload = {
+          teamA: "Real Madrid",
+          teamB: "Barcelona",
+          confidence: 0.88,
+        };
+
+        usiOutput.textContent = "// Sending request to USI engine…";
+
         try {
-          runButton.disabled = true;
-          runButton.textContent = "Running…";
-
-          responsePre.textContent = JSON.stringify(
-            {
-              securityStatus: "RUNNING",
-              message: "Contacting USI Engine…",
-            },
-            null,
-            2
-          );
-
-          const body = {
-            teamA: "Real Madrid",
-            teamB: "Barcelona",
-            confidence: 0.88,
-          };
-
-          const res = await fetch(API_URL, {
+          const res = await fetch(USI_URL, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(body),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
           });
 
-          const data = await res.json();
-          responsePre.textContent = JSON.stringify(data, null, 2);
+          const json = await res.json();
+          usiOutput.textContent = JSON.stringify(json, null, 2);
         } catch (err) {
-          console.error("USI Test Error:", err);
-          responsePre.textContent = JSON.stringify(
-            {
-              securityStatus: "ERROR",
-              message:
-                "USI engine could not be reached. Please try again in a moment.",
-            },
-            null,
-            2
-          );
+          usiOutput.textContent =
+            "// USI error:\\n" + (err && err.message ? err.message : String(err));
         } finally {
-          runButton.disabled = false;
-          runButton.textContent = "Run USI Test";
+          usiBtn.disabled = false;
+          usiBtn.innerText = originalText;
         }
-      }
+      });
+    </script>
 
-      runButton.addEventListener("click", runUsiTest);
+    <!-- اسکریپت Live Connected Data (ماژول) -->
+    <script type="module">
+      import { initLiveConnectedDataButton } from "./components/LiveConnectedDataButton.js";
 
-      // Live Connected Data – shared CTA button
-      renderLiveConnectedDataButton("live-connected-data-slot", {
-        label: "Live Connected Data",
-        size: "md",
-        onClick: () => {
-          // الان فقط پیام می‌دهیم؛ بعداً می‌تونیم به صفحه/فرم Enterprise وصلش کنیم
-          alert(
-            "Live Connected Data: Plug your real-time enterprise feeds directly into USI, USL, Fusion & all BetSense Ultra engines."
-          );
-        },
+      initLiveConnectedDataButton({
+        buttonId: "live-connect-btn",
+        outputId: "live-connect-output",
       });
     </script>
   </body>
